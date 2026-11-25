@@ -11,6 +11,8 @@
 /id-records/utah-birth /id-records/utah/birth/ 301
 /id-records/utah-id /id-records/utah/id/ 301
 
-# Forward www subdomain to apex domain
-https://www.civicdesk.net/* https://civicdesk.net/:splat 301
+# Note: Cloudflare Workers Static Assets _redirects only accepts path sources
+# (domain-level sources like https://www.civicdesk.net/* fail asset upload).
+# Forward www.civicdesk.net -> civicdesk.net (301) via a zone Redirect Rule.
+
 

@@ -314,7 +314,13 @@ def test_workers_static_assets_config_and_headers(built_site: Path) -> None:
     assert "X-Robots-Tag: noindex" in headers_txt
 
     redirects_txt = (built_site / "_redirects").read_text(encoding="utf-8")
-    assert "https://www.civicdesk.net/* https://civicdesk.net/:splat 301" in redirects_txt
+    for line in redirects_txt.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        source = stripped.split()[0]
+        assert source.startswith("/"), f"_redirects source must be a path for Cloudflare Workers Static Assets: {line}"
+
 
 
 
