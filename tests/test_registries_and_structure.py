@@ -304,10 +304,13 @@ def test_path_finder_template_rules() -> None:
 def test_workers_static_assets_config_and_headers(built_site: Path) -> None:
     wrangler_cfg = json.loads((ROOT / "wrangler.jsonc").read_text(encoding="utf-8"))
     assert wrangler_cfg["name"] == "civicdesk"
+    assert wrangler_cfg["build"]["command"] == "bash scripts/cloudflare_build.sh"
     assert wrangler_cfg["assets"]["directory"] == "./public"
     assert wrangler_cfg["assets"]["not_found_handling"] == "404-page"
+    assert wrangler_cfg["previews"] == {}
 
     headers_txt = (built_site / "_headers").read_text(encoding="utf-8")
     assert "https://:version.:subdomain.workers.dev/*" in headers_txt
     assert "X-Robots-Tag: noindex" in headers_txt
+
 
