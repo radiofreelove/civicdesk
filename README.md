@@ -41,5 +41,5 @@ To report a factual error or outdated rule, email `corrections at civicdesk.net`
 
 ## Licensing
 
-- **Writing and guides:** CC BY 4.0
-- **Code and scripts:** MIT License
+- **Writing and guides:** [CC BY 4.0](./LICENSE-CONTENT.md)
+- **Code and scripts:** [MIT License](./LICENSE)
