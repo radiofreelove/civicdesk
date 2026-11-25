@@ -313,4 +313,8 @@ def test_workers_static_assets_config_and_headers(built_site: Path) -> None:
     assert "https://:version.:subdomain.workers.dev/*" in headers_txt
     assert "X-Robots-Tag: noindex" in headers_txt
 
+    redirects_txt = (built_site / "_redirects").read_text(encoding="utf-8")
+    assert "https://www.civicdesk.net/* https://civicdesk.net/:splat 301" in redirects_txt
+
+
 

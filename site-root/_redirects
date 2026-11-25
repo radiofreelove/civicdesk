@@ -10,3 +10,7 @@
 /id-records/utah-court /id-records/utah/court/ 301
 /id-records/utah-birth /id-records/utah/birth/ 301
 /id-records/utah-id /id-records/utah/id/ 301
+
+# Forward www subdomain to apex domain
+https://www.civicdesk.net/* https://civicdesk.net/:splat 301
+
