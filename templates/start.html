@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block head %}<script src="{{ asset('js/start.js') }}" defer></script>{% endblock %}
+{% block main %}
+<p class="kicker">Start here</p>
+<h1>Find the right guide in 2 questions</h1>
+{{ m.lede("Pick your state and topic below. Your answers stay in your browser and are never saved or sent anywhere.") }}
+
+<div class="callout callout-note no-js-only">
+  <p class="callout-title"><strong>JavaScript is off, so use the direct guide links below.</strong></p>
+  <h2>2027 Medicaid Work &amp; Activity Rules</h2>
+  <ul>
+    <li><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a></li>
+    <li><a href="{{ page_url('medicaid-washington') }}">Washington Apple Health</a></li>
+    <li><a href="{{ page_url('medicaid-utah') }}">Utah Medicaid</a></li>
+    <li><a href="{{ page_url('medicaid') }}">Medicaid desk overview</a></li>
+  </ul>
+  <h2>Legal Name, ID &amp; Vital Records</h2>
+  <ul>
+    <li><a href="{{ page_url('id-records-oregon') }}">Oregon name, ID, and vital records</a></li>
+    <li><a href="{{ page_url('id-records-washington') }}">Washington name, ID, and vital records</a></li>
+    <li><a href="{{ page_url('id-records-utah') }}">Utah name, ID, and vital records</a></li>
+    <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></li>
+  </ul>
+</div>
+
+<form id="start-form" class="start-form js-only" data-root="{{ root_prefix(page) }}" novalidate autocomplete="off">
+  <fieldset id="q-state">
+    <legend>1. Which state or level do you need?</legend>
+    <label><input type="radio" name="state" value="oregon"> Oregon</label>
+    <label><input type="radio" name="state" value="washington"> Washington</label>
+    <label><input type="radio" name="state" value="utah"> Utah</label>
+    <label><input type="radio" name="state" value="federal"> Another U.S. state or federal agency only</label>
+  </fieldset>
+
+  <fieldset id="q-topic">
+    <legend>2. What are you trying to do?</legend>
+    <label><input type="radio" name="topic" value="medicaid"> Understand or check 2027 Medicaid work and activity rules, exemptions, or applications</label>
+    <label><input type="radio" name="topic" value="id-records"> Update a legal name (marriage, divorce, or court order), driver license or ID, birth certificate, Social Security card, or passport</label>
+  </fieldset>
+
+  <div id="start-error" class="callout callout-watch" role="alert" hidden></div>
+
+  <div class="btn-row">
+    <button type="submit" class="btn">Show my guide</button>
+    <button type="reset" class="btn-secondary">Start over</button>
+  </div>
+</form>
+
+<section id="start-result" class="start-result callout callout-do" aria-labelledby="start-result-h" hidden>
+  <p class="callout-kicker"><span class="callout-icon">{{ m.icon('check') }}</span><span>Recommended starting point</span></p>
+  <h2 class="callout-title" id="start-result-h" tabindex="-1">Your recommended guide</h2>
+  <div id="start-result-body"></div>
+</section>
+
+<h2>Or browse all active desks directly</h2>
+<ul>
+  <li><strong>2027 Medicaid Work &amp; Activity Rules:</strong> <a href="{{ page_url('medicaid') }}">Desk overview</a>, <a href="{{ page_url('medicaid-oregon') }}">Oregon</a>, <a href="{{ page_url('medicaid-washington') }}">Washington</a>, <a href="{{ page_url('medicaid-utah') }}">Utah</a></li>
+  <li><strong>Legal Name, ID &amp; Vital Records:</strong> <a href="{{ page_url('id-records') }}">Desk overview</a>, <a href="{{ page_url('id-records-path') }}">Path finder</a>, <a href="{{ page_url('id-records-oregon') }}">Oregon</a>, <a href="{{ page_url('id-records-washington') }}">Washington</a>, <a href="{{ page_url('id-records-utah') }}">Utah</a>, <a href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></li>
+</ul>
+{% endblock %}

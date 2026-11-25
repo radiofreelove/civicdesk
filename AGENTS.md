@@ -5,14 +5,14 @@ Rules for browser-based Google Antigravity and automated contributors working on
 ## 1. Protected `main` Branch Workflow
 
 - Never push directly to `main`. All changes must go through `feature/*` or `radar/*` branches and Pull Requests.
-- Branch protection settings on `main`: `enforce_admins: true`, `0` required approvals, and required status checks: `Checks` and `Cloudflare Pages`.
+- Branch protection settings on `main`: `enforce_admins: true`, `0` required approvals, and required status checks: `Checks` and `Workers Builds: civicdesk`.
 
 ## 2. Strict Two-Account Cloudflare Boundary
 
-- The connected Cloudflare account **ONLY** hosts `civicdesk.net` and its Cloudflare Pages project.
+- The connected Cloudflare account **ONLY** hosts `civicdesk.net` and its Cloudflare Workers Static Assets service (`wrangler.jsonc`).
 - The two retired legacy `pages.dev` projects live in a separate Cloudflare account that agents must **never** query or modify via Cloudflare CLI or MCP.
 - Legacy source material may **only** be read from public GitHub repositories (`radiofreelove/projectstasis` and `radiofreelove/projectstrand`).
-- **Cloudflare Pages is the sole host.** Do not create or maintain secondary mirror folders or deployment workflows.
+- **Cloudflare Workers Static Assets is the sole host.** Do not create or maintain secondary mirror folders or deployment workflows.
 
 ## 3. Universal Civic Mission & Quiet Inclusion
 

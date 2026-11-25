@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Oregon Health Plan (OHP)</p>
+<h1>Turned down? You have options.</h1>
+    <p class="purpose">This page explains what to do if OHP says no or your coverage ends.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>Apply again:</strong> You can apply again any time.</li>
+      <li><strong>Ask for a hearing:</strong> Your letter says how, and by when.</li>
+      <li><strong>Keep benefits:</strong> You may be able to keep your benefits during a hearing. Ask.</li>
+      <li><strong>Free legal help:</strong> Call the Public Benefits Hotline.</li>
+      <li><strong>Next:</strong> <a href="{{ page_url('medicaid-oregon-apply') }}">How to apply</a>, or <a href="{{ page_url('medicaid-oregon-help') }}">free help and phone numbers</a>.</li>
+    </ul>
+
+    <h2>A new choice for states</h2>
+    <p>Governor Tina Kotek directed OHA to use the federal hold harmless choice through June&nbsp;30, 2027 (subject to federal approval). OHA says you will not be turned down for OHP or lose coverage through June&nbsp;30, 2027 if you do not meet the work or activity rules. {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}</p>
+    <p>This follows a Nov.&nbsp;13, 2026 federal choice. Through June&nbsp;30, 2027, a state may choose not to turn anyone down, and not to end anyone's coverage, only for not meeting the work or activity rules. A state can still say no, or end coverage, for other reasons, such as income. <a href="{{ page_url('medicaid-oregon-rules#state-choice') }}">More about this choice</a> {{ src('MED-S41') }}</p>
+    <p class="more"><strong>Court case:</strong> On Nov.&nbsp;5, 2026, Oregon, Washington, and two other states sued the federal government over the work or activity rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+
+    <h2>Apply again</h2>
+    <p>You can apply again any time. OHP looks at the month before your new application. {{ src('MED-S06') }} {{ src('MED-S04') }}</p>
+    <p>If you meet the rules now, or a reason fits you now, you may qualify. <a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check</a>.</p>
+
+    <h2>Ask for a hearing</h2>
+    <p>A hearing is a way to challenge OHP's decision. Your letter says how to ask for one and the deadline. {{ src('MED-S04') }} {{ src('MED-S14') }}</p>
+    <p>When you ask, you can also ask to keep your benefits while you wait for the decision. {{ src('MED-S04') }}</p>
+    <p class="more">More from OHA: <a href="https://www.oregon.gov/oha/hsd/ohp/pages/appeals-hearings.aspx" rel="noreferrer">Appeals and hearings</a>.</p>
+
+    <h2>Free legal help</h2>
+    <div class="good">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <h3>Public Benefits Hotline</h3>
+      <p>Run by Legal Aid Services of Oregon and the Oregon Law Center.</p>
+      <p>Call <span class="nowrap">503-241-4111</span> or <span class="nowrap">800-520-5292</span>.</p>
+      <p>Income limits apply. Hours change, so <a href="https://oregonlawhelp.org/node/107" rel="noreferrer">check their hours</a> before you call. People in Jackson County are sent to a different office. {{ src('MED-S25') }}</p>
+    </div>
+    <p>Disability question? <a href="https://www.droregon.org/request-help" rel="noreferrer">Ask Disability Rights Oregon for help</a>. {{ src('MED-S26') }}</p>
+
+    <h2>Other coverage</h2>
+    <p>You can look at private health plans at <a href="https://oregonhealthcare.gov/" rel="noreferrer">OregonHealthCare.gov</a> or call <span class="nowrap">855-268-3767</span>. {{ src('MED-S04') }} {{ src('MED-S20') }}</p>
+    <div class="warn">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Heads up</span></p>
+      <h3>Heads up</h3>
+      <p>If OHP turned you down because of the work or activity rules, you may not get help paying for a Marketplace plan. {{ src('MED-S04') }} {{ src('MED-S06') }}</p>
+    </div>
+
+    <h2>Care while you sort it out</h2>
+    <ul>
+      <li>Community health centers charge what you can afford. <a href="https://orhim.info/FQHC" rel="noreferrer">Find a community health center</a>. {{ src('MED-S04') }} {{ src('MED-S21') }}</li>
+      <li>Nonprofit hospitals have programs to help pay bills. Ask about financial help. {{ src('MED-S04') }}</li>
+    </ul>
+{% endblock %}

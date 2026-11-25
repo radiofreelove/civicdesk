@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Washington Apple Health</p>
+<h1>Have a health condition?</h1>
+    <p class="purpose">A disability or a health condition may mean you do not have to meet the new Apple Health rules.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>Medically frail:</strong> People who are medically frail do not have to meet the work rules.</li>
+      <li><strong>Through 2027:</strong> You can state this yourself (self-attestation). Starting Jan.&nbsp;1, 2028, the Health Care Authority (HCA) may ask for proof. {{ src('MED-WA22') }}</li>
+      <li><strong>Treatment counts:</strong> People in treatment for alcohol or substance use disorders do not have to meet the work rules.</li>
+      <li><strong>A court order helps:</strong> A federal court struck down an extra federal test for the states that sued. Washington is one of them.</li>
+      <li><strong>Next:</strong> <a href="{{ page_url('medicaid-washington-reasons') }}">See every reason</a>, and how to tell the state.</li>
+    </ul>
+
+    <h2>What federal law counts as medically frail</h2>
+    <ul>
+      <li>Being blind or disabled</li>
+      <li>Having a substance use disorder (under the federal rule, this does not count people in stable recovery for 5 years or more)</li>
+      <li>Having a disabling mental disorder</li>
+      <li>Having a physical, intellectual, or developmental disability that makes at least one daily living activity much harder</li>
+      <li>Having a serious or complex medical condition</li>
+    </ul>
+
+    <h2>How Washington checks a health condition</h2>
+    <ul class="short">
+      <li><strong>Through 2027:</strong> You can state that you are medically frail yourself in Washington Healthplanfinder. HCA calls this self-attestation. {{ src('MED-WA21') }} {{ src('MED-WA22') }}</li>
+      <li><strong>Starting Jan.&nbsp;1, 2028:</strong> HCA checks state health records first. If those records cannot confirm your condition, HCA may ask you for proof (verification).</li>
+    </ul>
+
+    <div class="callout more">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>In the news</h2>
+      <p>The federal rule had added one more test. It asked if the condition makes it much harder to comply with the work rules. A federal court struck that test down for the states that sued. Washington is one of those states. {{ src('MED-S28') }} {{ src('MED-WA14') }}</p>
+      <p>On Nov.&nbsp;5, 2026, Washington, Oregon, and two other states also sued over the work rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-WA14') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+    </div>
+
+    <h2>Questions?</h2>
+    <p>Call HCA at <span class="nowrap">1-800-562-3022</span>. <a href="{{ page_url('medicaid-washington-reasons') }}">See every reason</a></p>
+{% endblock %}

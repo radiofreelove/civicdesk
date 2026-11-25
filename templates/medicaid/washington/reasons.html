@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Washington Apple Health</p>
+<h1>Reasons you may not have to meet the Apple Health rules</h1>
+    <p class="purpose">The Health Care Authority (HCA) calls these <strong>exemptions</strong>. This page lists them.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>Many people:</strong> Many people do not have to meet the rule at all.</li>
+      <li><strong>Records first:</strong> Washington checks its own data first.</li>
+      <li><strong>Your word:</strong> You may state your own exemption status (self-attestation, including for medical frailty through 2027). {{ src('MED-WA04') }} {{ src('MED-WA22') }}</li>
+      <li><strong>Who decides:</strong> This guide says "you may." Only Washington decides who is exempt.</li>
+      <li><strong>Not sure?</strong> <a href="{{ page_url('medicaid-washington-check') }}">Take the 1-minute check</a>.</li>
+    </ul>
+
+    <h2>Reasons HCA lists</h2>
+    <ul>
+      <li>You are pregnant, or you are in the 12 months after a pregnancy.</li>
+      <li>You are under age 19.</li>
+      <li>You are a foster youth, or a former foster youth under age 26.</li>
+      <li>You are American Indian or Alaska Native. HCA's list also names certain Tribal populations.</li>
+      <li>You are a parent, caretaker, or guardian of a child under age 14. <span class="more">The month the child turns 14 still counts.</span></li>
+      <li>You are a parent, caretaker, or guardian of a person with a disability.</li>
+      <li>You are in a SNAP (food) household that meets SNAP's work rules, or you get TANF (cash) and meet TANF's work rules.</li>
+      <li>You are entitled to Medicare Part A or Part B.</li>
+      <li>You are in jail or prison, or you got out in the last 90 days.</li>
+      <li>You are medically frail. <a href="{{ page_url('medicaid-washington-health') }}">More about health conditions</a></li>
+      <li>You are in treatment for alcohol or substance use.</li>
+      <li>You are a disabled veteran with a 100 percent total disability rating.</li>
+      <li>You are in a short-term hardship. <a href="#hardship">See automatic and requested hardships below</a>.</li>
+    </ul>
+    <p class="more">HCA's own letters split this list into two kinds: "exemptions" and "current-month exclusions." For the second kind, the month you apply can count, not only the month before.</p>
+
+    <h2 id="hardship">Short-term hardships</h2>
+    <p>HCA lists short-term hardship as an exemption. Its work requirements page names 4 kinds that count in Washington: 2 are automatic, and 2 you must ask for. {{ src('MED-WA22') }}</p>
+    <h3>Automatic short-term hardships</h3>
+    <p>HCA applies these 2 automatically based on where you live. You do not need to ask for them:</p>
+    <ul>
+      <li>Living in an area where the President has declared a disaster</li>
+      <li>Living in a county with an unemployment rate 1.5 times the national rate</li>
+    </ul>
+    <h3>Short-term hardships you must ask for</h3>
+    <p>For these 2, you must request a short-term hardship exemption from HCA:</p>
+    <ul>
+      <li>Travel outside your community for care for a serious or complex condition, for you or a dependent</li>
+      <li>Spending part or all of a month in a hospital, nursing home, or similar facility as an inpatient</li>
+    </ul>
+    <div class="more">
+      <p>Federal law also names an unemployment test of 8 percent or more. HCA's page does not mention it.</p>
+    </div>
+    <p>Think one of these fits you? <a href="{{ page_url('medicaid-washington-help') }}">Ask HCA what counts</a>.</p>
+
+    <h2 id="tribal">American Indian and Alaska Native people</h2>
+    <ul class="short">
+      <li><strong>Work rules:</strong> HCA lists American Indian and Alaska Native people as exempt.</li>
+      <li><strong>Coverage periods:</strong> They are also left out of the shorter 6-month coverage periods.</li>
+    </ul>
+
+    <h2>How to tell the state</h2>
+    <ol class="steps">
+      <li>Washington checks its own data first.</li>
+      <li>You may state your own exemption status. HCA calls this self-attestation (allowed for medical frailty through 2027; starting in 2028, HCA may ask for proof when records cannot confirm it). {{ src('MED-WA04') }} {{ src('MED-WA22') }}</li>
+      <li>Have a question about your case? Call HCA at <span class="nowrap">1-800-562-3022</span>.</li>
+    </ol>
+
+    <div class="callout more">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>In the news</h2>
+      <p>Washington is one of the states that sued over the federal rule. The federal rule had an extra test. It tied medical frailty to a person's ability to comply with the work rules. A court order removed that test for the states that sued. {{ src('MED-S28') }} {{ src('MED-WA14') }}</p>
+      <p>On Nov.&nbsp;5, 2026, Washington, Oregon, and two other states also sued over the work rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-WA14') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+    </div>
+
+{{ m.domestic_safety_callout("washington-reasons-safety", "Washington", "If sharing an address or household case puts your safety at risk, contact HCA Medical Eligibility Determination Services (1-800-562-3022) or DSHS to use a confidential mailing address (including Washington's Address Confidentiality Program) when reporting exemptions or receiving notices.") }}
+{% endblock %}

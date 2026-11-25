@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Primary source registries</p>
+<h1>Every source we cite</h1>
+{{ m.lede("CivicDesk maintains separate, desk-partitioned primary source registries for Medicaid (MED-*) and Legal Name, ID & Vital Records (ID-*). Every source shows its 4-tier honesty label, printed document date, and check date.") }}
+
+<h2 id="labels">Four-tier source honesty labels</h2>
+<dl class="glossary">
+  <dt><span class="badge badge-official">Official</span></dt>
+  <dd>Confirmed in a published government statute, administrative rule, court order, or agency form or guidance.</dd>
+  <dt><span class="badge badge-not-official">Not official</span></dt>
+  <dd>Reported by an external legal aid organization, advocacy group, research survey, or bill tracker rather than published directly by the government agency.</dd>
+  <dt><span class="badge badge-not-confirmed">Not confirmed</span></dt>
+  <dd>Mentioned in draft policy or pending guidance, or an agency rule we could not confirm in a published official source. Verify directly with the agency before relying on it.</dd>
+  <dt><span class="badge badge-our-reading">Our reading</span></dt>
+  <dd>CivicDesk's plain-language synthesis across multiple primary sources where the statute or agency page does not state the point in one sentence. Never legal advice.</dd>
+</dl>
+
+<p>Browse desk-specific registries or machine-readable exports: <a href="{{ page_url('medicaid-sources') }}">Medicaid sources (<code>MED-*</code>)</a>, <a href="{{ page_url('id-records-sources') }}">ID &amp; vital records sources (<code>ID-*</code>)</a>, <a href="{{ root_prefix(page) }}sources.json"><code>sources.json</code></a>, <a href="{{ root_prefix(page) }}facts.json"><code>facts.json</code></a>, and <a href="{{ root_prefix(page) }}build-report.json"><code>build-report.json</code></a>.</p>
+
+<h2 id="medicaid-registry">2027 Medicaid Work &amp; Activity Rules (<code>MED-*</code>)</h2>
+<ul class="source-list">
+{% for s in medicaid_sources if not s.get('docs_only') %}
+  <li class="source-item" id="{{ s.id|lower }}">
+    <h3><a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a>{% if s.get('format') == 'PDF' %} <span class="tag">PDF</span>{% endif %} {{ status_badge(s.status) }}</h3>
+    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time> · Read depth: {{ read_depth_labels[s.read_depth] }} · Read by: {{ read_by_labels[s.read_by] }}.</p>
+    {% if s.get('public_note') %}<p class="source-meta">{{ s.public_note }}</p>{% endif %}
+  </li>
+{% endfor %}
+</ul>
+
+<h2 id="id-records-registry">Legal Name, ID &amp; Vital Records (<code>ID-*</code>)</h2>
+<ul class="source-list">
+{% for s in id_records_sources if not s.get('docs_only') %}
+  <li class="source-item" id="{{ s.id|lower }}">
+    <h3><a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a> {{ status_badge(s.status) }}</h3>
+    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time> · Read depth: {{ read_depth_labels[s.read_depth] }} · Read by: {{ read_by_labels[s.read_by] }}.</p>
+    {% if s.get('public_note') %}<p class="source-meta">{{ s.public_note }}</p>{% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

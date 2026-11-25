@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Washington Apple Health</p>
+<h1>Medical bills from before you apply for Apple Health</h1>
+    <p class="purpose">Apple Health may pay some bills from before you apply. On Jan.&nbsp;1, 2027, that time gets shorter.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li data-show-until="2026-12-31"><strong>Before Jan.&nbsp;1, 2027:</strong> Apple Health may pay bills from up to 3 months before the month you apply. {{ src('MED-WA01') }}</li>
+      <li><strong>From Jan.&nbsp;1, 2027:</strong> 1 month for Apple Health for Adults. 2 months for all other Apple Health programs. {{ src('MED-WA01') }}</li>
+      <li class="more"><strong>What changes:</strong> Coverage for past bills gets shorter on Jan.&nbsp;1, 2027.</li>
+    </ul>
+
+    <div class="callout">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>What this means for you</h2>
+      <p>Have unpaid medical bills from the last few months? Check the dates above. <a href="{{ page_url('medicaid-washington-apply') }}">How to apply</a></p>
+      <p>Have a question about your case? Call the Health Care Authority (HCA) at <span class="nowrap">1-800-562-3022</span>.</p>
+    </div>
+{% endblock %}

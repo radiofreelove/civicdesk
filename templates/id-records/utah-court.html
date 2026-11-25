@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Utah / Court order</p>
+<h1>Utah court order: name and sex designation change</h1>
+{{ m.lede("Utah uses court for both a name change and a sex designation change. A name change needs a year of living in your county and a hearing. A sex designation change needs strong proof of six things.") }}
+{{ m.checked_line(page) }}
+
+{% call m.callout("good", "Changing your name through marriage or divorce in Utah?", "ut-marriage-divorce") %}
+<ul>
+  <li><strong>Marriage or divorce:</strong> A certified marriage certificate or a signed Utah divorce decree restoring a former name is accepted directly by Social Security and the Utah Driver License Division without filing a separate Title 42 name-change petition. {{ src("ID-UT-DLD-NAME") }} {{ src("ID-US-SSA-NAME") }}</li>
+  <li>If your divorce is already final without a name-change clause, or you are choosing a new name outside marriage or divorce, follow the district court steps on this page. {{ src("ID-UT-CODE-42-1") }}</li>
+</ul>
+{% endcall %}
+
+
+{% set first_step = 'Check that you can file, and gather proof' %}
+
+{{ m.onthispage([
+  ('ut-2026', 'What happened in 2026'),
+  ('name', 'Can you ask for a name change?'),
+  ('marker', 'What you must prove for a sex designation change'),
+  ('steps', 'Court steps'),
+  ('cost', 'What it costs'),
+  ('privacy', 'Who can see your case'),
+  ('minors', 'Changes for someone under 18'),
+  ('questions', 'Good questions', 'extra'),
+  ('next-steps', 'Next steps')
+]) }}
+
+{% call m.callout('changed', 'What happened in 2026', 'ut-2026') %}
+<p>A 2026 bill called H.B. 183, "Sex Designation Amendments," would have changed these rules. A Senate committee sent it back to the Rules Committee on March 4, 2026, and a bill tracker shows it failed when the session ended March 6, 2026. {{ src('ID-UT-HB183-NOTICE') }} {{ src('ID-UT-HB183-LEGISCAN') }} The law on this page is the version that took effect May 7, 2025. {{ src('ID-UT-CODE-26B-8-111') }} {{ m.badge('our_reading') }}</p>
+{% endcall %}
+
+<h2 id="name">Can you ask for a name change?</h2>
+<ul>
+  <li>You must have lived in the county where you file for at least one year. {{ src('ID-UT-CODE-42-1') }}</li>
+  <li>You cannot file if you are in the custody of the Utah Department of Corrections. You also cannot file if Adult Probation and Parole supervises your probation or parole. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+  <li>You must say on the petition whether you are on the sex, kidnap, and child abuse offender registry. {{ src('ID-UT-CODE-42-1') }}</li>
+  <li>The court says you cannot change your name to avoid debts or criminal penalties, or to commit fraud. The new name also cannot be "bizarre, unduly lengthy, ridiculous, or offensive to common decency." {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+</ul>
+
+<h2 id="marker">What you must prove for a sex designation change</h2>
+<p>The judge must find "clear and convincing evidence" of all six of these. That means strong proof, more than "more likely than not." {{ src('ID-UT-CODE-26B-8-111') }}</p>
+<ol>
+  <li>You are not involved in any kind of lawsuit.</li>
+  <li>You are not under Department of Corrections custody or supervision (the law's word is "offender").</li>
+  <li>You are not asking in order to commit a crime, avoid debts, interfere with other people's rights, affect a criminal sentence, or commit fraud.</li>
+  <li>You have transitioned to the sex you are asking for.</li>
+  <li>You have lived as that sex, in a consistent way, for at least six months.</li>
+  <li>The sex now on your birth certificate causes you "clinically significant distress or impairment."</li>
+</ol>
+<p>The judge also weighs two kinds of evidence: {{ src('ID-UT-CODE-26B-8-111') }}</p>
+<ul>
+  <li>your medical history, care, or treatment related to transition</li>
+  <li>proof that the sex you are asking for is sincerely held and part of your core identity</li>
+</ul>
+
+{% call m.box('do', 'Proof the court suggests gathering') %}
+<ul>
+  <li>A letter signed by a licensed medical provider saying the current sex on your birth certificate causes you clinically significant distress.</li>
+  <li>Proof that you have lived as your sex for the past six months.</li>
+  <li>Proof that this change is a true and important part of your identity.</li>
+</ul>
+<p>{{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+{% endcall %}
+
+<h2 id="steps">Court steps</h2>
+<p>Utah Courts lists five steps. These follow its page. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+<div class="btn-row js-only"><button type="button" class="btn-secondary" data-print>Print this checklist</button></div>
+<ol class="steps">
+{% call m.step('utah', 1, 'ut-step-ready', first_step) %}
+  <p>Read the name change limits and the six things above. For a sex designation change, gather your proof before you fill out forms.</p>
+{% endcall %}
+{% call m.step('utah', 2, 'ut-step-file', 'Fill out and file the forms') %}
+  <ul>
+    <li><strong>Easiest:</strong> {{ ext('ID-UT-MYPAPERWORK') }}. It asks you questions, fills in the forms, and files your petition online. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+    <li><strong>Or</strong> use the PDF forms on the {{ ext('ID-UT-COURTS-SEX-CHANGE', 'Utah Courts name and sex change page') }}.</li>
+    <li>File in the district court for the county where you live. {{ ext('ID-UT-COURTS-DIRECTORY') }}. Utah County PDF filers file at the Provo Courthouse. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+    <li>Pay {{ fact('ut_fee_petition') }} or ask for a fee waiver. {{ ext('ID-UT-COURTS-WAIVER') }}.</li>
+  </ul>
+{% endcall %}
+{% call m.step('utah', 3, 'ut-step-hearing', 'Go to the hearing') %}
+  <p>The court schedules a hearing. Go to it. The judge may ask you questions. If the judge signs the order, ask how to get a certified copy. {{ src('ID-UT-COURTS-SEX-CHANGE') }} {{ src('ID-UT-CODE-42-1') }}</p>
+  <p>On the offender registry and asking for a name change? Send form 1703FA to the Offender Registration Program at least 30 days before the hearing: {{ fact('ut_registry_mail') }}.</p>
+{% endcall %}
+{% call m.step('utah', 4, 'ut-step-vital', 'Send the order to Utah Vital Records') %}
+  <p>Born in Utah? Send three things to Utah Vital Records: a certified copy of the signed order, {{ ext('ID-UT-VITAL-902-2026') }}, and the fee. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+  <p>It can take several weeks. Mailing address: {{ m.copyable(fact('ut_vital_mail'), 'mailing address') }} <a href="{{ page_url('id-records-utah-birth') }}">See Utah birth certificate details</a>.</p>
+{% endcall %}
+{% call m.step('utah', 5, 'ut-step-tell', 'Tell everyone else') %}
+  <p>Social Security (required if your name changed), the Driver License Division, your passport, banks, work, school, and doctors. <a href="{{ page_url('id-records-after') }}">Use the after-court checklist</a>.</p>
+{% endcall %}
+</ol>
+
+{{ m.after_filing('ut-after-filing', [
+  {'title': 'Go to your hearing', 'text': 'The court schedules a hearing. The judge may ask questions before signing the order.'},
+  {'title': 'Send order to Vital Records', 'text': 'Mail a certified copy of your order, form 902, and the fee. Processing can take several weeks.'},
+  {'title': 'Update every other record', 'text': 'Update Social Security first if your name changed, then your driver license and other accounts.'}
+]) }}
+
+{% call m.callout('cost', 'What it costs', 'cost') %}
+<ul>
+  <li><strong>Court filing fee:</strong> {{ fact('ut_fee_petition') }}. {{ src('ID-UT-CODE-78A-2-301') }} {{ src('ID-UT-COURTS-FEES') }} Utah Code 78A-2-301(1)(a) sets $375 as the general fee to open a new civil case (effective May 6, 2026, and unchanged in the amended version effective January 1, 2027). Utah's fee page does not list name or sex changes by name, though Utah Courts links it from the name and sex change page. Confirm the fee with the court clerk.</li>
+  <li><strong>Can't pay?</strong> {{ ext('ID-UT-COURTS-WAIVER') }}.</li>
+  <li><strong>Certified copy of the order:</strong> {{ fact('ut_fee_cert_copy') }}. {{ src('ID-UT-COURTS-FEES') }}</li>
+  <li><strong>Vital Records:</strong> {{ fact('ut_vital_amend_fee') }}. {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+</ul>
+{% endcall %}
+{% call m.box('watch', 'Watch out for court payment text scams') %}
+<p>Utah courts do not send text messages with links or QR codes asking for payment. Ignore those texts and pay only through official court channels. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+{% endcall %}
+
+<h2 id="privacy">Who can see your case</h2>
+<p>When you ask for a sex designation change, including a name and sex change together, the court marks the case private. The papers you file are not public. The case history, public hearings, and records of public hearings still are. {{ src('ID-UT-COURTS-SEX-CHANGE') }} {{ ext('ID-UT-COURTS-NONPUBLIC') }}.</p>
+<p>The courts page says this only about sex change requests. We read that to mean a name-only case is public. {{ m.badge('our_reading') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+
+<h2 id="minors">Changes for someone under 18</h2>
+<p>For a child's name change, file in the district court in the county where the child has lived for the past year. If the other parent agrees, they sign a consent form. If not, they must be formally served with the papers. There is a hearing. {{ src('ID-UT-COURTS-MINOR-CHANGE') }}</p>
+<p>Utah has strict rules for a child's sex designation change. {{ src('ID-UT-CODE-26B-8-111') }}</p>
+<ul>
+  <li>A judge cannot grant it for a child younger than 15 years and 6 months.</li>
+  <li>A judge cannot grant it unless the parent or guardian with legal custody gives permission.</li>
+  <li>For a child 15 years and 6 months or older who is not emancipated, the court appoints a guardian ad litem, a lawyer for the child. Unless the court finds them unable to pay, the parent or guardian pays for it.</li>
+  <li>Known parents get notice and can object. The hearing is closed to the public.</li>
+  <li>The judge must find clear and convincing evidence that the change is in the child's best interest. The judge must also find it would not create a risk of harm.</li>
+  <li>The order does not take effect until the child is at least 16.</li>
+</ul>
+
+<h2 id="questions" class="brief-extra">Good questions</h2>
+{% call m.qa("What does \"involved in any kind of lawsuit\" mean for me?", 'q-lawsuit') %}
+<p>The law uses those words and does not define them further on the page we read. If you are part of any court case, such as a divorce, custody case, debt case, or eviction, talk to a lawyer before you file. {{ src('ID-UT-CODE-26B-8-111') }} {{ m.badge('our_reading') }}</p>
+{% endcall %}
+{% call m.qa("Can I ask the court to use my pronouns?", 'q-pronouns') %}
+<p>Utah Courts has a page and a form for telling the court your pronouns. {{ ext('ID-UT-COURTS-PRONOUNS') }}.</p>
+{% endcall %}
+{% call m.qa("What if the judge says no?", 'q-denied') %}
+<p>You can appeal. Utah Courts says appeals can be complicated and suggests getting legal advice. {{ ext('ID-UT-COURTS-LEGAL-HELP') }}. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+{% endcall %}
+{% call m.qa("Could I file in another state instead?", 'q-other-state') %}
+<p>Name changes are usually filed where you live. Oregon's law lets any Oregon circuit court hear a legal sex change. But we have not found an official answer for people who live outside Oregon. A Utah office also might not accept another state's order. Talk to a lawyer first. {{ m.badge('our_reading') }} <a href="{{ page_url('id-records-oregon-court#q-out-of-state') }}">Read the Oregon question</a>.</p>
+{% endcall %}
+
+<h2 id="next-steps">Next steps</h2>
+<ul>
+  <li><a href="{{ page_url('id-records-utah-birth') }}">Utah birth certificate</a></li>
+  <li><a href="{{ page_url('id-records-utah-id') }}">Utah driver license or ID</a></li>
+  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
+  <li><a href="{{ page_url('id-records-utah') }}">Back to the Utah overview</a></li>
+</ul>
+{% endblock %}

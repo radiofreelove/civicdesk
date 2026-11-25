@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">About</p>
+<h1>About CivicDesk</h1>
+{{ m.lede("CivicDesk is an independent public-interest project offering plain-language guides to government rules, public benefits, and official records, backed by dated primary sources.") }}
+
+{% call m.callout('watch', 'Important boundaries', 'boundaries') %}
+<ul>
+  <li><strong>Not a government agency:</strong> CivicDesk is not run by, funded by, or connected to any court, state agency, or federal department.</li>
+  <li><strong>Not legal advice:</strong> We state what published statutes, rules, court forms, and agency guides say, and link directly to primary sources. Only the court or agency decides individual cases.</li>
+  <li><strong>Always check the primary link before you file:</strong> Rules, fees, and forms change. Every page shows when its sources were last checked.</li>
+</ul>
+{% endcall %}
+
+<h2 id="desks">Active service desks</h2>
+<ul>
+  <li><a href="{{ page_url('medicaid') }}">2027 Medicaid Work &amp; Activity Rules (<code>/medicaid/</code>)</a>: Oregon Health Plan (OHP), Washington Apple Health, and Utah Medicaid.</li>
+  <li><a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records (<code>/id-records/</code>)</a>: Marriage, divorce, court name changes, and sex or gender designation updates across Oregon, Washington, Utah, Social Security, and passports.</li>
+</ul>
+
+<h2 id="how-we-research">How we verify sources</h2>
+<ol>
+  <li><strong>Primary sources first:</strong> Published statutes, administrative rules, court orders, official forms, and agency guidance come before anything else.</li>
+  <li><strong>Human-reviewed, machine-assisted provenance:</strong> Machine tools assist with fetching and comparing official records, and a human maintainer reviews and approves every rule and update before publication.</li>
+  <li><strong>Four-tier source honesty labels:</strong> Every cited source carries one of four explicit status labels: <span class="badge badge-official">Official</span>, <span class="badge badge-not-official">Not official</span>, <span class="badge badge-not-confirmed">Not confirmed</span>, or <span class="badge badge-our-reading">Our reading</span>. <a href="{{ page_url('sources#labels') }}">Read what each label means</a>.</li>
+  <li><strong>Public audit trail:</strong> Source registries (<code>data/sources/medicaid.yaml</code> and <code>data/sources/id_records.yaml</code>), build checks, and commit history are open for inspection on <a href="{{ repo_url }}" rel="noreferrer">GitHub</a>.</li>
+</ol>
+
+<h2 id="report">Report a correction</h2>
+<p>To report a factual error, broken link, or outdated rule, email <code>{{ site.corrections_email }}</code> or <a href="{{ issues_url }}" rel="noreferrer">open a public issue on GitHub</a>.</p>
+<p><strong>Never share personal case details.</strong> Public GitHub issues show your account name to everyone. Do not include your legal name, Social Security number, Medicaid ID, case number, or private medical or household details.</p>
+
+<h2 id="license">Licensing and reuse</h2>
+<ul>
+  <li><strong>Writing and guides:</strong> Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noreferrer">Creative Commons Attribution 4.0 International (CC BY 4.0)<span class="vh"> (outside site)</span></a>. Credit <strong>CivicDesk (civicdesk.net)</strong>, link to the license, and note if changes were made.</li>
+  <li><strong>Code, templates, and scripts:</strong> Licensed under the MIT License in our <a href="{{ repo_url }}" rel="noreferrer">public repository</a>.</li>
+</ul>
+{% endblock %}

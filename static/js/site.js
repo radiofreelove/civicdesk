@@ -1,0 +1,325 @@
+/* CivicDesk client enhancements. Every page works without JavaScript.
+   Zero network requests. Leave quickly (weather.gov + triple-Shift) is strictly
+   scoped to pages that render a [data-quick-exit] control (/id-records/* and
+   domestic-safety exemption callouts). */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var KEYS = {
+    remember: "civicdesk:remember",
+    prefs: "civicdesk:prefs",
+    checks: "civicdesk:checks"
+  };
+
+  function store(action, key, value) {
+    try {
+      if (action === "get") return window.localStorage.getItem(key);
+      if (action === "set") window.localStorage.setItem(key, value);
+      if (action === "remove") window.localStorage.removeItem(key);
+    } catch (e) {
+      return null;
+    }
+    return null;
+  }
+  function remembering() { return store("get", KEYS.remember) === "on"; }
+
+  function announce(text) {
+    var el = document.getElementById("announcer");
+    if (!el) return;
+    el.textContent = "";
+    window.setTimeout(function () { el.textContent = text; }, 50);
+  }
+
+  /* ---------- Dated notices (e.g. Dec 31, 2026 retroactive bills cutoff) ---------- */
+  var todayIso = new Date().toISOString().slice(0, 10);
+  document.querySelectorAll("[data-show-until]").forEach(function (el) {
+    var until = el.getAttribute("data-show-until");
+    if (until && todayIso > until) {
+      el.hidden = true;
+    }
+  });
+
+  /* ---------- Reading settings ---------- */
+  var DEFAULTS = { theme: "auto", size: "m", spacing: "normal", font: "system", brief: "off" };
+
+  function current() {
+    var out = {};
+    Object.keys(DEFAULTS).forEach(function (k) {
+      out[k] = root.getAttribute("data-" + k) || DEFAULTS[k];
+    });
+    return out;
+  }
+  function apply(prefs) {
+    Object.keys(prefs).forEach(function (k) { root.setAttribute("data-" + k, prefs[k]); });
+  }
+  function savePrefs(prefs) { store("set", KEYS.prefs, JSON.stringify(prefs)); }
+
+  var dialog = document.getElementById("settings");
+  var opener = document.getElementById("settings-open");
+  var closer = document.getElementById("settings-close");
+  var closerX = document.getElementById("settings-close-x");
+
+  function syncForm() {
+    if (!dialog) return;
+    var p = current();
+    dialog.querySelectorAll('input[name="size"]').forEach(function (el) { el.checked = el.value === p.size; });
+    dialog.querySelectorAll('input[name="theme"]').forEach(function (el) { el.checked = el.value === p.theme; });
+    var spacing = dialog.querySelector('input[name="spacing"]');
+    if (spacing) spacing.checked = p.spacing === "wide";
+    var font = dialog.querySelector('input[name="font"]');
+    if (font) font.checked = p.font === "hyper";
+    var brief = dialog.querySelector('input[name="brief"]');
+    if (brief) brief.checked = p.brief === "on";
+    var remember = dialog.querySelector('input[name="remember"]');
+    if (remember) remember.checked = remembering();
+  }
+
+  /* ---------- Short version toggle strip ---------- */
+  var briefToggle = document.getElementById("brief-toggle");
+  function setBrief(on, message) {
+    var p = current();
+    p.brief = on ? "on" : "off";
+    apply(p);
+    savePrefs(p);
+    syncForm();
+    announce(message || (on
+      ? "Short version. Extra sections on this page are now hidden."
+      : "Full version. All sections on this page are showing."));
+  }
+  if (briefToggle) {
+    briefToggle.addEventListener("click", function () {
+      var before = briefToggle.getBoundingClientRect().top;
+      setBrief(current().brief !== "on");
+      var moved = briefToggle.getBoundingClientRect().top - before;
+      if (moved) window.scrollBy(0, moved);
+    });
+  }
+  syncForm();
+
+  if (dialog && opener && typeof dialog.showModal === "function") {
+    opener.addEventListener("click", function () {
+      var resetStatus = document.getElementById("reset-status");
+      var forgetStatus = document.getElementById("forget-status");
+      if (resetStatus) resetStatus.textContent = "";
+      if (forgetStatus) forgetStatus.textContent = "";
+      syncForm();
+      dialog.showModal();
+    });
+    if (closer) closer.addEventListener("click", function () { dialog.close(); });
+    if (closerX) closerX.addEventListener("click", function () { dialog.close(); });
+    dialog.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        dialog.close();
+      }
+    });
+    dialog.addEventListener("close", function () { opener.focus(); });
+    dialog.addEventListener("click", function (event) {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener("change", function (event) {
+      var el = event.target;
+      var p = current();
+      if (el.name === "size" || el.name === "theme") p[el.name] = el.value;
+      if (el.name === "spacing") p.spacing = el.checked ? "wide" : "normal";
+      if (el.name === "font") p.font = el.checked ? "hyper" : "system";
+      if (el.name === "brief") p.brief = el.checked ? "on" : "off";
+      if (el.name === "remember") {
+        if (el.checked) {
+          store("set", KEYS.remember, "on");
+          saveChecks();
+          announce("Your checklist will be remembered on this device.");
+        } else {
+          store("remove", KEYS.remember);
+          store("remove", KEYS.checks);
+          announce("Your checklist will not be saved on this device.");
+        }
+        return;
+      }
+      apply(p);
+      savePrefs(p);
+      if (el.name === "brief") {
+        syncForm();
+        announce(el.checked
+          ? "Short version. Extra sections on this page are now hidden."
+          : "Full version. All sections on this page are showing.");
+      }
+    });
+    var resetBtn = document.getElementById("reset-settings");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", function () {
+        store("remove", KEYS.prefs);
+        apply(DEFAULTS);
+        syncForm();
+        var status = document.getElementById("reset-status");
+        if (status) status.textContent = "Reading settings are back to standard. Your checklist was not changed.";
+        announce("Reading settings are back to standard. Your checklist was not changed.");
+      });
+    }
+    var forget = document.getElementById("forget-all");
+    if (forget) {
+      forget.addEventListener("click", function () {
+        [KEYS.remember, KEYS.prefs, KEYS.checks].forEach(function (k) { store("remove", k); });
+        apply(DEFAULTS);
+        checks = {};
+        document.querySelectorAll("input[data-check]").forEach(function (box) {
+          box.checked = false;
+          markStep(box);
+        });
+        syncForm();
+        var resetStatus = document.getElementById("reset-status");
+        if (resetStatus) resetStatus.textContent = "";
+        var status = document.getElementById("forget-status");
+        if (status) status.textContent = "Done. Nothing from this site is saved on this device.";
+      });
+    }
+  } else if (opener) {
+    opener.hidden = true;
+  }
+
+  /* ---------- Scoped Leave quickly ([data-quick-exit] + triple-Shift) ---------- */
+  var exitLinks = document.querySelectorAll("[data-quick-exit]");
+  if (exitLinks.length > 0) {
+    var defaultExitUrl = exitLinks[0].href || "https://www.weather.gov/";
+    function leave(event) {
+      if (event) event.preventDefault();
+      var targetUrl = (event && event.currentTarget && event.currentTarget.href) || defaultExitUrl;
+      try {
+        document.body.innerHTML = "";
+        document.title = "Weather";
+      } catch (e) { /* keep going */ }
+      window.location.replace(targetUrl);
+    }
+    exitLinks.forEach(function (linkEl) {
+      linkEl.addEventListener("click", leave);
+    });
+    var shiftPresses = [];
+    function isTypingField(el) {
+      if (!el) return false;
+      if (el.isContentEditable) return true;
+      var tag = el.tagName;
+      if (tag === "TEXTAREA") return true;
+      if (tag === "INPUT") {
+        var t = (el.type || "text").toLowerCase();
+        return ["checkbox", "radio", "button", "submit", "reset"].indexOf(t) === -1;
+      }
+      return false;
+    }
+    document.addEventListener("keydown", function (event) {
+      if (isTypingField(event.target)) {
+        shiftPresses = [];
+        return;
+      }
+      if (event.key !== "Shift") {
+        shiftPresses = [];
+        return;
+      }
+      if (event.repeat) return;
+      var now = Date.now();
+      shiftPresses = shiftPresses.filter(function (t) { return now - t < 1500; });
+      shiftPresses.push(now);
+      if (shiftPresses.length >= 3) leave();
+    });
+  }
+
+  /* ---------- Checklists ---------- */
+  var checks = {};
+  if (remembering()) {
+    try { checks = JSON.parse(store("get", KEYS.checks) || "{}") || {}; } catch (e) { checks = {}; }
+  }
+  function saveChecks() {
+    if (remembering()) store("set", KEYS.checks, JSON.stringify(checks));
+  }
+  function markStep(box) {
+    if (!box.closest(".step-head")) return;
+    var step = box.closest(".step");
+    if (step) step.classList.toggle("is-done", box.checked);
+  }
+  document.querySelectorAll("input[data-check]").forEach(function (box) {
+    var key = box.getAttribute("data-check");
+    if (checks[key]) box.checked = true;
+    markStep(box);
+    box.addEventListener("change", function () {
+      if (box.checked) { checks[key] = true; } else { delete checks[key]; }
+      markStep(box);
+      saveChecks();
+    });
+  });
+
+  /* ---------- Copy buttons ---------- */
+  document.querySelectorAll("button[data-copy]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.getAttribute("data-copy");
+      var done = function () {
+        btn.textContent = "Copied";
+        announce("Copied: " + text);
+        window.setTimeout(function () { btn.textContent = "Copy"; }, 2500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {
+          announce("Copy did not work. Select the text instead.");
+        });
+      } else {
+        announce("Copy is not available in this browser. Select the text instead.");
+      }
+    });
+  });
+
+  /* ---------- Switcher menu ---------- */
+  var switcher = document.querySelector("[data-state-switcher]");
+  if (switcher) {
+    var switcherSummary = switcher.querySelector("summary");
+    document.addEventListener("click", function (event) {
+      if (switcher.open && !switcher.contains(event.target)) {
+        switcher.open = false;
+      }
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && switcher.open) {
+        event.preventDefault();
+        switcher.open = false;
+        if (switcherSummary) switcherSummary.focus();
+      }
+    });
+  }
+
+  /* ---------- Print buttons and details expansion ---------- */
+  document.querySelectorAll("[data-print]").forEach(function (btn) {
+    btn.hidden = false;
+    btn.addEventListener("click", function () { window.print(); });
+  });
+  var reopened = [];
+  window.addEventListener("beforeprint", function () {
+    document.querySelectorAll("details:not([open]):not(.state-switcher)").forEach(function (d) {
+      d.open = true;
+      reopened.push(d);
+    });
+  });
+  window.addEventListener("afterprint", function () {
+    reopened.forEach(function (d) { d.open = false; });
+    reopened = [];
+  });
+
+  /* ---------- Reveal hidden Short-version target on hash navigation ---------- */
+  var HIDDEN_IN_BRIEF = ".deeper, .brief-extra, .more";
+  function openTarget() {
+    if (!window.location.hash) return;
+    var id = window.location.hash.slice(1);
+    try { id = decodeURIComponent(id); } catch (e) { /* use raw */ }
+    var target = document.getElementById(id);
+    if (!target) return;
+    var wasHidden = current().brief === "on" && target.closest(HIDDEN_IN_BRIEF);
+    if (wasHidden) {
+      setBrief(false, "Full version. The link goes to a section the short version hides, so all sections are showing again.");
+    }
+    var d = target.closest("details");
+    if (d) d.open = true;
+    if (wasHidden) target.scrollIntoView();
+  }
+  window.addEventListener("hashchange", openTarget);
+  document.addEventListener("click", function (event) {
+    var link = event.target.closest ? event.target.closest('a[href^="#"]') : null;
+    if (link && link.getAttribute("href") === window.location.hash) openTarget();
+  });
+  openTarget();
+})();

@@ -1,0 +1,61 @@
+name: Weekly Source Verification
+
+# Runs Mondays for source link, freshness, registry, and build verification.
+# Live-domain checks against civicdesk.net are intentionally omitted until custom-domain cutover.
+
+on:
+  schedule:
+    - cron: "17 16 * * 1" # Mondays, 16:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: weekly-source-verification
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Weekly link, registry, and build check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - run: python3 -m pip install -r requirements.txt
+      - run: python3 scripts/build.py
+      - run: python3 scripts/check_brand_purge.py
+
+      - name: Check source freshness and links
+        id: verify
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python3 scripts/verify_sources.py | tee verify-report.txt
+
+      - name: Open issue if verification needs human review
+        if: steps.verify.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo "The Monday weekly source verification flagged items for human review."
+            echo
+            echo '```'
+            head -c 55000 verify-report.txt
+            echo '```'
+          } > body.md
+          gh label create "automated-source-check" \
+            --description "Opened by the weekly source verification workflow" \
+            --color "1D70B8" 2>/dev/null || true
+          gh issue create \
+            --title "Weekly source check needs attention ($(date -u +%Y-%m-%d))" \
+            --label "automated-source-check" \
+            --body-file body.md

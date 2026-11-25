@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Oregon / Birth certificate</p>
+<h1>Oregon birth certificate: name and sex change</h1>
+{{ m.lede("If you were born in Oregon, you can change the name, sex, or both on your birth certificate without going to court. You can also use a court judgment.") }}
+{{ m.checked_line(page) }}
+
+{% set birth_cost %}{{ fact('or_oha_amend_fee') }} to change it, plus {{ fact('or_oha_cert_fee') }}{% endset %}
+
+{{ m.bring_reminder('Oregon birth certificate', 'Notarized form OHA 2673 (or a certified court judgment) and a photo ID copy. Fee: ' ~ birth_cost ~ '.') }}
+
+{{ m.onthispage([
+  ('birth-form', 'Way 1: a notarized form, no court'),
+  ('birth-court', 'Way 2: use your court judgment'),
+  ('minors', 'Under 18'),
+  ('next-steps', 'Next steps')
+]) }}
+
+<p>This is for people born in Oregon. There are two ways to change it.</p>
+
+<h2 id="birth-form">Way 1: a notarized form, no court</h2>
+<ul>
+  <li>Use form OHA 2673: {{ ext('ID-OR-OHA-2673') }} or {{ ext('ID-OR-OHA-2673-ES') }}.</li>
+  <li>Change your name, your sex, or both. Sex can be M, F, or X.</li>
+  <li>Each one can be changed this way only once. Later changes need a court order. {{ src('ID-OR-OHA-GENDER') }}</li>
+  <li>Fill it in exactly as your current birth certificate reads. Sign it only in front of a notary.</li>
+  <li>Include a copy of your photo ID. If your ID name does not match your birth certificate, include proof of how your name changed.</li>
+  <li>Pay {{ fact('or_oha_amend_fee') }} plus {{ fact('or_oha_cert_fee') }}. Check or money order to "OHA/Vital Records." Faster processing is {{ fact('or_oha_expedite') }}.</li>
+  <li>Mail it, or use the drop box at {{ fact('or_oha_dropbox') }}. Mailing address: {{ m.copyable(fact('or_oha_mail'), 'mailing address') }}</li>
+</ul>
+{% call m.box('good', 'What the new certificate shows') %}
+<p>If you change your sex, or your name and sex, nothing on the new certificate shows a change was made, and old footnotes are removed. If you change only your name this way, a footnote says the name was changed, but it does not show your old name. {{ src('ID-OR-OHA-GENDER') }}</p>
+{% endcall %}
+{% call m.box('watch', 'Watch out') %}
+<p>Oregon Vital Records warns that some other agencies may want a court order before they accept the new name or sex. {{ src('ID-OR-OHA-GENDER') }}</p>
+{% endcall %}
+
+<h2 id="birth-court">Way 2: use your court judgment</h2>
+<ul>
+  <li>Send a certified copy of your judgment and the {{ fact('or_oha_amend_fee') }} fee. Oregon accepts court orders from other states too. {{ src('ID-OR-OHA-GENDER') }}</li>
+  <li>A court-ordered name change usually adds a footnote that shows your old name. If the court sealed the order, you can ask for a new certificate without that footnote. {{ src('ID-OR-OHA-COURT-ORDER') }}</li>
+</ul>
+{% call m.box('watch', 'An open question') %}
+<p>2026 Oregon Laws chapter 52 (HB 4088, section 12) makes sex change court cases filed on or after July 1, 2026 confidential, exempt from public disclosure, but does not address Vital Records footnotes. We do not know yet whether Oregon Vital Records treats those confidential cases like sealed orders for that footnote rule. {{ src('ID-OR-2026-CH52') }} {{ m.badge('not_confirmed') }} Ask before you send. Email: {{ m.copyable(fact('or_oha_email'), 'email address') }}</p>
+{% endcall %}
+
+<h2 id="minors">Under 18</h2>
+<p>A parent or legal guardian can use form OHA 2673 to update a birth certificate for a child born in Oregon. {{ src('ID-OR-OHA-GENDER') }}</p>
+<p>For a court name or legal sex change for someone under 18, <a href="{{ page_url('id-records-oregon-court#minors') }}">see Oregon court rules for minors</a>.</p>
+
+<h2 id="next-steps">Next steps</h2>
+<ul>
+  <li><a href="{{ page_url('id-records-oregon-court') }}">Oregon court order</a></li>
+  <li><a href="{{ page_url('id-records-oregon-id') }}">Oregon driver license or ID</a></li>
+  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
+  <li><a href="{{ page_url('id-records-oregon') }}">Back to the Oregon overview</a></li>
+</ul>
+{% endblock %}

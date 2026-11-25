@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Utah Medicaid</p>
+<h1>Immigration status and Utah Medicaid</h1>
+    <p class="purpose">A federal law changed who can get Utah Medicaid on Oct.&nbsp;1, 2026. This page explains what Utah has said.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>What changed:</strong> Since Oct.&nbsp;1, 2026, Utah Medicaid is mostly for 4 groups of people. They are listed below.</li>
+      <li><strong>Children and pregnancy:</strong> Utah says children and people who are pregnant may still qualify for health insurance.</li>
+      <li><strong>Emergencies:</strong> Emergency Medicaid can cover a sudden, life-threatening emergency.</li>
+      <li><strong>Hearings:</strong> You have 90 days from the date on a notice to ask for a hearing. <a href="{{ page_url('medicaid-utah-denied') }}">How to ask for a hearing</a></li>
+      <li><strong>This site:</strong> It never asks about your immigration status.</li>
+    </ul>
+
+    <h2>Who Utah Medicaid is mostly for now</h2>
+    <ul>
+      <li>U.S. citizens and U.S. nationals</li>
+      <li>People with a green card who have been in the U.S. for 5 years or more</li>
+      <li>People from Cuba or Haiti who entered under special rules</li>
+      <li>Citizens of the Marshall Islands, Micronesia, or Palau (Utah calls them COFA migrants)</li>
+    </ul>
+
+    <h2>Who may lose Utah Medicaid</h2>
+    <p>Utah says the change affects groups that could get Medicaid before. These include refugees, people granted asylum, people with humanitarian parole, and survivors of trafficking or domestic violence.</p>
+    <p class="more">Utah said it would send each affected member a letter by Oct.&nbsp;1, 2026. The letter explains the change and how to appeal.</p>
+    <p>You have 90 days from the date on a notice to ask for a hearing. <a href="{{ page_url('medicaid-utah-denied') }}">How to ask for a hearing</a></p>
+
+    <div class="callout more">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>In the news</h2>
+      <p>On Nov.&nbsp;24, 2026, five noncitizens who get Supplemental Security Income (SSI) filed a nationwide lawsuit over the Medicaid cutoff for refugees, asylees, humanitarian parolees, and other noncitizens on SSI (Mahmoud v. Oz, No.&nbsp;1:26-cv-00881). As of Nov.&nbsp;24, 2026, no court order has changed Utah's rules. {{ src('MED-S54') }}</p>
+    </div>
+
+    <h2>Emergency Medicaid</h2>
+    <ul>
+      <li>It is for people who meet the income rules for Medicaid but not the citizenship rules.</li>
+      <li>It covers only a sudden, life-threatening emergency.</li>
+      <li>It covers giving birth. It does not cover care after the birth.</li>
+    </ul>
+    <p><a href="https://medicaid.utah.gov/emergency-medicaid/" rel="noreferrer">Utah's Emergency Medicaid page</a></p>
+
+    <h2>Talk to an immigration lawyer</h2>
+    <p>If your situation is complex, talk to an immigration lawyer before you decide.</p>
+    <p><a href="https://www.immigrationadvocates.org/" rel="noreferrer">Immigration legal services directory</a> (search for Utah)</p>
+
+{{ m.domestic_safety_callout("utah-immigration-safety", "Utah", "If sharing an address or household case puts your safety at risk, tell a Department of Workforce Services (DWS) eligibility worker (1-866-435-7414) so notices go to a safe mailing address and any domestic-safety rules are reviewed privately.") }}
+{% endblock %}

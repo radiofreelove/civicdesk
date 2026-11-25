@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Washington Apple Health</p>
+<h1>Do the Washington rules fit me?</h1>
+    <p class="purpose">Answer 3 quick questions. See what may apply to you, and what to do next.</p>
+
+    <div class="promise">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('shield') }}</span><span>Privacy</span></p>
+      <h2>Before you start</h2>
+      <ul>
+        <li>It takes about 1 minute.</li>
+        <li>Nothing you pick is saved or sent. It stays on this device.</li>
+        <li>It never asks about immigration status.</li>
+        <li>This is not a decision. Only Washington decides.</li>
+      </ul>
+    </div>
+
+    <noscript>
+      <div class="warn">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Heads up</span></p>
+        <p>This check needs JavaScript, and it looks like JavaScript is off. You can get the same answers from these pages:</p>
+        <ul>
+          <li><a href="{{ page_url('medicaid-washington-rules') }}">The new Apple Health rules, in plain words</a></li>
+          <li><a href="{{ page_url('medicaid-washington-reasons') }}">Reasons you may not have to meet the Apple Health rules</a></li>
+        </ul>
+      </div>
+    </noscript>
+
+    <p class="progress" id="checker-progress" aria-live="polite" hidden>Step 1 of 3</p>
+
+    <form id="checker" class="checker" novalidate hidden>
+      <div class="step" data-step="1" tabindex="-1">
+        <fieldset aria-describedby="step-1-error">
+          <legend><h2>How old are you?</h2></legend>
+          <label class="choice"><input type="radio" name="age" value="under19"> 18 or younger</label>
+          <label class="choice"><input type="radio" name="age" value="19to64"> 19 to 64</label>
+          <label class="choice"><input type="radio" name="age" value="65plus"> 65 or older</label>
+        </fieldset>
+        <p class="error-message" id="step-1-error" hidden>Please pick one answer to go on.</p>
+        <div class="actions">
+          <button type="button" class="button" data-next>Next</button>
+        </div>
+      </div>
+
+      <div class="step" data-step="2" tabindex="-1" hidden>
+        <fieldset aria-describedby="step-2-hint step-2-error">
+          <legend><h2>Do any of these fit you?</h2></legend>
+          <p class="hint" id="step-2-hint">Pick all that fit. These are reasons you may not have to meet the rules.</p>
+
+          <div class="step-group" role="group" aria-labelledby="group-health">
+            <h3 id="group-health">Health and care</h3>
+            <label class="choice"><input type="checkbox" name="reason" value="pregnant"> I am pregnant, or I am in the 12 months after a pregnancy.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="care"> I am a parent, caretaker, or guardian of a child under 14, or of a person with a disability.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="health"> I am blind or have a disability, a substance use disorder, a disabling mental health condition, or a serious or complex medical condition.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="treatment"> I am in treatment for alcohol or substance use.</label>
+          </div>
+
+          <div class="step-group" role="group" aria-labelledby="group-coverage">
+            <h3 id="group-coverage">Coverage and benefits</h3>
+            <label class="choice"><input type="checkbox" name="reason" value="medicare"> I have Medicare Part A or Part B.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="snap"> I am in a SNAP (food) household that meets SNAP's work rules, or I get TANF (cash) and meet TANF's work rules.</label>
+          </div>
+
+          <div class="step-group" role="group" aria-labelledby="group-background">
+            <h3 id="group-background">About you</h3>
+            <label class="choice"><input type="checkbox" name="reason" value="aian"> I am American Indian or Alaska Native.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="foster"> I am a foster youth, or a former foster youth under 26.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="veteran"> I am a disabled veteran with a 100 percent total disability rating.</label>
+          </div>
+
+          <div class="step-group" role="group" aria-labelledby="group-recent">
+            <h3 id="group-recent">Something that happened recently</h3>
+            <label class="choice"><input type="checkbox" name="reason" value="jail"> I got out of jail or prison in the last 90 days.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="hardship"> I had a short-term hardship, like a hospital stay or travel for medical care.</label>
+          </div>
+
+          <div class="step-group">
+            <h3 id="group-none">None of these</h3>
+            <label class="choice"><input type="checkbox" name="reason" value="none" data-none> None of these fit me.</label>
+          </div>
+        </fieldset>
+        <p class="error-message" id="step-2-error" hidden>Please pick at least one answer, or pick "None of these fit me."</p>
+        <div class="actions">
+          <button type="button" class="button-secondary" data-back>Back</button>
+          <button type="button" class="button" data-next>Next</button>
+        </div>
+      </div>
+
+      <div class="step" data-step="3" tabindex="-1" hidden>
+        <fieldset aria-describedby="step-3-hint step-3-error">
+          <legend><h2>Do any of these fit you?</h2></legend>
+          <p class="hint" id="step-3-hint">Pick all that fit. Think about the month before you apply. These are the 6 ways to meet the rules.</p>
+          <label class="choice"><input type="checkbox" name="meet" value="income"> My household has at least $580 in income a month.</label>
+          <label class="choice"><input type="checkbox" name="meet" value="work"> I work at least 80 hours a month.</label>
+          <label class="choice"><input type="checkbox" name="meet" value="school"> I am in an educational program at least half-time.</label>
+          <label class="choice"><input type="checkbox" name="meet" value="program"> I am in a work program at least 80 hours a month.</label>
+          <label class="choice"><input type="checkbox" name="meet" value="service"> I do community service at least 80 hours a month.</label>
+          <label class="choice"><input type="checkbox" name="meet" value="hours"> I do a mix of activities that adds up to at least 80 hours a month.</label>
+          <label class="choice"><input type="checkbox" name="meet" value="none" data-none> None of these fit me yet.</label>
+        </fieldset>
+        <p class="error-message" id="step-3-error" hidden>Please pick at least one answer, or pick "None of these fit me yet."</p>
+        <div class="actions">
+          <button type="button" class="button-secondary" data-back>Back</button>
+          <button type="submit" class="button">See my results</button>
+        </div>
+      </div>
+    </form>
+
+    <section id="checker-result" class="result" tabindex="-1" aria-labelledby="result-title" hidden>
+      <h2 id="result-title" tabindex="-1">Your results</h2>
+    </section>
+
+    <div class="callout">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>Official state screener</h2>
+      <p>Want to use the state's own tool? The Health Care Authority (HCA) has an official H.R. 1 work requirements screener on its <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/i-need-medical-dental-or-vision-care/apple-health-medicaid-work-requirements" rel="noreferrer">Apple Health work requirements page</a>. {{ src('MED-WA22') }}</p>
+    </div>
+
+    <div class="more">
+      <h2>How this check works</h2>
+      <p>The check runs on this page only. It uses the same lists as our pages on <a href="{{ page_url('medicaid-washington-rules') }}">the Apple Health rules</a> and <a href="{{ page_url('medicaid-washington-reasons') }}">the reasons you may not have to meet them</a>. It does not ask about your county.</p>
+      <p>The 6 ways in step 3 are the 6 on HCA's work requirements page. HCA's fact sheet lists 5 of them. It leaves out work itself as a way of its own.</p>
+    </div>
+{% endblock %}

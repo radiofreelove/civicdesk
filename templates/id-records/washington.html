@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Washington</p>
+<h1>Change your name and gender marker in Washington</h1>
+{{ m.lede("Washington splits this into two jobs. Your name changes in court, and you can keep that case sealed if the change relates to your gender identity or expression. Your gender marker on a Washington license or Washington birth certificate changes with a form, no court needed.") }}
+{{ m.checked_line(page) }}
+
+{#- Quick facts. Values come from data/facts.yml so they stay in step with the sub-pages. -#}
+{% set first_step = 'Choose public or sealed' %}
+{% set birth_cost %}{{ fact('wa_doh_amend_fee') }}; {{ fact('wa_doh_cert_fee') }}{% endset %}
+{% set filing_fee %}varies by court. A sealed name change in superior court is the {{ fact_src('wa_fee_sealed') }}{% endset %}
+{{ m.quickfacts(page, {
+  'court_name': fact_src('wa_court_name'),
+  'sex_label': 'Court needed to change your gender marker',
+  'court_sex': fact_src('wa_court_marker'),
+  'filing_fee': filing_fee,
+  'certified_copy': fact_src('wa_fee_cert_copy'),
+  'birth_certificate': birth_cost ~ ' ' ~ src('ID-WA-DOH-SEX'),
+  'license': fact_src('wa_dol_fee'),
+  'first_step': first_step,
+  'first_step_href': page_url('id-records-washington-court#steps'),
+  'cost_href': page_url('id-records-washington-court#cost'),
+  'whats_new': {'label': 'Nov. 2026 update', 'text': 'WA DOH retired the old birth certificate correction form (DOH 422-034). ' ~ src('ID-WA-DOH-AMEND-BIRTH'), 'href': page_url('id-records-washington-birth'), 'link': 'See which birth form to use'}
+}) }}
+
+{% call m.callout('watch', 'Policy update: Washington birth certificate forms (Nov. 2026)', 'wa-policy-update') %}
+<p>On November 4, 2026, Washington DOH retired the old Affidavit for Correction (DOH 422-034). Keep using the dedicated forms for a sex-designation change or court-ordered name change, and watch out: DOH's sex-designation page still points parents to the retired 422-034 for changing a minor's first or middle names without court. Use the new birth amendment form on {{ ext('ID-WA-DOH-AMEND-BIRTH') }} instead. {{ src('ID-WA-DOH-AMEND-BIRTH') }} {{ src('ID-WA-DOH-SEX') }} <a href="{{ page_url('id-records-washington-birth') }}">See the dedicated forms and processing times</a>.</p>
+{% endcall %}
+
+<h2 id="guides">At a glance: your Washington guides</h2>
+<p>Pick the record you want to update. Each page has plain steps, costs, and official form links.</p>
+{{ m.hub_cards([
+  {
+    'id': 'steps',
+    'icon': 'gavel',
+    'title': 'Court order',
+    'href': page_url('id-records-washington-court'),
+    'summary': 'Change your legal name in district court (public) or superior court (sealed for gender identity). Includes fee waivers, hearings, optional gender order, and under-18 rules.',
+    'meta': 'Sealed superior court: ' ~ fact('wa_fee_sealed') ~ ' (waiver available)'
+  },
+  {
+    'id': 'birth-certificate',
+    'icon': 'document',
+    'title': 'Washington birth certificate',
+    'href': page_url('id-records-washington-birth'),
+    'summary': 'Update your sex designation (M, F, or X) with notarized form DOH 422-143 and no court order. Add DOH 422-126 and a certified court order if your name changed.',
+    'meta': 'Cost: ' ~ birth_cost
+  },
+  {
+    'id': 'license',
+    'icon': 'id_card',
+    'title': 'Driver license or ID',
+    'href': page_url('id-records-washington-id'),
+    'summary': 'Choose M, F, or X on a standard or enhanced (EDL or EID) card in person or by mail using form 520043.',
+    'meta': 'Cost: ' ~ fact('wa_dol_fee')
+  }
+]) }}
+
+{% call m.callout('why', 'Why it matters', 'wa-why', extra=true) %}
+<ul>
+  <li>The sealed option means no public access to your name change filing, hearing, or order. {{ src('ID-WA-RCW-4-24-130') }}</li>
+  <li>For a Washington birth certificate, the state will not accept a court order or a doctor's letter for a sex designation change. You use its form instead. {{ src('ID-WA-DOH-SEX') }}</li>
+</ul>
+{% endcall %}
+
+<h2 id="more-steps">More steps in your path</h2>
+{{ m.hub_cards([
+  {
+    'icon': 'federal',
+    'title': 'Federal records in 2026',
+    'href': page_url('id-records-federal'),
+    'summary': 'Passports and Social Security have different rules right now. Check before you apply or mail anything.'
+  },
+  {
+    'icon': 'checklist',
+    'title': 'After court checklist',
+    'href': page_url('id-records-after'),
+    'summary': 'Update Social Security, your license, your birth certificate, and other accounts in the right order.'
+  },
+  {
+    'icon': 'info',
+    'title': 'Get free or low-cost help',
+    'href': page_url('id-records-help'),
+    'summary': 'Legal aid, court self-help centers, and peer support across Oregon, Washington, and Utah.'
+  }
+]) }}
+
+<h2 id="help">Get help in Washington</h2>
+<ul>
+  <li>CLEAR, the free legal aid referral line. {{ src('ID-WA-COURTS-FORMS') }} {{ m.copyable(fact('wa_clear'), 'CLEAR phone number') }}</li>
+  <li>{{ ext('ID-WA-WLH-NAME') }}</li>
+  <li>Many counties have a courthouse facilitator who can help with paperwork but cannot give legal advice. Ask your court. {{ src('ID-WA-COURTS-FORMS') }}</li>
+  <li><a href="{{ page_url('id-records-help') }}">More free and low-cost help</a></li>
+</ul>
+{% endblock %}

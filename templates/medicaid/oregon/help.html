@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Oregon Health Plan (OHP)</p>
+<h1>Free help and other languages</h1>
+    <p class="purpose">People who can help you apply, for free, and in your language.</p>
+
+    <h2>The short version</h2>
+    <ul class="short channel-list">
+      <li><span class="channel-icon">{{ m.icon('inperson') }}</span><span><strong>Free in-person helpers:</strong> Community partners can help you apply. Their help is free.</span></li>
+      <li><span class="channel-icon">{{ m.icon('paper') }}</span><span><strong>Paper application:</strong> It comes in 17 languages.</span></li>
+      <li><span class="channel-icon">{{ m.icon('languages') }}</span><span><strong>Your language:</strong> There are phone lines for many languages.</span></li>
+      <li><span class="channel-icon">{{ m.icon('phone') }}</span><span><strong>Call OHP:</strong> <span class="nowrap">800-699-9075</span> (TTY 711), Monday to Friday, 7 a.m. to 6 p.m.</span></li>
+    </ul>
+
+    <nav class="channel-bar" aria-label="Ways to get help">
+      <a href="#in-person">{{ m.icon('inperson') }}<span>In person</span></a>
+      <a href="#other-formats">{{ m.icon('languages') }}<span>Other formats</span></a>
+      <a href="#phone">{{ m.icon('phone') }}<span>By phone</span></a>
+      <a href="#languages">{{ m.icon('paper') }}<span>Paper in 17 languages</span></a>
+    </nav>
+
+    <h2 id="in-person" class="icon-heading">{{ m.icon('inperson') }}<span>Help in person</span></h2>
+    <ul>
+      <li><a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">Find a free community partner near you</a> {{ src('MED-S16') }}</li>
+      <li><a href="https://www.oregon.gov/odhs/Pages/office-finder.aspx" rel="noreferrer">Find an ODHS office near you</a> {{ src('MED-S09') }} {{ src('MED-S15') }}</li>
+    </ul>
+
+    <h2 id="other-formats" class="icon-heading">{{ m.icon('languages') }}<span>Other formats</span></h2>
+    <p>You can ask OHP for letters and papers in other languages, large print, braille, or another format. It is free. Call <span class="nowrap">800-699-9075</span>. {{ src('MED-S02') }}</p>
+
+    <h2 id="phone" class="icon-heading">{{ m.icon('phone') }}<span>Phone numbers</span></h2>
+    <dl class="glossary">
+      <dt>OHP and ONE Customer Service</dt>
+      <dd><span class="nowrap">800-699-9075</span>. TTY users can dial 711. Monday to Friday, 7 a.m. to 6 p.m. Pacific time. {{ src('MED-S09') }}</dd>
+      <dt>Help with your online ONE account</dt>
+      <dd><span class="nowrap">833-978-1073</span></dd>
+      <dt>Spanish language line</dt>
+      <dd><span class="nowrap">800-743-9182</span></dd>
+      <dt>Russian language line</dt>
+      <dd><span class="nowrap">833-687-1508</span></dd>
+      <dt>All language lines</dt>
+      <dd><a href="https://www.oregon.gov/odhs/benefits/Documents/one-language-lines-translation.pdf" rel="noreferrer">List of ONE language lines</a> <span class="tag">PDF</span> {{ src('MED-S17') }}</dd>
+      <dt>Free legal help with benefits</dt>
+      <dd>Public Benefits Hotline: <span class="nowrap">503-241-4111</span> or <span class="nowrap">800-520-5292</span>. Income limits apply. {{ src('MED-S25') }}</dd>
+      <dt>Disability program questions</dt>
+      <dd>Aging and Disability Resource Connection: <span class="nowrap">855-673-2372</span> {{ src('MED-S26') }}</dd>
+      <dt>Private health plans (Marketplace)</dt>
+      <dd><span class="nowrap">855-268-3767</span> {{ src('MED-S04') }} {{ src('MED-S20') }}</dd>
+    </dl>
+
+    <h2 id="languages" class="icon-heading">{{ m.icon('paper') }}<span>The OHP application in your language</span></h2>
+    <p class="more">These links go to the state's own paper application (form 7210). {{ src('MED-S10') }}</p>
+<ul>
+{% for item in medicaid_languages['items'] %}
+  <li><a href="{{ item.url }}" hreflang="{{ item.hreflang }}" rel="noreferrer">{% if item.native %}<span lang="{{ item.hreflang }}">{{ item.native }}</span> ({{ item.english }}){% else %}{{ item.english }}{% endif %}</a> <span class="tag">PDF</span></li>
+{% endfor %}
+</ul>
+{% endblock %}

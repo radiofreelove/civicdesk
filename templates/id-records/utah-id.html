@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Utah / License and ID</p>
+<h1>Utah driver license or ID: name and sex marker</h1>
+{{ m.lede("To change your name on a Utah license or ID, update Social Security first and bring a certified copy of your court order. Ask the Driver License Division before going for a sex marker update.") }}
+{{ m.checked_line(page) }}
+
+{{ m.bring_reminder('Utah Driver License Division', 'Court papers with the court seal (such as a certified copy of your order). Ask the office about sex marker updates first.') }}
+
+<h2 id="dld-steps">What to bring to the Driver License Division</h2>
+<p>For a name change, schedule an in-person appointment for a replacement license or ID (the regular replacement fee is $23) and bring legal documentation of the change. The Driver License Division's accepted list includes "A new birth certificate," "An updated passport," and "Court papers showing the name change, sealed by the court." We read that last item as papers with the court's seal on them, like a certified copy of your order. {{ m.badge('our_reading') }} {{ src('ID-UT-DLD-NAME') }} {{ src('ID-UT-DLD-REPLACEMENT') }}</p>
+<p>Utah law requires a driver license application to list the applicant's sex, and Utah Courts' official Step 5 instructs people with a court-ordered sex designation change to go to the Driver License Division and ask what records it requires. {{ src('ID-UT-CODE-53-3-205') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }} Utah law also includes a code-wide definition of "sex" as biological sex at birth unless a statute expressly provides another definition or the definition conflicts with legislative intent or context. {{ src('ID-UT-CODE-68-3-12-5') }} However, the Driver License Division does not publish a webpage or administrative rule (Utah Admin. Code R708) listing which documents it accepts for a sex marker update. {{ m.badge('not_confirmed') }} Call the {{ ext('ID-UT-DLD-REPLACEMENT', 'Driver License Division') }} at 801-965-4437 or 888-353-4224 before you go so you bring what your office asks for.</p>
+
+<h2 id="next-steps">Next steps</h2>
+<ul>
+  <li><a href="{{ page_url('id-records-utah-court') }}">Utah court order</a></li>
+  <li><a href="{{ page_url('id-records-utah-birth') }}">Utah birth certificate</a></li>
+  <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security in 2026</a></li>
+  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
+  <li><a href="{{ page_url('id-records-utah') }}">Back to the Utah overview</a></li>
+</ul>
+{% endblock %}

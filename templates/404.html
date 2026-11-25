@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">404</p>
+<h1>Page not found</h1>
+{{ m.lede("That address does not match a page on CivicDesk. Use one of the starting points below.") }}
+
+<h2>Start here</h2>
+<ul>
+  <li><a href="{{ page_url('index') }}">CivicDesk front door</a></li>
+  <li><a href="{{ page_url('start') }}">2-question state and topic router</a></li>
+</ul>
+
+<h2>2027 Medicaid Work &amp; Activity Rules</h2>
+<ul>
+  <li><a href="{{ page_url('medicaid') }}">Medicaid desk overview</a></li>
+  <li><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a> and <a href="{{ page_url('medicaid-oregon-check') }}">1-minute check</a></li>
+  <li><a href="{{ page_url('medicaid-washington') }}">Washington Apple Health</a> and <a href="{{ page_url('medicaid-washington-check') }}">1-minute check</a></li>
+  <li><a href="{{ page_url('medicaid-utah') }}">Utah Medicaid</a> and <a href="{{ page_url('medicaid-utah-check') }}">1-minute check</a></li>
+</ul>
+
+<h2>Legal Name, ID &amp; Vital Records</h2>
+<ul>
+  <li><a href="{{ page_url('id-records') }}">ID &amp; vital records desk overview</a></li>
+  <li><a href="{{ page_url('id-records-path') }}">Personalized step-by-step path finder</a></li>
+  <li><a href="{{ page_url('id-records-oregon') }}">Oregon</a>, <a href="{{ page_url('id-records-washington') }}">Washington</a>, <a href="{{ page_url('id-records-utah') }}">Utah</a>, and <a href="{{ page_url('id-records-federal') }}">Passports &amp; Social Security</a></li>
+</ul>
+{% endblock %}

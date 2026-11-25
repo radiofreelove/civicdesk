@@ -1,0 +1,71 @@
+# Official Oregon Health Plan paper application (Form OHP 7210) translations listed on MED-S09.
+source: MED-S09
+items:
+- hreflang: en
+  native: null
+  english: English
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/he7210.pdf
+- hreflang: es
+  native: Solicitud de Cobertura de Salud
+  english: Spanish
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/hs7210.pdf
+- hreflang: ru
+  native: Заявление на русском языке
+  english: Russian
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/hr7210.pdf
+- hreflang: vi
+  native: Đơn bằng tiếng Việt
+  english: Vietnamese
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/hv7210.pdf
+- hreflang: zh-Hans
+  native: 简体中文申请表
+  english: Simplified Chinese
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/hn7210.pdf
+- hreflang: zh-Hant
+  native: 俄勒岡州健康計劃福利申請表
+  english: Traditional Chinese
+  url: https://sharedsystems.dhsoha.state.or.us/DHSForms/Served/h47210.pdf
+- hreflang: so
+  native: null
+  english: Somali
+  url: https://sharedsystems.dhsoha.state.or.us/DHSForms/Served/hi7210.pdf
+- hreflang: ar
+  native: null
+  english: Arabic
+  url: https://sharedsystems.dhsoha.state.or.us/DHSForms/Served/ha7210.pdf
+- hreflang: fa
+  native: null
+  english: Farsi
+  url: https://sharedsystems.dhsoha.state.or.us/DHSForms/Served/hf7210.pdf
+- hreflang: prs
+  native: null
+  english: Dari
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/h347210.pdf
+- hreflang: ps
+  native: null
+  english: Pashto
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/h167210.pdf
+- hreflang: ko
+  native: null
+  english: Korean
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/hk7210.pdf
+- hreflang: kos
+  native: null
+  english: Kosraean
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/h417210.pdf
+- hreflang: pau
+  native: null
+  english: Palauan
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/h407210.pdf
+- hreflang: pon
+  native: null
+  english: Pohnpeian
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/h267210.pdf
+- hreflang: chk
+  native: null
+  english: Chuukese
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/h277210.pdf
+- hreflang: mh
+  native: null
+  english: Marshallese
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/h337210.pdf

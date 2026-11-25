@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Oregon Health Plan (OHP)</p>
+<h1>How to apply for OHP</h1>
+    <p class="purpose">There are 4 ways to apply. Pick the one that is easiest for you.</p>
+
+    <h2>The short version</h2>
+    <ul class="short channel-list">
+      <li><span class="channel-icon">{{ m.icon('online') }}</span><span><strong>Online:</strong> <a href="https://benefits.oregon.gov/" rel="noreferrer">benefits.oregon.gov</a> (no phone call needed)</span></li>
+      <li><span class="channel-icon">{{ m.icon('paper') }}</span><span><strong>On paper:</strong> the OHP application, form 7210, in 17 languages.</span></li>
+      <li><span class="channel-icon">{{ m.icon('inperson') }}</span><span><strong>In person:</strong> at an ODHS office, or with a free community partner.</span></li>
+      <li><span class="channel-icon">{{ m.icon('phone') }}</span><span><strong>By phone:</strong> <span class="nowrap">800-699-9075</span> (TTY 711), Monday to Friday, 7 a.m. to 6 p.m.</span></li>
+      <li><span class="channel-icon">{{ m.icon('helper') }}</span><span><strong>Help is free:</strong> Community partners do not charge.</span></li>
+    </ul>
+
+    <h2 id="apply-online" class="icon-heading">{{ m.icon('online') }}<span>Apply online</span></h2>
+    <p>Go to <a href="https://benefits.oregon.gov/" rel="noreferrer">benefits.oregon.gov</a>. Make a ONE account. Then apply. {{ src('MED-S11') }}</p>
+    <p class="more">Some state pages say ONE.Oregon.gov instead. That is the same ONE system.</p>
+    <p>Trouble with the website? Call ONE technical support at <span class="nowrap">833-978-1073</span>.</p>
+
+    <h2 id="apply-phone" class="icon-heading">{{ m.icon('phone') }}<span>Apply by phone</span></h2>
+    <p>Call ONE Customer Service at <span class="nowrap">800-699-9075</span>. TTY users can dial 711. Lines are open Monday to Friday, 7 a.m. to 6 p.m. Pacific time. {{ src('MED-S09') }}</p>
+    <p>In Spanish, call <span class="nowrap">800-743-9182</span>. In Russian, call <span class="nowrap">833-687-1508</span>. <a href="https://www.oregon.gov/odhs/benefits/Documents/one-language-lines-translation.pdf" rel="noreferrer">See all language lines</a> <span class="tag">PDF</span> {{ src('MED-S17') }}</p>
+
+    <h2 id="apply-inperson" class="icon-heading">{{ m.icon('inperson') }}<span>Apply in person</span></h2>
+    <ul>
+      <li><a href="https://www.oregon.gov/odhs/Pages/office-finder.aspx" rel="noreferrer">Find an ODHS office near you</a></li>
+      <li><a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">Find a free community partner near you</a> {{ src('MED-S09') }} {{ src('MED-S16') }}</li>
+    </ul>
+
+    <h2 id="apply-paper" class="icon-heading">{{ m.icon('paper') }}<span>Apply on paper</span></h2>
+    <p><a href="https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/he7210.pdf" rel="noreferrer">Download the OHP application (form 7210)</a> <span class="tag">PDF</span>. It comes in 17 languages. <a href="{{ page_url('medicaid-oregon-help#languages') }}">Get it in another language</a>. {{ src('MED-S09') }} {{ src('MED-S10') }}</p>
+    <div class="warn">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Heads up</span></p>
+      <h3>Heads up about the paper form</h3>
+      <p>The paper form is from May 2020. It does not ask about the new rules. OHP may send you a letter asking about them. {{ src('MED-S10') }} {{ src('MED-S04') }}</p>
+      <p>Questions about where to send it? Call <span class="nowrap">800-699-9075</span>.</p>
+    </div>
+
+    <h2>What to have ready</h2>
+    <ul>
+      <li>Facts about each person in your household.</li>
+      <li>Income for each person: jobs, self-employment, and other money coming in.</li>
+      <li>Any other health insurance you have.</li>
+      <li>For the new rules: your work, school, or volunteer hours for the month before you apply, or the reason you don't have to meet the rules.</li>
+    </ul>
+
+    <h2 id="after-apply">What happens after you apply</h2>
+    <ol class="steps steps-flow">
+      <li><span class="flow-head">{{ m.icon('check') }}<strong>Records checked first</strong></span> OHP checks its own records first, like payroll and school records. {{ src('MED-S04') }}</li>
+      <li><span class="flow-head">{{ m.icon('letter') }}<strong>Decision letter</strong></span> If OHP can confirm everything, you get a letter with its decision. It is called a Notice of Eligibility. {{ src('MED-S04') }}</li>
+      <li><span class="flow-head">{{ m.icon('calendar') }}<strong>35 days if more is needed</strong></span> If OHP needs more, you get a letter called a Request for Information. You have 35 days to reply. <a href="{{ page_url('medicaid-oregon-letter') }}">How to answer a letter</a> {{ src('MED-S04') }}</li>
+    </ol>
+
+    <h2>Over the income limit?</h2>
+    <ul>
+      <li>Check the <a href="https://sharedsystems.dhsoha.state.or.us/DHSForms/Served/de5530.pdf" rel="noreferrer">OHP income limits chart</a> <span class="tag">PDF</span>. {{ src('MED-S18') }}</li>
+      <li><a href="https://www.oregon.gov/oha/HSD/OHP/Pages/Bridge.aspx" rel="noreferrer">OHP Bridge</a> covers adults with income just above the OHP limit. Members pay nothing. {{ src('MED-S13') }}</li>
+      <li>You can also look at private plans at <a href="https://oregonhealthcare.gov/" rel="noreferrer">OregonHealthCare.gov</a> or call <span class="nowrap">855-268-3767</span>. {{ src('MED-S04') }} {{ src('MED-S20') }}</li>
+    </ul>
+
+{{ m.id_mismatch_callout('oregon-id-mismatch', 'oregon') }}
+{% endblock %}

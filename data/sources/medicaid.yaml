@@ -1,0 +1,2857 @@
+# CivicDesk Medicaid Desk Source Registry (MED-*)
+# Allowed status values: official, not_official, not_confirmed, our_reading
+
+- id: MED-S01
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: How will providers be affected by federal changes to Oregon Health Plan (OHP)? (HR1 provider FAQ)
+  short: OHA provider FAQ on the federal changes
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Tools/HR1-Provider-FAQ.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Timeline, ways to meet the rules, medical exemptions, retroactive coverage, renewals, Healthier Oregon
+    and Open Card. Contains a work-limit sentence that tracks a clause a federal court vacated on Oct. 29, 2026,
+    and does not mention the ruling.
+- id: MED-S02
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Work or Activity Rules for Some Oregon Health Plan (OHP) Members
+  short: OHA fact sheet on the work or activity rules
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Tools/Work-Activity-Requirements-EN.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: Updated June 1, 2026
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Written before the federal rule published June 3, 2026. Some wording is narrower than the newer federal
+    rule.
+- id: MED-S03
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'OHP work or activity rules: exemptions explainer and checklist'
+  short: OHA exemptions explainer
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/Work-Activity-Exemptions.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-10'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Groups exemptions by how OHP checks them: checked automatically, tell us, or tell us or give proof.
+    Notes what may be asked for starting in 2028. Re-read on 2026-11-10: no date shown, and it does not mention
+    the ruling.'
+- id: MED-S04
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Applicant and renewal journey maps (OHP work or activity rules)
+  short: OHA applicant and renewal journey maps
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/Applicant-Renewal-Journey-Maps.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Source for the one-month look-back at application, data checks first, the 35-day reply window, reminders,
+    hearings, reapplying, Marketplace and clinic options.
+- id: MED-S05
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: HR1 mythbusters (OHP)
+  short: OHA mythbusters
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/HR1-Mythbusters.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-22'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Re-read in full on 2026-11-22. Household income test (defines household as your spouse, children,
+    and anyone else listed on your tax return), what volunteering counts, individual review, no monthly reporting,
+    and Healthier Oregon members.
+- id: MED-S06
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'New Federal Rules: Impact to Oregon Health Plan and Healthier Oregon (staff and partner talking points)'
+  short: OHA staff and partner talking points
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/Talking%20Points_HR1_Staff%20and%20Partner.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: Last updated June 9, 2026
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Many members may already meet the rules or qualify for exemptions; Marketplace financial help limit;
+    reapply at any time.
+- id: MED-S07
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: OHP Work or Activity Rules and Federal Changes to Oregon Health Plan
+  short: OHA federal changes web page
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/hsd/ohp/pages/federal-changes.aspx
+  format: Web page
+  kind: state-explainer
+  document_date: Last updated Nov. 18, 2026
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Look-back for applicants and renewals; 2027 self-report and 2028 proof. Re-read in full on 2026-11-24
+    (page header shows 'Last updated Nov. 18, 2026'). Under 'What You Need to Know', OHA says Governor Tina Kotek
+    directed OHA to join the federal hold harmless option through June 30, 2027. OHA says you will not lose OHP
+    coverage through June 30, 2027 if you do not meet the new work or activity rules. The page still does not mention
+    the Oct. 29, 2026 court ruling.
+- id: MED-S08
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'Sample notice: New OHP Rules Begin 01/01/2027 (ONE outreach notice, English)'
+  short: OHA sample outreach notice
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/OHPLetters/ONE-Outreach-Notice-EN.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No form number or revision date shown
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Ways to report (online, phone, office, fax, mail, community partner). Mailing address and fax for
+    the Statewide Processing Center.
+- id: MED-S09
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Apply for the Oregon Health Plan
+  short: OHA how-to-apply page
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/hsd/ohp/pages/apply.aspx
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Ways to apply, ONE Customer Service hours, language lines, technical support line, paper applications
+    in 17 languages, and income chart. Lists ONE.Oregon.gov; newer OHA pages use benefits.oregon.gov.
+- id: MED-S10
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: OHP application, form OHP 7210 (English)
+  short: OHP paper application (form 7210)
+  publisher: Oregon Department of Human Services and Oregon Health Authority
+  url: https://sharedsystems.dhsoha.state.or.us/DHSforms/Served/he7210.pdf
+  format: PDF
+  kind: state-form
+  document_date: OHP 7210 (05/01/20)
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: partial
+  read_by: human_machine_hybrid
+  public_note: Read in full except the last 747 characters. Has no questions about the new work or activity rules.
+- id: MED-S11
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Healthier Oregon
+  short: OHA Healthier Oregon page
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Pages/Healthier-Oregon.aspx
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Full OHP benefits regardless of immigration status for people who meet income and other criteria;
+    ways to apply; Open Card move; public charge pointer.
+- id: MED-S12
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Public Charge
+  short: OHA public charge page
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/OHA/ERD/Pages/public-charge.aspx
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Re-read in full on 2026-11-21. Federal public charge change effective Sept. 18, 2026; OHA says it
+    does not change who qualifies for benefits and lists immigration legal help directories. For the federal carve-out
+    on pre-Sept. 18, 2026 benefits (cash assistance for income maintenance and long-term institutionalization still
+    count), see MED-S48.
+- id: MED-S13
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Oregon Health Plan (OHP) Bridge
+  short: OHA OHP Bridge page
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Pages/Bridge.aspx
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Coverage for adults with income just above the OHP Plus limit; no member costs. Says nothing about
+    the 2027 work or activity rules.
+- id: MED-S14
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Appeals and Hearings
+  short: OHA appeals and hearings page
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/hsd/ohp/pages/appeals-hearings.aspx
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Mostly about service denials. For eligibility decisions, the site tells people to follow the instructions
+    and deadline on their own notice, as the journey maps say.
+- id: MED-S15
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: ODHS office finder
+  short: ODHS office finder
+  publisher: Oregon Department of Human Services
+  url: https://www.oregon.gov/odhs/Pages/office-finder.aspx
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: not_read
+  read_by: not_read
+  linked_from: MED-S09
+  public_note: 'Address taken from OHA''s how-to-apply page. Not read in full: it is a search tool, not a document.
+    On 2026-11-14 the address answered and landed on ODHS''s Find an Office tool. The tool offers a choice of service
+    and distance, and it said it holds 264 listings. The first 10 listings were seen. No search was run. The page
+    footer gives 800-699-9075 for benefits and 855-673-2372 for the Aging and Disability Resource Connection.'
+- id: MED-S16
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Find free local help (OHP-certified community partners)
+  short: OHA community partner finder
+  publisher: Oregon Health Authority
+  url: https://healthcare.oregon.gov/Pages/find-help.aspx
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S09
+  public_note: Address taken from OHA's how-to-apply page. Notices call this OregonHealthCare.gov/GetHelp, and that
+    address forwarded here on 2026-11-14. The page's own content was read in full on 2026-11-14. It says help is
+    free. It gives 800-699-9075 for OHP questions and 855-268-3767 for the Marketplace, which it calls Explore Health.
+    It holds a search tool for local help, with a choice for Oregon Health Plan. The tool's form was seen. No search
+    was run, and no listing was read. The page says the tool no longer finds Marketplace or small business help.
+    No claim cites this source.
+- id: MED-S17
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: ONE language lines
+  short: ONE language lines (PDF)
+  publisher: Oregon Department of Human Services
+  url: https://www.oregon.gov/odhs/benefits/Documents/one-language-lines-translation.pdf
+  format: PDF
+  kind: state-page
+  document_date: DHS 2844 (05/2022)
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S09
+  public_note: Address taken from OHA's how-to-apply page. Read in full on 2026-11-14 (2 pages). It is form DHS
+    2844, titled ONE Customer Service Center, Connect to Interpreter Instructions. It lists a phone line for each
+    of 16 languages and says to call Monday through Friday, 7 a.m. to 6 p.m. The English wording was read. The wording
+    in the other languages was not checked by a fluent reader. It gives the Spanish line as (833) 743-9182. OHA's
+    how-to-apply page (MED-S09) gives 800-743-9182, and the guide uses the number on MED-S09. The Russian line,
+    (833) 687-1508, is the same on both. No claim cites this source.
+- id: MED-S18
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: OHP income limit chart
+  short: OHP income limit chart (PDF)
+  publisher: Oregon Department of Human Services and Oregon Health Authority
+  url: https://sharedsystems.dhsoha.state.or.us/DHSForms/Served/de5530.pdf
+  format: PDF
+  kind: state-form
+  document_date: DHS 5530 (10/2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S09
+  public_note: Opened and checked in full on 2026-11-21 (15 pages; form footer on page 15 prints 100-65796_DHS 5530
+    (10/2026), while individual program tables inside carry earlier 2026 effective dates such as March 1, 2026 for
+    APD/MSP; OHP and OHP Bridge income tables are on pages 14-15). Linked directly instead of copying income numbers,
+    which change.
+- id: MED-S19
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: ONE online account and Oregon ONE mobile app
+  short: benefits.oregon.gov
+  publisher: Oregon Department of Human Services and Oregon Health Authority
+  url: https://benefits.oregon.gov/
+  format: Web site
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S03, MED-S05, MED-S11
+  public_note: Named as the online application and account site in OHA's newer materials. On 2026-11-24 this address
+    forwarded to ODHS's benefits page, www.oregon.gov/odhs/benefits/pages/default.aspx. That page was read in full
+    on 2026-11-24. The ONE sign-in site it links to was not opened. The page links to one.oregon.gov to apply online
+    or to log in to a ONE Online account. It gives 800-699-9075 for the ONE Customer Service Center, Monday to Friday,
+    7 a.m. to 6 p.m. It gives 833-978-1073 for help with a ONE Online account or the mobile app. It lists a paper
+    application for OHP with 12 translations. No claim cites this source.
+- id: MED-S20
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Oregon Health Insurance Marketplace
+  short: OregonHealthCare.gov
+  publisher: Oregon Health Insurance Marketplace
+  url: https://oregonhealthcare.gov/
+  format: Web site
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: not_read
+  read_by: not_read
+  linked_from: MED-S04, MED-S06
+  public_note: Phone 855-268-3767 per MED-S04. Not read in full. On 2026-11-14 the address forwarded to healthcare.oregon.gov/Pages/index.aspx,
+    the OregonHealthCare.gov home page. The text shown on that page was read. The backs of its 4 flip cards were
+    not opened, and no other page of the site was read. The page gives 855-268-3767 for the Oregon Health Insurance
+    Marketplace and 800-699-9075 for OHP application questions.
+- id: MED-S21
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Find a Federally Qualified Health Center (FQHC)
+  short: FQHC finder
+  publisher: Oregon Primary Care Association (reached by the Marketplace's short link)
+  url: https://orhim.info/FQHC
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-24'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S04
+  public_note: Short link printed in OHA's journey maps. On 2026-11-24 the short link forwarded to orpca.org/find-a-community-health-center/.
+    That is a page of the Oregon Primary Care Association, not of the Marketplace. The page was read in full on
+    2026-11-24. It says Oregon has 33 Federally Qualified Health Centers, including two look-alikes, with more than
+    270 sites. It lists each one with an address, a phone number, and its towns. It does not say what the centers
+    charge. The page's data carries the date 2026-03-04. No claim cites this source.
+- id: MED-S22
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: OHP Open Card provider search
+  short: OHPOpenCard.org
+  publisher: Oregon Health Authority
+  url: https://ohpopencard.org/
+  format: Web site
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S01
+  public_note: Open Card phone line 800-562-4620 starting Jan. 1, 2027, per MED-S01. The home page at this address
+    was read in full on 2026-11-14. No other page of the site was read, and the provider search was not opened.
+    The site is the OHP Open Card Care Coordination Program, and it carries the Acentra Health name. The page already
+    gives 800-562-4620 as the OHP Open Card help line, open 7 a.m. to 7 p.m. It gives 844-847-9320 for American
+    Indian and Alaska Native members and 800-273-0557 for OHP Client Services. Its Find a Provider link goes to
+    a search tool at another address, opl.kepro.com. No claim cites this source.
+- id: MED-S23
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Oregon Health Plan (OHP) Community Resources
+  short: OHA Community Resources page
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/hsd/ohp/pages/community-resources.aspx
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S08
+  public_note: 'OHA''s federal changes page (MED-S07) and its sample notices (MED-S08, MED-K10) print the short
+    address OHP.Oregon.gov/Resources for help finding a job or volunteer work. On 2026-11-14 that address forwarded
+    to OHA''s general OHP page (www.oregon.gov/oha/hsd/ohp/pages/splash.aspx), which has no list of job or volunteer
+    resources; the project owner confirmed the same in her own browser that day. OHA''s Community Resources page
+    is the page that carries the resources: read in full on 2026-11-14, its first line is ''Find resources for employees,
+    employers and unemployment.'' The registry address was corrected to that page on 2026-11-14, and the short address
+    is kept in this note so the printed notices can still be traced.'
+- id: MED-S24
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: OHP federal updates (HR1)
+  short: OHP.Oregon.gov/HR1
+  publisher: Oregon Health Authority
+  url: https://ohp.oregon.gov/HR1
+  format: Web page
+  kind: state-page
+  document_date: Last updated Nov. 18, 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S01, MED-S02, MED-S03, MED-S08
+  link_check: by hand
+  public_note: OHA's official short address per its own materials; forwards to OHA's federal changes page (MED-S07).
+    That target page was re-read in full on 2026-11-21 ('Last updated Nov. 18, 2026') and does not mention the Oct.
+    29, 2026 court ruling or the Nov. 13, 2026 CMS hold harmless option. No claim cites this source; claims cite
+    MED-S07.
+- id: MED-S25
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Public Benefits Hotline
+  short: Public Benefits Hotline (LASO and OLC)
+  publisher: Legal Aid Services of Oregon and Oregon Law Center, on OregonLawHelp.org
+  url: https://oregonlawhelp.org/node/107
+  format: Web page
+  kind: legal-aid
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Phone (503) 241-4111 or (800) 520-5292. Hours vary by day. Income limits apply; Jackson County callers
+    are referred elsewhere.
+- id: MED-S26
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'FAQ: OHP (Medicaid) New Rules'
+  short: Disability Rights Oregon FAQ
+  publisher: Disability Rights Oregon
+  url: https://www.droregon.org/disability-rights-oregon-resources/ohp-new-rules
+  format: Web page
+  kind: advocacy
+  document_date: Oct. 6 (2026)
+  checked: '2026-11-02'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Disability-focused explainer. Lists the Aging and Disability Resource Connection at 855-673-2372.
+- id: MED-S26B
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Request help from Disability Rights Oregon
+  short: DRO request-help form
+  publisher: Disability Rights Oregon
+  url: https://www.droregon.org/request-help
+  format: Web page
+  kind: advocacy
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S26
+  public_note: Address printed on MED-S26. The page's own content was read in full on 2026-11-14. It says Disability
+    Rights Oregon helps people with disabilities with disability-related legal issues in Oregon. It lists what the
+    group does and what it cannot help with. It says a person can ask for help with the intake request form on the
+    page or by letter, and that the group does not promise a reply to every request. The first step of the form
+    was seen. The form was not filled in, and its later steps were not seen. No claim cites this source.
+- id: MED-S27
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: Medicaid Program; Community Engagement Requirement for Certain Individuals (interim final rule), 91 Fed.
+    Reg. 33348
+  short: Federal rule on the work requirement (91 Fed. Reg. 33348)
+  publisher: Centers for Medicare & Medicaid Services
+  url: https://www.federalregister.gov/documents/2026/06/03/2026-11094/medicaid-program-community-engagement-requirement-for-certain-individuals
+  format: Web page
+  kind: federal-rule
+  document_date: Published June 3, 2026; effective July 31, 2026
+  checked: '2026-11-22'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: partial
+  read_by: human_machine_hybrid
+  public_note: Read preamble sections I to II.C.8 and full regulatory text of 42 C.F.R. 435.550 to 435.557 (91 Fed.
+    Reg. 33348, at 33469-33475; re-checked Nov. 22, 2026). 42 C.F.R. 435.552(f)(1)-(2) and (g)(1)-(2) set the $580
+    income test ($7.25 federal minimum wage times 80 hours, and 6-month average for seasonal workers) using MAGI-based
+    household income under 42 C.F.R. 435.603. 42 C.F.R. 435.554(c)(5) defines medically frail (including the 5-year
+    stable-recovery carve-out for substance use disorder). Also covers half-time school (including high school and
+    GED), work and community service definitions, exclusions, hardships, and the 30-day cure period.
+- id: MED-S28
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: Order of Vacatur and Enjoinment, Commonwealth of Massachusetts v. Oz, No. 1:26-cv-12962 (D. Mass. Oct.
+    29, 2026), Doc. 148
+  short: Federal court order, Oct. 29, 2026
+  publisher: U.S. District Court for the District of Massachusetts (via CourtListener)
+  url: https://www.courtlistener.com/docket/73546826/148/commonwealth-of-massachusetts-v-oz/
+  format: Court order
+  kind: court
+  document_date: Oct. 29, 2026
+  checked: '2026-11-10'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Vacates the federal rule's medically frail clause tied to ability to comply; enjoins applying it
+    to plaintiff states; bars penalizing plaintiff states for implementation errors or delays for six months. No
+    later docket entries seen in CourtListener on Nov. 2, 2026. Re-read in full on 2026-11-10. The bar on applying
+    the clause, and the 6-month bar on penalties, name the plaintiff states only.
+- id: MED-S29
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: Memorandum and Order on cross-motions for summary judgment, Commonwealth of Massachusetts v. Oz, Doc. 147
+  short: Federal court memorandum, Oct. 29, 2026
+  publisher: U.S. District Court for the District of Massachusetts (via CourtListener)
+  url: https://www.courtlistener.com/docket/73546826/147/commonwealth-of-massachusetts-v-oz/
+  format: Court opinion
+  kind: court
+  document_date: Oct. 29, 2026
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: searched
+  read_by: human_machine_hybrid
+  public_note: Searched, not read in full. Upheld the 12-month claims-data look-back and the one-self-attestation-per-enrollment-period
+    limit.
+- id: MED-S30
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'House Resolution 1 (HR1) Implementation: Work or Activity Rules and Eligibility (Senate Health Care Committee,
+    Sept. 9, 2026)'
+  short: OHA and ODHS presentation to the Senate Health Care Committee
+  publisher: Oregon Health Authority and Oregon Department of Human Services, via the Oregon Legislature
+  url: https://olis.oregonlegislature.gov/liz/2025I1/Downloads/CommitteeMeetingDocument/317583
+  format: PDF
+  kind: state-explainer
+  document_date: Sept. 9, 2026
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: About 600,000 members could be subject; first closures expected March 2027; members can text wage
+    stubs; ONE account shows rule status.
+- id: MED-S32
+  desk: medicaid
+  guide: all
+  jurisdiction: standards
+  title: Making Content Usable for People with Cognitive and Learning Disabilities (W3C Working Group Note)
+  short: W3C cognitive accessibility guidance (COGA)
+  publisher: W3C
+  url: https://www.w3.org/TR/coga-usable/
+  format: Web page
+  kind: accessibility-standard
+  document_date: 29 April 2021
+  checked: '2026-11-02'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Non-normative plain-language and cognitive accessibility guidance beyond WCAG.
+- id: MED-S33
+  desk: medicaid
+  guide: all
+  jurisdiction: standards
+  title: Web Content Accessibility Guidelines (WCAG) 2.2
+  short: WCAG 2.2
+  publisher: W3C
+  url: https://www.w3.org/TR/WCAG22/
+  format: Web page
+  kind: accessibility-standard
+  document_date: W3C Recommendation, 12 December 2024
+  checked: '2026-11-21'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Conformance target: Level AA, with AAA contrast and target size where practical.'
+- id: MED-S34
+  desk: medicaid
+  guide: all
+  jurisdiction: standards
+  title: Cloudflare Privacy Policy
+  short: Cloudflare privacy policy
+  publisher: Cloudflare
+  url: https://www.cloudflare.com/privacypolicy/
+  format: Web page
+  kind: platform
+  document_date: Effective Nov. 4, 2025
+  checked: '2026-11-03'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Says Cloudflare processes the IP addresses and traffic data of people who visit its customers' sites,
+    as a processor for those customers, and gives no fixed retention period. Disclosed on the privacy page.
+- id: MED-S35
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: AG Rayfield sues Trump over unlawful implementation of Medicaid work requirements
+  short: Oregon Department of Justice news release
+  publisher: Oregon Department of Justice
+  url: https://www.doj.state.or.us/media-home/news-media-releases/ag-rayfield-sues-trump-over-unlawful-implementation-of-medicaid-work-requirements/
+  format: Web page
+  kind: state-page
+  document_date: June 29, 2026
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Confirms Oregon joined the multistate suit decided Oct. 29, 2026.
+- id: MED-S36
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: AILA Immigration Lawyer Search
+  short: Immigration lawyer search
+  publisher: American Immigration Lawyers Association
+  url: https://www.ailalawyer.com/
+  format: Web site
+  kind: legal-aid
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: not_read
+  read_by: not_read
+  linked_from: MED-S12
+  public_note: 'Listed by OHA on its public charge page. Not read in full: it is a search tool, not a document.
+    On 2026-11-14 the address answered and landed on AILA''s Immigration Lawyer Search. The tool asks for a type
+    of lawyer, a language, a city, and a state or province. Oregon is one of the choices. No search was run. The
+    page says the site is not a lawyer referral service.'
+- id: MED-S37
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: National Immigration Legal Services Directory
+  short: Immigration legal services directory
+  publisher: Immigration Advocates Network
+  url: https://www.immigrationadvocates.org/
+  format: Web site
+  kind: legal-aid
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: not_read
+  read_by: not_read
+  linked_from: MED-S12
+  public_note: 'Listed by OHA on its public charge page (filter by Oregon). Not read in full: the directory is a
+    search tool, not a document. On 2026-11-14 the address answered and landed on the Immigration Advocates Network
+    home page, not on the directory itself. The home page has a Find Help link and says to enter an address or zip
+    code to see a list of organizations. No search was run.'
+- id: MED-S38
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Equity Corps of Oregon
+  short: Equity Corps of Oregon
+  publisher: Equity Corps of Oregon
+  url: https://equitycorps.org/
+  format: Web site
+  kind: legal-aid
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S12
+  public_note: Listed by OHA on its public charge page for possible free representation at Portland Immigration
+    Court. The home page at this address was read in full on 2026-11-14. No other page of the site was read. It
+    has parts for lawyers, for people seeking legal help, and for community groups, with a Get Help link. It gives
+    the phone number 1-888-274-7292 and call center hours of Monday to Friday, 9 a.m. to 6 p.m. The home page does
+    not mention Portland Immigration Court. No claim cites this source.
+- id: MED-K01
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: New Federal Rules and Upcoming Changes to the Oregon Health Plan (HR1 key changes)
+  short: OHA key changes sheet
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/HR1-Key-Changes-EN.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: Last updated June 10, 2026
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Counted only. Not used for claims. Read in full on 2026-11-14 (2 pages). It says work and other activity
+    rules take effect in 2027 and apply to adults ages 19 to 64 who do not meet an exemption. It lists 11 groups
+    who may need to give proof of an exemption. It says many adults will renew every six months starting in late
+    2027. It names ONE.Oregon.gov as the place to apply. No claim cites this source.
+- id: MED-K02
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'Timeline: Key Dates for Federal Changes'
+  short: ODHS partner timeline
+  publisher: Oregon Department of Human Services
+  url: https://www.oregon.gov/odhs/news/Documents/hr1-partner-timeline.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-02'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Counted. Says some dates may change as Oregon receives federal guidance.
+- id: MED-K03
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'Federal Changes to Oregon Health Plan (OHP): A Quick Reference Guide for Providers and Clinic Staff'
+  short: OHA provider quick reference guide
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Tools/HR1-Patient-Conversation-Guide-EN.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Counted among OHA's state explainers. Provider and clinic quick reference guide with timeline, talking
+    points, referral lists, and badge card. Repeats the work-limit sentence from before the Oct. 29, 2026 federal
+    court ruling.
+- id: MED-K04
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Gig workers guide
+  short: OHA gig workers guide
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/Gig-Workers-Guide.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Counted only. Candidate for a future page for gig and self-employed workers. Read in full on 2026-11-14
+    (3 pages). It says OHP checks household income first, and that $580 a month or more before taxes and deductions
+    meets the rules. Its summary box says more than $580. It says OHP uses a business's net income before taxes.
+    It says seasonal workers can send proof for the last six months to show an average of $580 a month. It lists
+    papers that show income and hours. No claim cites this source.
+- id: MED-K05
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: People with disabilities guide
+  short: OHA people with disabilities guide
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/People-with-Disabilities-Guide-EN.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Counted only. Read in full on 2026-11-14 (3 pages). It lists reasons a person with a disability or
+    serious health condition may be exempt, including SSI, Medicare, and a hospital stay of at least one night.
+    It says a person does not need a Social Security disability decision to get an exemption. It says getting long-term
+    services and supports does not decide whether the rules apply. No claim cites this source.
+- id: MED-K06
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Houseless guide
+  short: OHA houseless guide
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/Houseless-Guide.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Counted only. Read in full on 2026-11-14 (3 pages). It lists exemptions, 3 ways to meet the rules,
+    and ways to stay in touch with OHP. It says a person does not need a permanent address to get or keep OHP. No
+    claim cites this source.
+- id: MED-K07
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: More frequent renewals fact sheet
+  short: OHA renewals fact sheet
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Tools/More-Frequent-Renewals-EN.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: Updated June 1, 2026
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S07
+  public_note: Counted only. Read in full on 2026-11-14 (2 pages). It says most adults ages 19 through 64 will renew
+    every six months and everyone else once a year. It expects the change to start in late 2027. It says six-month
+    renewals will not apply to American Indian and Alaska Native members, people with Medicare or OHP based on a
+    disability, or OHP Bridge members. No claim cites this source.
+- id: MED-K08
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Healthier Oregon transition to Open Card
+  short: OHA Open Card transition sheet
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/Open-Card-Transition-EN.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: Updated Aug. 7, 2026
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S07
+  public_note: Counted only. Read in full on 2026-11-14 (2 pages). It says all Healthier Oregon members move to
+    OHP Open Card in January 2027, and that Open Card offers full OHP benefits. It says to ask current providers
+    if they take Open Card. It says to use the search tool at OHPOpenCard.org before Jan. 1, 2027, and to call 800-562-4620
+    after that date. No claim cites this source.
+- id: MED-K09
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Non-citizens moving to Healthier Oregon
+  short: OHA non-citizen changes sheet
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Tools/Non-Citizen-Changes-EN.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: Updated Sept. 1, 2026
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S07
+  public_note: Counted only. Read in full on 2026-11-14 (2 pages). It says about 7,000 adults with certain immigration
+    statuses move to Healthier Oregon on Oct. 1, 2026, and it lists the statuses. It says people will not lose OHP
+    due to this change. It says all Healthier Oregon members move to OHP Open Card on Jan. 1, 2027. No claim cites
+    this source.
+- id: MED-K10
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Sample notice, Spanish (ONE outreach notice)
+  short: OHA sample outreach notice, Spanish
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/OHPLetters/ONE-Outreach-Notice-ES.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: Sample notice dated 08/10/2026; form MED-131 SP
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S07
+  public_note: Counted among OHA's state explainers. Spanish sample outreach notice listing the ways to send information
+    to OHP. Checked with machine assistance; not yet checked by a fluent Spanish reader.
+- id: MED-K11
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'HR1 info sheet: people with Medicare and OHP (dual eligible)'
+  short: ODHS dual eligible info sheet
+  publisher: Oregon Department of Human Services
+  url: https://www.oregon.gov/odhs/news/Documents/hr1-dual-eligible-info-sheet-en.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Counted only. Read in full on 2026-11-14 (2 pages). It says the OHP work or activity rules do not
+    apply while a person has Medicare, and that SNAP has different rules. It gives 833-947-1694 for questions about
+    SNAP work or activity rules and 855-673-2372 for the Aging and Disability Resource Connection. No claim cites
+    this source.
+- id: MED-K12
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'HR1 info sheet: people with disabilities and work'
+  short: ODHS disabilities and work info sheet
+  publisher: Oregon Department of Human Services
+  url: https://www.oregon.gov/odhs/news/Documents/hr1-disabilities-work-info-sheet-en.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-14'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Counted only. Read in full on 2026-11-14 (3 pages). It says the rules do not apply to people who
+    get OHP through a program based on disability, who get SSI, or who have both Medicare and OHP. It says OHP will
+    use information it already has, including from Social Security. It says the rules do not decide which disability
+    services a person gets. No claim cites this source.
+- id: MED-K13
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: H.R. 1 Information for ODHS and OHA Partners
+  short: ODHS HR1 partner updates page
+  publisher: Oregon Department of Human Services
+  url: https://www.oregon.gov/odhs/news/pages/hr1-partner-updates.aspx
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown; the newest update it lists is Oct. 29, 2026
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-S07
+  public_note: Counted only. Read in full on 2026-11-24. The page's own title is H.R. 1 Information for ODHS and
+    OHA Partners. It covers federal changes to SNAP and OHP for partner groups. It links to info sheets in 10 languages,
+    a timeline, and toolkits. The pages and files it links to were not read as part of this entry. No claim cites
+    this source.
+- id: MED-S40
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: Docket, Commonwealth of Massachusetts v. Oz, No. 1:26-cv-12962 (D. Mass.)
+  short: Court docket for the medically frail case
+  publisher: U.S. District Court for the District of Massachusetts, via CourtListener
+  url: https://www.courtlistener.com/docket/73546826/commonwealth-of-massachusetts-v-oz/
+  format: Court docket
+  kind: court
+  document_date: Entries through No. 151, entered Nov. 6, 2026
+  checked: '2026-11-10'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: partial
+  read_by: human_machine_hybrid
+  public_note: 'Read through CourtListener''s records (its search service, not this web page, which tells automated
+    tools not to load it) on 2026-11-10: entries 139 to 151. Entry 149 (Oct. 29, 2026) enters judgment and dismisses
+    the case. Entries 150 and 151 (Nov. 6, 2026) are a hearing transcript and its notice. No notice of appeal appeared.
+    The plaintiffs named in entry 140 include Oregon and do not include Utah. CourtListener can lag the court''s
+    own system (PACER).'
+- id: MED-S41
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: SMD# 26-006, Optional Hold Harmless Period for Community Engagement Implementation (State Medicaid Director
+    letter)
+  short: Federal letter to state Medicaid directors, Nov. 13, 2026 (SMD# 26-006)
+  publisher: Centers for Medicare & Medicaid Services
+  url: https://www.medicaid.gov/Federal-Policy-Guidance/Downloads/smd26006.pdf
+  format: PDF
+  kind: federal-letter
+  document_date: Nov. 13, 2026
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Read in full on 2026-11-14 and re-read in full on 2026-11-24: 4 pages, 3 footnotes, signed by Daniel
+    Brillman, Deputy Administrator and Director. Offers every state an optional hold harmless period through June
+    30, 2027. A state that elects it may suspend denials of eligibility and disenrollments when an applicable individual
+    does not demonstrate compliance with community engagement. This covers applications received and renewals initiated
+    through and including June 30, 2027. A state may implement a shorter period. A state may use the period only
+    if it assesses whether each individual meets the requirement (including deemed compliance) or is excluded, for
+    all relevant applications and renewals in the period. The period covers only conditioning eligibility on community
+    engagement (section 1902(xx)(1) of the Act, 42 C.F.R. 435.559); it does not apply to any other part of implementing
+    community engagement by Jan. 1, 2027, or to denials and disenrollments on other eligibility criteria, such as
+    age or household income. A state requests the period in its mitigation plan and must have CMS approval before
+    using it; a state that intends to use it from Jan. 1, 2027 is asked to notify CMS by Dec. 11, 2026. For applications
+    submitted and renewals initiated after the period ends in a state, the state must deny or terminate eligibility
+    for not meeting the requirement, after the noncompliance procedures at 42 C.F.R. 435.558. The letter does not
+    name any state that has elected the period. Terms: the letter calls the requirement ''community engagement''
+    and says CMS refers to Public Law No. 119-21 as the ''Working Families Tax Cut'' (WFTC) legislation. Footnote
+    3 cites Massachusetts v. Oz as No. 26-12692-RGS; the order in this registry (MED-S28) carries No. 1:26-cv-12962.
+    medicaid.gov answered 403 to a plain automated request on 2026-11-14; the PDF was fetched with a web fetch tool
+    and its text extracted with pdftotext. The CMS press release of the same day is not registered: the letter is
+    the primary source and no page links to the release.'
+- id: MED-S42
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: H.R. 1 Frequently Asked Questions (OHP)
+  short: OHA H.R. 1 FAQ
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Documents/HR1-FAQ.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: Last updated Sept. 30, 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: OHA's H.R. 1 FAQ. Explains household vs. non-household caregiving (80 hours a month for unrelated
+    non-household caregivers), the 5-year stable recovery substance use disorder exception, and December 2026 member
+    notices.
+- id: MED-S43
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'Policy Memorandum: Anticipated Impacts of H.R.1 and other federal changes on Oregon''s CCOs'
+  short: OHA policy memo to CCOs (April 14, 2026)
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/HSD/OHP/Announcements/HR1-Changes0426.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: April 14, 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: OHA Medicaid Division (CCO Operations) policy memorandum from Dave Inbody to coordinated care organizations
+    (CCOs) on anticipated H.R. 1 impacts. Confirms that Healthier Oregon members in CCOs move to OHP Open Card on
+    Jan. 1, 2027 (affecting over 100,000 members).
+- id: MED-S44
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: Medicaid Work Requirements (Oregon v. Oz, D. Or.) — Federal Litigation Tracker
+  short: Oregon DOJ tracker, State of Oregon v. Oz
+  publisher: Oregon Department of Justice
+  url: https://www.doj.state.or.us/oregon-department-of-justice/federal-oversight/federal-litigation-tracker/medicaid-work-requirements-oregon-v-oz-d-or/
+  format: Web page
+  kind: state-page
+  document_date: Filed Nov. 5, 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Oregon DOJ case summary for Oregon v. Oz (D. Or.). Confirms the plaintiff states filed their complaint,
+    summary judgment motion, and preliminary injunction motion on Nov. 5, 2026, challenging H.R. 1's Medicaid work
+    requirements. Does not print the docket number or list all four plaintiff states (see MED-S45 and MED-S46).
+- id: MED-S45
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: Court Calendar, Week of Jan. 11–17, 2027 — State of Oregon et al. v. Oz et al., No. 6:26-cv-02435-AA (D.
+    Or.)
+  short: U.S. District Court (D. Or.) calendar, Jan. 12, 2027
+  publisher: U.S. District Court for the District of Oregon
+  url: https://www.ord.uscourts.gov/index.php/ct-calendar/eventsbyweek/2027/1/11/-?print=1&pop=1&tmpl=component
+  format: Web page
+  kind: court
+  document_date: Calendar entry for Jan. 12, 2027
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Official federal court week calendar explicitly listing under January 12: ''10:00 am : Judge Aiken
+    : Telephone : [6:26-cv-02435-AA] State of Oregon et al v. Oz et al (Oral Argument)''.'
+- id: MED-S46
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: WA challenges federal Medicaid barriers jeopardizing Washingtonians' health coverage
+  short: WA Attorney General news release, Nov. 5, 2026
+  publisher: Washington Office of the Attorney General
+  url: https://www.atg.wa.gov/news/news-releases/wa-challenges-federal-medicaid-barriers-jeopardizing-washingtonians-health
+  format: Web page
+  kind: state-page
+  document_date: Nov. 5, 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Official news release announcing the Nov. 5, 2026 lawsuit in U.S. District Court for the District
+    of Oregon (Eugene) challenging H.R. 1's Medicaid work requirements. Names all four plaintiff states (Washington,
+    Oregon, Minnesota, and New Mexico) and links the filed complaint.
+- id: MED-S47
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Notice of Proposed Rulemaking, OAR Chapter 410 Division 200 (Work or Activity Rules for Medicaid Expansion
+    and 1115 waiver program population)
+  short: OHA proposed OHP work rules (OAR 410-200-0221, Oct. 28, 2026)
+  publisher: Oregon Health Authority, Health Systems Division
+  url: https://www.oregon.gov/oha/HSD/OHP/Policies/NPRM-200-changes11192026.pdf
+  format: PDF
+  kind: state-rule
+  document_date: Filed Oct. 28, 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Filed Oct. 28, 2026 with the Oregon Secretary of State Archives Division; public hearing Nov. 19,
+    2026; public comment closed Nov. 21, 2026. Proposes new OAR 410-200-0221 and amendments to OAR 410-200-0015,
+    -0105, -0230, -0235, -0435, and -0455. States that the change would take effect for new applications with a
+    Date of Request on or after Jan. 1, 2027, and for current members with renewal dates of March 31, 2027 or later.
+    Not yet adopted as final rules.
+- id: MED-S48
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: 'USCIS Policy Manual, Volume 8, Part G, Chapter 7: Consideration of Any Current or Past Application for,
+    Approval or Certification to Receive, and Receipt of Means-Tested Public Benefits'
+  short: USCIS Policy Manual, public charge benefits (Nov. 2026)
+  publisher: U.S. Citizenship and Immigration Services
+  url: https://www.uscis.gov/policy-manual/volume-8-part-g-chapter-7
+  format: Web page
+  kind: federal-page
+  document_date: Effective Sept. 18, 2026 (PA-2026-09, issued Aug. 18, 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Opened and read directly on uscis.gov on Nov. 21, 2026. USCIS Policy Alert PA-2026-09 (Aug. 18,
+    2026, effective Sept. 18, 2026, implementing DHS Final Rule 91 FR 45324; uscis.gov/sites/default/files/document/policy-manual-updates/20260818-PublicChargeFinalRule.pdf)
+    reorganized Volume 8, Part G (replacing the 2020/2022 ''Health'' chapter at Chapter 7). Both live Chapter 7
+    and live Chapter 1 (volume-8-part-g-chapter-1) state verbatim: ''With respect to means-tested public benefits
+    received before September 18, 2026, officers will only consider public cash assistance for income maintenance
+    and long-term institutionalization at government expense.'''
+- id: MED-S49
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: AG Brown sues to block new public charge rule by U.S. Department of Homeland Security
+  short: WA Attorney General release, State of New York v. DHS (Sept. 14, 2026)
+  publisher: Washington Office of the Attorney General
+  url: https://www.atg.wa.gov/news/news-releases/ag-brown-sues-block-new-public-charge-rule-us-department-homeland-security
+  format: Web page
+  kind: state-page
+  document_date: Sept. 14, 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Official news release announcing the Sept. 14, 2026 multistate lawsuit challenging DHS's 2026 public
+    charge final rule in the U.S. District Court for the Southern District of New York (State of New York v. U.S.
+    Department of Homeland Security, No. 1:26-cv-07978), filed by 21 states (New York, Oregon, Washington, and 18
+    other states), Governor Josh Shapiro of Pennsylvania, and the District of Columbia.
+- id: MED-S51
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: Docket, State of New York v. U.S. Department of Homeland Security, No. 1:26-cv-07978 (S.D.N.Y.)
+  short: Court docket, State of New York v. DHS (S.D.N.Y.)
+  publisher: U.S. District Court for the Southern District of New York (via CourtListener)
+  url: https://www.courtlistener.com/docket/74784748/state-of-new-york-v-us-department-of-homeland-security/
+  format: Court docket
+  kind: court
+  document_date: Entries through ECF 99 (Nov. 17, 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Docket checked Nov. 21, 2026 (Judge Ronnie Abrams; also verified via Civil Rights Litigation Clearinghouse
+    case 48446; 75-page complaint ECF 1 read in full on Nov. 21, 2026). Complaint filed Sept. 14, 2026 by 21 states
+    (New York, Oregon, Washington, and 18 other states), Governor Josh Shapiro of Pennsylvania, and D.C. Summary
+    judgment briefing begins Dec. 11, 2026 (ECF 60); no restraining order, injunction, or stay appears through ECF
+    99 (Nov. 17, 2026). Parallel S.D.N.Y. suits before Judge Abrams: City of New York v. DHS (No. 1:26-cv-07982;
+    amended complaint filed Nov. 13, 2026, ECF 62) and Make the Road New York v. DHS (No. 1:26-cv-08129).'
+- id: MED-S53
+  desk: medicaid
+  guide: oregon
+  jurisdiction: OR
+  title: Oregon Health Authority to delay enforcement of new federal Medicaid work rules to keep people in Oregon
+    insured
+  short: OHA news release on hold harmless delay, Nov. 23, 2026
+  publisher: Oregon Health Authority
+  url: https://www.oregon.gov/oha/ERD/Pages/OHA-to-delay-enforcement-of-new-federal-Medicaid-work-rules-to-keep-people-in-Oregon-insured-11.23.2026.aspx
+  format: Web page
+  kind: state-page
+  document_date: Nov. 23, 2026
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Read in full on 2026-11-24. OHA announced Governor Tina Kotek directed OHA to join the federal hold
+    harmless option through June 30, 2027. OHP members will not lose or be denied coverage through June 30, 2027
+    for failing to meet the federal work or activity rules. The rules and 1-month past-bills limit still start Jan.
+    1, 2027.
+- id: MED-S54
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: Docket and Complaint, Mahmoud v. Oz, No. 1:26-cv-00881 (D.R.I.)
+  short: Court docket, Mahmoud v. Oz (D.R.I.)
+  publisher: U.S. District Court for the District of Rhode Island (via CourtListener)
+  url: https://www.courtlistener.com/docket/75165734/mahmoud-v-oz/
+  format: Court docket
+  kind: court
+  document_date: Filed Nov. 24, 2026 (entries through ECF 10)
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Docket, 37-page complaint (ECF 1), and class motion (ECF 3) read in full on 2026-11-24. Five noncitizen
+    SSI recipients sued to block federal Medicaid cuts for refugees, asylees, humanitarian parolees, and other noncitizens
+    on SSI outside Washington. Government responses to the preliminary injunction and class motions are due Dec.
+    8, 2026. No court order has been entered through ECF 10.
+- id: MED-U01
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Community Engagement Requirement
+  short: Utah Medicaid community engagement page
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid.utah.gov/community-engagement-requirement/
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown (page data says it changed July 21, 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Names Adult Expansion and Targeted Adult Medicaid (TAM), the activities, $580, exclusions, lookback
+    for new members (month before applying) and current members (any 1 month since last approval or renewal), proof
+    every 6 months, and phone numbers. Says nothing about a court ruling.
+- id: MED-U02
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'H.R. 1 and Utah Medicaid: page for members (obbba.medicaid.utah.gov)'
+  short: Utah Medicaid H.R. 1 page
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba.medicaid.utah.gov/
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Hub for Utah's H.R. 1 letters, guides, and toolkits. Community engagement, 6-month reviews, retroactive
+    coverage, immigrant eligibility from Oct. 1, 2026, and proof of American Indian or Alaska Native status due
+    by Jan. 1, 2027. Lists a different general phone number than MED-U01.
+- id: MED-U03
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Meeting the community engagement requirement
+  short: Utah Medicaid support page on meeting the rules
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba-support.medicaid.utah.gov/community-requirement/
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: How DWS checks records first, how to report (online, form 742, application or renewal forms), the
+    3 ways Utah confirms a medically frail or treatment exclusion, and how to send papers. Names form 742 without
+    linking to it.
+- id: MED-U04
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'Utah Adult Expansion Medicaid (AEM): What You Need to Know (Medical Help for Adults)'
+  short: DWS page on Medicaid for adults
+  publisher: Utah Department of Workforce Services
+  url: https://jobs.utah.gov/customereducation/services/medicaid/adults.html
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Rules apply to people who apply on or after Jan. 1, 2027, and to current members at reviews for renewals
+    due in March 2027 or later. $580 a month, 6-month average for seasonal workers, look-back, exclusions, exceptions,
+    and the 30-day verification form.
+- id: MED-U05
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'H.R. 1 community engagement requirement: exclusions and exceptions'
+  short: Utah exclusions and exceptions table
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba.medicaid.utah.gov/wp-content/themes/twentytwelve/page-templates/pdf/FINAL_%20H.R.%201%20CE%20requirement%20exclusions_exceptions%20table.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: 2026 (no month shown)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Excluded individuals, mandatory exceptions, and optional short-term hardships. Says exclusions are
+    checked in the month a person applies or renews, and that 2 hardships must be requested.
+- id: MED-U06
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'Medicaid community engagement requirement: toolkit for H.R. 1'
+  short: Utah community engagement toolkit for staff
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba.medicaid.utah.gov/wp-content/themes/twentytwelve/page-templates/pdf/FINAL_H.R.1-CE-requirement-toolkit.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: 2026 (no month shown)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Scripts and questions and answers for customer service staff and providers. DWS uses its records
+    first. Members act when they get a personal letter from DWS.
+- id: MED-U07
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Community Engagement Requirement and Eligibility Review member letter (English)
+  short: Utah member letter, July 2026
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/Community%20Engagement%20Requirement%20and%20Eligibility%20Review%20Member%20Letter%20(English).pdf
+  format: PDF
+  kind: state-explainer
+  document_date: July 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: The letter mailed to Adult Expansion and Targeted Adult Medicaid members. No action needed yet; keep
+    contact details current in myCase. Lists people released from jail in the last 90 days and people with Social
+    Security or SSI among those who do not have to meet the rules.
+- id: MED-U08
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Utah Medicaid H.R. 1 glossary of terms
+  short: Utah H.R. 1 glossary
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba.medicaid.utah.gov/wp-content/themes/twentytwelve/page-templates/pdf/Utah%20Medicaid%20H.R.%201%20glossary%20of%20terms.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: August 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Definitions of Adult Expansion Medicaid, Targeted Adult Medicaid (says it ends June 30, 2027), DWS,
+    DHHS, fair hearing, retroactive coverage, and the community engagement requirement.
+- id: MED-U09
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'Quick guide: New Utah Medicaid rules under H.R. 1'
+  short: Utah quick guide, June 2026
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba.medicaid.utah.gov/wp-content/themes/twentytwelve/page-templates/pdf/FINAL_%20Quick%20guide_%20New%20Utah%20Medicaid%20rules%20under%20H.R.%201.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: June 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'One-page summary: immigrant eligibility from Oct. 1, 2026; 6-month reviews, community engagement,
+    and retroactive coverage from Jan. 1, 2027. Does not mention $580 or exclusions.'
+- id: MED-U10
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Utah Medicaid rules are changing! (flyer, English and Spanish)
+  short: Utah flyer
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba.medicaid.utah.gov/wp-content/themes/twentytwelve/page-templates/pdf/July2026_Medicaid_Flyer.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No date shown (file name says July 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 80 hours, $580, school at least half-time as the school defines it. Lists the general phone number
+    that differs from MED-U01.
+- id: MED-U11
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'Utah Medicaid and HR 1: frequently asked questions for partners'
+  short: Utah partner FAQ, January 2026
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/OBBBA%20FAQ%20for%20partners_1.2026.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: January 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: About 83,000 members were in Adult Expansion or Targeted Adult Medicaid. Utah sent a community engagement
+    waiver request to the federal government on July 3, 2025; no decision is reported. Gives the child-care age
+    3 ways.
+- id: MED-U12
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'Utah Medicaid and HR 1: frequently asked questions for members'
+  short: Utah member FAQ
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/OBBBA%20FAQ%20for%20members_1.2026.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: August 2025 (footer); the file name says 1.2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Older overview. Counted, and used only to show that Utah's documents carry different dates.
+- id: MED-U13
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'Eligibility reviews every 6 months: toolkit for H.R. 1'
+  short: Utah 6-month review toolkit for staff
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba.medicaid.utah.gov/wp-content/themes/twentytwelve/page-templates/pdf/FINAL_%20H.R.-1-Eligibility-reviews-very-6-months-toolkit.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: 2026 (no month shown)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Reviews every 6 months for Adult Expansion and Targeted Adult Medicaid from Jan. 1, 2027. American
+    Indian and Alaska Native members keep 12 months. Does not give reply deadlines.
+- id: MED-U14
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Apply for Medicaid
+  short: Utah Medicaid how-to-apply page
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid.utah.gov/apply-medicaid/
+  format: Web page
+  kind: state-page
+  document_date: No date shown (page data says it changed Aug. 4, 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Ways to apply: online in myCase, by mail, by fax, or at a DWS office. Application forms in English
+    and Spanish. Marketplace phone number.'
+- id: MED-U15
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Utah medical application, form 61MED (English)
+  short: Utah application form 61MED
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_English.pdf
+  format: PDF
+  kind: state-form
+  document_date: DHHS 61MED 04/01/2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: No section asks about the work or activity rules; Section H is health insurance. 30 days to decide,
+    90 days if a disability is claimed. Relay Utah and auxiliary aid numbers. Its cover sheet and its last page
+    list different fax numbers.
+- id: MED-U15S
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Utah medical application, form 61MED (Spanish)
+  short: Utah application form 61MED, Spanish
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_Spanish.pdf
+  format: PDF
+  kind: state-form
+  document_date: DHHS 61MED 04/01/2026
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-U14
+  public_note: Spanish paper application (form 61MED), linked from Utah's how-to-apply page. Checked with machine
+    assistance; not yet checked by a fluent Spanish reader.
+- id: MED-U16
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: How to Apply for Services
+  short: DWS how-to-apply page
+  publisher: Utah Department of Workforce Services
+  url: https://jobs.utah.gov/customereducation/apply/index.html
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Apply online or at a DWS employment center, or call for a mailed application. Return requested items
+    within 10 days. Decision within 30 days; some medical decisions take longer.
+- id: MED-U17
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Hearings (Office of Administrative Hearings)
+  short: Utah Medicaid hearings page
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid.utah.gov/hearings/
+  format: Web page
+  kind: state-page
+  document_date: No date shown (page data says it changed Oct. 27, 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Hearings about who qualifies for Medicaid go to DWS, not to this office. Members have 90 days from
+    the date of the notice.
+- id: MED-U18
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: File Public Assistance Appeal
+  short: DWS fair hearing page
+  publisher: Utah Department of Workforce Services
+  url: https://jobs.utah.gov/appeals/pa/filingpublic.html
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'How to ask DWS for a fair hearing: form, mail, fax, phone, email, or any employment center. Lists
+    Utah Legal Services.'
+- id: MED-U19
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Hearing Rights and Request for Hearing, form DWS-ESD 490
+  short: DWS hearing request form 490
+  publisher: Utah Department of Workforce Services
+  url: https://jobs.utah.gov/appeals/490.pdf
+  format: PDF
+  kind: state-form
+  document_date: Rev. 03/2025
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 90 days to ask for a hearing on medical assistance. Ask within 15 days to keep medical benefits,
+    which must be paid back if the decision supports the department. Says not to send the request through myCase.
+- id: MED-U19S
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Solicitud de audiencia imparcial, form 490 (Spanish)
+  short: DWS hearing request form 490, Spanish
+  publisher: Utah Department of Workforce Services
+  url: https://jobs.utah.gov/appeals/490sp.pdf
+  format: PDF
+  kind: state-form
+  document_date: Rev. 03/2025
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-U18
+  public_note: Spanish fair hearing request form (form 490SP), linked from Utah's hearing page. Checked with machine
+    assistance; not yet checked by a fluent Spanish reader.
+- id: MED-U20
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Public Assistance Appeal Guide
+  short: DWS appeal guide
+  publisher: Utah Department of Workforce Services
+  url: https://jobs.utah.gov/appeals/pa/guidepats.html
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Hearings are held by telephone. A free interpreter can be arranged. A representative does not have
+    to be a lawyer.
+- id: MED-U21
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: What if I lose coverage?
+  short: Utah Medicaid support page on losing coverage
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba-support.medicaid.utah.gov/coverage/
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Asking for an appeal, applying again with no waiting period after a change, Emergency Medicaid, and
+    Utah's list of free or low-cost care.
+- id: MED-U22
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: I need help. Who can help me?
+  short: Utah Medicaid support page on free help
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba-support.medicaid.utah.gov/i-need-help/
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Points members to Take Care Utah for free help applying, answering review notices, and comparing
+    Marketplace plans.
+- id: MED-U23
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Take Care Utah
+  short: Take Care Utah
+  publisher: Take Care Utah
+  url: https://takecareutah.org/
+  format: Web site
+  kind: helper
+  document_date: Copyright 2026
+  checked: '2026-11-21'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Used only for its own services and phone number. Says its services are always free and available
+    statewide.
+- id: MED-U24
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'H.R. 1 Medicaid member supports: Stay informed. Stay covered. Stay healthy.'
+  short: Utah Medicaid support site, home
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba-support.medicaid.utah.gov/
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Counted. Who may be affected, important dates, and next steps.
+- id: MED-U25
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Medicaid Expansion
+  short: Utah Medicaid expansion page
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid.utah.gov/expansion/
+  format: Web page
+  kind: state-page
+  document_date: No date shown (page data says it changed Oct. 19, 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Income table by household size, employer insurance rule, and a note that Targeted Adult Medicaid
+    members may move to Adult Expansion on July 1, 2027. Its text and its table give different income numbers.
+- id: MED-U26
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Targeted Adult Medicaid Program
+  short: Utah Targeted Adult Medicaid page
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid.utah.gov/targeted-adult-medicaid-program/
+  format: Web page
+  kind: state-page
+  document_date: No date shown (page data says it changed Oct. 22, 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Who the program covers. Says changes take effect July 1, 2027, without saying the program ends.
+- id: MED-U27
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'H.R. 1 definition of a qualified immigrant: member letter (English)'
+  short: Utah immigrant eligibility letter
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/Final_%20H.R.1%20Definition%20of%20a%20Qualified%20Immigrant%20Member%20Letter.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: March 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Who Medicaid is mostly for starting Oct. 1, 2026, and a promise of a personal letter with how to
+    appeal. Does not mention Emergency Medicaid, public charge, or which pregnant or child groups keep coverage.
+    Its PDF footer prints March 2026, while Utah's letter key (MED-U29) and hub (MED-U02) list April 2026.
+- id: MED-U28
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Letter for members with unverified tribal status
+  short: Utah letter on tribal status
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/FINAL_%20Letter%20for%20members%20with%20unverified%20tribal%20status.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: March 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Proof DWS accepts for tribal status, the Jan. 1, 2027 deadline, and 4 ways to send it. Its PDF footer
+    prints March 2026, while Utah's letter key (MED-U29) and hub (MED-U02) list April 2026 and Utah's AI/AN page
+    (MED-U40) lists May 2026.
+- id: MED-U29
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: H.R. 1 key for member letters
+  short: Utah key to mailed letters
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/HR%201%20Mailed%20letter%20key.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: 2026 (no month shown)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Paper color and mail month of each of the 4 letters (Blue, Yellow, Pink: April 2026; Green: July
+    2026). The immigrant and unverified-tribal PDF footers (MED-U27, MED-U28) print March 2026, and Utah''s AI/AN
+    page (MED-U40) lists the tribal letters as May 2026.'
+- id: MED-U30
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'CMS letter to Utah: conforming changes to the Utah Medicaid Reform 1115 Demonstration'
+  short: Federal letter to Utah, Sept. 25, 2026
+  publisher: Centers for Medicare & Medicaid Services
+  url: https://www.medicaid.gov/medicaid/section-1115-demonstrations/downloads/ut-medicaid-reform-1115-overlay-09252026.pdf
+  format: PDF
+  kind: federal-letter
+  document_date: Sept. 25, 2026
+  checked: '2026-11-10'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: partial
+  read_by: human_machine_hybrid
+  public_note: First 100,000 of 731,367 characters. Says Utah must apply the federal community engagement requirement
+    no later than Jan. 1, 2027, and that it covers the Adult Expansion and Targeted Adult groups. It does not approve
+    a Utah-designed requirement.
+- id: MED-U31
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Language Services
+  short: Utah Medicaid language services page
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid.utah.gov/language-services/
+  format: Web page
+  kind: state-page
+  document_date: No date shown (page data says it changed April 25, 2025)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Says free language assistance and free auxiliary aids are available. Gives no TTY number.
+- id: MED-U32
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: myCase
+  short: DWS myCase online account
+  publisher: Utah Department of Workforce Services
+  url: https://jobs.utah.gov/mycase/
+  format: Web site
+  kind: state-page
+  document_date: Not checked
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: not_read
+  read_by: not_read
+  linked_from: MED-U14
+  link_check: by hand
+  public_note: Utah DWS sign-in and online application portal linked from Utah Medicaid's apply page (MED-U14).
+    Link-only entry (not read); automated requests receive HTTP 404. On 2026-11-11 MED-U14's "Apply Online" link
+    still pointed here.
+- id: MED-U33
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'Office Search: Find a Workforce Services Location'
+  short: DWS office finder
+  publisher: Utah Department of Workforce Services
+  url: https://jobs.utah.gov/jsp/officesearch/
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-10'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Address listed on MED-U16; it loaded on 2026-11-10 as DWS's office search. Utah's pages list 3 different
+    office finder addresses; this is the one on DWS's own how-to-apply page.
+- id: MED-U34
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: HealthCare.gov
+  short: Federal Health Insurance Marketplace
+  publisher: U.S. Centers for Medicare & Medicaid Services
+  url: https://www.healthcare.gov/
+  format: Web site
+  kind: federal-page
+  document_date: No date shown
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-U14
+  public_note: Named on MED-U14 as the place for private plans. The home page at this address was read in full on
+    2026-11-13. No other page of the site was read. It offers ways to apply for coverage, log in, browse plans,
+    and find local help, and gives the phone number 1-800-318-2596. No claim cites this source.
+- id: MED-U35
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 211 Utah
+  short: 211 Utah
+  publisher: 211 Utah
+  url: https://211utah.org/
+  format: Web site
+  kind: helper
+  document_date: No date shown
+  checked: '2026-11-13'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-U21
+  public_note: Address listed on MED-U21. The home page at this address was read in full on 2026-11-13. No other
+    page of the site was read. It says 211 Utah is free and confidential, a service of the United Ways of Utah;
+    dial 211 or 888-826-9790, Monday to Sunday, 8:30 a.m. to 4:45 p.m.; text a zip code to 801-845-2211 on weekdays.
+    No claim cites this source.
+- id: MED-U36
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Emergency Medicaid
+  short: Utah Emergency Medicaid page
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid.utah.gov/emergency-medicaid/
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-U21
+  public_note: Address listed on MED-U21. Read in full on 2026-11-13. The page says the Emergency Medical Program
+    for non-citizens covers only a specific range of emergency services for a life-threatening condition, including
+    delivery of a child but not post-natal care; applicants must be Utah residents; neither U.S. citizenship nor
+    a Social Security number is required; and coverage is limited to the month in which the emergency occurred.
+    No claim cites this source.
+- id: MED-U37
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Utah Legal Services
+  short: Utah Legal Services
+  publisher: Utah Legal Services
+  url: https://www.utahlegalservices.org/
+  format: Web site
+  kind: legal-aid
+  document_date: Copyright 2026
+  checked: '2026-11-21'
+  status: not_official
+  official: false
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Used only for its own services. Home page read: a nonprofit law office that gives free help in civil
+    legal matters and lists Medicaid as a topic. Its phone numbers come from the state''s hearing form (MED-U19).
+    Its Get Help page did not open on 2026-11-10.'
+- id: MED-U38
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Diagnoses for medically frail (code list)
+  short: Utah list of medically frail diagnosis codes
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://obbba-support.medicaid.utah.gov/wp-content/uploads/2026/10/DiagnosesforMedicallyFrail_10.2026-1.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: October 8, 2026
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: not_read
+  read_by: not_read
+  linked_from: MED-U03
+  public_note: 'Address listed on MED-U03. Counted only. Not used for claims. Not read in full. On 2026-11-13 the
+    file was downloaded (514 pages, about 23,800 lines of text). Read: the title page ("Medically Frail Codeset,
+    Utah Medicaid, October 8, 2026"), the definitions of Tier 1 and Tier 2 and of the service code types, the section
+    headings, the first two pages, and the last page. The code rows themselves were not read line by line.'
+- id: MED-U39
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: 'Utah Code Section 26B-3-142.1: Medicaid work requirements (enacted by 2026 H.B. 471, ch. 342)'
+  short: Utah Code 26B-3-142.1 (2026 H.B. 471)
+  publisher: Utah State Legislature
+  url: https://le.utah.gov/xcode/Title26B/Chapter3/C26B-3-S142.1_2026050620270101.pdf
+  format: PDF
+  kind: state-rule
+  document_date: Effective Jan. 1, 2027
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Read in full on 2026-11-21 (2 pages). Enacted by 2026 H.B. 471 (Laws of Utah 2026, ch. 342), effective
+    Jan. 1, 2027. Subsection (3)(b) requires the department to use documentary evidence including claims data and
+    bars relying exclusively on self-attestation. Subsection (4)(a)-(b) requires applicants seeking an exemption
+    to provide documentation unless the department can confirm it from other reliable sources, and requires the
+    department to verify all exemptions (barring managed care organization exemption approvals, though MCO data
+    may be accepted). Subsection (4)(c) provides that for medically frail or special needs conditions where electronic
+    data is insufficient, the department may provisionally approve the exemption from a diagnosis identified by
+    the individual and must verify it using electronic data or a statement from a health care professional.
+- id: MED-U40
+  desk: medicaid
+  guide: utah
+  jurisdiction: UT
+  title: Information for American Indians and Alaska Natives (AI/AN)
+  short: Utah Medicaid AI/AN verification page
+  publisher: Utah Department of Health and Human Services (Utah Medicaid)
+  url: https://medicaid.utah.gov/aian/
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown (modified Aug. 3, 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Official Utah Medicaid AI/AN page read in full on 2026-11-21. Lists the 5 accepted proof items (tribal
+    ID, CDIB paper signed by BIA, IHS Face Sheet, tribal court document, or descendant proof with birth certificate
+    or court document), DWS mail and fax addresses, and the Jan. 1, 2027 deadline. Labels the tribal letters May
+    2026 (while MED-U02 and MED-U29 list April 2026 and the letter PDF footer MED-U28 prints March 2026).
+- id: MED-WA01
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Changes coming to Apple Health
+  short: HCA changes coming to Apple Health
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/free-or-low-cost-health-care/changes-coming-apple-health
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Client-facing summary table. Work rules, 6-month renewals, and shorter retroactive coverage all dated
+    January 1, 2027. Noncitizen eligibility changes dated October 1, 2026. Cost sharing up to $35 dated October
+    1, 2028. Notices go out by mail or email based on the client's notification preference. Under 'Do I need to
+    do anything right now?', HCA's live page tells clients to keep their contact information up to date and carefully
+    read notices or text messages from HCA.
+- id: MED-WA02
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: What's changing with Apple Health (Medicaid)?
+  short: HCA what's changing with Apple Health
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/free-or-low-cost-health-care/what-s-changing-apple-health-medicaid
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-12'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: The 15-language statement is on this page. The exact list of fact sheet languages was not verified;
+    the client booklets list at MED-WA09 is verified and is a different list.
+- id: MED-WA03
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: H.R. 1 impacts
+  short: HCA H.R. 1 impacts page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/about-hca/programs-and-initiatives/apple-health-medicaid/hr-1-impacts
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown (page content crawled June 18, 2026)
+  checked: '2026-11-12'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: States the delay as an option in the federal law. Does not say Washington has applied for or received
+    it. Also the source for Apple Health being Washington's name for Medicaid and for the near 2 million enrollment
+    figure.
+- id: MED-WA04
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Impacts of H.R.1 on Apple Health eligibility - Summary
+  short: HCA eligibility summary, Feb. 2026
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/assets/program/impacts-hr1-ah-eligibility-summary.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: Updated February 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Written before the federal interim final rule issued on June 3, 2026, and says details were pending
+    CMS guidance. Use for Washington''s process design, not for federal rule details. Figures: about 602,000 enrolled
+    in Apple Health for Adults in November 2025; about 64 percent estimated verified or exempt from existing data.'
+- id: MED-WA05
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: H.R.1 work requirements and renewals fact sheet
+  short: HCA work rules fact sheet, June 2026
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/assets/free-or-low-cost/hr1-work-requirements-and-renewals-fact-sheet.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: June 2026
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'HCA''s June 2026 fact sheet: who the work rules apply to, 13 exemptions, 5 ways to meet the rule,
+    and 6-month coverage periods. HCA''s newer work requirements page lists 6 ways, adding working 80 hours a month.'
+- id: MED-WA06
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Apply for or renew coverage
+  short: HCA apply or renew page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/health-care-services-supports/apple-health-medicaid-coverage/apply-or-renew-coverage
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-12'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Adults under 65 without Medicare apply through Washington Healthplanfinder. Apple Health Classic
+    (65 and older, blindness or disability, Medicare eligible) applies through DSHS and Washington Connection.
+- id: MED-WA07
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Contact Apple Health (Medicaid)
+  short: HCA Apple Health contact page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/about-hca/apple-health-medicaid/contact-apple-health-medicaid
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Medical Eligibility Determination Services (MEDS): 1-800-562-3022, Monday to Friday 7 a.m. to 5
+    p.m. Pacific, TRS 711, PO Box 45531, Olympia WA 98504.'
+- id: MED-WA08
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: 'File an appeal: Apple Health (Medicaid)'
+  short: HCA appeals page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/about-hca/file-appeal-apple-health-medicaid
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-12'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Hearing requests go to the Office of Administrative Hearings, online form or 1-800-583-8271. An administrative
+    law judge issues an initial order; the Board of Appeals can review it.
+- id: MED-WA09
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Apple Health client booklets
+  short: HCA client booklets page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/free-or-low-cost-health-care/i-need-medical-dental-or-vision-care/apple-health-client-booklets
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-12'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Languages: Amharic, Arabic, Burmese, Cambodian (Khmer), Chinese, Farsi (Persian), Korean, Laotian,
+    Punjabi, Russian, Somali, Spanish, Tigrigna, Ukrainian, Vietnamese, plus English.'
+- id: MED-WA10
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Supporting clients with changes to Apple Health
+  short: HCA Community Connectors page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/free-or-low-cost-health-care/i-help-others-apply-and-access-apple-health/supporting-clients-changes-apple-health
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-12'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Written for helpers and community organizations. Language assistance includes bilingual staff, interpreters,
+    and translation of printed materials, at no cost.
+- id: MED-WA11
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Filing an application
+  short: HCA filing an application page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/free-or-low-cost-health-care/i-help-others-apply-and-access-apple-health/filing-application
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Paper Application for health care coverage, form 18-001P. Fax 1-855-867-4467 as shown on this page.
+    HCA moved this page when it restructured its site; the address was updated and the page re-checked against the
+    facts it supports on Nov. 13, 2026.
+- id: MED-WA12
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Changes of circumstance effect on eligibility
+  short: HCA changes of circumstance page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/free-or-low-cost-health-care/i-help-others-apply-and-access-apple-health/changes-circumstance-effect-eligibility
+  format: Web page
+  kind: state-page
+  document_date: Revised April 8, 2026
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Read in full on 2026-11-13: the page''s main content, which reprints WAC 182-504-0120 and WAC 182-504-0125
+    and gives clarifying information in two tabs (MAGI cases and Classic cases). The page shows a revised date of
+    April 8, 2026. A person reports a change in Healthplanfinder under Quick Links, "Report a Change in Income or
+    Household". By phone to the Healthplanfinder Customer Support Center at 1-855-923-4633 or to MEDS at 1-800-562-3022.
+    By mail to PO Box 946, Olympia WA 98507. Or by fax to 360-841-7620. Classic cases report in Washington Connection,
+    at 1-877-501-2233, by mail to DSHS, or by fax to 1-888-338-7410. The read confirms claim WA-APP-08.'
+- id: MED-WA13
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Submit my verification
+  short: HCA submit verification page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/free-or-low-cost-health-care/submit-my-verification
+  format: Web page
+  kind: state-page
+  document_date: No date shown
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Read in full on 2026-11-13. Key points: after an application or renewal, a letter may ask for more
+    information (a Post Eligibility Review, or PER); HCA staff confirm eligibility based on income, citizenship,
+    or lawful presence. A person has 15 days from the date the letter was mailed, and may ask for more time by email
+    or at 1-800-562-3022. A person must answer even if they just updated their information. Coverage may close if
+    they do not. Documents can be uploaded in the Healthplanfinder document center, emailed, faxed to 1-855-867-4467,
+    or mailed. The read confirms claims WA-APP-09, WA-LTR-02, WA-WRD-05, and WA-LOG-03.'
+- id: MED-WA14
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Washington Attorney General's Federal Litigation Tracker
+  short: WA Attorney General litigation tracker
+  publisher: Office of the Attorney General
+  url: https://www.atg.wa.gov/washington-attorney-generals-federal-litigation-tracker
+  format: Web page
+  kind: state-page
+  document_date: Says "As of Nov. 23, 2026"
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Re-read in full on 2026-11-24 (the introduction and all 86 case entries; page header says ''As of
+    Nov. 23, 2026''). Item 62 confirms Washington joined Commonwealth of Massachusetts v. Oz on June 29, 2026 with
+    23 other attorneys general and two governors, and links the filed complaint and the Attorney General''s news
+    release on the ruling. Together with shared sources MED-S28 and MED-S40, this supports the statement that Washington
+    is one of the plaintiff states. Also on the page: item 85, State of Oregon v. Oz (D. Or., filed Nov. 5, 2026
+    with three other states), a challenge to the work requirements themselves; and item 83, a motion to intervene
+    filed Oct. 16, 2026 in Neighborhood House v. Department of Health and Human Services, where a Sept. 30, 2026
+    order requires continued Medicaid funding for certain noncitizens who get SSI.'
+- id: MED-WA15
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: 'WAC 182-505-0250, Washington apple health: MAGI-based adult medical'
+  short: WAC 182-505-0250 (Apple Health adults)
+  publisher: Legislature
+  url: https://app.leg.wa.gov/wac/default.aspx?cite=182-505-0250
+  format: Web page
+  kind: state-rule
+  document_date: 'Two versions shown: effective until January 1, 2027 (filed July 29, 2014), and effective January
+    1, 2027 (WSR 26-19-026, filed September 8, 2026)'
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Re-read in full on 2026-11-21 on the Legislature''s site, both versions shown there. Both say: age
+    19 or older and under 65. Not entitled to or enrolled in Medicare Part A or B. Not eligible for certain mandatory
+    coverage. Meets the citizenship and immigration rule (WAC 182-503-0535) and the general eligibility rule (WAC
+    182-503-0505). Net countable income at or below 133 percent of the federal poverty level. The section does not
+    use the figure 138 percent that HCA''s fact sheet (MED-WA05) uses, and it reaches residency only through the
+    general eligibility rule. The version effective January 1, 2027 adds a 6-month certification period, 12 months
+    for American Indians and Alaska Natives. The registry title was corrected to the rule''s own caption on 2026-11-13.
+    The caption has a dash where the title has a colon. The read confirms claim WA-WRD-02. It does not confirm the
+    138 percent figure in claim WA-CHK-01 as written.'
+- id: MED-WA16
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: 'WAC 182-504-0035, Washington apple health: Renewals'
+  short: WAC 182-504-0035 (renewals)
+  publisher: Legislature
+  url: https://app.leg.wa.gov/wac/default.aspx?cite=182-504-0035
+  format: Web page
+  kind: state-rule
+  document_date: 'Two versions shown: effective September 6, 2025 until January 1, 2027, and effective January 1,
+    2027 (WSR 26-19-026, filed September 8, 2026)'
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Re-read in full on 2026-11-21 on the Legislature's site, both current and Jan. 1, 2027 versions (WSR
+    26-19-026, filed Sept. 8, 2026, effective Jan. 1, 2027). Subsection (1)(a)(v) starting Jan. 1, 2027 sets 6-month
+    renewals for Apple Health for Adults under WAC 182-505-0250 while keeping 12-month renewals for American Indian
+    and Alaska Native adults. Subsection (2)(b) keeps 90 days from termination to submit a missed MAGI renewal without
+    a new application, but starting Jan. 1, 2027 removes the earlier sentence stating coverage is restored without
+    a gap.
+- id: MED-WA17
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: 'WAC 182-504-0130, Washington apple health: Continued coverage pending an appeal'
+  short: WAC 182-504-0130 (continued coverage)
+  publisher: Legislature
+  url: https://app.leg.wa.gov/wac/default.aspx?cite=182-504-0130
+  format: Web page
+  kind: state-rule
+  document_date: Effective December 1, 2016 (WSR 16-22-060)
+  checked: '2026-11-22'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Re-read in full on 2026-11-22 on the Legislature''s site. To keep coverage during an appeal, a person
+    must ask for a hearing by the tenth day after the agency sent the notice, or by the last day of the month before
+    the action takes effect. A deadline on a weekend or holiday moves to 5:00 p.m. the next business day. Subsection
+    (5) sets an exception shown on the turned-down page: continued coverage is not available if the change is due
+    solely to a new law or rule, unless there is a question about whether the rule applies to you. Confirms claim
+    WA-DEN-04.'
+- id: MED-WA18
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: WAC 182-526-0200, Enrollee appeals of a managed care organization action
+  short: WAC 182-526-0200 (health plan appeals)
+  publisher: Legislature
+  url: https://app.leg.wa.gov/wac/default.aspx?cite=182-526-0200
+  format: Web page
+  kind: state-rule
+  document_date: Effective December 23, 2017 (WSR 17-23-201)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Re-read in full on 2026-11-21 on the Legislature's site. An enrollee must exhaust the managed care
+    organization's grievance and appeal process before requesting a hearing. The hearing must be requested within
+    120 calendar days of the date of receipt of the organization's notice of resolution. To keep services going
+    during the hearing, the request must be made within ten days of the date of that notice. Applies when the decision
+    being challenged was made by a managed care organization rather than by HCA. The registry title was corrected
+    to the rule's own caption on 2026-11-21. The read confirms claim WA-DEN-03; the rule counts the 120 days from
+    receipt of the notice.
+- id: MED-WA19
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: 'WAC 182-503-0080, Washington apple health: Application denials and withdrawals'
+  short: WAC 182-503-0080 (denials)
+  publisher: Legislature
+  url: https://app.leg.wa.gov/wac/default.aspx?cite=182-503-0080
+  format: Web page
+  kind: state-rule
+  document_date: Effective November 3, 2019
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Re-read in full on 2026-11-21 on the Legislature''s site (titled ''Application denials and withdrawals'').
+    Governs application denials and reconsideration without a new application: 30 days from the denial notice to
+    send missing information (4)(a) or asset-verification authorization (4)(b), or 90 days from the denial letter
+    to request a hearing per chapter 182-526 WAC (4)(c). General fair-hearing procedures live in chapter 182-526
+    WAC.'
+- id: MED-WA20
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Medicaid in Washington State
+  short: HCA Medicaid in Washington deck, Jan. 2026
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/assets/program/medicaid-in-washington-state.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: January 2026
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: partial
+  read_by: human_machine_hybrid
+  public_note: HCA's January 2026 slide deck on federal budget impacts on Medicaid in Washington, including Oct.
+    1, 2026 noncitizen eligibility changes and estimated people affected.
+- id: MED-WA21
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Medically Frail Exclusion from Community Engagement Requirements (memo to health care providers)
+  short: HCA medically frail memo, Aug. 2026
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/assets/program/hr1-medical-frailty-memo.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: August 21, 2026
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: HCA memo on medical frailty. People can self-attest in Washington Healthplanfinder through 2027.
+    Starting Jan. 2028, HCA may ask for proof when state records cannot confirm it.
+- id: MED-WA22
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Apple Health (Medicaid) work requirements
+  short: HCA work requirements page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/free-or-low-cost-health-care/i-need-medical-dental-or-vision-care/apple-health-medicaid-work-requirements
+  format: Web page
+  kind: state-explainer
+  document_date: No date shown
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Re-read in full on 2026-11-24. HCA's main work rules page and official H.R. 1 work requirements screener.
+    Lists 6 ways to meet the rule, household MAGI and in-kind work notes, the 1 to 6 credit-hour table, automatic
+    vs. requested short-term hardships, and medical frailty self-attestation through 2027 (verification starting
+    Jan. 2028). Also states work-rule denials and coverage terminations are delayed through June 30, 2027, and links
+    a sample client notice in English (MED-WA30) and 8 other languages.
+- id: MED-WA23
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Apple Health Expansion
+  short: HCA Apple Health Expansion page
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/about-hca/programs-and-initiatives/apple-health-medicaid/apple-health-expansion
+  format: Web page
+  kind: state-page
+  document_date: No date shown on the page
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Read in full on 2026-11-13. The page says: "Enrollment is limited and the enrollment cap has been
+    met." It links to an HCA announcement for updates. It says that from January 1, 2027 the program moves from
+    managed care to coverage without managed care. It lists other coverage to check: Apple Health for Kids, Apple
+    Health for pregnant individuals, After-Pregnancy Coverage, Alien Emergency Medical, Medical Care Services, and
+    Family Planning Only. The page itself does not say the program is state-funded and does not show a December
+    2025 date. Its privacy section lists Apple Health Expansion among "Apple Health programs that get federal funding".
+    Those two points are on the linked announcement ("Apple Health Expansion enrollment cap", dated Feb. 20, 2026,
+    with an update headed December 2025, which says enrollment is closed and that the budget proposal continues
+    state funds for the program). The announcement was read on 2026-11-13 and is not in this registry. The read
+    confirms that enrollment is closed; it does not confirm claim WA-IMM-04 as written.'
+- id: MED-WA24
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Medicaid Community Engagement Requirement for Certain Individuals, Interim Final Rule with Comment Period
+    (CMS-2454-IFC), fact sheet
+  short: CMS interim final rule fact sheet
+  publisher: Centers for Medicare and Medicaid Services
+  url: https://www.cms.gov/newsroom/fact-sheets/medicaid-community-engagement-requirement-certain-individuals-interim-final-rule-comment-period-cms
+  format: Web page
+  kind: federal-page
+  document_date: June 1, 2026
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: 'Re-read in full over HTTPS on 2026-11-24. The fact sheet lists the short-term hardship kinds a state
+    may offer: inpatient or certain other medical services. Travel outside the community for certain care not available
+    at home, for the person or a dependent. A county with an unemployment rate at or above 8 percent or 1.5 times
+    the national average. And a county where certain national emergencies or disasters exist. The rule itself is
+    in the registry as shared source MED-S27 and stays the primary federal source. The read confirms claim WA-RULE-09.'
+- id: MED-WA25
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Complaint, Commonwealth of Massachusetts v. Oz, No. 1:26-cv-12962 (D. Mass.)
+  short: Complaint, Massachusetts v. Oz
+  publisher: Commonwealth of Massachusetts (hosted filing)
+  url: https://www.mass.gov/doc/medicaid-work-requirements-rule-complaint/download
+  format: PDF
+  kind: court
+  document_date: Filed June 29, 2026
+  checked: '2026-11-12'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: partial
+  read_by: human_machine_hybrid
+  public_note: Filed federal court complaint in Commonwealth of Massachusetts v. Oz naming the State of Washington
+    as a plaintiff.
+- id: MED-WA26
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Apple Health Expansion enrollment cap
+  short: HCA Apple Health Expansion cap notice
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/about-hca/news/announcements/apple-health-expansion-enrollment-cap
+  format: Web page
+  kind: state-page
+  document_date: February 20, 2026; updated December 2025
+  checked: '2026-11-13'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Read in full on 2026-11-13, as an extra document for the evidence memo on the Washington corrections,
+    and added to the registry on owner review. Its December 2025 update is headed 'Enrollment for Apple Health Expansion
+    is currently closed'. It says the budget proposal 'Continues to provide state funds'. MED-WA23 (the program
+    page) links to it. It supports the 'state-funded' and 'closed as of December 2025' parts of claim WA-IMM-04,
+    which MED-WA23 alone did not state.
+- id: MED-WA27
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Washington state to delay enforcement of new Medicaid work requirements through June 30, 2027
+  short: HCA announcement on delayed enforcement, Nov. 17, 2026
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/about-hca/news/announcements/washington-state-delay-enforcement-new-medicaid-work-requirements-through-june-30-2027
+  format: Web page
+  kind: state-page
+  document_date: No date shown on page (reported Nov. 17, 2026)
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: HCA announced Washington will pursue delayed enforcement of the work rules (pending CMS approval
+    of Washington's plan). Enrollees in Apple Health for Adults will not lose or be denied coverage through June
+    30, 2027, for failing to meet new work reporting requirements, though HCA says clients will still be asked to
+    verify. Six-month renewals and shorter past-bills coverage still start Jan. 1, 2027.
+- id: MED-WA28
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Order Granting Preliminary Injunction, Neighborhood House v. U.S. Department of Health and Human Services,
+    No. 2:26-cv-03006-TSZ (W.D. Wash. Sept. 30, 2026), Doc. 28
+  short: Federal court order, Neighborhood House v. HHS (Sept. 30, 2026)
+  publisher: U.S. District Court for the Western District of Washington (via CourtListener)
+  url: https://www.courtlistener.com/docket/74699899/28/neighborhood-house-v-united-states-department-of-health-and-human-services/
+  format: Court order
+  kind: court
+  document_date: Sept. 30, 2026
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Court-filed Doc. 28 (gov.uscourts.wawd.367569.28.0, 24 pages, Judge Thomas S. Zilly, Sept. 30, 2026),
+    read in full on Nov. 21, 2026 and docket re-checked on 2026-11-24 through ECF 49. Preliminarily enjoins HHS
+    and Secretary Kennedy, pending further order of the court, from enforcing HHS guidance or terminating Medicaid
+    funding for qualified noncitizen SSI recipients in Washington. On Nov. 13, 2026, the court granted Washington's
+    motion to intervene (ECF 38); Washington filed its intervenor complaint on Nov. 16, 2026 (ECF 39), defendants
+    filed the administrative record on Nov. 16, 2026 (ECF 40), and summary judgment motions were filed Nov. 23,
+    2026 (ECF 43 to 49).
+- id: MED-WA29
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: Washington Apple Health Administrative Hearing Rights and Deadlines (Form HCA 12-506)
+  short: HCA Form 12-506 (hearing rights and deadlines)
+  publisher: Washington State Health Care Authority
+  url: https://www.hca.wa.gov/assets/free-or-low-cost/12-506.pdf
+  format: PDF
+  kind: state-form
+  document_date: HCA 12-506 (10/16)
+  checked: '2026-11-22'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Read in full on 2026-11-22. Explains hearing rights when HCA denies, ends, or changes Apple Health
+    coverage. Gives 90 days from the notice date to ask for a hearing. Notes that continued coverage is not available
+    when appealing a denied application, that continued coverage for ended or changed coverage requires a fast request
+    (10 days or end of the month), and that if you lose you may have to pay back up to 60 days of continued coverage.
+    Also notes RCW 74.09.741(3) on automatic law changes.
+- id: MED-WA30
+  desk: medicaid
+  guide: washington
+  jurisdiction: WA
+  title: 'Sample notice: Upcoming federal changes that affect Washington Apple Health for Adults Medicaid coverage'
+  short: HCA sample work rules and renewals notice
+  publisher: Health Care Authority
+  url: https://www.hca.wa.gov/assets/free-or-low-cost/work-requirements-renewals-notice.pdf
+  format: PDF
+  kind: state-explainer
+  document_date: No form number or date printed (PDF file created Sept. 4, 2026)
+  checked: '2026-11-24'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  linked_from: MED-WA22
+  public_note: 'Read in full on 2026-11-24 (4 pages). Sample letter for Apple Health for Adults members about the
+    Jan. 1, 2027 work rules and 6-month renewals. Says members get another notice before they need to report. Written
+    before HCA''s Nov. 17, 2026 announcement delaying work-rule denials and coverage loss through June 30, 2027
+    (MED-WA27). HCA''s work rules page (MED-WA22) also links this notice in 8 other languages: Cambodian, Simplified
+    Chinese, Korean, Laotian, Russian, Somali, Spanish, and Vietnamese.'
+- id: MED-SSA-NAME
+  desk: medicaid
+  guide: all
+  jurisdiction: US
+  title: Change your name on your Social Security record
+  short: Social Security, change your name
+  publisher: U.S. Social Security Administration
+  url: https://www.ssa.gov/personal-record/change-name
+  format: Web page
+  kind: federal-page
+  document_date: Live page, no date shown
+  checked: '2026-11-21'
+  status: official
+  official: true
+  verified_by: human_reviewed_machine_assisted
+  read_depth: full
+  read_by: human_machine_hybrid
+  public_note: Explains how to update your legal name with Social Security after marriage, divorce, or a court order
+    so federal and state benefits checks match your current legal name.

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Utah Medicaid</p>
+<h1>Turned down for Utah Medicaid? You have options.</h1>
+    <p class="purpose">This page explains what to do if the state says no or your coverage ends.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>Apply again:</strong> You can apply again.</li>
+      <li><strong>Ask for a hearing:</strong> You have 90 days from the date on the notice. {{ src('MED-U19') }}</li>
+      <li><strong>Keep benefits:</strong> To keep medical benefits while you wait, ask within 15 days of the date on the notice. If you lose, you have to pay them back. {{ src('MED-U19') }}</li>
+      <li><strong>Free legal help:</strong> Call Utah Legal Services.</li>
+      <li><strong>Next:</strong> <a href="{{ page_url('medicaid-utah-apply') }}">How to apply</a>, or <a href="{{ page_url('medicaid-utah-help') }}">free help and phone numbers</a>.</li>
+    </ul>
+
+    <h2>A new choice for states</h2>
+    <p>On Nov.&nbsp;13, 2026, the federal government gave each state a choice. Through June&nbsp;30, 2027, a state may choose not to turn anyone down, and not to end anyone's coverage, only for not meeting the work or activity rules. A state can still say no, or end coverage, for other reasons, such as income.</p>
+    <p>As of Nov.&nbsp;21, 2026, Utah has not announced a choice. Utah's pages about the new rules do not say what Utah will choose. <a href="{{ page_url('medicaid-utah-rules#state-choice') }}">More about this choice</a> {{ src('MED-U01') }} {{ src('MED-U02') }}</p>
+
+    <h2>Apply again</h2>
+    <p>You can apply again. <span class="more">Utah says there is no waiting period after something changes, like your income or who lives with you.</span></p>
+    <p>For the work or activity rules, the state looks at the month before your new application.</p>
+    <p>If you meet the rules now, or a reason fits you now, you may qualify. <a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check</a>.</p>
+    <p><a href="{{ page_url('medicaid-utah-apply') }}">How to apply</a></p>
+
+    <h2>Ask for a hearing</h2>
+    <p>A fair hearing is a way to challenge a decision. A judge who was not part of the decision hears your side.</p>
+    <ul>
+      <li><strong>Who to ask:</strong> Hearings about who qualifies go to the Department of Workforce Services (DWS).</li>
+      <li><strong>Deadline:</strong> 90 days from the date on the notice you disagree with.</li>
+      <li><strong>Keep benefits:</strong> Ask within 15 days of the date on the notice to keep medical benefits during the hearing. If the decision goes against you, you have to pay that help back.</li>
+      <li><strong>How it works:</strong> Hearings are held by phone. A free interpreter can be arranged.</li>
+      <li><strong>Bring someone:</strong> You can bring a lawyer or another person to speak for you.</li>
+    </ul>
+    <h3>How to ask</h3>
+    <ul>
+      <li><strong>Form:</strong> <a href="https://jobs.utah.gov/appeals/490.pdf" rel="noreferrer">Hearing request, form 490</a> <span class="tag">PDF</span>, or <a href="https://jobs.utah.gov/appeals/490sp.pdf" hreflang="es" rel="noreferrer">in Spanish</a> <span class="tag">PDF</span></li>
+      <li><strong>Mail:</strong> Department of Workforce Services, Fair Hearings, PO Box 143245, Salt Lake City, UT 84114-3245</li>
+      <li><strong>Fax:</strong> <span class="nowrap">877-824-6534</span></li>
+      <li><strong>Phone:</strong> <span class="nowrap">877-837-3247</span></li>
+      <li><strong>Email:</strong> <a href="mailto:fairhearings@utah.gov">fairhearings@utah.gov</a></li>
+      <li><strong>In person:</strong> any DWS employment center</li>
+    </ul>
+    <p>The form says not to send a hearing request through myCase.</p>
+
+    <h2>Free legal help</h2>
+    <div class="good">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <h3>Utah Legal Services</h3>
+      <p class="more">The state's hearing form lists Utah Legal Services for free legal help.</p>
+      <p>Call <span class="nowrap">801-328-8891</span> or <span class="nowrap">800-662-4245</span>.</p>
+      <p><a href="https://www.utahlegalservices.org/" rel="noreferrer">Utah Legal Services website</a></p>
+    </div>
+    <p>Need help reading a notice? Take Care Utah can explain it and help you answer. Its help is free. Call <span class="nowrap">801-433-2299</span>.</p>
+
+    <h2>Other coverage</h2>
+    <p>You can look at private health plans at <a href="https://www.healthcare.gov/" rel="noreferrer">HealthCare.gov</a> or call <span class="nowrap">1-800-318-2596</span>.</p>
+
+    <h2>Care while you sort it out</h2>
+    <ul>
+      <li>Utah lists free and low-cost clinics, dental care, and help with medicine costs. <a href="https://obbba-support.medicaid.utah.gov/coverage/" rel="noreferrer">See Utah's list</a>.</li>
+      <li><a href="https://211utah.org/" rel="noreferrer">211 Utah</a> lists help by county.</li>
+      <li>Emergency Medicaid can cover a sudden, life-threatening emergency for some people who cannot get full Medicaid. <a href="{{ page_url('medicaid-utah-immigration') }}">More about Emergency Medicaid</a></li>
+    </ul>
+{% endblock %}

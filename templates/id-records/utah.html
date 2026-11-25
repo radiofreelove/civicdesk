@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Utah</p>
+<h1>Change your name and sex designation in Utah</h1>
+{{ m.lede("Utah uses court for both. A name change needs a year of living in your county and a hearing. A sex designation change needs a judge to find strong proof of six things. That is more proof than Oregon or Washington ask for. The court's own online tool and forms walk you through it.") }}
+{{ m.checked_line(page) }}
+
+{#- Quick facts. Values come from data/facts.yml so they stay in step with the sub-pages. -#}
+{% set first_step = 'Check that you can file, and gather proof' %}
+{{ m.quickfacts(page, {
+  'court_name': fact_src('ut_court_name'),
+  'sex_label': 'Court needed for a sex designation change',
+  'court_sex': fact_src('ut_court_sex'),
+  'filing_fee': fact_src('ut_fee_petition'),
+  'certified_copy': fact_src('ut_fee_cert_copy'),
+  'birth_certificate': fact_src('ut_vital_amend_fee'),
+  'first_step': first_step,
+  'first_step_href': page_url('id-records-utah-court#steps'),
+  'cost_href': page_url('id-records-utah-court#cost'),
+  'whats_new': {'label': 'What happened in 2026', 'text': fact_src('ut_hb183_status'), 'href': page_url('id-records-utah-court#ut-2026'), 'link': 'More about the 2026 bill'}
+}) }}
+
+{% call m.callout('changed', 'Policy update: 2026 bill H.B. 183 did not pass', 'ut-policy-update') %}
+<p>A 2026 bill called H.B. 183 would have changed Utah's rules, but a Senate committee sent it back to Rules on March 4, 2026, and it failed when the session ended March 6, 2026. {{ src('ID-UT-HB183-NOTICE') }} {{ src('ID-UT-HB183-LEGISCAN') }} The law on this guide is the May 7, 2025 version. {{ src('ID-UT-CODE-26B-8-111') }} {{ m.badge('our_reading') }} <a href="{{ page_url('id-records-utah-court#ut-2026') }}">Read the full 2026 note</a>.</p>
+{% endcall %}
+
+<h2 id="guides">At a glance: your Utah guides</h2>
+<p>Pick the record you want to update. Each page has plain steps, costs, and official form links.</p>
+{{ m.hub_cards([
+  {
+    'id': 'steps',
+    'icon': 'gavel',
+    'title': 'Court order',
+    'href': page_url('id-records-utah-court'),
+    'summary': 'Residency rules, the six things a judge looks for in a sex designation change, MyPaperwork online filing, hearings, fee waivers, privacy, and under-18 rules.',
+    'meta': 'Filing fee: ' ~ fact('ut_fee_petition') ~ ' (waiver available)'
+  },
+  {
+    'id': 'birth-certificate',
+    'icon': 'document',
+    'title': 'Utah birth certificate',
+    'href': page_url('id-records-utah-birth'),
+    'summary': 'Mail a certified copy of your signed court order and form 902 to Utah Vital Records, plus what to ask about amendment history.',
+    'meta': 'Requires a court order'
+  },
+  {
+    'id': 'license',
+    'icon': 'id_card',
+    'title': 'Driver license or ID',
+    'href': page_url('id-records-utah-id'),
+    'summary': 'What Utah Driver License Division asks for to update your name, and what to check before updating a sex marker.',
+    'meta': 'Update Social Security first for a name change'
+  }
+]) }}
+
+{% call m.callout('why', 'Why it matters', 'ut-why', extra=true) %}
+<ul>
+  <li>Utah's birth certificate office changes the sex designation only with a court order. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+  <li>Knowing the six things the judge looks for, before you file, helps you gather the right proof the first time. {{ src('ID-UT-CODE-26B-8-111') }}</li>
+</ul>
+{% endcall %}
+
+<h2 id="more-steps">More steps in your path</h2>
+{{ m.hub_cards([
+  {
+    'icon': 'federal',
+    'title': 'Federal records in 2026',
+    'href': page_url('id-records-federal'),
+    'summary': 'Passports and Social Security have different rules right now. Check before you apply or mail anything.'
+  },
+  {
+    'icon': 'checklist',
+    'title': 'After court checklist',
+    'href': page_url('id-records-after'),
+    'summary': 'Update Social Security, your license, your birth certificate, and other accounts in the right order.'
+  },
+  {
+    'icon': 'info',
+    'title': 'Get free or low-cost help',
+    'href': page_url('id-records-help'),
+    'summary': 'Legal aid, court self-help centers, and peer support across Oregon, Washington, and Utah.'
+  }
+]) }}
+
+<h2 id="help">Get help in Utah</h2>
+<ul>
+  <li>{{ ext('ID-UT-COURTS-SELF-HELP') }}: help with court forms and where to file.</li>
+  <li>{{ ext('ID-UT-COURTS-LEGAL-HELP') }}: the court's list of ways to find a lawyer or legal help.</li>
+  <li>{{ ext('ID-UT-MYPAPERWORK') }}</li>
+  <li><a href="{{ page_url('id-records-help') }}">More free and low-cost help</a></li>
+</ul>
+{% endblock %}
