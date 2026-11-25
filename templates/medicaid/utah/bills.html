@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Utah Medicaid</p>
+<h1>Medical bills from before you apply for Utah Medicaid</h1>
+    <p class="purpose">Utah Medicaid can cover some care from before you apply. Starting Jan.&nbsp;1, 2027, that window is shorter.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li data-show-until="2026-12-31"><strong>Through Dec.&nbsp;31, 2026:</strong> Most programs can cover care from up to 3 months before the month you apply. {{ src('MED-U02') }}</li>
+      <li><strong>Starting Jan.&nbsp;1, 2027:</strong> 1 month before the month you apply for Adult Expansion Medicaid. 2 months for most other Medicaid programs. {{ src('MED-U02') }}</li>
+      <li class="more"><strong>Utah's word for it:</strong> retroactive coverage.</li>
+      <li><strong>You ask for it:</strong> Utah describes this as coverage you can request for care you got before you applied.</li>
+    </ul>
+
+    <div class="callout">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>What this means for you</h2>
+      <p>Have unpaid medical bills from the last few months? Applying sooner may help. <a href="{{ page_url('medicaid-utah-apply') }}">How to apply</a></p>
+      <p>Questions about a bill? Call the Department of Workforce Services at <span class="nowrap">1-866-435-7414</span>.</p>
+    </div>
+{% endblock %}

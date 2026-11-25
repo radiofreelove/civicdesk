@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block head %}<script src="{{ asset('js/path.js') }}" defer></script>{% endblock %}
+{% block main %}
+<p class="kicker">Legal Name, ID &amp; Vital Records</p>
+<h1>Find your record-update path</h1>
+{{ m.lede("Answer a few quick questions to see only the steps that fit your situation—whether you are updating your name after marriage or divorce, filing a court petition, or updating a sex or gender designation. Birth-certificate questions are optional. Your answers never leave this page.") }}
+
+<div class="callout callout-note no-js-only">
+  <p class="callout-title"><strong>JavaScript is off, so use these full step-by-step pages instead:</strong></p>
+  <ul>
+    <li><a href="{{ page_url('id-records-oregon') }}">Oregon</a>, <a href="{{ page_url('id-records-washington') }}">Washington</a>, and <a href="{{ page_url('id-records-utah') }}">Utah</a></li>
+    <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></li>
+    <li><a href="{{ page_url('id-records-after') }}">Record-update order checklist</a></li>
+    <li><a href="{{ page_url('id-records-compare') }}">Compare Oregon, Washington, and Utah</a></li>
+  </ul>
+</div>
+
+<form id="path-form" class="path-form js-only" novalidate autocomplete="off">
+  <fieldset id="q-live">
+    <legend>1. Where do you live?</legend>
+    <label><input type="radio" name="live" value="or"> Oregon</label>
+    <label><input type="radio" name="live" value="wa"> Washington</label>
+    <label><input type="radio" name="live" value="ut"> Utah</label>
+    <label><input type="radio" name="live" value="other"> Another state</label>
+  </fieldset>
+
+  <fieldset id="q-change">
+    <legend>2. What do you want to update?</legend>
+    <label><input type="radio" name="change" value="marriage"> Name change after marriage or domestic partnership</label>
+    <label><input type="radio" name="change" value="divorce"> Restore or change a name through divorce</label>
+    <label><input type="radio" name="change" value="name"> Court-ordered name change</label>
+    <label><input type="radio" name="change" value="marker"> Sex or gender designation update</label>
+    <label><input type="radio" name="change" value="both"> Both name and sex or gender designation</label>
+  </fieldset>
+
+  <fieldset id="q-who">
+    <legend>3. Who is this for?</legend>
+    <label><input type="radio" name="who" value="adult"> Me, and I am 18 or older</label>
+    <label><input type="radio" name="who" value="parent"> My child (I am a parent or legal guardian)</label>
+    <label><input type="radio" name="who" value="minor"> Me, and I am under 18</label>
+  </fieldset>
+
+  <fieldset id="q-born">
+    <legend>4. Optional: Do you also want to update a birth certificate?</legend>
+    <p class="hint">Leave this blank or pick "Skip" if you only need Social Security, a driver license or ID, or a passport—most marriage and divorce name changes do not touch a birth certificate.</p>
+    <label><input type="radio" name="born" value="skip"> Skip — I am not updating a birth certificate</label>
+    <label><input type="radio" name="born" value="or"> Yes — Oregon birth certificate</label>
+    <label><input type="radio" name="born" value="wa"> Yes — Washington birth certificate</label>
+    <label><input type="radio" name="born" value="ut"> Yes — Utah birth certificate</label>
+    <label><input type="radio" name="born" value="other-us"> Yes — another U.S. state or territory</label>
+    <label><input type="radio" name="born" value="outside"> Born outside the United States</label>
+  </fieldset>
+
+  <div id="path-error" class="callout callout-watch" role="alert" hidden></div>
+
+  <div class="btn-row">
+    <button type="submit" class="btn">Show my steps</button>
+    <button type="reset" class="btn-secondary">Start over</button>
+  </div>
+</form>
+
+<section id="path-results" class="path-results" aria-labelledby="results-h" hidden>
+  <h2 id="results-h" tabindex="-1">Your steps</h2>
+  <p id="results-summary"></p>
+  <div id="results-body"></div>
+  <div class="btn-row">
+    <button type="button" class="btn" data-print>Print my steps</button>
+    <a class="btn-secondary" href="#path-form">Change my answers</a>
+  </div>
+</section>
+
+{#- ===== Result blocks filtered by static/js/path.js ===== -#}
+<div hidden>
+
+<template id="t-marriage-or">
+  <div class="result-block">
+    <h3>Marriage or domestic partnership certificate in Oregon</h3>
+    <ul>
+      <li>Under Oregon law, the name you choose from the allowed surname and middle-name options on your Oregon marriage or registered domestic partnership application becomes your legal name when the record is registered—no court petition is needed. {{ src('ID-OR-ORS-106') }}</li>
+      <li>Order one or more certified copies of your registered marriage or domestic partnership certificate from the county clerk who issued your license (or Oregon Vital Records). Ceremonial church or keepsake certificates are not accepted. {{ src('ID-OR-DMV-PROOF') }}</li>
+      <li>Want a brand-new name that is not one of the marriage-application surname options? Use an <a href="{{ page_url('id-records-oregon-court') }}">Oregon circuit court name-change petition</a> instead. {{ src('ID-OR-ORS-106') }}</li>
+    </ul>
+  </div>
+</template>
+
+<template id="t-marriage-wa">
+  <div class="result-block">
+    <h3>Certified marriage certificate in Washington</h3>
+    <ul>
+      <li>Order a certified copy of your marriage certificate from the Washington county auditor where your marriage license was filed after the ceremony. Church or wedding chapel forms are not accepted by Social Security or the Department of Licensing. {{ src('ID-WA-DOL-NAME') }} {{ src('ID-US-SSA-NAME') }}</li>
+      <li>If you want a completely new first name or a surname not supported by your marriage certificate, file a <a href="{{ page_url('id-records-washington-court') }}">Washington court name-change petition</a>.</li>
+    </ul>
+  </div>
+</template>
+
+<template id="t-marriage-ut">
+  <div class="result-block">
+    <h3>Certified marriage certificate in Utah</h3>
+    <ul>
+      <li>Request a certified copy of your registered marriage certificate from the Utah county clerk who issued your license. Social Security and the Utah Driver License Division require an official certified record, not a ceremonial certificate. {{ src('ID-UT-DLD-NAME') }} {{ src('ID-US-SSA-NAME') }}</li>
+      <li>If you are choosing a completely new first name or an unrelated surname, file a <a href="{{ page_url('id-records-utah-court') }}">Utah district court name-change petition</a>. {{ src('ID-UT-CODE-42-1') }}</li>
+    </ul>
+  </div>
+</template>
+
+<template id="t-marriage-other">
+  <div class="result-block">
+    <h3>Certified marriage certificate</h3>
+    <p>Request a certified copy of your filed marriage certificate from the county clerk, auditor, or vital records office that registered your marriage. Social Security and passport offices require an official certified copy, not a ceremonial keepsake. {{ src('ID-US-SSA-NAME') }}</p>
+  </div>
+</template>
+
+<template id="t-divorce-or">
+  <div class="result-block">
+    <h3>Divorce or dissolution judgment in Oregon</h3>
+    <ul>
+      <li>If your Oregon divorce, separation, or annulment is still open, ask the circuit court in your forms to restore a name you held before the marriage—Oregon law requires the judge to grant that request. {{ src('ID-OR-ORS-107') }}</li>
+      <li>Once signed, order certified copies of the General Judgment of Dissolution ({{ fact('or_fee_certified_copy') }}). {{ src('ID-OR-OJD-FEES') }}</li>
+      <li>If your divorce is already final without a name-change clause, or you want a brand-new name you did not hold before the marriage, file an <a href="{{ page_url('id-records-oregon-court') }}">Oregon circuit court name-change petition</a> ({{ fact('or_fee_petition') }}, fee waiver available). {{ src('ID-OR-ORS-107') }} {{ src('ID-OR-OJD-ADULT-PACKET') }}</li>
+    </ul>
+  </div>
+</template>
+
+<template id="t-divorce-wa">
+  <div class="result-block">
+    <h3>Divorce or dissolution decree in Washington</h3>
+    <ul>
+      <li>In a Washington dissolution or invalidity case, the court must restore a former name if you ask, and may also order a change to another name. {{ src('ID-WA-RCW-26-09-150') }}</li>
+      <li>Order certified copies of your signed Decree of Dissolution from the superior court clerk ({{ fact('wa_fee_cert_copy') }}). {{ src('ID-WA-RCW-36-18-016') }}</li>
+      <li>If your divorce decree was entered without a name change, file a <a href="{{ page_url('id-records-washington-court') }}">Washington court name-change petition</a> in district court (public) or superior court (sealed if safety or gender rules apply). {{ src('ID-WA-RCW-4-24-130') }}</li>
+    </ul>
+  </div>
+</template>
+
+<template id="t-divorce-ut">
+  <div class="result-block">
+    <h3>Divorce decree in Utah</h3>
+    <ul>
+      <li>If your Utah divorce case is open, include a request to restore a former name in your divorce petition or stipulation, then order certified copies bearing the court's seal ({{ fact('ut_fee_cert_copy') }}). {{ src('ID-UT-COURTS-FEES') }} {{ src('ID-UT-DLD-NAME') }}</li>
+      <li>If your divorce decree is already final without a name-restoration order, or you want a different new name, file a <a href="{{ page_url('id-records-utah-court') }}">Utah district court name-change petition</a> ({{ fact('ut_fee_petition') }}, fee waiver available). {{ src('ID-UT-CODE-42-1') }}</li>
+    </ul>
+  </div>
+</template>
+
+<template id="t-divorce-other">
+  <div class="result-block">
+    <h3>Divorce decree where you live</h3>
+    <p>If your signed divorce decree includes a clause restoring or changing your name, order certified copies from the court clerk. If your divorce is already final without a name-change order, check your local court's general adult name-change petition forms. {{ src('ID-US-SSA-NAME') }}</p>
+  </div>
+</template>
+
+<template id="t-court-or">
+  <div class="result-block">
+    <h3>Court in Oregon</h3>
+    <ul>
+      <li data-who="adult" data-change="name">File a name change petition at the circuit court in the county where you live. The fee is {{ fact('or_fee_petition') }}, or ask to waive it. Name-only cases are public unless sealed through Oregon's Address Confidentiality Program. {{ src('ID-OR-OJD-ADULT-PACKET') }} {{ src('ID-OR-ORS-33') }}</li>
+      <li data-who="adult" data-change="marker">You may not need court. Oregon's DMV and Oregon's birth certificate office do not require a court order. If another office asks for one, file for a legal sex change at any Oregon circuit court. These cases are confidential. {{ src('ID-OR-2026-CH52') }}</li>
+      <li data-who="adult" data-change="both">File one petition for both at any Oregon circuit court. The fee is {{ fact('or_fee_petition') }}, or ask to waive it. Cases that include a sex change are confidential. {{ src('ID-OR-2026-CH52') }}</li>
+      <li data-who="parent">As a parent or guardian, you file the minor forms. A name change goes to the county where your child lives. A sex change can go to any circuit court. For a name change, the other parent usually must get written notice. The filing fee is {{ fact('or_fee_petition') }}, or ask to waive it. {{ src('ID-OR-OJD-ADULT-PACKET') }} {{ src('ID-OR-OJD-FEES') }}</li>
+      <li data-who="minor">Under Oregon's forms, a parent, guardian, or legal representative files for someone under 18, unless you are emancipated. If your parents will not help, talk with a lawyer about your options. The court filing fee is {{ fact('or_fee_petition') }}, or ask to waive it. {{ src('ID-OR-OJD-ADULT-PACKET') }} {{ src('ID-OR-OJD-FEES') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-oregon-court') }}">Oregon court steps</a></p>
+  </div>
+</template>
+
+<template id="t-court-wa">
+  <div class="result-block">
+    <h3>Court in Washington</h3>
+    <ul>
+      <li data-change="name both">For a court name change, choose a public case at any district court, or a sealed case at any superior court when sealing applies (including domestic violence, stalking, harassment, or gender expression or identity). Every name change has a hearing. {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-WLH-NAME') }}</li>
+      <li data-change="marker both">No court is needed to change the gender marker on a Washington license or a Washington birth certificate. A court order that confirms your gender is optional and can help with other states or agencies. {{ src('ID-WA-WLH-GENDER-ORDER') }}</li>
+      <li data-who="parent" data-change="name both">A parent or guardian can file a child's name change, sealed in superior court when statutory sealing grounds apply. Parents get notice, and some courts ask for the child's consent at 13 or older. {{ src('ID-WA-WLH-NAME') }}</li>
+      <li data-who="minor" data-change="name both">Because you are under 18, a parent or guardian usually files a name change for you. Talk with a parent, guardian, or legal aid about your options. {{ src('ID-WA-WLH-NAME') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-washington-court') }}">Washington court steps</a></p>
+  </div>
+</template>
+
+<template id="t-court-ut">
+  <div class="result-block">
+    <h3>Court in Utah</h3>
+    <ul>
+      <li data-who="adult" data-change="name both">File in the district court for the county where you have lived for at least one year. There is a hearing. {{ src('ID-UT-CODE-42-1') }}</li>
+      <li data-who="adult" data-change="marker both">For a sex designation change, the judge must find clear and convincing evidence of six things, including six months of living in the requested sex designation. Filed papers are private; case history and public hearings are not. {{ src('ID-UT-CODE-26B-8-111') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+      <li data-who="parent" data-change="marker both">Utah does not allow a sex designation change for a child younger than 15 years and 6 months, or without permission from the parent or guardian with legal custody. The order does not take effect until 16. {{ src('ID-UT-CODE-26B-8-111') }}</li>
+      <li data-who="parent" data-change="name both">For a child's name change, file in the district court in the county where your child has lived for the past year. The other parent signs a consent form, or must be formally served if they do not agree. There is a hearing. {{ src('ID-UT-COURTS-MINOR-CHANGE') }}</li>
+      <li data-who="minor" data-change="marker both">Because you are under 18, Utah does not allow a sex designation change until you are at least 15 years and 6 months old, and a parent or guardian with legal custody must give permission and file for you. The order does not take effect until you turn 16. {{ src('ID-UT-CODE-26B-8-111') }}</li>
+      <li data-who="minor" data-change="name both">For a name change, a parent or guardian must file for you in the district court for the county where you have lived for the past year. If a second parent is listed, that parent signs a consent form or must be formally served if they do not agree. There is a hearing. {{ src('ID-UT-COURTS-MINOR-CHANGE') }}</li>
+      <li data-who="adult parent">The general civil court filing fee is {{ fact('ut_fee_petition') }} (confirm with the clerk), or ask to waive it. {{ src('ID-UT-COURTS-FEES') }}</li>
+      <li data-who="minor">The general civil court filing fee is {{ fact('ut_fee_petition') }} (confirm with the clerk), or your parent or guardian can ask to waive it. {{ src('ID-UT-COURTS-FEES') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-utah-court') }}">Utah court steps</a></p>
+  </div>
+</template>
+
+<template id="t-court-other">
+  <div class="result-block">
+    <h3>Court where you live</h3>
+    <p>CivicDesk covers state courts in Oregon, Washington, and Utah. Start with your state court's self-help pages or local legal aid where you live. The federal Social Security and passport steps below apply nationwide.</p>
+  </div>
+</template>
+
+<template id="t-birth-or">
+  <div class="result-block">
+    <h3>Birth certificate: Oregon</h3>
+    <ul>
+      <li data-change="name marker both">Use form OHA 2673, notarized, to change name, sex (M, F, or X), or both with no court order, or send a certified court judgment instead. Oregon accepts court orders from other states too. {{ src('ID-OR-OHA-GENDER') }} {{ src('ID-OR-OHA-COURT-ORDER') }}</li>
+      <li data-change="marriage divorce">A marriage certificate or divorce decree normally updates Social Security, your ID, and your passport without changing your birth certificate. Amending an Oregon birth record's name requires either a court judgment or the one-time OHA 2673 administrative process. {{ src('ID-OR-OHA-COURT-ORDER') }}</li>
+      <li data-who="parent minor" data-change="name marker both">For someone under 18, a parent or legal guardian applies.</li>
+      <li>Cost when amending an Oregon birth record: {{ fact('or_oha_amend_fee') }} plus {{ fact('or_oha_cert_fee') }}. {{ src('ID-OR-OHA-GENDER') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-oregon-birth') }}">Oregon birth certificate details</a></p>
+  </div>
+</template>
+
+<template id="t-birth-wa">
+  <div class="result-block">
+    <h3>Birth certificate: Washington</h3>
+    <ul>
+      <li data-change="marker both">Sex designation: use the Department of Health form, not a court order. M, F, or X. No fee to amend; {{ fact('wa_doh_cert_fee') }}. {{ src('ID-WA-DOH-SEX') }}</li>
+      <li data-change="marker both" data-who="adult">Adults use DOH 422-143, signed in front of a notary. {{ src('ID-WA-DOH-422-143') }}</li>
+      <li data-change="marker both" data-who="parent minor">Minors use DOH 422-144, signed by a parent or guardian and a licensed provider. {{ src('ID-WA-DOH-422-144') }}</li>
+      <li data-change="name both">Legal name on birth certificate: send a certified court order with form DOH 422-126. {{ src('ID-WA-DOH-422-126') }}</li>
+      <li data-change="marriage divorce">Marriage and divorce name changes update Social Security and your driver license rather than your birth certificate unless you separately obtain a court-ordered birth-record name amendment. {{ src('ID-WA-DOH-AMEND-BIRTH') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-washington-birth') }}">Washington birth certificate details</a></p>
+  </div>
+</template>
+
+<template id="t-birth-ut">
+  <div class="result-block">
+    <h3>Birth certificate: Utah</h3>
+    <ul>
+      <li data-change="name marker both">Utah amends a birth certificate with a certified court order, form 902, and {{ fact('ut_vital_amend_fee') }}. {{ src('ID-UT-VITAL-902-2026') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+      <li data-change="marker both">The new certificate does not show what changed unless you ask, and Vital Records also issues and keeps an amendment history. {{ src('ID-UT-CODE-26B-8-111') }}</li>
+      <li data-change="marriage divorce">Marriage and divorce name changes normally update Social Security and your driver license without amending your birth certificate. {{ src('ID-UT-DLD-NAME') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-utah-birth') }}">Utah birth certificate details</a></p>
+  </div>
+</template>
+
+<template id="t-birth-other-us">
+  <div class="result-block">
+    <h3>Birth certificate: your birth state</h3>
+    <p>Only the state or territory where you were born can amend your birth certificate, and each vital records office sets its own rules. Find your birth state's office: {{ ext('ID-US-CDC-W2W') }}. {{ src('ID-US-CDC-W2W') }}</p>
+  </div>
+</template>
+
+<template id="t-birth-outside">
+  <div class="result-block">
+    <h3>Birth certificate: born outside the U.S.</h3>
+    <p>A U.S. court or state agency cannot amend a birth record issued by another country. If you hold U.S. immigration or citizenship documents, check USCIS rules or consult an immigration attorney before updating records. {{ m.badge('our_reading') }}</p>
+  </div>
+</template>
+
+<template id="t-id-or">
+  <div class="result-block">
+    <h3>Driver license or ID: Oregon</h3>
+    <ul>
+      <li data-change="marriage divorce name both">Update your name with Social Security first. Then visit an Oregon DMV office in person with an original or certified marriage certificate, domestic partnership certificate, divorce judgment, or court order, plus identity and address proof, and pay {{ fact('or_dmv_fee') }}. {{ src('ID-OR-DMV-NAME') }} {{ src('ID-OR-DMV-PROOF') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}</li>
+      <li data-change="marker both">Choose M, F, or X at the Oregon DMV with no medical proof needed, in person, and pay the replacement or renewal fee. {{ src('ID-OR-DMV-GENDER') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-oregon-id') }}">Oregon license and ID details</a></p>
+  </div>
+</template>
+
+<template id="t-id-wa">
+  <div class="result-block">
+    <h3>Driver license or ID: Washington</h3>
+    <ul>
+      <li data-change="marriage divorce name both">Update your name with Social Security first, then make an in-person Department of Licensing appointment and bring identity proof plus a certified marriage certificate, certified divorce decree, or certified court order (for sealed Superior Court orders, DOL's Identity Management Team can assist at <code>dol-psdidentitymanagement@dol.wa.gov</code>). {{ src('ID-WA-DOL-NAME') }}</li>
+      <li data-change="marker both">Choose M, F, or X in person or by mail with form 520043. Free if you only change the gender designation. {{ src('ID-WA-DOL-GENDER') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-washington-id') }}">Washington license and ID details</a></p>
+  </div>
+</template>
+
+<template id="t-id-ut">
+  <div class="result-block">
+    <h3>Driver license or ID: Utah</h3>
+    <ul>
+      <li data-change="marriage divorce name both">Bring official legal name-change proof—such as a certified marriage certificate, divorce decree, or court-sealed name-change order—to an in-person Utah Driver License Division appointment ($23 replacement fee). Update Social Security first so records match. {{ src('ID-UT-DLD-NAME') }} {{ src('ID-UT-DLD-REPLACEMENT') }}</li>
+      <li data-change="marker both">Utah's Driver License Division does not publish written sex-marker update instructions online. {{ m.badge('not_confirmed') }} Contact DLD before your appointment. {{ src('ID-UT-CODE-53-3-205') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-utah-id') }}">Utah license and ID details</a></p>
+  </div>
+</template>
+
+<template id="t-id-other">
+  <div class="result-block">
+    <h3>Driver license or ID</h3>
+    <p>Update your name with Social Security first, then bring your certified marriage certificate, divorce decree, or court order to your state's motor vehicle agency. {{ m.badge('our_reading') }} {{ src('ID-US-SSA-NAME') }}</p>
+  </div>
+</template>
+
+<template id="t-federal">
+  <div class="result-block">
+    <h3>Social Security and passports</h3>
+    <ul>
+      <li data-change="marriage divorce name both">Social Security: after your name legally changes by marriage, divorce, or court order, request a free replacement Social Security card showing your new name. You can often start online. {{ src('ID-US-SSA-NAME') }}</li>
+      <li data-change="marriage divorce">Passports: update your passport name with Form DS-5504 (no fee within 1 year of passport issue), DS-82 renewal, or DS-11 in person, attaching your certified marriage certificate or divorce decree. {{ src('ID-US-STATE-CHANGE') }}</li>
+      <li data-change="marker both">Social Security stopped processing sex-marker changes and restricts NUMIDENT sex fields to sex at birth. {{ src('ID-US-SSA-POMS-10212-200') }}</li>
+      <li data-change="name marker both">Passports: new, renewed, and name-updated U.S. passports currently print sex assigned at birth, and the X marker is no longer issued. Read the federal guide carefully before mailing an existing passport. {{ src('ID-US-STATE-SEX-MARKER') }} {{ src('ID-US-HRC-PASSPORT') }}</li>
+    </ul>
+    <p><a href="{{ page_url('id-records-federal') }}">Passports and Social Security details</a></p>
+  </div>
+</template>
+
+<template id="t-help-or">
+  <div class="result-block">
+    <h3>Help in Oregon</h3>
+    <p>{{ ext('ID-OR-OJD-SELF-HELP') }}. Oregon State Bar referral service: {{ fact('or_osb_lrs') }}. <a href="{{ page_url('id-records-help') }}">More free and low-cost help</a></p>
+  </div>
+</template>
+<template id="t-help-wa">
+  <div class="result-block">
+    <h3>Help in Washington</h3>
+    <p>CLEAR legal aid line: {{ fact('wa_clear') }}. {{ ext('ID-WA-WLH-NAME') }}. <a href="{{ page_url('id-records-help') }}">More free and low-cost help</a></p>
+  </div>
+</template>
+<template id="t-help-ut">
+  <div class="result-block">
+    <h3>Help in Utah</h3>
+    <p>{{ ext('ID-UT-COURTS-SELF-HELP') }}. {{ ext('ID-UT-MYPAPERWORK') }}. <a href="{{ page_url('id-records-help') }}">More free and low-cost help</a></p>
+  </div>
+</template>
+<template id="t-help-other">
+  <div class="result-block">
+    <h3>Help</h3>
+    <p>Check your local court self-help center or <a href="{{ page_url('id-records-help') }}">national legal help directories</a>.</p>
+  </div>
+</template>
+
+<template id="t-after">
+  <div class="result-block">
+    <h3>After your core IDs</h3>
+    <p data-court="yes">Update payroll, schools, banks, voter registration, and <a href="{{ page_url('medicaid') }}">Medicaid or public benefits</a> in order. <a href="{{ page_url('id-records-after') }}">Open the printable after-court checklist</a>.</p>
+    <p data-court="no">Update payroll, schools, banks, voter registration, and <a href="{{ page_url('medicaid') }}">Medicaid or public benefits</a> in order. <a href="{{ page_url('id-records-after') }}">Open the printable record-update checklist</a>.</p>
+  </div>
+</template>
+
+</div>
+{% endblock %}

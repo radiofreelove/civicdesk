@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Oregon Health Plan (OHP)</p>
+<h1>Immigration status and OHP</h1>
+    <p class="purpose">Your immigration status alone does not stop you from getting full OHP benefits.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>Healthier Oregon:</strong> It gives full OHP benefits to people who qualify, no matter their immigration status. You still need to meet income and other rules.</li>
+      <li><strong>New rules apply:</strong> Adults ages 19 to 64 in Healthier Oregon also have to meet the work or activity rules, unless a reason fits them.</li>
+      <li><strong>Open Card:</strong> On Jan.&nbsp;1, 2027, Healthier Oregon members move from a local plan (CCO) to OHP Open Card. Benefits stay the same. Your doctors may change. {{ src('MED-S43') }}</li>
+      <li><strong>This site:</strong> It never asks about your immigration status.</li>
+      <li><strong>Next:</strong> <a href="{{ page_url('medicaid-oregon-help') }}">Free help and other languages</a>.</li>
+    </ul>
+
+    <h2>Moving to Open Card</h2>
+    <p>On Jan.&nbsp;1, 2027, Healthier Oregon members move from their coordinated care organization (CCO) to OHP Open Card. Full OHP benefits stay the same. <span class="inline-tag-link"><a href="https://www.oregon.gov/oha/HSD/OHP/Announcements/HR1-Changes0426.pdf" rel="noreferrer">Read OHA's announcement</a>&nbsp;<span class="tag">PDF</span></span></p>
+    <ul>
+      <li>Ask your doctors and clinics if they take OHP Open Card.</li>
+      <li>Search for providers at <a href="https://ohpopencard.org/" rel="noreferrer">OHPOpenCard.org</a>.</li>
+      <li>Starting Jan.&nbsp;1, 2027, you can call Open Card at <span class="nowrap">800-562-4620</span> for help finding providers.</li>
+    </ul>
+
+    <h2>A federal immigration rule changed</h2>
+    <p>A federal rule called "public charge" changed on Sept.&nbsp;18, 2026. OHA says immigration officers may now look at more kinds of public benefits:</p>
+    <ul>
+      <li>The change does not change who qualifies for benefits.</li>
+      <li>Most benefits you got before Sept.&nbsp;18, 2026, including OHP, will not count. Cash assistance for income maintenance and long-term care in an institution still can. {{ src('MED-S12') }} {{ src('MED-S48') }}</li>
+    </ul>
+    <p class="more">On Sept.&nbsp;14, 2026, New York, Oregon, Washington, 18 other states, Pennsylvania's governor, and D.C. sued to block the rule (State of New York v. DHS, No.&nbsp;1:26-cv-07978). Parallel suits include City of New York v. DHS (No.&nbsp;1:26-cv-07982) and Make the Road New York v. DHS (No.&nbsp;1:26-cv-08129). As of Nov.&nbsp;21, 2026, no court order has blocked it. {{ src('MED-S51') }} {{ src('MED-S49') }}</p>
+    <p><a href="https://www.oregon.gov/OHA/ERD/Pages/public-charge.aspx" rel="noreferrer">Read OHA's public charge page</a> before you decide.</p>
+
+    <h2>Talk to an immigration lawyer</h2>
+    <p>If your situation is complex, talk to an immigration lawyer. OHA lists these places to find one:</p>
+    <ul>
+      <li><a href="https://www.ailalawyer.com/" rel="noreferrer">Immigration lawyer search</a> (American Immigration Lawyers Association)</li>
+      <li><a href="https://www.immigrationadvocates.org/" rel="noreferrer">Immigration legal services directory</a> (search for Oregon)</li>
+      <li><a href="https://equitycorps.org/" rel="noreferrer">Equity Corps of Oregon</a> (may offer free help at Portland Immigration Court)</li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,193 @@
+# Shared dated facts for CivicDesk guides. Every entry cites MED-* or ID-* sources.
+
+or_fee_petition:
+  value: $124
+  sources:
+  - ID-OR-OJD-FEES
+  note: Change of name or change of sex, ORS 21.145. One fee for a combined petition (our reading of the fee schedule).
+or_fee_certified_copy:
+  value: $5 per certified copy, plus 25 cents a page for paper copies
+  sources:
+  - ID-OR-OJD-FEES
+or_fee_waiver_application:
+  value: no fee to apply
+  sources:
+  - ID-OR-OJD-FEES
+or_confidential_date:
+  value: July 1, 2026
+  sources:
+  - ID-OR-2026-CH52
+or_oha_amend_fee:
+  value: $35
+  sources:
+  - ID-OR-OHA-GENDER
+or_oha_cert_fee:
+  value: $25 per certificate ($30 for a full image certificate for births from 1903 to 2007)
+  sources:
+  - ID-OR-OHA-GENDER
+or_oha_expedite:
+  value: $30 extra
+  sources:
+  - ID-OR-OHA-GENDER
+or_oha_mail:
+  value: Oregon Vital Records, Amendments Unit, PO Box 14050, Portland, OR 97293
+  sources:
+  - ID-OR-OHA-GENDER
+or_oha_dropbox:
+  value: 800 NE Oregon Street, Portland, OR 97232 (drop box; no in-person help)
+  sources:
+  - ID-OR-OHA-GENDER
+or_oha_email:
+  value: CHS.Amendments@oha.oregon.gov
+  sources:
+  - ID-OR-OHA-GENDER
+or_osb_lrs:
+  value: 503-684-3763 or 800-452-7636
+  sources:
+  - ID-OR-OJD-ADULT-PACKET
+or_court_name:
+  value: Yes, in almost every case
+  sources:
+  - ID-OR-ORS-33
+  - ID-OR-OJD-ADULT-PACKET
+  note: 'Quick facts: the legal name row of the ''Do you need court?'' table on the Oregon court page, backed by
+    Oregon''s name-change statute and adult court packet.'
+or_court_sex:
+  value: No for an Oregon license or ID, or an Oregon birth certificate
+  sources:
+  - ID-OR-DMV-GENDER
+  - ID-OR-OHA-GENDER
+  note: 'Quick facts: joins the license row and the Oregon birth certificate row of the ''Do you need court?'' table
+    on the Oregon page. Both rows say No.'
+or_dmv_fee:
+  value: $30 replacement license or $40 replacement ID ($30 extra for REAL ID), or your renewal fee
+  sources:
+  - ID-OR-DMV-GENDER
+  - ID-OR-DMV-DRIVER-INFO
+  note: 'Quick facts: the driver license line of ''What it costs'' on the Oregon court page and ''How to update
+    your Oregon card'' on the Oregon license page. Oregon DMV Driver Information lists $30 replacement license or
+    permit ($60 REAL ID), $40 replacement ID ($70 REAL ID), and 8-year renewal at $54 license ($84 REAL ID) or $43
+    ID ($73 REAL ID).'
+wa_fee_sealed:
+  value: $290 statewide filing fee, plus any local charges
+  sources:
+  - ID-WA-RCW-36-18-020
+  - ID-WA-2025-CH357
+  note: 'Statewide statutory Washington superior court civil filing fee: $200 under RCW 36.18.020(2)(a) (''including,
+    but not limited to an action for restitution, adoption, or change of name'') + $40 judicial stabilization surcharge
+    under RCW 36.18.020(5)(c) + $50 surcharge under RCW 36.18.020(6) enacted by 2025 c 357 (2nd Substitute H.B.
+    1207, effective July 27, 2025). Corroborated locally by Clallam County Superior Court Clerk''s Fee Schedule
+    115-A (ID-WA-SUPERIOR-FEES). WashingtonLawHelp''s May 8, 2025 ''about $260'' estimate predated the July 27,
+    2025 $50 statutory surcharge.'
+wa_fee_district_example:
+  value: $287.50
+  sources:
+  - ID-WA-KITSAP-FEE-SCHEDULE
+  note: Kitsap County District Court's live fee schedule lists $287.50 for Name Change ($83 court fees plus $204.50
+    auditor recording).
+wa_fee_cert_copy:
+  value: $5 for the first page, plus $1 per extra page
+  sources:
+  - ID-WA-RCW-36-18-016
+  note: Statewide statutory Washington superior court certified copy fee under RCW 36.18.016(4)(a) ('a fee of $5
+    will be charged for the first page plus a fee of $1 for each additional page'), corroborated locally by Clallam
+    County Superior Court Clerk's Fee Schedule 115-A (ID-WA-SUPERIOR-FEES).
+wa_doh_cert_fee:
+  value: $25 per certified copy
+  sources:
+  - ID-WA-DOH-SEX
+wa_doh_mail:
+  value: Washington State Department of Health, PO Box 47814, Olympia, WA 98504-7814
+  sources:
+  - ID-WA-DOH-SEX
+wa_clear:
+  value: 1-888-201-1014
+  sources:
+  - ID-WA-COURTS-FORMS
+wa_court_name:
+  value: 'Yes. You pick one of two courts: public or sealed'
+  sources:
+  - ID-WA-RCW-4-24-130
+  note: 'Quick facts: ''Change your name in court'' on the Washington page (''You pick one of two courts'') and
+    its table of the public and sealed options.'
+wa_court_marker:
+  value: No for a Washington license or a Washington birth certificate
+  sources:
+  - ID-WA-DOL-GENDER
+  - ID-WA-DOH-SEX
+  note: 'Quick facts: the first sentence of ''Change your gender marker'' on the Washington page.'
+wa_doh_amend_fee:
+  value: no fee to change the sex designation
+  sources:
+  - ID-WA-DOH-SEX
+  note: 'Quick facts: the birth certificate line of ''What it costs'' on the Washington page, which pulls this value.'
+wa_dol_fee:
+  value: free if you only change the gender designation
+  sources:
+  - ID-WA-DOL-GENDER
+  note: 'Quick facts: the license line of ''What it costs'' on the Washington page, which pulls this value.'
+ut_fee_petition:
+  value: $375
+  sources:
+  - ID-UT-CODE-78A-2-301
+  - ID-UT-COURTS-FEES
+  reading: true
+  note: General filing fee for a new civil case under Utah Code 78A-2-301(1)(a) (effective May 6, 2026, superseded
+    Jan. 1, 2027; 2026 H.B. 540 version effective Jan. 1, 2027 keeps $375 unchanged). Utah's fee schedule does not
+    list name or sex changes separately, though Utah Courts links its fee page from the name and sex change page;
+    we read $375 as the fee that applies.
+ut_fee_cert_copy:
+  value: $4 per document plus 50 cents per page
+  sources:
+  - ID-UT-COURTS-FEES
+ut_vital_mail:
+  value: Vital Records and Statistics, PO Box 141012, Salt Lake City, UT 84114-1012
+  sources:
+  - ID-UT-COURTS-SEX-CHANGE
+ut_registry_mail:
+  value: Offender Registration Program, Utah Bureau of Criminal Identification, 4315 South 2700 West, Taylorsville,
+    UT 84129, or registry@utah.gov
+  sources:
+  - ID-UT-COURTS-SEX-CHANGE
+ut_court_name:
+  value: Yes. It needs a year of living in your county and a hearing
+  sources:
+  - ID-UT-CODE-42-1
+  - ID-UT-COURTS-SEX-CHANGE
+  note: 'Quick facts: the big picture line on the Utah page (''Utah uses court for both. A name change needs a year
+    of living in your county and a hearing.''), sourced in ''Can you ask for a name change?'' and step 3.'
+ut_court_sex:
+  value: Yes. It needs a judge to find strong proof of six things
+  sources:
+  - ID-UT-CODE-26B-8-111
+  note: 'Quick facts: the big picture line on the Utah page (''A sex designation change needs a judge to find strong
+    proof of six things.''), sourced in ''What you must prove for a sex designation change.'''
+ut_vital_amend_fee:
+  value: $25 amendment fee plus $25 for a certified copy ($50 total), and $40 extra if sealing a record
+  sources:
+  - ID-UT-VITAL-FEES
+  - ID-UT-COURTS-SEX-CHANGE
+  note: 'Quick facts: the Vital Records line of ''What it costs'' on the Utah page, which pulls this value.'
+ut_hb183_status:
+  value: H.B. 183, a 2026 bill that would have changed these rules, failed when the session ended March 6, 2026
+  sources:
+  - ID-UT-HB183-NOTICE
+  - ID-UT-HB183-LEGISCAN
+  note: 'Quick facts: shortens the ''What happened in 2026'' box on the Utah page. March 6, 2026 failed status comes
+    from LegiScan, not an official Utah Legislature bill page.'
+translifeline_phone:
+  value: (877) 565-8860
+  sources:
+  - ID-US-TRANSLIFELINE
+usts_name_none:
+  value: 48%
+  sources:
+  - ID-DATA-USTS-2022
+usts_gender_none:
+  value: 59%
+  sources:
+  - ID-DATA-USTS-2022
+usts_mistreated:
+  value: 22%
+  sources:
+  - ID-DATA-USTS-2022

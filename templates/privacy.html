@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Privacy and shared-computer safety</p>
+<h1>Zero cookies. Zero analytics. Built for shared computers.</h1>
+{{ m.lede("CivicDesk is designed for public libraries, clinic kiosks, and shared household phones or computers. Nothing you read, select, or check is sent to us or shared with third parties.") }}
+
+<h2 id="collect">What we collect</h2>
+<ul>
+  <li><strong>Nothing.</strong> No accounts, no cookies, no analytics scripts, no ad pixels, and no third-party fonts or trackers.</li>
+  <li><strong>Strict Content Security Policy:</strong> Every page instructs your browser to block network connections to outside servers (<code>connect-src 'none'</code> and <code>form-action 'none'</code>) and refuses framing (<code>X-Frame-Options: DENY</code> and <code>frame-ancestors 'none'</code>).</li>
+  <li><strong>Interactive tools stay in page memory:</strong> Answers in the <a href="{{ page_url('start') }}">2-question router</a>, the <a href="{{ page_url('medicaid') }}">1-minute Medicaid checks</a>, and the <a href="{{ page_url('id-records-path') }}">ID &amp; records path finder</a> are never saved or transmitted. Reloading the page clears them.</li>
+  <li><strong>Sole host:</strong> CivicDesk is hosted exclusively on Cloudflare Pages. Cloudflare processes basic network request data (such as IP addresses) to deliver web pages and mitigate attacks; its policy states no fixed retention period for edge logs. CivicDesk enables zero host analytics. {{ src('ID-HOST-CLOUDFLARE-PRIVACY') }}</li>
+</ul>
+
+<h2 id="referrer">Outbound links to government agencies</h2>
+<p>Every page sets <code>Referrer-Policy: no-referrer</code>. When you follow a link from CivicDesk to a court or agency website, your browser does not tell that website which CivicDesk page you came from. Once you open an outside website, its own privacy rules apply.</p>
+
+<h2 id="saved">What can be saved on this device</h2>
+<ul>
+  <li><strong>Reading settings</strong> (text size, color theme, spacing, font, and short version) save in your browser's local storage only when you change them.</li>
+  <li><strong>Step checklists</strong> save on your device only if you turn on "Remember my checklist on this device" inside Reading settings.</li>
+  <li>On a shared computer, open <strong>Reading settings</strong> and select <strong>Forget everything saved on this device</strong> when you finish.</li>
+</ul>
+
+<h2 id="leave">Scoped "Leave quickly" control</h2>
+<ul>
+  <li>Pages in <a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records</a> and domestic-safety exemption callouts include a calm <strong>Leave quickly</strong> control (and a triple-<strong>Shift</strong> keyboard shortcut when not typing in a text box).</li>
+  <li>Using <strong>Leave quickly</strong> blanks the current screen and replaces the current tab entry with <code>weather.gov</code>.</li>
+  <li><strong>Browser history limit:</strong> Replacing the current page does not erase earlier pages you visited in the same tab. For stronger privacy on a monitored device, open a Private or Incognito window before browsing and clear recent history when done.</li>
+</ul>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Washington Apple Health</p>
+<h1>Turned down for Apple Health? You have options.</h1>
+    <p class="purpose">This page explains what to do if the state says no or your coverage ends.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>Ask for a hearing:</strong> If Apple Health is denied, ended, or changed, you have 90 days from the notice date to ask. {{ src('MED-WA19') }} {{ src('MED-WA29') }}</li>
+      <li><strong>Keep coverage:</strong> If coverage ends or changes, ask fast to keep it during your appeal. You cannot keep coverage for a denied application. {{ src('MED-WA17') }} {{ src('MED-WA29') }}</li>
+      <li><strong>Missed a renewal:</strong> You have 90 days to send it and get coverage back. {{ src('MED-WA16') }}</li>
+      <li><strong>Open all year:</strong> Apple Health enrollment is open all year.</li>
+      <li><strong>Next:</strong> <a href="{{ page_url('medicaid-washington-apply') }}">How to apply</a>, or <a href="{{ page_url('medicaid-washington-help') }}">free help and phone numbers</a>.</li>
+    </ul>
+
+    <div class="warn">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Heads up</span></p>
+      <h2>Check your own letter</h2>
+      <p>Your letter lists your deadlines. If your letter and this page differ, follow your letter.</p>
+    </div>
+
+    <h2>A new choice for states</h2>
+    <p>On Nov.&nbsp;17, 2026, HCA announced Washington will pursue delayed enforcement of the work rules (pending federal approval). Through June&nbsp;30, 2027, people in Apple Health for Adults will not lose or be denied coverage for not meeting the work rules. Six-month renewals and the 1-month past-bills limit still start Jan.&nbsp;1, 2027. {{ src('MED-WA27') }} {{ src('MED-WA22') }}</p>
+    <p>This follows a Nov.&nbsp;13, 2026 federal choice (subject to federal approval). A state can still say no, or end coverage, for other reasons, such as income. <a href="{{ page_url('medicaid-washington-rules#state-choice') }}">More about this choice</a></p>
+    <p class="more"><strong>Court case:</strong> On Nov.&nbsp;5, 2026, Washington, Oregon, and two other states sued the federal government over the work rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-WA14') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+
+    <h2>Ask for a hearing</h2>
+    <ul>
+      <li><strong>Who can ask:</strong> A person who got a decision letter and disagrees with it.</li>
+      <li><strong>Who to ask:</strong> The Office of Administrative Hearings. Ask online, or call <span class="nowrap">1-800-583-8271</span>.</li>
+      <li><strong>Deadline:</strong> You have 90 days from the date on the notice if Apple Health is denied, ended, or changed. {{ src('MED-WA19') }} {{ src('MED-WA29') }}</li>
+    </ul>
+    <p class="more">You may not have a right to a hearing if a change in state or federal law automatically affects everyone in a program the same way. {{ src('MED-WA29') }}</p>
+    <p class="more">The Health Care Authority (HCA) explains the steps on its page: <a href="https://www.hca.wa.gov/about-hca/file-appeal-apple-health-medicaid" rel="noreferrer">File an appeal: Apple Health (Medicaid)</a>.</p>
+
+    <h2>If coverage ends or changes: keep coverage while you appeal</h2>
+    <p>If Apple Health ends or changes, you can ask to keep coverage during your appeal. Your hearing request must arrive by one of these dates: {{ src('MED-WA17') }} {{ src('MED-WA29') }}</p>
+    <ul>
+      <li>The 10th day after the notice was sent</li>
+      <li>The last day of the month before the change takes effect</li>
+    </ul>
+    <p class="more">You cannot get continued coverage when appealing a denied application. If you keep coverage and lose your hearing, you may have to pay back up to 60 days of care. Also, you cannot keep coverage if the change is due only to a new law or rule, unless there is a question about whether the rule applies to you. {{ src('MED-WA17') }} {{ src('MED-WA29') }}</p>
+
+    <h2>If a health plan made the decision</h2>
+    <ol class="steps">
+      <li>Go through the health plan's own grievance and appeal process first.</li>
+      <li>The plan sends a notice of resolution. Your hearing request must arrive within 120 calendar days of that notice.</li>
+    </ol>
+
+    <h2>If coverage ended at a renewal</h2>
+    <p>Did coverage end because a renewal was not finished? You have 90 days from the day coverage ended to send the completed renewal.</p>
+    <p>Until Jan.&nbsp;1, 2027, the state rule says coverage comes back with no gap, if you are still eligible. A new version of the rule starts Jan.&nbsp;1, 2027. It keeps the 90 days. It says you do not need a new application. It no longer says "with no gap."</p>
+
+    <h2>Applying</h2>
+    <p>Apple Health enrollment is open all year. <a href="{{ page_url('medicaid-washington-apply') }}">How to apply</a></p>
+    <p>If you meet the rules now, or a reason fits you now, you may qualify. <a href="{{ page_url('medicaid-washington-check') }}">Take the 1-minute check</a>.</p>
+
+    <h2>Free help</h2>
+    <p>Free local help is available from navigators, community-based enrollment specialists, and Apple Health Community Connectors. <a href="{{ page_url('medicaid-washington-help') }}">Free help and phone numbers</a></p>
+{% endblock %}

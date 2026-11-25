@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<h1>Government rules and paperwork, explained in plain words.</h1>
+{{ m.lede("CivicDesk maps multi-agency rules, deadlines, fees, and forms across Oregon, Washington, Utah, and federal offices. Every fact links to a dated primary source, and nothing you read or click is tracked.") }}
+
+<section class="big-start" aria-labelledby="start-router-h">
+  <h2 id="start-router-h">Not sure where to start? Answer 2 quick questions</h2>
+  <p>Pick your state and what you are trying to do. We will route you straight to the exact guide or 1-minute tool.</p>
+  <p><a class="btn" href="{{ page_url('start') }}">Route me to the right guide</a></p>
+</section>
+
+<h2 id="desks">Choose a service desk</h2>
+<ul class="desk-cards">
+  <li class="desk-card">
+    <div class="card-head">
+      <span class="card-icon">{{ m.icon('health', 'state-mark') }}</span>
+      <h2><a href="{{ page_url('medicaid') }}">2027 Medicaid Work &amp; Activity Rules</a></h2>
+    </div>
+    <p>Plain-language guides to the new federal and state Medicaid community engagement rules starting January 1, 2027, including 2027 enforcement delays, the December 31, 2026 retroactive bills cutoff, exemptions, and how to apply.</p>
+    <ul>
+      <li><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a> and <a href="{{ page_url('medicaid-oregon-check') }}">1-minute OHP check</a></li>
+      <li><a href="{{ page_url('medicaid-washington') }}">Washington Apple Health</a> and <a href="{{ page_url('medicaid-washington-check') }}">1-minute Apple Health check</a></li>
+      <li><a href="{{ page_url('medicaid-utah') }}">Utah Medicaid</a> and <a href="{{ page_url('medicaid-utah-check') }}">1-minute Utah check</a></li>
+    </ul>
+    <div class="btn-row">
+      <a class="btn" href="{{ page_url('medicaid') }}">Open Medicaid desk</a>
+    </div>
+  </li>
+
+  <li class="desk-card desk-card-rose">
+    <div class="card-head">
+      <span class="card-icon">{{ m.icon('id_card', 'state-mark') }}</span>
+      <h2><a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records</a></h2>
+    </div>
+    <p>Step-by-step sequences for updating your legal name after marriage, divorce, or a court order, and updating sex or gender designations across courts, Social Security, driver licenses, birth certificates, and passports.</p>
+    <ul>
+      <li><a href="{{ page_url('id-records-oregon') }}">Oregon</a>, <a href="{{ page_url('id-records-washington') }}">Washington</a>, and <a href="{{ page_url('id-records-utah') }}">Utah</a> state guides</li>
+      <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></li>
+      <li><a href="{{ page_url('id-records-path') }}">Personalized step-by-step path finder</a></li>
+    </ul>
+    <div class="btn-row">
+      <a class="btn" href="{{ page_url('id-records') }}">Open ID &amp; Vital Records desk</a>
+    </div>
+  </li>
+</ul>
+
+{% call m.callout('why', 'When records and benefits overlap', 'cross-desk-link') %}
+<p>Agencies check each other's databases. When you apply for or renew Medicaid, the state checks Social Security, payroll, and school records automatically. If your name changed through marriage, divorce, or court and your records do not match yet, <a href="{{ page_url('id-records-after') }}">updating your ID and Social Security in order</a> helps prevent avoidable proof letters. {{ m.badge('our_reading') }} {{ src('MED-SSA-NAME') }}</p>
+{% endcall %}
+
+<h2 id="guarantees">How CivicDesk works</h2>
+<div class="stage-map">
+  <ol class="stage-list">
+    <li class="stage-item">
+      <div class="stage-card">
+        <span class="stage-head"><span class="stage-num">1</span><strong>Dated primary sources</strong></span>
+        <p class="stage-copy">Every fee, deadline, and rule cites the statute, court form, or agency page we read, with explicit 4-tier honesty labels (<span class="badge badge-official">Official</span>, <span class="badge badge-not-official">Not official</span>, <span class="badge badge-not-confirmed">Not confirmed</span>, <span class="badge badge-our-reading">Our reading</span>).</p>
+      </div>
+      <span class="stage-arrow" aria-hidden="true">{{ m.icon('arrow_right') }}</span>
+    </li>
+    <li class="stage-item">
+      <div class="stage-card">
+        <span class="stage-head"><span class="stage-num">2</span><strong>Whole-journey order</strong></span>
+        <p class="stage-copy">Instead of sending you between separate agency org charts, each guide puts court, federal, and state steps in the order offices check them.</p>
+      </div>
+      <span class="stage-arrow" aria-hidden="true">{{ m.icon('arrow_right') }}</span>
+    </li>
+    <li class="stage-item">
+      <div class="stage-card">
+        <span class="stage-head"><span class="stage-num">3</span><strong>Safe on shared computers</strong></span>
+        <p class="stage-copy">Built for public libraries, clinics, and shared phones with zero cookies, zero analytics, and strict browser privacy headers. <a href="{{ page_url('privacy') }}">Read our privacy rules</a>.</p>
+      </div>
+    </li>
+  </ol>
+</div>
+{% endblock %}

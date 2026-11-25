@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Oregon Health Plan (OHP)</p>
+<h1>The new rules, in plain words</h1>
+    <p class="purpose">This page explains who the rules are for and the 3 ways to meet them.</p>
+    <p>Not sure if the rules fit you? <a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check</a>.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>Starts:</strong> Jan.&nbsp;1, 2027. {{ src('MED-S01') }}</li>
+      <li><strong>Who:</strong> Many adults ages 19 to 64 who apply for OHP. {{ src('MED-S01') }}</li>
+      <li><strong>Not for:</strong> People who get OHP because of a disability or pregnancy, or who have Medicare.</li>
+      <li><strong>Healthier Oregon too:</strong> Adults in Healthier Oregon also have to meet the rules, unless a reason fits them.</li>
+      <li><strong>When OHP looks:</strong> The month before you apply. {{ src('MED-S04') }}</li>
+      <li><strong>Good news:</strong> Many people already meet the rules, or don't have to.</li>
+    </ul>
+
+    <h2 id="state-choice">A new choice for states</h2>
+    <p>Governor Tina Kotek directed OHA to use the federal hold harmless choice through June&nbsp;30, 2027 (subject to federal approval). OHA says you will not be turned down for OHP or lose coverage through June&nbsp;30, 2027 if you do not meet the work or activity rules. {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}</p>
+    <p>On Nov.&nbsp;13, 2026, the federal government gave each state a choice. Through June&nbsp;30, 2027, a state may choose not to turn anyone down, and not to end anyone's coverage, only for not meeting the work or activity rules. The state must still check whether each person meets the rules or does not have to. The federal name for this is a hold harmless period. {{ src('MED-S41') }}</p>
+    <p>The rules still start Jan.&nbsp;1, 2027. The choice does not protect anyone from being turned down or losing coverage for other reasons, such as income.</p>
+    <p class="more">A state has to ask the federal Medicaid agency in its mitigation plan and get its approval. The choice covers applications the state gets, and renewals the state starts, through June&nbsp;30, 2027. A state may pick a shorter time. A state that wants it from Jan.&nbsp;1, 2027 was asked to tell the agency by Dec.&nbsp;11, 2026. {{ src('MED-S41') }}</p>
+    <p class="more"><strong>Proposed state rules:</strong> On Oct.&nbsp;28, 2026, OHA proposed state rules (OAR 410-200-0221 and related rules; public comment closed Nov.&nbsp;21, 2026) that are not yet final. They would apply to new applications starting Jan.&nbsp;1, 2027, and to current members with renewals due March&nbsp;31, 2027 or later. {{ src('MED-S47') }}</p>
+    <p class="more"><strong>Court case:</strong> On Nov.&nbsp;5, 2026, Oregon, Washington, and two other states sued the federal government over the work or activity rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+
+    <h2>Meet the rules any one way</h2>
+
+    <div class="good">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <h3>1. Income</h3>
+      <p>Your household brings in $580 or more a month. {{ src('MED-S27') }}</p>
+      <p>That is about $134 a week.</p>
+      <div class="more">
+        <p>It counts the combined income of your Medicaid household (generally you, your spouse, and people on your tax return; children's income often does not count). Two adults do not each need $580.</p>
+        <p>Where $580 comes from: the federal minimum wage ($7.25 an hour) times 80 hours.</p>
+      </div>
+    </div>
+
+    <div class="good">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <h3>2. School</h3>
+      <p>You go to school at least half-time. {{ src('MED-S01') }}</p>
+      <div class="more">
+        <p>Your school decides what counts as half-time. College, career school, high school, and GED programs can count.</p>
+      </div>
+    </div>
+
+    <div class="good">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <h3>3. 80 hours a month</h3>
+      <p>You spend 80 hours a month on work, volunteering, school, or job training. You can add them together. {{ src('MED-S01') }}</p>
+      <p>About 20 hours a week gets you there.</p>
+    </div>
+
+    <h2>What counts as work</h2>
+    <ul>
+      <li>Paid work, including working for yourself or gig work.</li>
+      <li>Work paid in goods or housing, like managing a building for lower rent.</li>
+      <li>Unpaid work, like an internship.</li>
+    </ul>
+
+    <h2>What counts as volunteering</h2>
+    <ul>
+      <li>It has to be with a nonprofit or public program.</li>
+      <li>The program has to keep track of your hours.</li>
+      <li>Campaign work for a candidate does not count.</li>
+      <li>Helping one person, like a friend or neighbor, does not count.</li>
+    </ul>
+    <p>Looking for work, school, or volunteer options? See <a href="https://www.oregon.gov/oha/hsd/ohp/pages/community-resources.aspx" rel="noreferrer">OHP's job and volunteer resources</a>.</p>
+
+    <h2>Good to know</h2>
+    <ul class="short">
+      <li><strong>Each person counts:</strong> OHP checks each adult on their own for work, school, and volunteer hours, though the $580 income test uses combined household income. One person meeting the hour or school rules does not cover everyone in the home. {{ src('MED-S05') }} {{ src('MED-S27') }}</li>
+      <li><strong>No monthly reports:</strong> You do not send proof every month. OHP reviews your case when you apply, and again before you renew.</li>
+      <li><strong>Records first:</strong> OHP checks its own records before it asks you for anything.</li>
+    </ul>
+
+    <div class="callout">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>Next step</h2>
+      <p>Not sure if the rules fit you? <a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check</a> or <a href="{{ page_url('medicaid-oregon-reasons') }}">see every reason you may not have to meet them</a>.</p>
+    </div>
+{% endblock %}

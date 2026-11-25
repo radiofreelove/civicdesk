@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Oregon Health Plan (OHP)</p>
+<h1>Reasons you may not have to meet the rules</h1>
+    <p class="purpose">OHP calls these <strong>exemptions</strong>. This page lists them and how OHP checks each one.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>3 kinds:</strong> OHP checks some reasons itself. For some, you just tell OHP. For others, OHP may ask for proof. {{ src('MED-S03') }}</li>
+      <li><strong>Health conditions:</strong> In 2027, you do not need a doctor's note. {{ src('MED-S03') }} {{ src('MED-S07') }}</li>
+      <li><strong>Starting in 2028:</strong> OHP may ask for proof of some reasons. {{ src('MED-S03') }} {{ src('MED-S07') }}</li>
+      <li><strong>What to do:</strong> If a reason fits you, tell OHP.</li>
+      <li><strong>Not sure?</strong> <a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check</a>.</li>
+    </ul>
+
+    <h2>The rules do not apply to</h2>
+    <ul>
+      <li>People 18 or younger, or 65 or older. {{ src('MED-S02') }} {{ src('MED-S03') }}</li>
+      <li>People who get OHP because of a disability or pregnancy. {{ src('MED-S02') }}</li>
+      <li>People who have Medicare. OHP can usually check this itself. If OHP asks, show your Medicare card or a Medicare letter. {{ src('MED-S02') }} {{ src('MED-S03') }}</li>
+    </ul>
+
+    <h2>OHP checks these for you</h2>
+    <ul>
+      <li>You get SNAP, and you meet SNAP work rules. Being excused from SNAP work rules is not enough. {{ src('MED-S03') }}</li>
+      <li>You get TANF, and you meet TANF work rules. {{ src('MED-S03') }}</li>
+      <li>You were in foster care at age 18, and you are under 26. {{ src('MED-S02') }} {{ src('MED-S03') }}</li>
+      <li>You qualify for another OHP program that does not have these rules. {{ src('MED-S03') }}</li>
+      <li>Your county has a federal disaster declaration, or very high unemployment. OHP will tell you if this applies. {{ src('MED-S03') }}</li>
+    </ul>
+
+    <h2>Just tell OHP</h2>
+    <ul>
+      <li>You are American Indian or Alaska Native. <span class="more">This includes being enrolled in a tribe, having a parent or grandparent who is enrolled, being an Alaska Native Corporation shareholder, or getting care from Indian Health Service or a Tribal or Urban Indian clinic.</span> {{ src('MED-S03') }}</li>
+      <li>You are pregnant, or you were in the last 12 months. {{ src('MED-S02') }} {{ src('MED-S03') }}</li>
+      <li>You got out of jail or prison in the last 4 months. {{ src('MED-S03') }}</li>
+    </ul>
+
+    <h2>Tell OHP. OHP may ask for proof.</h2>
+    <ul>
+      <li>You have a serious or disabling health condition. In 2027, no doctor's note is needed. Starting in 2028, OHP may ask for a statement from a health care provider. <a href="{{ page_url('medicaid-oregon-health') }}">More about health conditions</a> {{ src('MED-S03') }} {{ src('MED-S07') }}</li>
+      <li>You get SSI or SSDI. OHA counts this as a qualifying health condition. {{ src('MED-S01') }} {{ src('MED-S03') }}</li>
+      <li>You are a veteran with a 100% disability rating from the VA. If OHP asks, send your VA award letter. <span class="more">If your rating is not permanent, it has to be confirmed every 12 months.</span> {{ src('MED-S03') }}</li>
+      <li>You care for a child 13 or younger. Tell OHP how you are related. Starting in 2028, OHP may ask for a calendar or schedule. {{ src('MED-S02') }} {{ src('MED-S03') }}</li>
+      <li>You care for someone of any age with a disability or a serious health condition. Care for a family member or someone in your household counts without a set number of hours. If you do not live with them and are not related, you need to give at least 80 hours of care a month. {{ src('MED-S03') }} {{ src('MED-S42') }}</li>
+      <li>You are in drug or alcohol treatment, or you are in stable recovery from a substance use disorder (treatment within the last 5 years). Starting in 2028, OHP may ask for a paper that shows your treatment dates. {{ src('MED-S03') }} {{ src('MED-S42') }}</li>
+      <li>You stayed at least one night as a patient in a hospital, nursing facility, or behavioral health facility. {{ src('MED-S03') }}</li>
+      <li>You were away from home 7 or more days in a month to get medical care for you, your child, or a tax dependent. {{ src('MED-S03') }}</li>
+    </ul>
+
+    <h2>How to tell OHP</h2>
+    <ol class="steps">
+      <li>When you apply, answer every question about work, school, and volunteering.</li>
+      <li>Already applied? Tell OHP in your ONE account at <a href="https://benefits.oregon.gov/" rel="noreferrer">benefits.oregon.gov</a>, call <span class="nowrap">800-699-9075</span>, or visit an ODHS office. {{ src('MED-S08') }}</li>
+    </ol>
+
+    <div class="callout more">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>In the news</h2>
+      <p>On Oct.&nbsp;29, 2026, a federal court threw out part of a federal rule that narrowed the health reason. Oregon was part of that case. As of Nov.&nbsp;21, 2026, OHA's pages had not said what changes. Tell OHP about your health condition either way. {{ src('MED-S28') }} {{ src('MED-S35') }} {{ src('MED-S07') }}</p>
+      <p>On Nov.&nbsp;5, 2026, Oregon, Washington, and two other states also sued over the work or activity rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+    </div>
+
+{{ m.domestic_safety_callout("oregon-reasons-safety", "Oregon", "If sharing an address or household case puts your safety at risk, tell ONE Customer Service (800-699-9075) or an ODHS worker so they can record a safe mailing address or Oregon Address Confidentiality Program address, and evaluate household or TANF/SNAP safety rules separately.") }}
+{% endblock %}

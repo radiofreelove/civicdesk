@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Oregon / License and ID</p>
+<h1>Oregon driver license or ID: name and gender marker</h1>
+{{ m.lede("You can choose M, F, or X on an Oregon driver license or ID without a court order or medical proof. If you are also changing your name, update Social Security first.") }}
+{{ m.checked_line(page) }}
+
+{{ m.bring_reminder('Oregon DMV', 'Your current card and fee. If changing your name, also bring an original or certified court order, plus proof of identity and address.') }}
+
+<h2 id="dmv-steps">How to update your Oregon card</h2>
+<ul>
+  <li>Choose M, F, or X. On Oregon cards, X means "not specified." This works for standard and REAL ID cards. {{ src('ID-OR-DMV-GENDER') }}</li>
+  <li>No proof of gender needed. Go in person, by appointment or walk-in, and bring your current card.</li>
+  <li><strong>Cost:</strong> {{ fact('or_dmv_fee') }}. Eight-year renewal is $54 for a license or $43 for an ID ($30 extra for REAL ID). {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}</li>
+</ul>
+
+{% call m.box('note', 'Changing your name too?') %}
+<ul>
+  <li><strong>Update Social Security first.</strong> For REAL ID, your card name must match Social Security. For a standard card, DMV can verify under another name with proof of that name. {{ src('ID-OR-DMV-NAME') }}</li>
+  <li><strong>What to bring:</strong> an original or certified copy of your court order, plus proof of identity and address. REAL ID needs two address proofs from different sources. {{ src('ID-OR-DMV-NAME') }} {{ src('ID-OR-DMV-PROOF') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}</li>
+  <li><strong>Vehicle titles are separate:</strong> changing your license does not update your vehicle title. Update a title by mail or at a DMV office: {{ ext('ID-OR-DMV-NAME') }}. {{ src('ID-OR-DMV-NAME') }}</li>
+</ul>
+{% endcall %}
+
+{% call m.box('watch', 'Watch out') %}
+<p>The DMV keeps a history of every card and name. It shares name, date of birth, and sex with some other systems. These include the Selective Service System and a state police database that federal agencies can use. {{ src('ID-OR-DMV-GENDER') }}</p>
+{% endcall %}
+
+<h2 id="next-steps">Next steps</h2>
+<ul>
+  <li><a href="{{ page_url('id-records-oregon-court') }}">Oregon court order</a> (needed for a legal name change)</li>
+  <li><a href="{{ page_url('id-records-oregon-birth') }}">Oregon birth certificate</a></li>
+  <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security in 2026</a></li>
+  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
+  <li><a href="{{ page_url('id-records-oregon') }}">Back to the Oregon overview</a></li>
+</ul>
+{% endblock %}

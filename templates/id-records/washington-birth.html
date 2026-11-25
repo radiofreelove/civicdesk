@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Washington / Birth certificate</p>
+<h1>Washington birth certificate: sex designation and name change</h1>
+{{ m.lede("If you were born in Washington, you change the sex designation on your birth certificate with a notarized state form. Washington does not accept a court order or doctor's letter for the sex designation.") }}
+{{ m.checked_line(page) }}
+
+{{ m.bring_reminder('Washington birth certificate', 'Notarized form DOH 422-143, certified name-change order and DOH 422-126 if needed, and ' ~ fact('wa_doh_cert_fee') ~ ' for copies.') }}
+
+{{ m.onthispage([
+  ('birth-adults', 'How adults update a Washington birth certificate'),
+  ('birth-minors', 'Under 18'),
+  ('questions', 'Good questions', 'extra'),
+  ('next-steps', 'Next steps')
+]) }}
+
+{% call m.box('watch', 'Birth certificate form change (Nov. 2026)') %}
+<p>On November 4, 2026, Washington DOH retired the old Affidavit for Correction (DOH 422-034) and replaced it with separate amendment forms on {{ ext('ID-WA-DOH-AMEND-BIRTH') }}. {{ src('ID-WA-DOH-AMEND-BIRTH') }}</p>
+<p>For a sex-designation change (DOH 422-143 or DOH 422-144) or a court-ordered name change (DOH 422-126), keep using those dedicated forms. For changing a minor's first or middle names without a court order, use the new Application to Amend a Birth Certificate instead of the retired DOH 422-034. {{ src('ID-WA-DOH-AMEND-BIRTH') }} {{ src('ID-WA-DOH-SEX') }}</p>
+<p>Processing takes 4 to 6 weeks. Mailing your request is faster than waiting for a Tumwater appointment. Certificates issued within the past year can be exchanged for free in the same envelope. {{ src('ID-WA-DOH-AMEND-BIRTH') }}</p>
+{% endcall %}
+
+<h2 id="birth-adults">How adults update a Washington birth certificate</h2>
+<p>This is for people born in Washington. {{ src('ID-WA-DOH-SEX') }}</p>
+<ul>
+  <li>Choose M, F, or X. X means a gender that is not exclusively male or female.</li>
+  <li>Adults and emancipated minors use {{ ext('ID-WA-DOH-422-143') }}. Sign it in front of a notary.</li>
+  <li>A court order or a doctor's letter is not accepted for the sex designation. Use the form.</li>
+  <li>If your legal name is different from your birth certificate, add a certified court order and {{ ext('ID-WA-DOH-422-126') }}.</li>
+  <li>No fee to make the change. New certified copies are {{ fact('wa_doh_cert_fee') }}.</li>
+  <li>Send by mail or bring it in person by appointment. Plan for 4 to 6 weeks under Washington DOH's November 2026 birth-amendment notice above (the sex-designation page previously listed about 3 business days, plus up to 2 weeks for mail).</li>
+</ul>
+
+<h2 id="birth-minors">Under 18</h2>
+<p>For a minor born in Washington, use {{ ext('ID-WA-DOH-422-144') }} to change the sex designation. A parent or guardian and a licensed provider sign it. {{ src('ID-WA-DOH-SEX') }}</p>
+{% call m.box('watch', 'Watch out: outdated form link for minors on WA DOH') %}
+<p>Washington DOH's sex-designation page still tells parents to use the old Affidavit for Correction (DOH 422-034) to change a minor's first or middle names without a court order. DOH retired form 422-034 on November 4, 2026. To change a minor's first or middle names without a court order, use the new Application to Amend a Birth Certificate on {{ ext('ID-WA-DOH-AMEND-BIRTH') }} instead. {{ src('ID-WA-DOH-AMEND-BIRTH') }} {{ src('ID-WA-DOH-SEX') }}</p>
+{% endcall %}
+<p>For a minor's court-ordered name change, <a href="{{ page_url('id-records-washington-court#minors') }}">see Washington court rules for minors</a> (then send the certified court order with {{ ext('ID-WA-DOH-422-126') }}).</p>
+
+<h2 id="questions" class="brief-extra">Good questions</h2>
+{% call m.qa("Does Washington change the gender marker on a birth certificate from another state?", 'q-other-state') %}
+<p>No. Only the state where you were born can change your birth certificate. A Washington court order confirming your gender may help if that state asks for one. <a href="{{ page_url('id-records-washington-court#court-order-gender') }}">Learn about the optional court order</a>. Find your birth state's office with {{ ext('ID-US-CDC-W2W') }}.</p>
+{% endcall %}
+
+<h2 id="next-steps">Next steps</h2>
+<ul>
+  <li><a href="{{ page_url('id-records-washington-court') }}">Washington court order</a></li>
+  <li><a href="{{ page_url('id-records-washington-id') }}">Washington driver license or ID</a></li>
+  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
+  <li><a href="{{ page_url('id-records-washington') }}">Back to the Washington overview</a></li>
+</ul>
+{% endblock %}

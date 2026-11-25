@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Washington / Court order</p>
+<h1>Washington court order: public or sealed name change</h1>
+{{ m.lede("In Washington, your name changes in court. You can file a sealed superior court case if your name change relates to your gender identity or expression. You do not need court to change the gender marker on a Washington license or birth certificate.") }}
+{{ m.checked_line(page) }}
+
+{% call m.callout("good", "Changing your name through marriage or divorce in Washington?", "wa-marriage-divorce") %}
+<ul>
+  <li><strong>Marriage:</strong> Order a certified copy of your county-filed marriage certificate to update Social Security and your driver license—no separate court case is needed unless you are choosing a completely new name. {{ src("ID-WA-DOL-NAME") }} {{ src("ID-US-SSA-NAME") }}</li>
+  <li><strong>Divorce or dissolution:</strong> Under Washington law, the court in a dissolution or invalidity decree must restore a former name upon request and may also grant a change to another name. {{ src("ID-WA-RCW-26-09-150") }}</li>
+</ul>
+{% endcall %}
+
+
+{% set first_step = 'Choose public or sealed' %}
+{% set birth_cost %}{{ fact('wa_doh_amend_fee') }}; {{ fact('wa_doh_cert_fee') }}{% endset %}
+
+{{ m.onthispage([
+  ('name', 'Public or sealed name change'),
+  ('steps', 'Court steps'),
+  ('cost', 'What it costs'),
+  ('court-order-gender', 'A court order that confirms your gender'),
+  ('minors', 'Changes for someone under 18'),
+  ('questions', 'Good questions', 'extra'),
+  ('next-steps', 'Next steps')
+]) }}
+
+<h2 id="name">Public or sealed name change</h2>
+<p>You pick one of two courts. {{ src('ID-WA-RCW-4-24-130') }}</p>
+<div class="table-wrap">
+<table class="stack-table">
+  <caption>Washington's two ways to change a name</caption>
+  <thead><tr><th scope="col">Option</th><th scope="col">Public name change</th><th scope="col">Sealed name change</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Court</th><td data-label="Public name change">Any district court in Washington</td><td data-label="Sealed name change">Any superior court in Washington</td></tr>
+    <tr><th scope="row">Who can use it</th><td data-label="Public name change">Anyone</td><td data-label="Sealed name change">People whose name change relates to gender expression or identity. Also people with certain safety or immigration reasons.</td></tr>
+    <tr><th scope="row">Who can see it</th><td data-label="Public name change">The public</td><td data-label="Sealed name change">No public access to the filing, the hearing, or the order. The file opens only for you, your guardian or representative, or by court order for good cause.</td></tr>
+    <tr><th scope="row">Not available to</th><td data-label="Public name change">Some people under Department of Corrections supervision, and people required to register as a sex offender, face extra steps</td><td data-label="Sealed name change">People under Department of Corrections jurisdiction, or people required to register as a sex offender</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="steps">Court steps</h2>
+<p>Washington's free legal aid guide has the forms and instructions for both options. {{ ext('ID-WA-WLH-NAME') }}. {{ src('ID-WA-WLH-NAME') }}</p>
+<div class="btn-row js-only"><button type="button" class="btn-secondary" data-print>Print this checklist</button></div>
+<ol class="steps">
+{% call m.step('washington', 1, 'wa-step-choose', first_step) %}
+  <p>If your name change relates to your gender identity or expression, you can file in superior court and the case will be sealed. {{ src('ID-WA-RCW-4-24-130') }}</p>
+{% endcall %}
+{% call m.step('washington', 2, 'wa-step-forms', 'Fill out the forms') %}
+  <p>Use the forms and step-by-step instructions in the WashingtonLawHelp name change guide. You do not need to put a notice in the newspaper. {{ src('ID-WA-WLH-NAME') }}</p>
+{% endcall %}
+{% call m.step('washington', 3, 'wa-step-file', 'File and pay, or ask for a fee waiver') %}
+  <p>File at the court you chose. Fees vary by court. If you cannot pay, ask the court to waive the fees. {{ ext('ID-WA-COURTS-FORMS') }}.</p>
+{% endcall %}
+{% call m.step('washington', 4, 'wa-step-hearing', 'Go to the hearing') %}
+  <p>Every name change in Washington has a hearing in front of a judge. The court gives you the date. {{ src('ID-WA-WLH-NAME') }}</p>
+{% endcall %}
+{% call m.step('washington', 5, 'wa-step-copies', 'Get certified copies of the order') %}
+  <p>In superior court, certified copies cost {{ fact('wa_fee_cert_copy') }}. {{ src('ID-WA-RCW-36-18-016') }} WashingtonLawHelp suggests getting 7 or more. {{ src('ID-WA-WLH-NAME') }}</p>
+{% endcall %}
+{% call m.step('washington', 6, 'wa-step-update', 'Update your records') %}
+  <p>Take a certified copy to Social Security and the Department of Licensing, then everyone else. If your order is sealed, the guide explains a special process for your license. {{ src('ID-WA-WLH-NAME') }} <a href="{{ page_url('id-records-after') }}">Use the after-court checklist</a>.</p>
+{% endcall %}
+</ol>
+
+{{ m.after_filing('wa-after-filing', [
+  {'title': 'Court sets a hearing date', 'text': 'Every name change in Washington has a hearing in front of a judge.'},
+  {'title': 'Get certified copies', 'text': 'In superior court, certified copies are ' ~ fact('wa_fee_cert_copy') ~ '. The legal aid guide suggests getting 7 or more.'},
+  {'title': 'Update your offices', 'text': 'Take a certified copy to Social Security and the Department of Licensing, then everyone else.'}
+]) }}
+
+{% call m.callout('cost', 'What it costs', 'cost') %}
+<ul>
+  <li><strong>Sealed name change in superior court:</strong> {{ fact('wa_fee_sealed') }}. {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }} For example, Clallam County's fee schedule lists the same $290 statewide fee plus any local copy or service charges. {{ src('ID-WA-SUPERIOR-FEES') }}</li>
+  <li><strong>Public name change in district court:</strong> varies by county. Kitsap County District Court lists {{ fact('wa_fee_district_example') }}. {{ src('ID-WA-KITSAP-FEE-SCHEDULE') }}</li>
+  <li><strong>Can't pay?</strong> In district court, the law says the court "shall waive all fees" if you sign a statement that you cannot pay because of financial hardship. The court may not waive the fees if you got victim compensation for name change fees. In any court, you can ask with the GR 34 fee waiver forms. {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-COURTS-FORMS') }}</li>
+  <li><strong>Birth certificate:</strong> {{ birth_cost }}. {{ src('ID-WA-DOH-SEX') }}</li>
+  <li><strong>License:</strong> {{ fact('wa_dol_fee') }}. {{ src('ID-WA-DOL-GENDER') }}</li>
+</ul>
+{% endcall %}
+
+<h2 id="court-order-gender">A court order that confirms your gender</h2>
+<p>This is optional. You might want one if another state's birth certificate office or another agency asks for a court order. Washington does not need it for a Washington license or birth certificate. {{ ext('ID-WA-WLH-GENDER-ORDER') }}. {{ src('ID-WA-WLH-GENDER-ORDER') }}</p>
+
+<h2 id="minors">Changes for someone under 18</h2>
+<ul>
+  <li><strong>Name:</strong> a parent or guardian can ask for a child's name change. The law allows a sealed superior court case when the reason relates to the child's gender expression or identity. {{ src('ID-WA-RCW-4-24-130') }}</li>
+  <li>Parents must get notice. Some courts also ask for the child's consent at age 13 or older. {{ src('ID-WA-WLH-NAME') }}</li>
+  <li><strong>Birth certificate:</strong> use {{ ext('ID-WA-DOH-422-144') }}. A parent or guardian and a licensed provider sign it. <a href="{{ page_url('id-records-washington-birth') }}">See Washington birth certificate steps</a>. {{ src('ID-WA-DOH-SEX') }}</li>
+</ul>
+
+<h2 id="questions" class="brief-extra">Good questions</h2>
+{% call m.qa("Do I have to file in the county where I live?", 'q-county') %}
+<p>No. The law lets you file a public name change in any district court in the state. A sealed name change can go to any superior court in the state. {{ src('ID-WA-RCW-4-24-130') }}</p>
+{% endcall %}
+{% call m.qa("Who can see a sealed name change?", 'q-sealed') %}
+<p>No one in the public. The file opens only if a judge orders it for good cause, or if you, your guardian, or your representative ask. {{ src('ID-WA-RCW-4-24-130') }}</p>
+{% endcall %}
+
+<h2 id="next-steps">Next steps</h2>
+<ul>
+  <li><a href="{{ page_url('id-records-washington-birth') }}">Washington birth certificate</a></li>
+  <li><a href="{{ page_url('id-records-washington-id') }}">Washington driver license or ID</a></li>
+  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
+  <li><a href="{{ page_url('id-records-washington') }}">Back to the Washington overview</a></li>
+</ul>
+{% endblock %}

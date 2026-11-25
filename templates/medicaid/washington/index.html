@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Washington Apple Health</p>
+<nav class="guide-switch" aria-labelledby="guide-switch-label">
+  <p class="guide-switch-label" id="guide-switch-label">Switch Medicaid state guide</p>
+  <ul>
+    <li><a href="{{ page_url('medicaid-oregon') }}"><span class="guide-state">Oregon</span> <span class="guide-note">Go to the Oregon Health Plan guide</span></a></li>
+    <li><a href="{{ page_url('medicaid-washington') }}" aria-current="page"><span class="guide-state">Washington</span> <span class="guide-note">This is the Apple Health guide.</span></a></li>
+    <li><a href="{{ page_url('medicaid-utah') }}"><span class="guide-state">Utah</span> <span class="guide-note">Go to the Utah Medicaid guide</span></a></li>
+  </ul>
+</nav>
+    <h1>Applying for Apple Health? New rules start Jan.&nbsp;1, 2027.</h1>
+    <p class="purpose"><strong>Why this site exists:</strong> The facts about the new Apple Health rules are spread across many official pages and papers. This guide puts what applicants need in one place, in plain words. Each page lists its official sources.</p>
+
+    <section class="timeline-strip" aria-labelledby="timeline-title">
+      <h2 id="timeline-title">Key dates at a glance</h2>
+      <ol class="timeline-list">
+        <li class="timeline-item timeline-info">
+          <span class="timeline-marker" aria-hidden="true">{{ m.icon('circle') }}</span>
+          <span class="timeline-date">Nov.&nbsp;17, 2026</span>
+          <a class="timeline-label" href="#update-title">Policy update: delayed enforcement</a>
+          <span class="timeline-note">Washington plans no work-rule coverage loss through June&nbsp;30, 2027</span>
+        </li>
+        <li class="timeline-item timeline-deadline">
+          <span class="timeline-marker" aria-hidden="true">{{ m.icon('triangle') }}</span>
+          <span class="timeline-date">Jan.&nbsp;1, 2027</span>
+          <a class="timeline-label" href="#bills-title">Deadline: rules start and bills cutoff</a>
+          <span class="timeline-note" data-show-until="2026-12-31">Past medical bills window drops from 3 months to 1</span>
+        </li>
+        <li class="timeline-item timeline-ongoing">
+          <span class="timeline-marker" aria-hidden="true">{{ m.icon('square') }}</span>
+          <span class="timeline-date">Before &amp; ongoing</span>
+          <a class="timeline-label" href="{{ page_url('medicaid-washington-log') }}">Track your hours</a>
+          <span class="timeline-note">HCA looks at the month before you apply</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="warn" aria-labelledby="update-title">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Policy update</span></p>
+      <h2 id="update-title">Update, Nov.&nbsp;17, 2026: Washington delays work-rule enforcement</h2>
+      <p><strong>Washington's announcement:</strong> On Nov.&nbsp;17, 2026, HCA announced Washington will pursue delayed enforcement of the work rules (pending federal approval). Through June&nbsp;30, 2027, people in Apple Health for Adults will not lose or be denied coverage for not meeting the work rules. Six-month renewals and the 1-month past-bills limit still start Jan.&nbsp;1, 2027. {{ src('MED-WA27') }} {{ src('MED-WA22') }}</p>
+      <p><strong>Federal choice:</strong> The work rules and checking still start Jan.&nbsp;1, 2027, and HCA says clients will still be asked to verify. Through June&nbsp;30, 2027, HCA says no one will lose or be denied Apple Health for not meeting them, pending federal approval of Washington's plan. On Nov.&nbsp;13, 2026, the federal government gave states this hold harmless choice through June&nbsp;30, 2027, subject to federal approval. {{ src('MED-S41') }} {{ src('MED-WA27') }}</p>
+      <p><strong>What it does not do:</strong> This choice does not protect anyone from being turned down or losing coverage for other reasons, such as income.</p>
+      <p class="more"><strong>Court case:</strong> On Nov.&nbsp;5, 2026, Washington, Oregon, and two other states sued the federal government over the work rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-WA14') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+      <p><a href="{{ page_url('medicaid-washington-rules#state-choice') }}">More about this choice</a></p>
+    </section>
+
+    <section class="warn" aria-labelledby="bills-title">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Deadline</span></p>
+      <h2 id="bills-title">Have medical bills? <span data-show-until="2026-12-31">Read this before Jan.&nbsp;1, 2027.</span></h2>
+      <p data-show-until="2026-12-31">Before Jan.&nbsp;1, 2027, Apple Health may pay bills from up to 3 months before the month you apply. {{ src('MED-WA01') }}</p>
+      <p>On Jan.&nbsp;1, 2027, that time gets shorter. For Apple Health for Adults, it is 1 month. {{ src('MED-WA01') }}</p>
+      <p><a href="{{ page_url('medicaid-washington-bills') }}">More about past medical bills</a></p>
+    </section>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>The name:</strong> Apple Health is Washington's name for Medicaid.</li>
+      <li><strong>What's new:</strong> New federal work rules for Apple Health for Adults start Jan.&nbsp;1, 2027, though HCA announced on Nov.&nbsp;17, 2026 that it will delay work-rule coverage loss through June&nbsp;30, 2027. {{ src('MED-WA01') }} {{ src('MED-WA27') }}</li>
+      <li><strong>Right now:</strong> The Health Care Authority (HCA) tells members to keep their contact information up to date and carefully read any notices or text messages from HCA. {{ src('MED-WA01') }} {{ src('MED-WA27') }}</li>
+      <li><strong>Who:</strong> Only people in Apple Health for Adults. That means ages 19 to 64, no Medicare, living in Washington, with low income. {{ src('MED-WA15') }}</li>
+      <li><strong>Records first:</strong> Washington checks its own data first. <span class="more">HCA estimated that it could check about 64 percent of people in Apple Health for Adults this way, or find they are exempt.</span></li>
+      <li class="more"><strong>Shorter coverage:</strong> Starting Jan.&nbsp;1, 2027, Apple Health for Adults moves from 12-month to 6-month renewals (American Indian and Alaska Native adults keep 12-month renewals). {{ src('MED-WA16') }}</li>
+      <li><strong>Notices:</strong> HCA sends notices by mail or email. Keep your contact information up to date.</li>
+    </ul>
+
+    <h2>Meet the rules any one way</h2>
+    <div class="rule-bridge">
+      <ul class="bridge-lanes">
+        <li>
+          <div class="bridge-lane">
+            <span class="bridge-head"><span class="bridge-icon">{{ m.icon('income') }}</span><strong>Income</strong></span>
+            <span class="bridge-copy">Your household has at least $580 in income a month. {{ src('MED-WA22') }}</span>
+          </div>
+          <span class="bridge-or">or</span>
+        </li>
+        <li>
+          <div class="bridge-lane">
+            <span class="bridge-head"><span class="bridge-icon">{{ m.icon('school') }}</span><strong>School</strong></span>
+            <span class="bridge-copy">You are in an educational program at least half-time. {{ src('MED-WA05') }}</span>
+          </div>
+          <span class="bridge-or">or</span>
+        </li>
+        <li>
+          <div class="bridge-lane">
+            <span class="bridge-head"><span class="bridge-icon">{{ m.icon('clock') }}</span><strong>80 hours</strong></span>
+            <span class="bridge-copy">A work program, community service, or a mix of activities. The total is at least 80 hours a month. {{ src('MED-WA22') }}</span>
+          </div>
+        </li>
+      </ul>
+      <p class="bridge-outcome">{{ m.icon('check') }} <span>Any 1 way meets the rules.</span></p>
+    </div>
+    <p><a href="{{ page_url('medicaid-washington-rules') }}">The rules, in plain words</a></p>
+
+    <h2>You may not have to if you</h2>
+    <ul>
+      <li>Are pregnant, or in the 12 months after a pregnancy {{ src('MED-WA05') }}</li>
+      <li>Are a parent, caretaker, or guardian of a child under 14 {{ src('MED-WA22') }}</li>
+      <li>Are medically frail {{ src('MED-WA05') }}</li>
+      <li>Are American Indian or Alaska Native</li>
+      <li>Are a foster youth, or a former foster youth under 26</li>
+    </ul>
+    <p>Many people do not have to meet the rule at all. HCA's fact sheet calls these reasons exemptions. <a href="{{ page_url('medicaid-washington-reasons') }}">See every reason</a></p>
+
+    <h2>What to do</h2>
+    <ol class="steps">
+      <li><a href="{{ page_url('medicaid-washington-check') }}">Take the 1-minute check.</a> Your answers stay on your device.</li>
+      <li><a href="{{ page_url('medicaid-washington-apply') }}">Apply</a> online, by phone, on paper, or in person. Apple Health enrollment is open all year.</li>
+      <li>You may tell the state your own income, work, or exemption status (self-attestation, including for medical frailty through 2027). If state records cannot confirm your eligibility, a letter may ask for proof within 15 days. {{ src('MED-WA04') }} {{ src('MED-WA22') }}</li>
+    </ol>
+
+    <div class="callout">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Bottom line</span></p>
+      <h2>Only Washington decides</h2>
+      <p>This guide says "you may." Only Washington decides who meets the rules or is exempt.</p>
+    </div>
+
+    <h2>Go deeper</h2>
+    <ul class="cards">
+      <li><a href="{{ page_url('medicaid-washington-letter') }}"><span class="card-head">{{ m.icon('letter') }}<span>The state sent me a letter</span></span> <span class="card-note">What it means and how to answer on time</span></a></li>
+      <li><a href="{{ page_url('medicaid-washington-denied') }}"><span class="card-head">{{ m.icon('denied') }}<span>I was turned down</span></span> <span class="card-note">Your options, and the deadlines</span></a></li>
+      <li><a href="{{ page_url('medicaid-washington-health') }}"><span class="card-head">{{ m.icon('health') }}<span>I have a health condition</span></span> <span class="card-note">You may not have to meet the rules</span></a></li>
+      <li><a href="{{ page_url('medicaid-washington-immigration') }}"><span class="card-head">{{ m.icon('immigration') }}<span>Immigration status</span></span> <span class="card-note">What changed on Oct.&nbsp;1, 2026</span></a></li>
+      <li><a href="{{ page_url('medicaid-washington-words') }}"><span class="card-head">{{ m.icon('words') }}<span>Words on your letters</span></span> <span class="card-note">Plain meanings for Apple Health words</span></a></li>
+      <li><a href="{{ page_url('medicaid-washington-log') }}"><span class="card-head">{{ m.icon('log') }}<span>Hours log</span></span> <span class="card-note">Print it and write down your hours</span></a></li>
+    </ul>
+{% endblock %}

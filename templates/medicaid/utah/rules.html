@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Utah Medicaid</p>
+<h1>The new Utah Medicaid rules, in plain words</h1>
+    <p class="purpose">This page explains who the rules are for and the 3 ways to meet them.</p>
+    <p>Not sure if the rules fit you? <a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check</a>.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li><strong>Starts:</strong> Jan.&nbsp;1, 2027. {{ src('MED-U01') }}</li>
+      <li><strong>Who:</strong> Adults ages 19 to 64 in Adult Expansion Medicaid or Targeted Adult Medicaid (TAM). {{ src('MED-U01') }}</li>
+      <li><strong>If you apply:</strong> On or after Jan.&nbsp;1, 2027, you must meet the rules to get coverage. {{ src('MED-U04') }}</li>
+      <li><strong>If you already have it:</strong> The rules start at your review, for renewals due in March 2027 or later. {{ src('MED-U04') }}</li>
+      <li><strong>When the state looks:</strong> For new members, the month before you apply. For current members, any 1 month since your last approval or renewal. {{ src('MED-U01') }}</li>
+      <li><strong>More reviews:</strong> Starting Jan.&nbsp;1, 2027, adults in these 2 programs get a review every 6 months, not every 12. {{ src('MED-U13') }}</li>
+    </ul>
+
+    <h2 id="state-choice">A new choice for states</h2>
+    <p>On Nov.&nbsp;13, 2026, the federal government gave each state a choice. Through June&nbsp;30, 2027, a state may choose not to turn anyone down, and not to end anyone's coverage, only for not meeting the work or activity rules. The state must still check whether each person meets the rules or does not have to. The federal name for this is a hold harmless period. {{ src('MED-S41') }}</p>
+    <p>The rules still start Jan.&nbsp;1, 2027. The choice does not protect anyone from being turned down or losing coverage for other reasons, such as income.</p>
+    <p class="more">A state has to ask the federal Medicaid agency in its mitigation plan and get its approval. The choice covers applications the state gets, and renewals the state starts, through June&nbsp;30, 2027. A state may pick a shorter time. A state that wants it from Jan.&nbsp;1, 2027 was asked to tell the agency by Dec.&nbsp;11, 2026. {{ src('MED-S41') }}</p>
+    <p>As of Nov.&nbsp;21, 2026, Utah has not announced a choice. Utah's pages about the new rules do not say what Utah will choose. {{ src('MED-U01') }} {{ src('MED-U02') }}</p>
+
+    <h2>Who the rules are for and when the state looks</h2>
+    <p>The rules are for adults ages 19 to 64 in Adult Expansion Medicaid or Targeted Adult Medicaid (TAM). Other Utah Medicaid programs do not have these rules.</p>
+    <ul class="short">
+      <li><strong>New members:</strong> The state looks at your activities in the month before you apply.</li>
+      <li><strong>Current members:</strong> The state looks at the time since your last approval or renewal. You need to meet the rules in any 1 month during that time.</li>
+    </ul>
+    <p class="more">Read Utah's full details on the <a href="https://medicaid.utah.gov/community-engagement-requirement/" rel="noreferrer">Utah Medicaid community engagement page</a>.</p>
+
+    <h2>Meet the rules any one way</h2>
+
+    <div class="good">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <h3>1. Income</h3>
+      <p>Utah's pages say "earning at least $580 a month." {{ src('MED-U01') }}</p>
+      <p>Utah's pages do not say whose income counts. The federal rule counts the combined income of your Medicaid household (generally you, your spouse, and people on your tax return), while checking each adult's hours separately. Ask the state how it counts yours. {{ src('MED-S27') }}</p>
+      <p>That is about $134 a week.</p>
+      <div class="more">
+        <p>Work only part of the year? Utah can use your average income over 6 months.</p>
+        <p>Where $580 comes from: the federal minimum wage ($7.25 an hour) times 80 hours.</p>
+      </div>
+    </div>
+
+    <div class="good">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <h3>2. School</h3>
+      <p>You go to school at least half-time. {{ src('MED-U01') }}</p>
+      <div class="more">
+        <p>Your school decides what counts as half-time.</p>
+      </div>
+    </div>
+
+    <div class="good">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <h3>3. 80 hours a month</h3>
+      <p>You spend 80 hours a month on work, job training, volunteering, or school. You can add them together. {{ src('MED-U01') }}</p>
+      <p>About 20 hours a week gets you there.</p>
+    </div>
+
+    <h2>What counts as work or volunteering</h2>
+    <p>Utah's pages do not yet say exactly what counts. The federal rule says volunteering means unpaid work with an organized program that helps the community.</p>
+    <p>Not sure if what you do counts? <a href="{{ page_url('medicaid-utah-help') }}">Ask the state or a free helper</a>.</p>
+
+    <h2>Good to know</h2>
+    <ul class="short">
+      <li><strong>Records first:</strong> The state checks records it already has, like work, school, and other benefits, before it asks you for anything.</li>
+      <li><strong>Utah law requires proof:</strong> Under Utah Code 26B-3-142.1 (effective Jan.&nbsp;1, 2027), Utah must use records or documents and cannot rely only on your own word. {{ src('MED-U39') }}</li>
+      <li><strong>Proof at reviews:</strong> You may need to show proof of your activities every 6 months, at your review.</li>
+      <li><strong>If the state asks:</strong> You may need to send a form within 30 days, or you could lose your coverage. {{ src('MED-U04') }}</li>
+    </ul>
+
+    <div class="callout">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>Next step</h2>
+      <p>Not sure if the rules fit you? <a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check</a> or <a href="{{ page_url('medicaid-utah-reasons') }}">see every reason you may not have to meet them</a>.</p>
+    </div>
+{% endblock %}

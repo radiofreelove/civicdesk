@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Utah / Birth certificate</p>
+<h1>Utah birth certificate: name and sex designation change</h1>
+{{ m.lede("Utah's Vital Records office changes a birth certificate sex designation only with a court order. After you get your signed order, mail it with form 902 and the fee.") }}
+{{ m.checked_line(page) }}
+
+{{ m.bring_reminder('Utah birth certificate', 'Certified copy of the signed court order, form 902, and the Vital Records fee.') }}
+
+<h2 id="how-to-send">How to update a Utah birth certificate</h2>
+<ul>
+  <li>For people born in Utah. Utah's law applies only to birth certificates the state issued. {{ src('ID-UT-CODE-26B-8-111') }}</li>
+  <li>Send three things to Utah Vital Records: a certified copy of the signed order, {{ ext('ID-UT-VITAL-902-2026') }}, and the fee. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+  <li><strong>Cost:</strong> {{ fact('ut_vital_amend_fee') }}. {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+  <li>It can take several weeks. Mailing address: {{ m.copyable(fact('ut_vital_mail'), 'mailing address') }}</li>
+  <li>After the court order, Vital Records issues a new birth certificate that does not show which parts were changed, unless you ask it to.</li>
+  <li>Vital Records also issues an amendment history that lists the changed fields and the date, and keeps a record of every amendment.</li>
+</ul>
+
+{% call m.box('watch', 'Ask before you mail') %}
+<p>Ask Vital Records who can see the amendment history and when it is sent out. {{ ext('ID-UT-VITAL') }}.</p>
+{% endcall %}
+
+<h2 id="next-steps">Next steps</h2>
+<ul>
+  <li><a href="{{ page_url('id-records-utah-court') }}">Utah court order</a></li>
+  <li><a href="{{ page_url('id-records-utah-id') }}">Utah driver license or ID</a></li>
+  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
+  <li><a href="{{ page_url('id-records-utah') }}">Back to the Utah overview</a></li>
+</ul>
+{% endblock %}

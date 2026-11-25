@@ -1,0 +1,219 @@
+{#- Shared CivicDesk building blocks for all pages across /medicaid/ and /id-records/. -#}
+
+{% macro icon(name, cls='') -%}
+{%- set paths = {
+  'alert': '<path d="M12 3L2.5 19.5h19L12 3z"/><path d="M12 9.5v4.5"/><path d="M12 17h.01"/>',
+  'info': '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
+  'check': '<circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5.5"/>',
+  'shield': '<path d="M12 3l7.5 3v6c0 4.5-3.2 7.8-7.5 9-4.3-1.2-7.5-4.5-7.5-9V6L12 3z"/>',
+  'dollar': '<path d="M12 3v18"/><path d="M16.5 7.5a3.5 3.5 0 0 0-3.5-2.5h-2a3 3 0 0 0 0 6h2a3 3 0 0 1 0 6h-2.5a3.5 3.5 0 0 1-3.5-2.5"/>',
+  'income': '<path d="M12 3v18"/><path d="M16.5 7.5a3.5 3.5 0 0 0-3.5-2.5h-2a3 3 0 0 0 0 6h2a3 3 0 0 1 0 6h-2.5a3.5 3.5 0 0 1-3.5-2.5"/>',
+  'school': '<path d="M2.5 9.5L12 5l9.5 4.5L12 14 2.5 9.5z"/><path d="M6.5 11.5v5c0 1.5 2.5 2.75 5.5 2.75s5.5-1.25 5.5-2.75v-5"/><path d="M21.5 9.5v5"/>',
+  'clock': '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+  'calendar': '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
+  'gavel': '<path d="M14 4l6 6-3 3-6-6 3-3z"/><path d="M11 7L4 14l3 3 7-7"/><path d="M3 20h10"/>',
+  'id_card': '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11.5" r="2"/><path d="M6.5 16a3 3 0 0 1 5 0"/><path d="M14 10h4.5M14 14h3.5"/>',
+  'document': '<path d="M6 3h8l4 4v14H6V3z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/>',
+  'paper': '<path d="M6 3h8l4 4v14H6V3z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/>',
+  'checklist': '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 10l1.5 1.5 3-3"/><path d="M14.5 10h2"/><path d="M8.5 15l1.5 1.5 3-3"/><path d="M14.5 15h2"/>',
+  'log': '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M8.5 10l1.5 1.5 3-3"/><path d="M14.5 10h2"/><path d="M8.5 15l1.5 1.5 3-3"/><path d="M14.5 15h2"/>',
+  'arrow_right': '<path d="M4 12h15"/><path d="M13 6l6 6-6 6"/>',
+  'circle': '<circle cx="12" cy="12" r="7"/>',
+  'triangle': '<path d="M12 4L3.5 19h17L12 4z"/>',
+  'square': '<rect x="5" y="5" width="14" height="14" rx="2"/>',
+  'online': '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13 13 0 0 1 0 18"/><path d="M12 3a13 13 0 0 0 0 18"/>',
+  'phone': '<path d="M6.5 4.5h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2 2C10.5 19.5 4.5 13.5 4.5 6.5a2 2 0 0 1 2-2z"/>',
+  'inperson': '<path d="M4 20h16"/><path d="M6 20V7l6-3 6 3v13"/><path d="M10 20v-4h4v4"/><path d="M9.5 10h.01M14.5 10h.01M9.5 13h.01M14.5 13h.01"/>',
+  'helper': '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="16.5" cy="9.5" r="2.25"/><path d="M15.5 14a4.5 4.5 0 0 1 5 5"/>',
+  'languages': '<path d="M4 5h16v10H9l-5 4V5z"/><path d="M8 9.5h8M8 12.5h5"/>',
+  'letter': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/>',
+  'denied': '<path d="M12 4v16"/><path d="M5 7h14"/><path d="M7 7l-3 6h6l-3-6z"/><path d="M17 7l-3 6h6l-3-6z"/><path d="M8 20h8"/>',
+  'health': '<path d="M12 20s-7.5-4.5-7.5-10a4.5 4.5 0 0 1 7.5-3.3A4.5 4.5 0 0 1 19.5 10c0 5.5-7.5 10-7.5 10z"/><path d="M12 9v5M9.5 11.5h5"/>',
+  'immigration': '<rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="11" r="3.5"/><path d="M8.5 17.5h7"/>',
+  'words': '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v17H6.5A2.5 2.5 0 0 0 4 22V5.5z"/><path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v17h5.5a2.5 2.5 0 0 1 2.5 2V5.5z"/>',
+  'state_or': '<path d="M5 7l2-1.5 4.5 1 6-.5 2.5 1-1 3.5 1 2-1.5 2.5.5 3.5H4.5L4 14l1-7z"/>',
+  'state_wa': '<path d="M4 7l3 1 1.5-2 2 1.5V6H20v11.5l-8.5-.5-2.5 1-3-.5-2-3.5 1-3-1-4z"/>',
+  'state_ut': '<path d="M6 4h8v4h4v12H6V4z"/>',
+  'federal': '<path d="M12 3l7.5 3v6c0 4.5-3.2 7.8-7.5 9-4.3-1.2-7.5-4.5-7.5-9V6L12 3z"/><circle cx="12" cy="11.5" r="3"/><path d="M9 11.5h6"/>'
+} -%}
+<svg class="icon{% if cls %} {{ cls }}{% endif %}" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">{{ paths[name]|safe }}</svg>
+{%- endmacro %}
+
+{% macro lede(text) -%}
+<p class="lede"><span class="label">The big picture:</span> {{ text }}</p>
+{%- endmacro %}
+
+{% macro callout(kind, title, id, extra=false) -%}
+{%- set meta = {
+  'why': ('info', 'Context'),
+  'do': ('checklist', 'Action'),
+  'cost': ('dollar', 'Costs'),
+  'time': ('clock', 'Timing'),
+  'watch': ('alert', 'Watch out'),
+  'changed': ('calendar', '2026 update'),
+  'good': ('check', 'Good to know'),
+  'note': ('shield', 'Note')
+}.get(kind, ('info', 'Note')) -%}
+<section class="callout callout-{{ kind }}{% if extra %} brief-extra{% endif %}" id="{{ id }}" aria-labelledby="{{ id }}-t">
+  <p class="callout-kicker"><span class="callout-icon">{{ icon(meta[0]) }}</span><span>{{ meta[1] }}</span></p>
+  <h2 class="callout-title" id="{{ id }}-t">{{ title }}</h2>
+  {{ caller() }}
+</section>
+{%- endmacro %}
+
+{% macro box(kind, title) -%}
+{%- set icon_name = {
+  'why': 'info',
+  'do': 'checklist',
+  'cost': 'dollar',
+  'time': 'clock',
+  'watch': 'alert',
+  'changed': 'calendar',
+  'good': 'check',
+  'note': 'shield'
+}.get(kind, 'info') -%}
+<div class="callout callout-{{ kind }} callout-small">
+  <p class="callout-title"><span class="callout-icon">{{ icon(icon_name) }}</span><strong>{{ title }}</strong></p>
+  {{ caller() }}
+</div>
+{%- endmacro %}
+
+{% macro domestic_safety_callout(id, state_name, contact_line) -%}
+<section class="callout callout-note" id="{{ id }}" aria-labelledby="{{ id }}-t">
+  <p class="callout-kicker"><span class="callout-icon">{{ icon('shield') }}</span><span>Domestic safety and confidential mail</span></p>
+  <h2 class="callout-title" id="{{ id }}-t">Need a safe mailing address or domestic-safety accommodation?</h2>
+  <p>{{ contact_line }} {{ badge('our_reading') }}</p>
+  <p>On a shared or monitored device? Pressing <strong>Shift</strong> 3 times quickly or selecting the link below replaces this page with weather.gov (earlier pages remain in browser history).</p>
+  <p><a class="safety-exit-link" data-quick-exit href="{{ site.quick_exit_url }}" rel="noreferrer">Leave quickly<span class="vh"> and open weather.gov</span></a></p>
+</section>
+{%- endmacro %}
+
+{% macro id_mismatch_callout(id, state_slug='') -%}
+{% set id_href = page_url('id-records-' ~ state_slug) if state_slug else page_url('id-records') %}
+<section class="callout callout-why" id="{{ id }}" aria-labelledby="{{ id }}-t">
+  <p class="callout-kicker"><span class="callout-icon">{{ icon('id_card') }}</span><span>Cross-agency records check</span></p>
+  <h2 class="callout-title" id="{{ id }}-t">Does your name differ across Social Security, payroll, school, or your ID?</h2>
+  <p>Medicaid agencies check electronic records first, including Social Security, state wage databases, and school enrollment. If your name changed after marriage, divorce, or a court order and your records do not match yet, automatic verification may miss your hours or income and trigger a letter asking for proof. {{ badge('our_reading') }} {{ src('MED-SSA-NAME') }}</p>
+  <p><a href="{{ id_href }}">Open our Legal Name, ID, and Vital Records guide</a> to update Social Security, court orders, birth certificates, and state IDs in the right order.</p>
+</section>
+{%- endmacro %}
+
+{% macro quickfacts(page, q) -%}
+<section class="callout quick-facts" id="quick-facts" aria-labelledby="quick-facts-t">
+  <h2 class="callout-title" id="quick-facts-t"><span class="callout-icon">{{ icon('checklist') }}</span>Quick facts</h2>
+  <dl class="quick-facts-list">
+    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('gavel') }}</span><span>Court needed for a non-marriage name change</span></dt><dd>{{ q.court_name }}</dd></div>
+    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('gavel') }}</span><span>{{ q.sex_label }}</span></dt><dd>{{ q.court_sex }}</dd></div>
+    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('dollar') }}</span><span>Court filing fee</span></dt><dd>{{ q.filing_fee }} <span class="quick-facts-more">Can't pay? <a href="{{ q.cost_href if q.cost_href is defined else '#cost' }}">See what it costs</a>.</span></dd></div>
+    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('document') }}</span><span>Certified copies</span></dt><dd>{{ q.certified_copy }}</dd></div>
+    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('document') }}</span><span>{{ page.nav_label }} birth certificate cost</span></dt><dd>{{ q.birth_certificate }}</dd></div>
+    {% if q.license is defined %}
+    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('id_card') }}</span><span>Driver license or ID cost</span></dt><dd>{{ q.license }}</dd></div>
+    {% endif %}
+    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('check') }}</span><span>First step</span></dt><dd><a href="{{ q.first_step_href if q.first_step_href is defined else '#steps' }}">{{ q.first_step }}</a></dd></div>
+    {% if q.whats_new is defined %}
+    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('shield') }}</span><span>{{ q.whats_new.label }}</span></dt><dd>{{ q.whats_new.text }} <span class="quick-facts-more"><a href="{{ q.whats_new.href if q.whats_new.href is defined else '#' ~ q.whats_new.anchor }}">{{ q.whats_new.link }}</a></span></dd></div>
+    {% endif %}
+  </dl>
+</section>
+{%- endmacro %}
+
+{% macro hub_cards(items) -%}
+<ul class="cards hub-cards">
+  {% for item in items %}
+  <li class="card card-interactive"{% if item.id is defined and item.id %} id="{{ item.id }}"{% endif %}>
+    <div class="card-head">
+      <span class="card-icon">{{ icon(item.icon) }}</span>
+      <h3><a class="card-link" href="{{ item.href }}">{{ item.title }}</a></h3>
+    </div>
+    <p>{{ item.summary }}</p>
+    {% if item.meta is defined and item.meta %}<p class="card-meta">{{ item.meta }}</p>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{% macro bring_reminder(where, items) -%}
+<aside class="bring-strip" aria-label="Reminder: {{ where }}">
+  <p class="bring-head"><span class="callout-icon">{{ icon('checklist') }}</span><span>You are here: {{ where }}</span></p>
+  <p class="bring-label"><strong>Bring or send:</strong> {{ items }}</p>
+</aside>
+{%- endmacro %}
+
+{% macro after_filing(id, steps) -%}
+<section class="after-strip" id="{{ id }}" aria-labelledby="{{ id }}-t">
+  <h3 class="after-title" id="{{ id }}-t"><span class="callout-icon">{{ icon('clock') }}</span>What happens after you file</h3>
+  <ol class="after-list">
+  {% for item in steps %}
+    <li class="after-item">
+      <span class="after-head"><span class="after-num">{{ loop.index }}</span><strong>{{ item.title }}</strong></span>
+      <span class="after-copy">{{ item.text }}</span>
+    </li>
+  {% endfor %}
+  </ol>
+</section>
+{%- endmacro %}
+
+{% macro onthispage(items) -%}
+<nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol>
+  {% for item in items %}
+    <li{% if item|length > 2 and item[2] == 'extra' %} class="brief-extra"{% endif %}><a href="#{{ item[0] }}">{{ item[1] }}</a></li>
+  {% endfor %}
+  </ol>
+</nav>
+{%- endmacro %}
+
+{% macro step(slug, n, id, title) -%}
+<li class="step" id="{{ id }}">
+  <div class="step-head">
+    <h3 class="step-title"><span class="step-num">Step {{ n }}</span> {{ title }}</h3>
+    <label class="done js-only"><input type="checkbox" data-check="{{ slug }}:{{ id }}"> <span>Done</span><span class="vh"> with step {{ n }}: {{ title }}</span></label>
+  </div>
+  <div class="step-body">
+    {{ caller() }}
+  </div>
+</li>
+{%- endmacro %}
+
+{% macro deeper(title, id) -%}
+<details class="deeper" id="{{ id }}">
+  <summary><span class="deeper-label">Go deeper:</span> {{ title }}</summary>
+  <div class="deeper-body">
+    {{ caller() }}
+  </div>
+</details>
+{%- endmacro %}
+
+{% macro qa(question, id) -%}
+<details class="qa deeper" id="{{ id }}">
+  <summary>{{ question }}</summary>
+  <div class="deeper-body">
+    {{ caller() }}
+  </div>
+</details>
+{%- endmacro %}
+
+{% macro badge(kind) -%}
+{%- if kind in ['not_confirmed', 'unconfirmed'] -%}<span class="badge badge-not-confirmed">Not confirmed</span>
+{%- elif kind in ['not_official', 'secondary'] -%}<span class="badge badge-not-official">Not official</span>
+{%- elif kind in ['our_reading', 'inference'] -%}<span class="badge badge-our-reading">Our reading</span>
+{%- elif kind == 'official' -%}<span class="badge badge-official">Official</span>
+{%- elif kind == 'changed' -%}<span class="badge badge-changed">Changed in 2026</span>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro copyable(text, label) -%}
+<span class="copyable"><span class="copy-text">{{ text }}</span> <button type="button" class="copy-btn js-only" data-copy="{{ text }}" aria-label="Copy {{ label }}">Copy</button></span>
+{%- endmacro %}
+
+{% macro checked_line(page) -%}
+{% set oldest = page.get('oldest_checked', page.checked) -%}
+{% set newest = page.get('newest_checked', page.checked) -%}
+{% if oldest == newest -%}
+<p class="checked">Sources checked: <time datetime="{{ oldest }}">{{ oldest|human_date }}</time>.</p>
+{%- else -%}
+<p class="checked">Sources checked: <time datetime="{{ oldest }}">{{ oldest|human_date }}</time> to <time datetime="{{ newest }}">{{ newest|human_date }}</time>.</p>
+{%- endif %}
+{%- endmacro %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block main %}
+<p class="kicker">Oregon Health Plan (OHP)</p>
+<h1>Medical bills from before you apply</h1>
+    <p class="purpose">OHP can help with some bills from before you apply. Starting Jan.&nbsp;1, 2027, that window is shorter for most adults.</p>
+
+    <h2>The short version</h2>
+    <ul class="short">
+      <li data-show-until="2026-12-31"><strong>Through Dec.&nbsp;31, 2026:</strong> OHP can help with bills from up to 3 months before you apply. {{ src('MED-S01') }}</li>
+      <li><strong>Starting Jan.&nbsp;1, 2027:</strong> 1 month for most adults ages 19 to 64. Up to 2 months for everyone else. {{ src('MED-S01') }}</li>
+      <li class="more"><strong>OHP's word for it:</strong> retroactive coverage.</li>
+    </ul>
+
+    <div class="callout">
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+      <h2>What this means for you</h2>
+      <p>Have unpaid medical bills from the last few months? Applying sooner may help. <a href="{{ page_url('medicaid-oregon-apply') }}">How to apply</a></p>
+      <p>Questions about a bill? Call OHP at <span class="nowrap">800-699-9075</span>.</p>
+    </div>
+
+    <h2>Who gets up to 2 months starting Jan.&nbsp;1, 2027</h2>
+    <ul>
+      <li>Children</li>
+      <li>People 65 or older</li>
+      <li>People who are pregnant</li>
+      <li>People who get OHP because of a disability</li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,12 @@
+# Clean convenience redirects within civicdesk.net
+/check /medicaid/oregon/check/ 301
+/path /id-records/path/ 301
+/id-records/oregon-court /id-records/oregon/court/ 301
+/id-records/oregon-birth /id-records/oregon/birth/ 301
+/id-records/oregon-id /id-records/oregon/id/ 301
+/id-records/washington-court /id-records/washington/court/ 301
+/id-records/washington-birth /id-records/washington/birth/ 301
+/id-records/washington-id /id-records/washington/id/ 301
+/id-records/utah-court /id-records/utah/court/ 301
+/id-records/utah-birth /id-records/utah/birth/ 301
+/id-records/utah-id /id-records/utah/id/ 301

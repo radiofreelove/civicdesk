@@ -1,0 +1,1173 @@
+# Complete page manifest for CivicDesk (civicdesk.net).
+
+- slug: index
+  route: /
+  template: index.html
+  title: Government rules and paperwork, explained in plain words
+  nav_label: Home
+  description: Plain-language guides to 2027 Medicaid work and activity rules and legal name, ID, and vital records
+    across Oregon, Washington, Utah, and federal agencies.
+  checked: '2026-11-25'
+  show_short_toggle: false
+- slug: start
+  route: /start/
+  template: start.html
+  title: Find the right guide in 2 questions
+  nav_label: Start here
+  description: Answer 2 quick questions about your state and topic to jump straight to the right CivicDesk guide
+    or interactive tool.
+  checked: '2026-11-25'
+  show_short_toggle: false
+- slug: medicaid
+  route: /medicaid/
+  desk: medicaid
+  template: medicaid/index.html
+  title: 2027 Medicaid work and activity rules
+  nav_label: Medicaid overview
+  description: Plain-language guides and 1-minute checks for the 2027 Medicaid work and activity rules in Oregon
+    (OHP), Washington (Apple Health), and Utah Medicaid.
+  checked: '2026-11-24'
+  show_short_toggle: false
+- slug: medicaid-oregon
+  route: /medicaid/oregon/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/index.html
+  title: Applying for OHP? New rules start Jan. 1, 2027
+  nav_label: Home
+  description: A plain guide to the new Oregon Health Plan (OHP) work or activity rules for people who are applying.
+    Independent. Each page lists its official sources.
+  checked: '2026-11-24'
+  sources:
+  - MED-S07
+  - MED-S53
+  - MED-S01
+  - MED-S06
+  - MED-S04
+  - MED-S27
+  - MED-S05
+  - MED-S02
+  - MED-S03
+  - MED-S08
+  - MED-S41
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  show_short_toggle: true
+- slug: medicaid-oregon-check
+  route: /medicaid/oregon/check/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/check.html
+  title: Do the rules fit me? A 1-minute check
+  nav_label: Do the rules fit me?
+  description: Answer 3 quick questions to see whether the new OHP work or activity rules may apply to you. Your
+    answers never leave your device.
+  checked: '2026-11-24'
+  sources:
+  - MED-S02
+  - MED-S03
+  - MED-S01
+  - MED-S05
+  - MED-S04
+  - MED-S27
+  show_short_toggle: false
+  scripts:
+  - checker-oregon
+  - checker
+  tool: true
+- slug: medicaid-oregon-rules
+  route: /medicaid/oregon/rules/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/rules.html
+  title: The new rules, in plain words
+  nav_label: The new rules
+  description: Who the new OHP work or activity rules are for, the 3 ways to meet them, and what counts as work,
+    school, and volunteering.
+  checked: '2026-11-24'
+  sources:
+  - MED-S01
+  - MED-S02
+  - MED-S03
+  - MED-S04
+  - MED-S05
+  - MED-S06
+  - MED-S07
+  - MED-S53
+  - MED-S08
+  - MED-S23
+  - MED-S27
+  - MED-S41
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  - MED-S47
+  show_short_toggle: true
+- slug: medicaid-oregon-reasons
+  route: /medicaid/oregon/reasons/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/reasons.html
+  title: Reasons you may not have to meet the rules
+  nav_label: Reasons you may not have to
+  description: Every reason the new OHP work or activity rules may not apply to you, and how OHP checks each one.
+    OHP calls these exemptions.
+  checked: '2026-11-24'
+  sources:
+  - MED-S02
+  - MED-S03
+  - MED-S01
+  - MED-S05
+  - MED-S08
+  - MED-S19
+  - MED-S28
+  - MED-S35
+  - MED-S07
+  - MED-S42
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  show_short_toggle: true
+- slug: medicaid-oregon-apply
+  route: /medicaid/oregon/apply/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/apply.html
+  title: How to apply for OHP
+  nav_label: How to apply
+  description: 'Four ways to apply for the Oregon Health Plan (OHP): online, by phone, in person, or on paper. What
+    to have ready, and what happens next.'
+  checked: '2026-11-24'
+  sources:
+  - MED-S09
+  - MED-S11
+  - MED-S03
+  - MED-S19
+  - MED-S15
+  - MED-S16
+  - MED-S17
+  - MED-S10
+  - MED-S04
+  - MED-S05
+  - MED-S13
+  - MED-S18
+  - MED-S20
+  - MED-SSA-NAME
+  show_short_toggle: true
+- slug: medicaid-oregon-letter
+  route: /medicaid/oregon/letter/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/letter.html
+  title: OHP sent me a letter. Now what?
+  nav_label: OHP sent me a letter
+  description: What OHP letters about the new rules mean, how long you have to answer, and every way to send your
+    answer.
+  checked: '2026-11-24'
+  sources:
+  - MED-S04
+  - MED-S08
+  - MED-S19
+  - MED-S16
+  - MED-S03
+  - MED-S06
+  - MED-S42
+  show_short_toggle: true
+- slug: medicaid-oregon-denied
+  route: /medicaid/oregon/denied/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/denied.html
+  title: Turned down? You have options
+  nav_label: I was turned down
+  description: 'What to do if OHP says no or your coverage ends: apply again, ask for a hearing, get free legal
+    help, and find other care.'
+  checked: '2026-11-24'
+  sources:
+  - MED-S04
+  - MED-S06
+  - MED-S14
+  - MED-S25
+  - MED-S26
+  - MED-S26B
+  - MED-S20
+  - MED-S21
+  - MED-S07
+  - MED-S53
+  - MED-S41
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  show_short_toggle: true
+- slug: medicaid-oregon-bills
+  route: /medicaid/oregon/bills/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/bills.html
+  title: Medical bills from before you apply
+  nav_label: Past medical bills
+  description: OHP can help with some medical bills from before you apply. Starting Jan. 1, 2027, that window gets
+    shorter for most adults.
+  checked: '2026-11-24'
+  sources:
+  - MED-S01
+  show_short_toggle: true
+- slug: medicaid-oregon-health
+  route: /medicaid/oregon/health/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/health.html
+  title: Have a health condition?
+  nav_label: Health conditions
+  description: A serious or disabling health condition may mean you do not have to meet the new OHP rules. In 2027,
+    no doctor's note is needed.
+  checked: '2026-11-24'
+  sources:
+  - MED-S01
+  - MED-S03
+  - MED-S08
+  - MED-S28
+  - MED-S29
+  - MED-S35
+  - MED-S07
+  - MED-S26
+  - MED-S42
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  show_short_toggle: true
+- slug: medicaid-oregon-immigration
+  route: /medicaid/oregon/immigration/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/immigration.html
+  title: Immigration status and OHP
+  nav_label: Immigration status
+  description: Your immigration status alone does not stop you from getting full OHP benefits through Healthier
+    Oregon. What is changing, and where to get trusted help.
+  checked: '2026-11-24'
+  sources:
+  - MED-S11
+  - MED-S05
+  - MED-S06
+  - MED-S01
+  - MED-S22
+  - MED-S12
+  - MED-S36
+  - MED-S37
+  - MED-S38
+  - MED-S43
+  - MED-S48
+  - MED-S49
+  - MED-S51
+  show_short_toggle: true
+- slug: medicaid-oregon-help
+  route: /medicaid/oregon/help/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/help.html
+  title: Free help and other languages
+  nav_label: Free help and languages
+  description: Phone numbers, free helpers, interpreters, and the OHP application in 17 languages.
+  checked: '2026-11-24'
+  sources:
+  - MED-S09
+  - MED-S02
+  - MED-S15
+  - MED-S16
+  - MED-S17
+  - MED-S25
+  - MED-S26
+  - MED-S04
+  - MED-S20
+  - MED-S10
+  show_short_toggle: true
+- slug: medicaid-oregon-words
+  route: /medicaid/oregon/words/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/words.html
+  title: Words on your OHP letters
+  nav_label: Words on your letters
+  description: Plain meanings for words OHP uses in letters and forms, like exemption, Request for Information,
+    and retroactive coverage.
+  checked: '2026-11-24'
+  sources:
+  - MED-S01
+  - MED-S03
+  - MED-S04
+  - MED-S05
+  - MED-S06
+  - MED-S09
+  - MED-S11
+  - MED-S13
+  - MED-S27
+  - MED-S29
+  show_short_toggle: false
+- slug: medicaid-oregon-log
+  route: /medicaid/oregon/log/
+  desk: medicaid
+  state: oregon
+  template: medicaid/oregon/log.html
+  title: Hours log you can print
+  nav_label: Hours log
+  description: A printable log for work, volunteer, school, and job training hours, plus a volunteer hours sheet.
+    For your own records.
+  checked: '2026-11-24'
+  sources:
+  - MED-S04
+  - MED-S07
+  - MED-S05
+  - MED-S27
+  - MED-S03
+  - MED-S01
+  show_short_toggle: false
+- slug: medicaid-washington
+  route: /medicaid/washington/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/index.html
+  title: Applying for Apple Health? New rules start Jan. 1, 2027
+  nav_label: Washington home
+  description: A plain guide to the new Apple Health work rules in Washington for adults who are applying. Independent.
+    Each page lists its official sources.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA01
+  - MED-WA03
+  - MED-WA04
+  - MED-WA05
+  - MED-WA06
+  - MED-WA14
+  - MED-WA15
+  - MED-WA16
+  - MED-S27
+  - MED-S41
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  - MED-WA22
+  - MED-WA27
+  show_short_toggle: true
+- slug: medicaid-washington-check
+  route: /medicaid/washington/check/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/check.html
+  title: Do the Washington rules fit me? A 1-minute check
+  nav_label: Do the rules fit me?
+  description: Answer 3 quick questions to see whether the new Apple Health work rules in Washington may apply to
+    you. Your answers never leave your device.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA04
+  - MED-WA05
+  - MED-WA06
+  - MED-WA13
+  - MED-WA15
+  - MED-S27
+  - MED-S29
+  - MED-WA22
+  show_short_toggle: false
+  scripts:
+  - checker-washington
+  - checker
+  tool: true
+- slug: medicaid-washington-rules
+  route: /medicaid/washington/rules/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/rules.html
+  title: The new Apple Health rules, in plain words
+  nav_label: The new rules
+  description: Who the new Apple Health work rules in Washington are for, the 6 ways to meet them, and when the
+    state looks.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA01
+  - MED-WA03
+  - MED-WA04
+  - MED-WA05
+  - MED-WA14
+  - MED-WA15
+  - MED-WA16
+  - MED-S27
+  - MED-S41
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  - MED-WA22
+  - MED-WA27
+  show_short_toggle: true
+- slug: medicaid-washington-reasons
+  route: /medicaid/washington/reasons/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/reasons.html
+  title: Reasons you may not have to meet the Apple Health rules
+  nav_label: Reasons you may not have to
+  description: Every reason the new Apple Health work rules in Washington may not apply to you. The Health Care
+    Authority's fact sheet calls these exemptions.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA04
+  - MED-WA05
+  - MED-WA07
+  - MED-WA14
+  - MED-WA24
+  - MED-WA25
+  - MED-S27
+  - MED-S28
+  - MED-WA22
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  show_short_toggle: true
+- slug: medicaid-washington-apply
+  route: /medicaid/washington/apply/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/apply.html
+  title: How to apply for Apple Health
+  nav_label: How to apply
+  description: 'Four ways to apply for Apple Health in Washington: online, by phone, on paper, or in person with
+    a navigator. What happens after you apply.'
+  checked: '2026-11-24'
+  sources:
+  - MED-WA04
+  - MED-WA06
+  - MED-WA07
+  - MED-WA10
+  - MED-WA11
+  - MED-WA12
+  - MED-WA13
+  - MED-SSA-NAME
+  show_short_toggle: true
+- slug: medicaid-washington-letter
+  route: /medicaid/washington/letter/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/letter.html
+  title: Washington sent me a letter. Now what?
+  nav_label: The state sent me a letter
+  description: How Apple Health notices reach you in Washington, why to answer a letter that asks for proof, and
+    how long you have.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA01
+  - MED-WA04
+  - MED-WA07
+  - MED-WA13
+  - MED-WA22
+  - MED-WA27
+  - MED-WA30
+  show_short_toggle: true
+- slug: medicaid-washington-denied
+  route: /medicaid/washington/denied/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/denied.html
+  title: Turned down for Apple Health? You have options
+  nav_label: I was turned down
+  description: 'What to do if Washington says no or your Apple Health ends: ask for a hearing, keep coverage during
+    an appeal, and get coverage back after a missed renewal.'
+  checked: '2026-11-24'
+  sources:
+  - MED-WA01
+  - MED-WA03
+  - MED-WA06
+  - MED-WA08
+  - MED-WA10
+  - MED-WA14
+  - MED-WA16
+  - MED-WA17
+  - MED-WA18
+  - MED-WA19
+  - MED-WA22
+  - MED-WA29
+  - MED-S41
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  - MED-WA27
+  show_short_toggle: true
+- slug: medicaid-washington-bills
+  route: /medicaid/washington/bills/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/bills.html
+  title: Medical bills from before you apply for Apple Health
+  nav_label: Past medical bills
+  description: Apple Health in Washington may pay some bills from before you apply. On Jan. 1, 2027, that window
+    gets shorter.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA01
+  - MED-WA03
+  - MED-WA07
+  show_short_toggle: true
+- slug: medicaid-washington-health
+  route: /medicaid/washington/health/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/health.html
+  title: Have a health condition? Apple Health rules
+  nav_label: Health conditions
+  description: A disability or a serious health condition may mean you do not have to meet the new Apple Health
+    work rules in Washington.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA05
+  - MED-WA07
+  - MED-WA14
+  - MED-WA21
+  - MED-WA22
+  - MED-S27
+  - MED-S28
+  - MED-S29
+  - MED-S44
+  - MED-S45
+  - MED-S46
+  show_short_toggle: true
+- slug: medicaid-washington-immigration
+  route: /medicaid/washington/immigration/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/immigration.html
+  title: Immigration status and Apple Health
+  nav_label: Immigration status
+  description: A federal law changed who can get federally funded Apple Health in Washington on Oct. 1, 2026. What
+    the Health Care Authority has said.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA01
+  - MED-WA08
+  - MED-WA14
+  - MED-WA20
+  - MED-WA23
+  - MED-WA26
+  - MED-WA28
+  - MED-S54
+  show_short_toggle: true
+- slug: medicaid-washington-help
+  route: /medicaid/washington/help/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/help.html
+  title: Free help with Apple Health, and other languages
+  nav_label: Free help and languages
+  description: Phone numbers, free local helpers, interpreters, and Apple Health booklets in 15 languages, for people
+    applying in Washington.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA02
+  - MED-WA06
+  - MED-WA07
+  - MED-WA08
+  - MED-WA09
+  - MED-WA10
+  show_short_toggle: true
+- slug: medicaid-washington-words
+  route: /medicaid/washington/words/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/words.html
+  title: Words on your Apple Health letters
+  nav_label: Words on your letters
+  description: Plain meanings for words Washington uses in Apple Health letters and pages, like Apple Health for
+    Adults, MEDS, work requirements, and Post Eligibility Review.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA01
+  - MED-WA03
+  - MED-WA04
+  - MED-WA05
+  - MED-WA06
+  - MED-WA07
+  - MED-WA13
+  - MED-WA15
+  - MED-S27
+  - MED-S29
+  - MED-WA22
+  - MED-WA27
+  show_short_toggle: false
+- slug: medicaid-washington-log
+  route: /medicaid/washington/log/
+  desk: medicaid
+  state: washington
+  template: medicaid/washington/log.html
+  title: Hours log you can print, for Apple Health
+  nav_label: Hours log
+  description: A printable log for work program, community service, school, and work hours, with a 6-month view
+    for seasonal workers. For your own records.
+  checked: '2026-11-24'
+  sources:
+  - MED-WA05
+  - MED-WA13
+  - MED-WA22
+  show_short_toggle: false
+- slug: medicaid-utah
+  route: /medicaid/utah/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/index.html
+  title: Applying for Utah Medicaid? New rules start Jan. 1, 2027
+  nav_label: Utah home
+  description: A plain guide to the new Utah Medicaid work or activity rules for adults who are applying. Independent.
+    Each page lists its official sources.
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U02
+  - MED-U03
+  - MED-U04
+  - MED-U05
+  - MED-U07
+  - MED-U08
+  - MED-U09
+  - MED-U10
+  - MED-U21
+  - MED-U28
+  - MED-S27
+  - MED-S41
+  show_short_toggle: true
+- slug: medicaid-utah-check
+  route: /medicaid/utah/check/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/check.html
+  title: Do the Utah rules fit me? A 1-minute check
+  nav_label: Do the rules fit me?
+  description: Answer 3 quick questions to see whether the new Utah Medicaid work or activity rules may apply to
+    you. Your answers never leave your device.
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U03
+  - MED-U04
+  - MED-U05
+  - MED-U28
+  - MED-S27
+  show_short_toggle: false
+  scripts:
+  - checker-utah
+  - checker
+  tool: true
+- slug: medicaid-utah-rules
+  route: /medicaid/utah/rules/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/rules.html
+  title: The new Utah Medicaid rules, in plain words
+  nav_label: The new rules
+  description: Who the new Utah Medicaid work or activity rules are for, the 3 ways to meet them, and when the state
+    looks.
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U02
+  - MED-U03
+  - MED-U04
+  - MED-U05
+  - MED-U07
+  - MED-U08
+  - MED-U09
+  - MED-U10
+  - MED-U13
+  - MED-U39
+  - MED-S27
+  - MED-S41
+  show_short_toggle: true
+- slug: medicaid-utah-reasons
+  route: /medicaid/utah/reasons/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/reasons.html
+  title: Reasons you may not have to meet the Utah rules
+  nav_label: Reasons you may not have to
+  description: Every reason the new Utah Medicaid work or activity rules may not apply to you, and how the state
+    checks them. Utah calls these exclusions and exceptions.
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U02
+  - MED-U03
+  - MED-U04
+  - MED-U05
+  - MED-U07
+  - MED-U13
+  - MED-U28
+  - MED-U39
+  - MED-U40
+  - MED-S28
+  - MED-S40
+  - MED-S41
+  show_short_toggle: true
+- slug: medicaid-utah-apply
+  route: /medicaid/utah/apply/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/apply.html
+  title: How to apply for Utah Medicaid
+  nav_label: How to apply
+  description: 'Three ways to apply for Utah Medicaid: online, on paper, or in person. What to have ready, and what
+    happens next.'
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U03
+  - MED-U04
+  - MED-U05
+  - MED-U07
+  - MED-U08
+  - MED-U14
+  - MED-U15
+  - MED-U15S
+  - MED-U16
+  - MED-U22
+  - MED-U23
+  - MED-U25
+  - MED-U28
+  - MED-U31
+  - MED-SSA-NAME
+  show_short_toggle: true
+- slug: medicaid-utah-letter
+  route: /medicaid/utah/letter/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/letter.html
+  title: Utah sent me a letter. Now what?
+  nav_label: The state sent me a letter
+  description: What Utah Medicaid letters about the new rules mean, how long you have to answer, and every way to
+    send your answer.
+  checked: '2026-11-24'
+  sources:
+  - MED-U02
+  - MED-U03
+  - MED-U04
+  - MED-U06
+  - MED-U07
+  - MED-U21
+  - MED-U28
+  - MED-U29
+  - MED-U40
+  - MED-S27
+  show_short_toggle: true
+- slug: medicaid-utah-denied
+  route: /medicaid/utah/denied/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/denied.html
+  title: Turned down for Utah Medicaid? You have options
+  nav_label: I was turned down
+  description: 'What to do if Utah says no or your Medicaid ends: apply again, ask for a fair hearing, get free
+    legal help, and find other care.'
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U02
+  - MED-U04
+  - MED-U05
+  - MED-U08
+  - MED-U14
+  - MED-U17
+  - MED-U18
+  - MED-U19
+  - MED-U19S
+  - MED-U20
+  - MED-U21
+  - MED-U22
+  - MED-U23
+  - MED-U37
+  - MED-S27
+  - MED-S41
+  show_short_toggle: true
+- slug: medicaid-utah-bills
+  route: /medicaid/utah/bills/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/bills.html
+  title: Medical bills from before you apply for Utah Medicaid
+  nav_label: Past medical bills
+  description: Utah Medicaid can cover some care from before you apply. Starting Jan. 1, 2027, that window gets
+    shorter.
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U02
+  - MED-U08
+  - MED-U09
+  show_short_toggle: true
+- slug: medicaid-utah-health
+  route: /medicaid/utah/health/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/health.html
+  title: Have a health condition? Utah Medicaid rules
+  nav_label: Health conditions
+  description: A disability or a serious health condition may mean you do not have to meet the new Utah Medicaid
+    rules. Utah has 3 ways to confirm it.
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U03
+  - MED-U04
+  - MED-U05
+  - MED-U39
+  - MED-S28
+  - MED-S40
+  - MED-S41
+  show_short_toggle: true
+- slug: medicaid-utah-immigration
+  route: /medicaid/utah/immigration/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/immigration.html
+  title: Immigration status and Utah Medicaid
+  nav_label: Immigration status
+  description: A federal law changed who can get Utah Medicaid on Oct. 1, 2026. What Utah has said, Emergency Medicaid,
+    and where to get trusted help.
+  checked: '2026-11-24'
+  sources:
+  - MED-U02
+  - MED-U09
+  - MED-U17
+  - MED-U19
+  - MED-U21
+  - MED-U27
+  - MED-S54
+  show_short_toggle: true
+- slug: medicaid-utah-help
+  route: /medicaid/utah/help/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/help.html
+  title: Free help with Utah Medicaid, and other languages
+  nav_label: Free help and languages
+  description: Phone numbers, free helpers, interpreters, and Utah Medicaid forms in Spanish.
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U02
+  - MED-U10
+  - MED-U14
+  - MED-U15
+  - MED-U15S
+  - MED-U16
+  - MED-U18
+  - MED-U19
+  - MED-U19S
+  - MED-U20
+  - MED-U22
+  - MED-U23
+  - MED-U29
+  - MED-U31
+  - MED-U37
+  - MED-U40
+  show_short_toggle: true
+- slug: medicaid-utah-words
+  route: /medicaid/utah/words/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/words.html
+  title: Words on your Utah Medicaid letters
+  nav_label: Words on your letters
+  description: Plain meanings for words Utah Medicaid uses in letters and forms, like community engagement, exclusion,
+    lookback, and retroactive coverage.
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U02
+  - MED-U03
+  - MED-U04
+  - MED-U05
+  - MED-U08
+  - MED-U10
+  - MED-U13
+  - MED-U14
+  - MED-U16
+  - MED-U18
+  - MED-U26
+  - MED-U28
+  - MED-S27
+  show_short_toggle: false
+- slug: medicaid-utah-log
+  route: /medicaid/utah/log/
+  desk: medicaid
+  state: utah
+  template: medicaid/utah/log.html
+  title: Hours log you can print, for Utah Medicaid
+  nav_label: Hours log
+  description: A printable log for work, volunteer, school, and job training hours, plus a volunteer hours sheet.
+    For your own records.
+  checked: '2026-11-24'
+  sources:
+  - MED-U01
+  - MED-U02
+  - MED-U03
+  - MED-U04
+  - MED-U05
+  - MED-U08
+  - MED-S27
+  show_short_toggle: false
+- slug: medicaid-sources
+  route: /medicaid/sources/
+  desk: medicaid
+  template: medicaid/sources.html
+  title: 'Primary sources: 2027 Medicaid Work & Activity Rules'
+  description: Every statute, federal rule, CMS letter, court filing, and state explainer cited on the CivicDesk
+    2027 Medicaid desk (MED-*).
+  checked: '2026-11-24'
+  show_short_toggle: false
+- slug: id-records
+  route: /id-records/
+  desk: id-records
+  template: id-records/index.html
+  title: Legal name, ID, and vital records
+  nav_label: Name & ID home
+  description: Plain-language steps for marriage, divorce, and court name changes, plus sex and gender designation
+    updates across Oregon, Washington, Utah, Social Security, and passports.
+  checked: '2026-11-25'
+  show_short_toggle: true
+- slug: id-records-path
+  route: /id-records/path/
+  desk: id-records
+  tool: true
+  template: id-records/path.html
+  title: Find your record-update path
+  nav_label: Find your path
+  description: Interactive step-by-step path finder for marriage, divorce, court name changes, and sex or gender
+    designation updates, with optional birth-certificate steps.
+  checked: '2026-11-25'
+  show_short_toggle: false
+- slug: id-records-oregon
+  route: /id-records/oregon/
+  desk: id-records
+  template: id-records/oregon.html
+  title: 'Oregon: change your name and legal sex'
+  description: 'Overview of Oregon name and legal sex changes in 2026: quick facts, 2026 confidentiality law, and
+    links to court, birth certificate, and DMV steps.'
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Oregon
+  state: oregon
+- slug: id-records-oregon-court
+  route: /id-records/oregon/court/
+  desk: id-records
+  template: id-records/oregon-court.html
+  title: 'Oregon court order: name and legal sex change'
+  description: Step-by-step Oregon circuit court process for changing your legal name, sex, or both, including forms,
+    $124 fee, confidentiality, and under-18 rules.
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Court order
+  state: oregon
+- slug: id-records-oregon-birth
+  route: /id-records/oregon/birth/
+  desk: id-records
+  template: id-records/oregon-birth.html
+  title: 'Oregon birth certificate: name and sex change'
+  description: How to change your name or sex (M, F, or X) on an Oregon birth certificate with form OHA 2673 or
+    a court judgment, including fees and footnotes.
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Birth certificate
+  state: oregon
+- slug: id-records-oregon-id
+  route: /id-records/oregon/id/
+  desk: id-records
+  template: id-records/oregon-id.html
+  title: 'Oregon driver license or ID: name and gender marker'
+  description: How to choose M, F, or X on an Oregon driver license or ID at the DMV, what to bring, and what to
+    know about Social Security and records.
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: License & ID
+  state: oregon
+- slug: id-records-washington
+  route: /id-records/washington/
+  desk: id-records
+  template: id-records/washington.html
+  title: 'Washington: change your name and gender marker'
+  description: 'Overview of Washington name and gender marker changes: quick facts, Nov. 2026 DOH form change, and
+    links to court, birth certificate, and license steps.'
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Washington
+  state: washington
+- slug: id-records-washington-court
+  route: /id-records/washington/court/
+  desk: id-records
+  template: id-records/washington-court.html
+  title: 'Washington court order: public or sealed name change'
+  description: 'Step-by-step Washington name change process: choosing public district court or sealed superior court,
+    costs, hearings, optional gender order, and under-18 rules.'
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Court order
+  state: washington
+- slug: id-records-washington-birth
+  route: /id-records/washington/birth/
+  desk: id-records
+  template: id-records/washington-birth.html
+  title: 'Washington birth certificate: sex designation and name change'
+  description: How to update a Washington birth certificate with DOH 422-143 and DOH 422-126, plus the Nov. 2026
+    form retirement and processing times.
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Birth certificate
+  state: washington
+- slug: id-records-washington-id
+  route: /id-records/washington/id/
+  desk: id-records
+  template: id-records/washington-id.html
+  title: 'Washington driver license or ID: gender designation and name'
+  description: How to choose M, F, or X on a Washington standard or enhanced driver license or ID in person or by
+    mail with form 520043.
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: License & ID
+  state: washington
+- slug: id-records-utah
+  route: /id-records/utah/
+  desk: id-records
+  template: id-records/utah.html
+  title: 'Utah: change your name and sex designation'
+  description: 'Overview of Utah name and sex designation changes in 2026: quick facts, 2026 H.B. 183 update, and
+    links to court, birth certificate, and license steps.'
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Utah
+  state: utah
+- slug: id-records-utah-court
+  route: /id-records/utah/court/
+  desk: id-records
+  template: id-records/utah-court.html
+  title: 'Utah court order: name and sex designation change'
+  description: 'Step-by-step Utah district court process: residency rules, six sex-designation requirements, MyPaperwork,
+    $375 fee, privacy, and under-18 rules.'
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Court order
+  state: utah
+- slug: id-records-utah-birth
+  route: /id-records/utah/birth/
+  desk: id-records
+  template: id-records/utah-birth.html
+  title: 'Utah birth certificate: name and sex designation change'
+  description: How to amend a Utah birth certificate with a certified court order and form 902, including Vital
+    Records amendment history notes.
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Birth certificate
+  state: utah
+- slug: id-records-utah-id
+  route: /id-records/utah/id/
+  desk: id-records
+  template: id-records/utah-id.html
+  title: 'Utah driver license or ID: name and sex marker'
+  description: What Utah Driver License Division asks for to update your name, and what to check before updating
+    a sex marker.
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: License & ID
+  state: utah
+- slug: id-records-federal
+  route: /id-records/federal/
+  desk: id-records
+  template: id-records/federal.html
+  title: Passports and Social Security in 2026
+  description: What changed for passports and Social Security records in 2025 and 2026, and what to know before
+    you apply.
+  checked: '2026-11-21'
+  show_short_toggle: true
+  nav_label: Federal
+- slug: id-records-after
+  route: /id-records/after/
+  desk: id-records
+  template: id-records/after.html
+  title: 'After court: update your records in the right order'
+  description: A printable checklist for updating Social Security, your license, your birth certificate, and everything
+    else after a court order.
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: After court
+- slug: id-records-help
+  route: /id-records/help/
+  desk: id-records
+  template: id-records/help.html
+  title: Get free or low-cost help
+  description: Free and low-cost legal help, court self-help centers, and peer support in Oregon, Washington, and
+    Utah.
+  checked: '2026-11-03'
+  show_short_toggle: true
+  nav_label: Get help
+- slug: id-records-compare
+  route: /id-records/compare/
+  desk: id-records
+  template: id-records/compare.html
+  title: Compare Oregon, Washington, and Utah
+  description: 'Side by side: courts, fees, hearings, privacy, birth certificates, and licenses in Oregon, Washington,
+    and Utah.'
+  checked: '2026-11-03'
+  show_short_toggle: true
+- slug: id-records-glossary
+  route: /id-records/glossary/
+  desk: id-records
+  template: id-records/glossary.html
+  title: Words to know
+  description: Plain definitions of the legal words you will see on court forms.
+  checked: '2026-11-03'
+  show_short_toggle: false
+- slug: id-records-sources
+  route: /id-records/sources/
+  desk: id-records
+  template: id-records/sources.html
+  title: 'Primary sources: Legal Name, ID & Vital Records'
+  description: Every statute, court schedule, agency form, and guide cited on the CivicDesk Legal Name, ID & Vital
+    Records desk (ID-*).
+  checked: '2026-11-25'
+  show_short_toggle: false
+- slug: sources
+  route: /sources/
+  template: sources.html
+  title: Every source we cite
+  nav_label: Sources
+  description: Complete desk-partitioned primary source registries (MED-* and ID-*) and 4-tier source honesty labels
+    for CivicDesk.
+  checked: '2026-11-25'
+  show_short_toggle: false
+- slug: about
+  route: /about/
+  template: about.html
+  title: About CivicDesk
+  nav_label: About
+  description: How CivicDesk researches and verifies primary sources, how to report corrections, and how to reuse
+    our open-licensed guides.
+  checked: '2026-11-25'
+  show_short_toggle: false
+- slug: accessibility
+  route: /accessibility/
+  template: accessibility.html
+  title: Accessibility and inclusive communication
+  nav_label: Accessibility
+  description: How CivicDesk implements UK Home Office, GOV.UK, W3C COGA, and WCAG 2.2 AAA accessibility standards.
+  checked: '2026-11-25'
+  show_short_toggle: false
+- slug: privacy
+  route: /privacy/
+  template: privacy.html
+  title: Privacy and shared-computer safety
+  nav_label: Privacy
+  description: 'Zero cookies, zero analytics, Referrer-Policy: no-referrer, Cloudflare Pages sole hosting, and scoped
+    Leave quickly safety rules.'
+  checked: '2026-11-25'
+  show_short_toggle: false
+- slug: '404'
+  route: /404.html
+  template: 404.html
+  title: Page not found
+  description: This address does not match a page on CivicDesk.
+  checked: '2026-11-25'
+  show_short_toggle: false
