@@ -10,7 +10,7 @@
   <li><strong>Nothing.</strong> No accounts, no cookies, no analytics scripts, no ad pixels, and no third-party fonts or trackers.</li>
   <li><strong>Strict Content Security Policy:</strong> Every page instructs your browser to block network connections to outside servers (<code>connect-src 'none'</code> and <code>form-action 'none'</code>) and refuses framing (<code>X-Frame-Options: DENY</code> and <code>frame-ancestors 'none'</code>).</li>
   <li><strong>Interactive tools stay in page memory:</strong> Answers in the <a href="{{ page_url('start') }}">2-question router</a>, the <a href="{{ page_url('medicaid') }}">1-minute Medicaid checks</a>, and the <a href="{{ page_url('id-records-path') }}">ID &amp; records path finder</a> are never saved or transmitted. Reloading the page clears them.</li>
-  <li><strong>Sole host:</strong> CivicDesk is hosted exclusively on Cloudflare Pages. Cloudflare processes basic network request data (such as IP addresses) to deliver web pages and mitigate attacks; its policy states no fixed retention period for edge logs. CivicDesk enables zero host analytics. {{ src('ID-HOST-CLOUDFLARE-PRIVACY') }}</li>
+  <li><strong>Sole host:</strong> CivicDesk is hosted exclusively on Cloudflare Workers Static Assets. Cloudflare processes basic network request data (such as IP addresses) to deliver web pages and mitigate attacks; its policy states no fixed retention period for edge logs. CivicDesk enables zero host analytics. {{ src('ID-HOST-CLOUDFLARE-PRIVACY') }}</li>
 </ul>
 
 <h2 id="referrer">Outbound links to government agencies</h2>

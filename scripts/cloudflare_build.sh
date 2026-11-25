@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Cloudflare Pages build command: bash scripts/cloudflare_build.sh (or python3 scripts/build.py)
-# Output directory:               public
+# Cloudflare Workers Builds build command: bash scripts/cloudflare_build.sh
+# Static assets directory (wrangler.jsonc): ./public
 set -euo pipefail
 
 python3 --version

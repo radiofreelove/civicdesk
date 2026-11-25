@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import re
 import subprocess
 import sys
@@ -298,3 +299,15 @@ def test_path_finder_template_rules() -> None:
             shown_marker = {t for c, wh, t in rows if (c is None or "marker" in c) and (wh is None or w in wh)}
             shown_both = {t for c, wh, t in rows if (c is None or "both" in c) and (wh is None or w in wh)}
             assert (shown_name | shown_marker) <= shown_both, f"{bid} (who={w}): 'both' omits items from name/marker"
+
+
+def test_workers_static_assets_config_and_headers(built_site: Path) -> None:
+    wrangler_cfg = json.loads((ROOT / "wrangler.jsonc").read_text(encoding="utf-8"))
+    assert wrangler_cfg["name"] == "civicdesk"
+    assert wrangler_cfg["assets"]["directory"] == "./public"
+    assert wrangler_cfg["assets"]["not_found_handling"] == "404-page"
+
+    headers_txt = (built_site / "_headers").read_text(encoding="utf-8")
+    assert "https://:version.:subdomain.workers.dev/*" in headers_txt
+    assert "X-Robots-Tag: noindex" in headers_txt
+

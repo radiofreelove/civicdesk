@@ -1160,8 +1160,8 @@
   template: privacy.html
   title: Privacy and shared-computer safety
   nav_label: Privacy
-  description: 'Zero cookies, zero analytics, Referrer-Policy: no-referrer, Cloudflare Pages sole hosting, and scoped
-    Leave quickly safety rules.'
+  description: 'Zero cookies, zero analytics, Referrer-Policy: no-referrer, Cloudflare Workers Static Assets sole hosting,
+    and scoped Leave quickly safety rules.'
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: '404'
