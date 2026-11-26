@@ -1,59 +1,49 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <h1>Free help and other languages</h1>
-    <p class="purpose">People who can help you apply, for free, and in your language.</p>
+<p class="purpose">Free certified community partners, interpreter lines, accessible print formats, and the OHP paper application in 17 languages.</p>
 
-    <h2>The short version</h2>
-    <ul class="short channel-list">
-      <li><span class="channel-icon">{{ m.icon('inperson') }}</span><span><strong>Free in-person helpers:</strong> Community partners can help you apply. Their help is free.</span></li>
-      <li><span class="channel-icon">{{ m.icon('paper') }}</span><span><strong>Paper application:</strong> It comes in 17 languages.</span></li>
-      <li><span class="channel-icon">{{ m.icon('languages') }}</span><span><strong>Your language:</strong> There are phone lines for many languages.</span></li>
-      <li><span class="channel-icon">{{ m.icon('phone') }}</span><span><strong>Call OHP:</strong> <span class="nowrap">800-699-9075</span> (TTY 711), Monday to Friday, 7 a.m. to 6 p.m.</span></li>
-    </ul>
+{{ m.onthispage([
+  ('in-person', 'In-person helpers'),
+  ('other-formats', 'Accessible formats'),
+  ('phone', 'Phone numbers'),
+  ('languages', 'Form 7210 in 17 languages')
+]) }}
 
-    <nav class="channel-bar" aria-label="Ways to get help">
-      <a href="#in-person">{{ m.icon('inperson') }}<span>In person</span></a>
-      <a href="#other-formats">{{ m.icon('languages') }}<span>Other formats</span></a>
-      <a href="#phone">{{ m.icon('phone') }}<span>By phone</span></a>
-      <a href="#languages">{{ m.icon('paper') }}<span>Paper in 17 languages</span></a>
-    </nav>
+{% set h_person %}<a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">Find a free community partner</a> or <a href="https://www.oregon.gov/odhs/Pages/office-finder.aspx" rel="noreferrer">an ODHS office</a>. {{ src('MED-S15') }} {{ src('MED-S16') }}{% endset %}
+{% set h_phone %}Call ONE at <span class="nowrap">800-699-9075</span> (TTY 711), Mon–Fri 7 a.m.–6 p.m. PT, with free interpreters. {{ src('MED-S09') }}{% endset %}
+{% set h_paper %}Ask for large print/braille or download form 7210 in 17 languages below. {{ src('MED-S02') }} {{ src('MED-S10') }}{% endset %}
+{{ v.channel_cards([
+  {'kind': 'navigator', 'title': 'Free community partners', 'body': h_person},
+  {'kind': 'phone', 'title': 'Interpreter & phone lines', 'body': h_phone},
+  {'kind': 'paper', 'title': '17 languages & braille', 'body': h_paper}
+]) }}
 
-    <h2 id="in-person" class="icon-heading">{{ m.icon('inperson') }}<span>Help in person</span></h2>
-    <ul>
-      <li><a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">Find a free community partner near you</a> {{ src('MED-S16') }}</li>
-      <li><a href="https://www.oregon.gov/odhs/Pages/office-finder.aspx" rel="noreferrer">Find an ODHS office near you</a> {{ src('MED-S09') }} {{ src('MED-S15') }}</li>
-    </ul>
+<h2 id="in-person">Help in person &amp; accessible formats</h2>
+<ul>
+  <li><strong>In person:</strong> <a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">Certified community partners</a> never charge to help you apply, renew, or answer letters, and <a href="https://www.oregon.gov/odhs/Pages/office-finder.aspx" rel="noreferrer">local ODHS offices</a> take walk-ins. {{ src('MED-S09') }} {{ src('MED-S15') }} {{ src('MED-S16') }}</li>
+  <li id="other-formats"><strong>Other formats:</strong> Request letters in your language, large print, braille, or another accessible format free at <span class="nowrap">800-699-9075</span>. {{ src('MED-S02') }}</li>
+</ul>
 
-    <h2 id="other-formats" class="icon-heading">{{ m.icon('languages') }}<span>Other formats</span></h2>
-    <p>You can ask OHP for letters and papers in other languages, large print, braille, or another format. It is free. Call <span class="nowrap">800-699-9075</span>. {{ src('MED-S02') }}</p>
+<h2 id="phone">Key Oregon phone numbers</h2>
+{{ v.jargon_flashcards([
+  {'term': 'ONE Customer Service', 'plain': '800-699-9075 (TTY 711)', 'detail': 'Mon–Fri, 7 a.m. to 6 p.m. PT. Online account tech support: 833-978-1073.'},
+  {'term': 'Spanish & Russian lines', 'plain': '800-743-9182 · 833-687-1508', 'detail': 'Dedicated ONE language lines; interpreters available in all languages.'},
+  {'term': 'Public Benefits Hotline', 'plain': '503-241-4111 · 800-520-5292', 'detail': 'Free legal aid from LASO & Oregon Law Center (income limits apply).'},
+  {'term': 'Disability & Marketplace', 'plain': 'ADRC 855-673-2372 · Mkt 855-268-3767', 'detail': 'Aging & Disability Resource Connection and OregonHealthCare.gov.'}
+], id='or-phone-cards') }}
+<p>See the full <a href="https://www.oregon.gov/odhs/benefits/Documents/one-language-lines-translation.pdf" rel="noreferrer">ONE language lines directory</a> <span class="tag">PDF</span>. {{ src('MED-S04') }} {{ src('MED-S17') }} {{ src('MED-S20') }} {{ src('MED-S25') }} {{ src('MED-S26') }}</p>
 
-    <h2 id="phone" class="icon-heading">{{ m.icon('phone') }}<span>Phone numbers</span></h2>
-    <dl class="glossary">
-      <dt>OHP and ONE Customer Service</dt>
-      <dd><span class="nowrap">800-699-9075</span>. TTY users can dial 711. Monday to Friday, 7 a.m. to 6 p.m. Pacific time. {{ src('MED-S09') }}</dd>
-      <dt>Help with your online ONE account</dt>
-      <dd><span class="nowrap">833-978-1073</span></dd>
-      <dt>Spanish language line</dt>
-      <dd><span class="nowrap">800-743-9182</span></dd>
-      <dt>Russian language line</dt>
-      <dd><span class="nowrap">833-687-1508</span></dd>
-      <dt>All language lines</dt>
-      <dd><a href="https://www.oregon.gov/odhs/benefits/Documents/one-language-lines-translation.pdf" rel="noreferrer">List of ONE language lines</a> <span class="tag">PDF</span> {{ src('MED-S17') }}</dd>
-      <dt>Free legal help with benefits</dt>
-      <dd>Public Benefits Hotline: <span class="nowrap">503-241-4111</span> or <span class="nowrap">800-520-5292</span>. Income limits apply. {{ src('MED-S25') }}</dd>
-      <dt>Disability program questions</dt>
-      <dd>Aging and Disability Resource Connection: <span class="nowrap">855-673-2372</span> {{ src('MED-S26') }}</dd>
-      <dt>Private health plans (Marketplace)</dt>
-      <dd><span class="nowrap">855-268-3767</span> {{ src('MED-S04') }} {{ src('MED-S20') }}</dd>
-    </dl>
-
-    <h2 id="languages" class="icon-heading">{{ m.icon('paper') }}<span>The OHP application in your language</span></h2>
-    <p class="more">These links go to the state's own paper application (form 7210). {{ src('MED-S10') }}</p>
+<h2 id="languages">The OHP application in 17 languages (form 7210)</h2>
+<p>Official state paper applications from OHA: {{ src('MED-S10') }}</p>
+{% call m.deeper('Open all 17 language PDF downloads (form 7210)', 'or-lang-pdfs') %}
 <ul>
 {% for item in medicaid_languages['items'] %}
   <li><a href="{{ item.url }}" hreflang="{{ item.hreflang }}" rel="noreferrer">{% if item.native %}<span lang="{{ item.hreflang }}">{{ item.native }}</span> ({{ item.english }}){% else %}{{ item.english }}{% endif %}</a> <span class="tag">PDF</span></li>
 {% endfor %}
 </ul>
+{% endcall %}
 {% endblock %}

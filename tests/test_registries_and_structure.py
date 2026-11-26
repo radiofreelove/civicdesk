@@ -556,21 +556,73 @@ def test_verify_sources_dynamic_discovery_dedup_retry_and_bot_gated(tmp_path: Pa
 
 def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
     design_doc = (ROOT / "docs" / "DESIGN.md").read_text(encoding="utf-8")
-    for required_term in ("--viz-surface", "--viz-accent", "tabular-nums", "WCAG 2.2 AAA"):
+    for required_term in ("--viz-surface", "--viz-fill-1", "--viz-accent", "tabular-nums", "WCAG 2.2 AAA"):
         assert required_term in design_doc
 
     svg_open_re = re.compile(r"<svg\b([^>]*)>", re.I | re.S)
+    svg_text_re = re.compile(r"<text\b[^>]*>(.*?)</text>", re.I | re.S)
     inline_style_attr_re = re.compile(r"\sstyle\s*=", re.I)
+    flow_body_re = re.compile(r'<p class="viz-flow-body">(.*?)</p>', re.S)
+    timeline_note_re = re.compile(r'<span class="viz-timeline-note"[^>]*>(.*?)</span>', re.S)
+    strip_tags_re = re.compile(r"<[^>]+>")
 
+    major_visual_classes = (
+        "hero-stage",
+        "viz-stat-strip",
+        "doc-mockup",
+        "viz-calendar",
+        "viz-split-board",
+        "viz-swimlane",
+        "viz-jargon-grid",
+        "viz-channel-grid",
+        "viz-flow",
+        "viz-timeline",
+        "viz-progress",
+        "viz-trust-diagram",
+        "viz-404-art",
+        "viz-hours",
+        "viz-grid",
+        "viz-compare-board",
+    )
+
+    pages_yaml = yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))
+    assert len(pages_yaml) == 68
     html_files = sorted(built_site.rglob("*.html"))
     assert len(html_files) == 68
     total_svgs = 0
 
-    for html_path in html_files:
+    for p in pages_yaml:
+        route = p["route"]
+        if p["slug"] == "404":
+            html_path = built_site / "404.html"
+        elif route == "/":
+            html_path = built_site / "index.html"
+        else:
+            html_path = built_site / route.strip("/") / "index.html"
         raw = html_path.read_text(encoding="utf-8")
-        assert "<style" not in raw.lower(), f"{html_path}: inline <style> forbidden by CSP"
-        assert not inline_style_attr_re.search(raw), f"{html_path}: inline style=... attribute forbidden by CSP"
-        assert "<text" not in raw.lower(), f"{html_path}: SVG <text> forbidden (must use Hybrid HTML + SVG)"
+
+        assert "<style" not in raw.lower(), f"{route}: inline <style> forbidden by CSP"
+        assert not inline_style_attr_re.search(raw), f"{route}: inline style=... attribute forbidden by CSP"
+
+        # 100% programmatic 68-page visual component coverage
+        assert any(cls in raw for cls in major_visual_classes), (
+            f"{route} ({html_path}): missing major visual component from {major_visual_classes}"
+        )
+
+        # SVG <text> may only be short <=5-char single-token visual stamps inside aria-hidden SVGs
+        for tm in svg_text_re.finditer(raw):
+            stamp = strip_tags_re.sub("", tm.group(1)).strip()
+            assert len(stamp) <= 5 and " " not in stamp, (
+                f"{route}: multi-word or long SVG <text> forbidden (got {stamp!r}); keep prose in HTML"
+            )
+
+        # Concise <=140-char copy cap on flow cards and timeline notes
+        for fm in flow_body_re.finditer(raw):
+            plain = re.sub(r"\s+", " ", strip_tags_re.sub("", fm.group(1))).strip()
+            assert len(plain) <= 140, f"{route}: .viz-flow-body exceeds 140 chars ({len(plain)}): {plain!r}"
+        for tnm in timeline_note_re.finditer(raw):
+            plain = re.sub(r"\s+", " ", strip_tags_re.sub("", tnm.group(1))).strip()
+            assert len(plain) <= 140, f"{route}: .viz-timeline-note exceeds 140 chars ({len(plain)}): {plain!r}"
 
         for m in svg_open_re.finditer(raw):
             total_svgs += 1
@@ -578,39 +630,276 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
             is_hidden = 'aria-hidden="true"' in attrs
             is_labeled_img = 'role="img"' in attrs and ("aria-label=" in attrs or "aria-labelledby=" in attrs)
             assert is_hidden or is_labeled_img, (
-                f"{html_path}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
+                f"{route}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
             )
 
-    assert total_svgs >= 200
+    assert total_svgs >= 500
 
     expected_markers = {
-        "index.html": ('class="hero-stage"', 'class="horizon-svg"', 'class="desk-emblem"', 'class="viz-flow'),
-        "start/index.html": ('class="choice-icon"', 'class="guide-dir-icon"'),
-        "medicaid/index.html": ('class="viz-timeline',),
-        "medicaid/oregon/index.html": ('class="viz-timeline',),
-        "medicaid/washington/index.html": ('class="viz-timeline',),
-        "medicaid/utah/index.html": ('class="viz-timeline',),
-        "medicaid/oregon/rules/index.html": ('class="viz-hours"', 'class="viz-hours-svg"'),
-        "medicaid/washington/rules/index.html": ('class="viz-hours"', 'class="viz-hours-svg"'),
-        "medicaid/utah/rules/index.html": ('class="viz-hours"', 'class="viz-hours-svg"'),
-        "medicaid/oregon/reasons/index.html": ('class="viz-grid', "data-deeper"),
-        "medicaid/washington/reasons/index.html": ('class="viz-grid', "data-deeper"),
-        "medicaid/utah/reasons/index.html": ('class="viz-grid', "data-deeper"),
+        "index.html": ('class="hero-stage"', 'illo-horizon', 'illo-medicaid', 'illo-id', 'class="viz-flow'),
+        "start/index.html": ('class="viz-stat-strip"', 'choice-map', 'class="guide-dir-icon"'),
+        "404.html": ('class="viz-404-art"', 'illo-404'),
+        "privacy/index.html": ('class="viz-trust-diagram"', 'illo-trust'),
+        "about/index.html": ('class="viz-stat-strip"', 'class="viz-split-board"', 'class="viz-flow'),
+        "accessibility/index.html": ('viz-theme-showcase',),
+        "medicaid/index.html": ('class="hero-stage"', 'illo-medicaid', 'state-silhouette', 'class="viz-timeline'),
+        "medicaid/oregon/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
+        "medicaid/washington/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
+        "medicaid/utah/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
+        "medicaid/oregon/rules/index.html": ('toc-pills', 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/washington/rules/index.html": ('toc-pills', 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/utah/rules/index.html": ('toc-pills', 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/oregon/reasons/index.html": ('class="viz-grid', 'class="viz-split-board"'),
+        "medicaid/washington/reasons/index.html": ('class="viz-grid', 'class="viz-split-board"'),
+        "medicaid/utah/reasons/index.html": ('class="viz-grid', 'class="viz-split-board"'),
+        "medicaid/oregon/letter/index.html": ('doc-mockup-letter', 'class="viz-jargon-grid"'),
+        "medicaid/washington/letter/index.html": ('doc-mockup-letter', 'class="viz-flow'),
+        "medicaid/utah/letter/index.html": ('doc-mockup-letter', 'class="viz-jargon-grid"'),
+        "medicaid/oregon/denied/index.html": ('class="viz-swimlane"',),
+        "medicaid/oregon/log/index.html": ('class="viz-calendar"', 'class="viz-proof-tiles"'),
         "medicaid/oregon/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/washington/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/utah/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
-        "id-records/index.html": ('class="viz-flow',),
-        "id-records/oregon/index.html": ('class="viz-flow',),
-        "id-records/washington/index.html": ('class="viz-flow',),
-        "id-records/utah/index.html": ('class="viz-flow',),
-        "id-records/federal/index.html": ('class="viz-grid',),
-        "id-records/after/index.html": ('class="viz-flow',),
-        "id-records/path/index.html": ('class="choice-icon"', 'class="result-emblem'),
+        "id-records/index.html": ('hero-stage-rose', 'illo-id', 'state-silhouette', 'class="viz-flow'),
+        "id-records/oregon/index.html": ('state-silhouette', 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/washington/index.html": ('state-silhouette', 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/utah/index.html": ('state-silhouette', 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/oregon/court/index.html": ('doc-mockup-court', 'toc-pills'),
+        "id-records/oregon/birth/index.html": ('doc-mockup-birth', 'toc-pills'),
+        "id-records/oregon/id/index.html": ('doc-mockup-id', 'id-card-facsimile'),
+        "id-records/federal/index.html": ('doc-mockup-federal', 'passport-form-matrix'),
+        "id-records/compare/index.html": ('class="viz-compare-board"', 'state-silhouette'),
+        "id-records/glossary/index.html": ('class="viz-jargon-grid"',),
+        "id-records/after/index.html": ('class="viz-flow', 'class="viz-grid'),
+        "id-records/path/index.html": ('class="viz-stat-strip"', 'choice-map', 'class="result-emblem'),
     }
     for rel_file, markers in expected_markers.items():
         html = (built_site / rel_file).read_text(encoding="utf-8")
         for marker in markers:
             assert marker in html, f"{rel_file}: missing expected visual marker {marker!r}"
+
+
+def test_drop_in_artist_logo_system_and_make_mark_custom_mode(tmp_path: Path, built_site: Path) -> None:
+    import shutil
+
+    build_mod = _load_script("civicdesk_build_brand", "scripts/build.py")
+    make_mark = _load_script("civicdesk_make_mark_brand", "scripts/make_mark.py")
+
+    # 1. Default built site keeps inline 5-stripe mark, visible wordmark, and generated apple-touch-icon.png
+    assert (built_site / "static" / "apple-touch-icon.png").is_file()
+    assert (built_site / "static" / "apple-touch-icon.png").stat().st_size > 0
+    assert not (built_site / "static" / "brand" / ".gitkeep").exists()
+
+    default_index = (built_site / "index.html").read_text(encoding="utf-8")
+    assert 'class="brand-mark"' in default_index
+    assert "apple-touch-icon.png?v=" in default_index
+    assert '<span class="brand-name">CivicDesk</span>' in default_index
+
+    # 2. Custom artist SVGs in both mark_and_wordmark and lockup_only modes build cleanly and pass PageAuditor
+    custom_static = tmp_path / "static"
+    shutil.copytree(ROOT / "static", custom_static)
+    (custom_static / "brand").mkdir(parents=True, exist_ok=True)
+    (custom_static / "brand" / "artist-light.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 44">'
+        '<rect x="2" y="2" width="40" height="40" rx="8" fill="#1D70B8"/>'
+        '<path d="M56 30h120" stroke="#111827" stroke-width="4"/></svg>\n',
+        encoding="utf-8",
+    )
+    (custom_static / "brand" / "artist-dark.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 44">'
+        '<rect x="2" y="2" width="40" height="40" rx="8" fill="#60A5FA"/>'
+        '<path d="M56 30h120" stroke="#FFFFFF" stroke-width="4"/></svg>\n',
+        encoding="utf-8",
+    )
+
+    base_site = yaml.safe_load((ROOT / "data" / "site.yaml").read_text(encoding="utf-8"))
+
+    site_wordmark = tmp_path / "site-wordmark.yaml"
+    site_wordmark.write_text(
+        yaml.safe_dump(
+            {
+                **base_site,
+                "brand": {
+                    **base_site["brand"],
+                    "custom_artwork": True,
+                    "mode": "mark_and_wordmark",
+                    "logo": "brand/artist-light.svg",
+                    "logo_dark": "brand/artist-dark.svg",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    out_wordmark = tmp_path / "public-wordmark"
+    assert (
+        build_mod.main(
+            [
+                "--out",
+                str(out_wordmark),
+                "--site-yaml",
+                str(site_wordmark),
+                "--static-dir",
+                str(custom_static),
+            ]
+        )
+        == 0
+    )
+    wordmark_html = (out_wordmark / "index.html").read_text(encoding="utf-8")
+    auditor_w = PageAuditor()
+    auditor_w.feed(wordmark_html)
+    assert not auditor_w.errors, f"mark_and_wordmark PageAuditor errors: {auditor_w.errors}"
+    assert 'class="brand-mark"' not in wordmark_html
+    assert 'class="brand-logo brand-logo-light" src="/static/brand/artist-light.svg?v=' in wordmark_html
+    assert 'class="brand-logo brand-logo-dark" src="/static/brand/artist-dark.svg?v=' in wordmark_html
+    assert '<span class="brand-name">CivicDesk</span>' in wordmark_html
+
+    site_lockup = tmp_path / "site-lockup.yaml"
+    site_lockup.write_text(
+        yaml.safe_dump(
+            {
+                **base_site,
+                "brand": {
+                    **base_site["brand"],
+                    "custom_artwork": True,
+                    "mode": "lockup_only",
+                    "logo": "brand/artist-light.svg",
+                    "logo_dark": "brand/artist-dark.svg",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    out_lockup = tmp_path / "public-lockup"
+    assert (
+        build_mod.main(
+            [
+                "--out",
+                str(out_lockup),
+                "--site-yaml",
+                str(site_lockup),
+                "--static-dir",
+                str(custom_static),
+            ]
+        )
+        == 0
+    )
+    lockup_html = (out_lockup / "index.html").read_text(encoding="utf-8")
+    auditor_l = PageAuditor()
+    auditor_l.feed(lockup_html)
+    assert not auditor_l.errors, f"lockup_only PageAuditor errors: {auditor_l.errors}"
+    assert 'class="brand brand-lockup"' in lockup_html
+    assert '<span class="brand-name vh sr-only">CivicDesk</span>' in lockup_html
+
+    # 3. Invalid custom SVG / brand config cases are rejected cleanly
+    (custom_static / "brand" / "no-viewbox.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10"/></svg>',
+        encoding="utf-8",
+    )
+    (custom_static / "brand" / "ext-ref.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+        '<image href="https://cdn.example.com/font.png" width="10" height="10"/></svg>',
+        encoding="utf-8",
+    )
+    (custom_static / "brand" / "inline-style.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+        '<style>.a{fill:red}</style><rect class="a" width="10" height="10"/></svg>',
+        encoding="utf-8",
+    )
+
+    for bad_logo, expected_substr in (
+        ("brand/no-viewbox.svg", "viewBox"),
+        ("brand/ext-ref.svg", "external or unsafe reference"),
+        ("brand/inline-style.svg", "<style>"),
+        ("../outside.svg", "clean relative path"),
+    ):
+        errs: list[str] = []
+        build_mod.validate_brand_config(
+            {"brand": {"custom_artwork": True, "mode": "mark_and_wordmark", "logo": bad_logo}},
+            custom_static,
+            errs,
+        )
+        assert any(expected_substr in e for e in errs), f"Expected {expected_substr!r} for {bad_logo}, got {errs}"
+
+    lockup_no_logo_errs: list[str] = []
+    build_mod.validate_brand_config(
+        {"brand": {"custom_artwork": True, "mode": "lockup_only", "logo": ""}},
+        custom_static,
+        lockup_no_logo_errs,
+    )
+    assert any("requires a non-empty brand.logo" in e for e in lockup_no_logo_errs)
+
+    # 4. make_mark.py --check honors custom_artwork: true and protects custom files
+    mark_ws = tmp_path / "mark-ws"
+    (mark_ws / "data").mkdir(parents=True)
+    (mark_ws / "static" / "brand").mkdir(parents=True)
+    (mark_ws / "data" / "site.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "brand": {
+                    "custom_artwork": True,
+                    "mode": "lockup_only",
+                    "logo": "brand/custom-logo.svg",
+                    "favicon_svg": "brand/custom-fav.svg",
+                    "apple_touch_icon": "brand/custom-touch.png",
+                    "og_image": "brand/custom-og.png",
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert make_mark.run_cli(["--check"], root=mark_ws) == 1  # missing files
+
+    for fname in ("custom-logo.svg", "custom-fav.svg", "custom-touch.png", "custom-og.png"):
+        (mark_ws / "static" / "brand" / fname).write_bytes(b"custom-artist-bytes")
+    assert make_mark.run_cli(["--check"], root=mark_ws) == 0
+    assert make_mark.run_cli([], root=mark_ws) == 1  # refuses to clobber custom files without --force-default
+
+
+def test_ordered_list_badges_aria_hidden_and_dynamic_letter_pins(built_site: Path) -> None:
+    badge_classes = {"mockup-pin", "viz-flow-num", "viz-progress-dot", "after-num"}
+
+    class OrderedListBadgeParser(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__(convert_charrefs=True)
+            self.list_stack: list[str] = []
+            self.unhidden_badges: list[str] = []
+
+        def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+            a = {k: (v or "") for k, v in attrs}
+            if tag in {"ol", "ul"}:
+                self.list_stack.append(tag)
+            if self.list_stack and self.list_stack[-1] == "ol" and tag == "span":
+                classes = set(a.get("class", "").split())
+                hit = classes & badge_classes
+                if hit and a.get("aria-hidden") != "true":
+                    self.unhidden_badges.append(f"{sorted(hit)}: {a}")
+
+        def handle_endtag(self, tag: str) -> None:
+            if tag in {"ol", "ul"} and self.list_stack:
+                self.list_stack.pop()
+
+    for html_path in sorted(built_site.rglob("*.html")):
+        parser = OrderedListBadgeParser()
+        parser.feed(html_path.read_text(encoding="utf-8"))
+        assert not parser.unhidden_badges, (
+            f"{html_path.relative_to(built_site)}: ordered-list number badge missing aria-hidden=\"true\": "
+            f"{parser.unhidden_badges}"
+        )
+
+    pin_label_re = re.compile(r'<span class="mockup-line-label">(.*?)</span>', re.S)
+    legend_title_re = re.compile(
+        r'<li class="mockup-legend-item">\s*<span class="mockup-pin" aria-hidden="true">\d+</span>\s*'
+        r'<div class="mockup-legend-copy">\s*<strong>(.*?)</strong>',
+        re.S,
+    )
+    for st in ("oregon", "washington", "utah"):
+        letter_html = (built_site / "medicaid" / st / "letter" / "index.html").read_text(encoding="utf-8")
+        sheet_labels = [m.strip() for m in pin_label_re.findall(letter_html)]
+        legend_titles = [m.strip() for m in legend_title_re.findall(letter_html)]
+        assert len(sheet_labels) == 4, f"{st} letter: expected 4 sheet pins, got {sheet_labels}"
+        assert sheet_labels == legend_titles, (
+            f"{st} letter: sheet pins {sheet_labels} drifted from legend titles {legend_titles}"
+        )
 
 
 

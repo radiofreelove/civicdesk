@@ -4,60 +4,57 @@
 {% block main %}
 <p class="kicker">After court</p>
 <h1>Update your records in the right order</h1>
-{{ m.lede("The court does not tell anyone about your change. You do. Start with certified copies of your court order, then Social Security, then your license, then your birth certificate, then everything else. This page is a checklist you can print.") }}
+{{ m.lede("Courts do not notify other agencies for you. Start with certified copies, then Social Security, then your state license or ID, then your birth certificate, passport, and everyday accounts.") }}
 {{ m.checked_line(page) }}
 
-{% call m.callout('why', 'Why order matters', 'after-why') %}
-<p>Offices check each other. Oregon's DMV, for example, checks your name with Social Security, so it asks you to change your name there first. {{ src('ID-OR-DMV-GENDER') }}</p>
-{% endcall %}
-
+{% set after_seq_note %}Why order matters: state DMVs verify your new legal name electronically against Social Security first. {{ src('ID-OR-DMV-GENDER') }}{% endset %}
+<div id="after-why">
 {{ v.process_flow([
-  {'icon': 'court-gavel', 'title': 'Certified copies', 'body': 'Order official certified copies of your court order, marriage certificate, or divorce decree.'},
-  {'icon': 'ssa-card', 'title': 'Social Security', 'body': 'Update your legal name at Social Security before visiting the DMV.'},
-  {'icon': 'dmv-license', 'title': 'State license or ID', 'body': 'Update your driver license or state ID card once SSA matches.'},
-  {'icon': 'passport-globe', 'title': 'Birth, passport & accounts', 'body': 'Update your birth record, review passport rules, and notify payroll and Medicaid.'}
-], cols=4) }}
+  {'icon': 'court', 'title': 'Certified copies', 'body': 'Order official court, marriage, or divorce copies.'},
+  {'icon': 'ssa', 'title': 'Social Security', 'body': 'Update your legal name before visiting the DMV.'},
+  {'icon': 'dmv', 'title': 'State license or ID', 'body': 'Update your card once Social Security matches.'},
+  {'icon': 'passport', 'title': 'Birth, passport & accounts', 'body': 'Amend birth record, check passport, update accounts.'}
+], cols=4, note=after_seq_note) }}
+</div>
+
+<h2>Who to update after your core IDs</h2>
+{{ v.icon_feature_grid([
+  {'icon': 'bank', 'title': 'Payroll, tax & banking', 'body': 'Employer HR/payroll, state & local taxes, banks, credit cards, loans, and mortgage or lease.'},
+  {'icon': 'shield', 'title': 'Health care & Medicaid', 'body': 'Doctors, pharmacy, private health plans, and OHP, Apple Health, or Utah Medicaid portals.'},
+  {'icon': 'school', 'title': 'Schools, voter & legal', 'body': 'School or college records, voter registration, VA benefits, wills, and powers of attorney.'},
+  {'icon': 'dmv', 'title': 'Vehicles, mail & utilities', 'body': 'Vehicle title & registration (separate from your license), post office, phone, and utilities.'}
+], cols=2) }}
 
 <div class="btn-row js-only">
   <button type="button" class="btn" data-print>{{ m.icon('print-sheet') }}<span>&nbsp;Print this checklist</span></button>
 </div>
 <p class="no-js-only">To print, use your browser's Print command.</p>
-<p>Your checkmarks stay on this page only while it is open, unless you turn on "Remember my checklist" in Reading settings.</p>
+<p>Checkmarks stay in page memory only unless you turn on "Remember my checklist" in Reading settings.</p>
 
 <ol class="steps">
 {% call m.step(page.slug, 1, 'after-copies', 'Get certified copies of your court order') %}
-  <p>Many offices want a certified copy, not a photocopy. Each one has a fee. Ask your court how to order them.</p>
   <ul>
-    <li>Oregon: {{ fact('or_fee_certified_copy') }}. {{ src('ID-OR-OJD-FEES') }}</li>
-    <li>Washington: {{ fact('wa_fee_cert_copy') }} in superior court. {{ src('ID-WA-RCW-36-18-016') }} WashingtonLawHelp suggests getting 7 or more. {{ src('ID-WA-WLH-NAME') }}</li>
-    <li>Utah: {{ fact('ut_fee_cert_copy') }}. {{ src('ID-UT-COURTS-FEES') }}</li>
+    <li>Oregon: {{ fact('or_fee_certified_copy') }} ({{ src('ID-OR-OJD-FEES') }}); Washington superior court: {{ fact('wa_fee_cert_copy') }}, 7+ recommended ({{ src('ID-WA-RCW-36-18-016') }} {{ src('ID-WA-WLH-NAME') }}); Utah: {{ fact('ut_fee_cert_copy') }} ({{ src('ID-UT-COURTS-FEES') }}).</li>
   </ul>
 {% endcall %}
 {% call m.step(page.slug, 2, 'after-ssa', 'Social Security (name changes)') %}
-  <p>Ask for a replacement card with your new name. You may be able to start online. {{ ext('ID-US-SSA-NAME') }}. {{ src('ID-US-SSA-NAME') }}</p>
-  <p>Social Security is not changing sex markers right now. <a href="{{ page_url('id-records-federal#social-security') }}">Read why</a>.</p>
+  <p>Request a free replacement card ({{ ext('ID-US-SSA-NAME') }}, {{ src('ID-US-SSA-NAME') }}). SSA does not update sex markers (<a href="{{ page_url('id-records-federal#social-security') }}">read why</a>).</p>
 {% endcall %}
 {% call m.step(page.slug, 3, 'after-license', 'Driver license or state ID') %}
   <ul>
-    <li><a href="{{ page_url('id-records-oregon-id') }}">Oregon</a>: {{ ext('ID-OR-DMV-GENDER') }}. Choose M, F, or X in person. Bring your court order for a name change. {{ src('ID-OR-DMV-NAME') }}</li>
-    <li><a href="{{ page_url('id-records-washington-id') }}">Washington</a>: {{ ext('ID-WA-DOL-GENDER') }}. Choose M, F, or X. In person or by mail.</li>
-    <li><a href="{{ page_url('id-records-utah-id') }}">Utah</a>: {{ ext('ID-UT-DLD-NAME') }}. Bring your court order. We could not confirm Utah's process for the sex on a license. {{ m.badge('not_confirmed') }}</li>
+    <li><a href="{{ page_url('id-records-oregon-id') }}">Oregon</a>: {{ ext('ID-OR-DMV-GENDER') }} (M, F, or X in person; bring court order for name, {{ src('ID-OR-DMV-NAME') }}).</li>
+    <li><a href="{{ page_url('id-records-washington-id') }}">Washington</a>: {{ ext('ID-WA-DOL-GENDER') }} (M, F, or X in person or by mail).</li>
+    <li><a href="{{ page_url('id-records-utah-id') }}">Utah</a>: {{ ext('ID-UT-DLD-NAME') }} (bring court order; sex-marker rules unconfirmed online {{ m.badge('not_confirmed') }}).</li>
   </ul>
 {% endcall %}
 {% call m.step(page.slug, 4, 'after-birth', 'Birth certificate') %}
-  <p>Only the state where you were born can change it.</p>
-  <ul>
-    <li><a href="{{ page_url('id-records-oregon-birth') }}">Born in Oregon</a>: a form or your court judgment.</li>
-    <li><a href="{{ page_url('id-records-washington-birth') }}">Born in Washington</a>: a form for the sex designation; your court order for the name.</li>
-    <li><a href="{{ page_url('id-records-utah-birth') }}">Born in Utah</a>: your court order and form 902.</li>
-    <li>Born somewhere else: {{ ext('ID-US-CDC-W2W') }}.</li>
-  </ul>
+  <p>Only your birth state can amend it: <a href="{{ page_url('id-records-oregon-birth') }}">Oregon</a> (OHA 2673 or judgment), <a href="{{ page_url('id-records-washington-birth') }}">Washington</a> (DOH form + order for name), <a href="{{ page_url('id-records-utah-birth') }}">Utah</a> (order + form 902), or {{ ext('ID-US-CDC-W2W') }}.</p>
 {% endcall %}
 {% call m.step(page.slug, 5, 'after-passport', 'Passport: read this first') %}
-  <p>Any new passport application can come back with the sex assigned at birth, even one for a name change. <a href="{{ page_url('id-records-federal#before-you-apply') }}">Read before you apply</a>. {{ src('ID-US-HRC-PASSPORT') }}</p>
+  <p>Any new passport application can return with sex assigned at birth, even for a name change—<a href="{{ page_url('id-records-federal#before-you-apply') }}">read before mailing</a>. {{ src('ID-US-HRC-PASSPORT') }}</p>
 {% endcall %}
 {% call m.step(page.slug, 6, 'after-everyone', 'Everyone else') %}
-  <p>Ask each place what it needs to update your name or sex in its records. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+  <p>Ask each office what proof it needs. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
   <ul class="checklist">
     {% for key, label in [
       ('bank', 'Banks, credit cards, and loans'),
@@ -83,15 +80,12 @@
 </ol>
 
 {% call m.callout("why", "Updating Medicaid or public benefits?", "after-medicaid-link") %}
-<p>Once Social Security and your state ID show your updated legal name, report the update in your state benefits portal so automated payroll and school checks match your 2027 Medicaid renewal. <a href="{{ page_url('medicaid') }}">Visit the 2027 Medicaid desk</a>.</p>
+<p>Once Social Security and your state ID show your updated name, report it in your state benefits portal so automated 2027 payroll and school checks match. <a href="{{ page_url('medicaid') }}">Visit the 2027 Medicaid desk</a>.</p>
 {% endcall %}
 
-
-{% call m.callout('good', 'Make it easier on your future self', 'after-tips', extra=true) %}
+{% call m.deeper('Folder & pacing tips for updating accounts', 'after-tips') %}
 <ul>
-  <li>Keep one folder, paper or digital, with your court order, receipts, and dates you sent things.</li>
-  <li>Write down who you talked to and what they said. Offices sometimes give different answers.</li>
-  <li>Do one or two places a day. This is a lot of tasks, and there is no prize for speed.</li>
+  <li>Keep one folder with certified copies, receipts, dates mailed, and staff names—and pace yourself at one or two offices a day.</li>
 </ul>
 {% endcall %}
 {% endblock %}

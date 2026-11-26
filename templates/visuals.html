@@ -1,38 +1,46 @@
-{#- Civic Horizon Hybrid Semantic HTML + Inline SVG Visual Components.
-    Zero inline styles, zero multi-word SVG <text>, full light/warm/dark/contrast/print reactivity. -#}
+{#- Civic Horizon Visual Components & "Anatomy of Paperwork" CSS + SVG Mockups.
+    Strict CSP compliant: zero inline style="" attributes, zero multi-word SVG <text>.
+    Reflow-safe across Light, Warm, Dark, High Contrast, XL + Wide spacing, 320px mobile, and @media print. -#}
 {% import "icons.html" as ic %}
+{% import "illustrations.html" as il %}
 
 {% macro hero_horizon_art(variant='home') -%}
 <div class="hero-emblem" aria-hidden="true">
-  <svg class="horizon-svg" viewBox="0 0 240 156" width="240" height="156" fill="none" aria-hidden="true" focusable="false">
-    <rect x="6" y="6" width="228" height="144" rx="14" class="hz-frame"/>
-    <path d="M22 118h196" class="hz-baseline"/>
-    <rect x="28" y="34" width="84" height="10" rx="5" class="hz-stripe-sky"/>
-    <rect x="28" y="50" width="66" height="10" rx="5" class="hz-stripe-rose"/>
-    <rect x="28" y="66" width="102" height="10" rx="5" class="hz-stripe-ink"/>
-    <rect x="28" y="82" width="66" height="10" rx="5" class="hz-stripe-rose"/>
-    <rect x="28" y="98" width="84" height="10" rx="5" class="hz-stripe-sky"/>
-    <rect x="144" y="32" width="68" height="76" rx="10" class="hz-desk-card"/>
-    <path d="M160 52h36M160 66h28M160 80h32" class="hz-doc-lines"/>
-    <path d="M52 132c36-16 96-16 136 0" class="hz-arc"/>
-    <circle cx="52" cy="132" r="5" class="hz-node-sky"/>
-    <circle cx="120" cy="120" r="5" class="hz-node-rose"/>
-    <circle cx="188" cy="132" r="5" class="hz-node-teal"/>
-  </svg>
+  {% if variant == 'medicaid' -%}
+  {{ il.scene_medicaid_desk() }}
+  {% elif variant == 'id' -%}
+  {{ il.scene_id_desk() }}
+  {% else -%}
+  {{ il.scene_civic_horizon() }}
+  {% endif -%}
 </div>
 {%- endmacro %}
 
-{% macro process_flow(steps, id='', extra=false, cols=4) -%}
+{% macro stat_hero_strip(stats, id='', label='Key numbers at a glance') -%}
+<section class="viz-stat-strip"{% if id %} id="{{ id }}"{% endif %} aria-label="{{ label }}">
+  <ul class="viz-stat-list viz-stat-cols-{{ stats|length }}">
+  {% for s in stats %}
+    <li class="viz-stat-card viz-stat-tone-{{ loop.index }}">
+      <span class="viz-stat-num">{{ s.num }}</span>
+      <strong class="viz-stat-label">{{ s.label }}</strong>
+      {% if s.note is defined and s.note %}<span class="viz-stat-note">{{ s.note }}</span>{% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+</section>
+{%- endmacro %}
+
+{% macro process_flow(steps, id='', extra=false, cols=4, note='') -%}
 <div class="viz-flow-wrap"{% if id %} id="{{ id }}"{% endif %}{% if extra %} data-deeper{% endif %}>
   <ol class="viz-flow viz-flow-{{ cols }}">
   {% for step in steps %}
     <li class="viz-flow-item">
       <div class="viz-flow-card">
         <div class="viz-flow-head">
-          <span class="viz-flow-num">{{ loop.index }}</span>
-          <span class="viz-icon-badge">{{ ic.svg_icon(step.icon) }}</span>
-          <strong class="viz-flow-title">{{ step.title }}</strong>
+          <span class="viz-flow-num" aria-hidden="true">{{ loop.index }}</span>
+          <span class="viz-medallion-wrap">{{ il.medallion(step.icon) }}</span>
         </div>
+        <strong class="viz-flow-title">{{ step.title }}</strong>
         <p class="viz-flow-body">{{ step.body }}</p>
         {% if step.meta is defined and step.meta %}<p class="viz-flow-meta">{{ step.meta }}</p>{% endif %}
       </div>
@@ -42,17 +50,18 @@
     </li>
   {% endfor %}
   </ol>
+  {% if note %}<p class="viz-strip-citations">{{ note }}</p>{% endif %}
 </div>
 {%- endmacro %}
 
-{% macro timeline_strip(phases, title='Key dates at a glance', heading_id='timeline-title') -%}
+{% macro timeline_strip(phases, title='Key dates at a glance', heading_id='timeline-title', note='') -%}
 <section class="viz-timeline-wrap" aria-labelledby="{{ heading_id }}">
   <h2 id="{{ heading_id }}">{{ title }}</h2>
   <ol class="viz-timeline viz-timeline-{{ phases|length }}">
   {% for p in phases %}
     <li class="viz-timeline-item viz-phase-{{ p.kind|default('info') }}"{% if p.item_show_until is defined and p.item_show_until %} data-show-until="{{ p.item_show_until }}"{% endif %}>
       <div class="viz-timeline-top">
-        <span class="viz-timeline-badge">{{ ic.svg_icon(p.icon|default('calendar-clock')) }}</span>
+        <span class="viz-medallion-wrap">{{ il.medallion(p.icon|default('calendar')) }}</span>
         <span class="viz-timeline-date">{{ p.date }}</span>
       </div>
       {% if p.href is defined and p.href %}
@@ -64,13 +73,14 @@
     </li>
   {% endfor %}
   </ol>
+  {% if note %}<p class="viz-strip-citations">{{ note }}</p>{% endif %}
 </section>
 {%- endmacro %}
 
 {% macro hours_breakdown(title, intro, segments, note='', id='hours-breakdown', extra=false) -%}
 <section class="viz-hours"{% if id %} id="{{ id }}"{% endif %}{% if extra %} data-deeper{% endif %} aria-labelledby="{{ id }}-h">
   <div class="viz-hours-head">
-    <span class="viz-icon-badge">{{ ic.svg_icon('hours-meter') }}</span>
+    <span class="viz-medallion-wrap">{{ il.medallion('hours') }}</span>
     <div>
       <h3 class="viz-hours-title" id="{{ id }}-h">{{ title }}</h3>
       <p class="viz-hours-intro">{{ intro }}</p>
@@ -104,7 +114,7 @@
 {% for item in items %}
   <li class="viz-grid-card">
     <div class="viz-grid-head">
-      <span class="viz-icon-badge">{{ ic.svg_icon(item.icon) }}</span>
+      <span class="viz-medallion-wrap">{{ il.medallion(item.icon) }}</span>
       <strong class="viz-grid-title">{{ item.title }}</strong>
     </div>
     <p class="viz-grid-body">{{ item.body }}</p>
@@ -122,4 +132,405 @@
   </li>
 {% endfor %}
 </ol>
+{%- endmacro %}
+
+{% macro doc_mockup_letter(state_label, agency_line, stamp_text, callouts, id='letter-anatomy') -%}
+<section class="doc-mockup doc-mockup-letter" id="{{ id }}" aria-label="Anatomy of a {{ state_label }} notice letter">
+  <div class="doc-mockup-stage">
+    <div class="mockup-sheet">
+      <div class="mockup-sheet-bar">
+        <span class="mockup-agency">{{ agency_line }}</span>
+        <span class="mockup-stamp">{{ stamp_text }}</span>
+      </div>
+      <div class="mockup-sheet-body">
+      {% for c in callouts %}
+        <div class="mockup-pin-row{% if c.highlight is defined and c.highlight or (c.highlight is not defined and loop.index == 2) %} mockup-pin-highlight{% endif %}">
+          <span class="mockup-pin">{{ loop.index }}</span>
+          <span class="mockup-line-label">{{ c.pin_label|default(c.title) }}</span>
+        </div>
+        {% if loop.first %}
+        <div class="mockup-faux-lines" aria-hidden="true"><span></span><span></span></div>
+        {% endif %}
+      {% endfor %}
+      </div>
+    </div>
+    <ol class="mockup-legend">
+    {% for c in callouts %}
+      <li class="mockup-legend-item">
+        <span class="mockup-pin" aria-hidden="true">{{ loop.index }}</span>
+        <div class="mockup-legend-copy">
+          <strong>{{ c.title }}</strong>
+          <span>{{ c.body }}</span>
+        </div>
+      </li>
+    {% endfor %}
+    </ol>
+  </div>
+</section>
+{%- endmacro %}
+
+{% macro doc_mockup_id_card(state_label, card_title, marker_options, fee_text, highlights, id='id-anatomy') -%}
+<section class="doc-mockup doc-mockup-id" id="{{ id }}" aria-label="Anatomy of a {{ state_label }} license or ID update">
+  <div class="doc-mockup-stage">
+    <div class="id-card-facsimile">
+      <div class="id-card-banner">
+        <strong>{{ state_label }}</strong>
+        <span class="id-card-star" aria-hidden="true">&#9733; REAL ID / Standard</span>
+      </div>
+      <div class="id-card-grid">
+        <div class="id-card-photo" aria-hidden="true">
+          <svg viewBox="0 0 64 76" width="64" height="76" fill="none" aria-hidden="true" focusable="false">
+            <rect x="2" y="2" width="60" height="72" rx="8" class="il-fill-1"/>
+            <circle cx="32" cy="28" r="12" class="il-paper-stroke"/>
+            <path d="M12 64c4-14 36-14 40 0" class="il-paper-stroke"/>
+          </svg>
+        </div>
+        <div class="id-card-fields">
+          <div class="id-field-pill">
+            <span class="id-field-kicker">Card type</span>
+            <strong>{{ card_title }}</strong>
+          </div>
+          <div class="id-field-pill id-field-accent">
+            <span class="id-field-kicker">Sex / gender marker</span>
+            <strong>{{ marker_options }}</strong>
+          </div>
+          <div class="id-field-pill">
+            <span class="id-field-kicker">Typical card fee</span>
+            <strong>{{ fee_text }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="mockup-legend">
+    {% for h in highlights %}
+      <li class="mockup-legend-item">
+        <span class="viz-icon-badge">{{ ic.svg_icon(h.icon|default('exemption-check')) }}</span>
+        <div class="mockup-legend-copy">
+          <strong>{{ h.title }}</strong>
+          <span>{{ h.body }}</span>
+        </div>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+</section>
+{%- endmacro %}
+
+{% macro doc_mockup_court_order(state_label, court_title, fee_text, privacy_text, copy_tip, id='court-anatomy') -%}
+<section class="doc-mockup doc-mockup-court" id="{{ id }}" aria-label="Anatomy of a {{ state_label }} court order">
+  <div class="doc-mockup-stage">
+    <div class="mockup-sheet mockup-court-sheet">
+      <div class="mockup-sheet-bar">
+        <span class="mockup-agency">{{ court_title }}</span>
+        <span class="mockup-stamp">Certified copy</span>
+      </div>
+      <div class="mockup-sheet-body">
+        <div class="mockup-caption-box">
+          <span>In the Matter of the Change of Name / Sex</span>
+          <strong>Signed Judgment / Court Order</strong>
+        </div>
+        <div class="mockup-seal-row">
+          <div class="mockup-sig-block">
+            <span class="mockup-line-label">Judge signature &amp; clerk stamp</span>
+            <span class="mockup-faux-sig" aria-hidden="true"></span>
+          </div>
+          <svg class="mockup-seal-svg" viewBox="0 0 64 64" width="64" height="64" fill="none" aria-hidden="true" focusable="false">
+            <circle cx="32" cy="32" r="28" class="il-fill-2"/>
+            <circle cx="32" cy="32" r="28" class="il-stroke-rose"/>
+            <circle cx="32" cy="32" r="20" class="il-stroke-rose"/>
+            <path d="M24 32l5 5 11-11" class="il-stroke-rose-bold"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <ul class="mockup-legend">
+      <li class="mockup-legend-item">
+        <span class="viz-icon-badge">{{ ic.svg_icon('fee-waiver') }}</span>
+        <div class="mockup-legend-copy">
+          <strong>Filing fee &amp; waiver</strong>
+          <span>{{ fee_text }}</span>
+        </div>
+      </li>
+      <li class="mockup-legend-item">
+        <span class="viz-icon-badge">{{ ic.svg_icon('medicaid-shield') }}</span>
+        <div class="mockup-legend-copy">
+          <strong>Public vs. sealed record</strong>
+          <span>{{ privacy_text }}</span>
+        </div>
+      </li>
+      <li class="mockup-legend-item">
+        <span class="viz-icon-badge">{{ ic.svg_icon('birth-cert') }}</span>
+        <div class="mockup-legend-copy">
+          <strong>Certified copies to order</strong>
+          <span>{{ copy_tip }}</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+{%- endmacro %}
+
+{% macro doc_mockup_birth_cert(state_label, cert_title, admin_way, court_way, fee_text, id='birth-anatomy') -%}
+<section class="doc-mockup doc-mockup-birth" id="{{ id }}" aria-label="Anatomy of a {{ state_label }} birth record amendment">
+  <div class="doc-mockup-stage">
+    <div class="mockup-sheet mockup-vital-sheet">
+      <div class="mockup-sheet-bar">
+        <span class="mockup-agency">{{ state_label }} Vital Records</span>
+        <span class="mockup-stamp">Official Seal</span>
+      </div>
+      <div class="mockup-sheet-body">
+        <strong class="mockup-cert-heading">{{ cert_title }}</strong>
+        <p class="mockup-cert-fee"><strong>Typical cost:</strong> {{ fee_text }}</p>
+        <div class="mockup-seal-row">
+          <span class="mockup-line-label">Issued only by the state where you were born</span>
+          <svg class="mockup-seal-svg" viewBox="0 0 56 56" width="56" height="56" fill="none" aria-hidden="true" focusable="false">
+            <circle cx="28" cy="28" r="24" class="il-fill-3"/>
+            <circle cx="28" cy="28" r="24" class="il-stroke-teal"/>
+            <circle cx="28" cy="28" r="16" class="il-stroke-teal"/>
+            <path d="M21 28l5 5 9-10" class="il-stroke-teal-bold"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <ul class="mockup-legend">
+      <li class="mockup-legend-item">
+        <span class="viz-icon-badge">{{ ic.svg_icon('birth-cert') }}</span>
+        <div class="mockup-legend-copy">
+          <strong>Administrative agency path</strong>
+          <span>{{ admin_way }}</span>
+        </div>
+      </li>
+      <li class="mockup-legend-item">
+        <span class="viz-icon-badge">{{ ic.svg_icon('court-gavel') }}</span>
+        <div class="mockup-legend-copy">
+          <strong>Court-order path</strong>
+          <span>{{ court_way }}</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+{%- endmacro %}
+
+{% macro doc_mockup_federal_ids(ssa_points, passport_points, forms, id='federal-anatomy') -%}
+<section class="doc-mockup doc-mockup-federal" id="{{ id }}" aria-label="Social Security card, U.S. passport, and passport form picker">
+  <div class="federal-cards-pair">
+    <div class="fed-card-box">
+      <div class="fed-card-art">
+        {{ il.medallion('ssa') }}
+        <div>
+          <span class="id-field-kicker">Step 1 for any name change</span>
+          <strong class="fed-card-title">Social Security card (SSA)</strong>
+        </div>
+      </div>
+      <ul class="fed-card-points">
+      {% for pt in ssa_points %}<li>{{ pt }}</li>{% endfor %}
+      </ul>
+    </div>
+    <div class="fed-card-box fed-card-passport">
+      <div class="fed-card-art">
+        {{ il.medallion('passport') }}
+        <div>
+          <span class="id-field-kicker">U.S. Department of State</span>
+          <strong class="fed-card-title">U.S. passport book &amp; card</strong>
+        </div>
+      </div>
+      <ul class="fed-card-points">
+      {% for pt in passport_points %}<li>{{ pt }}</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="passport-form-matrix">
+    <p class="matrix-kicker">Which passport name-change form fits?</p>
+    <ul class="viz-stat-list viz-stat-cols-3">
+    {% for f in forms %}
+      <li class="viz-stat-card viz-stat-tone-{{ loop.index }}">
+        <span class="viz-stat-num">{{ f.code }}</span>
+        <strong class="viz-stat-label">{{ f.when }}</strong>
+        <span class="viz-stat-note">{{ f.cost }}</span>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+</section>
+{%- endmacro %}
+
+{% macro calendar_80hr_grid(state_label, weeks, proofs=None, note='', id='calendar-80hr', extra=false) -%}
+<section class="viz-calendar"{% if id %} id="{{ id }}"{% endif %}{% if extra %} data-deeper{% endif %} aria-label="{{ state_label }} 4-week 80-hour monthly example">
+  <div class="viz-calendar-head">
+    {{ il.medallion('calendar') }}
+    <div>
+      <strong class="viz-calendar-title">Sample 4-week month adding up to 80 hours</strong>
+      <p class="viz-calendar-sub">About 20 hours a week from one activity or a mix in {{ state_label }}.</p>
+    </div>
+  </div>
+  <ol class="viz-week-grid">
+  {% for w in weeks %}
+    <li class="viz-week-cell">
+      <span class="viz-week-name">{{ w.week }}</span>
+      <span class="viz-week-hrs">{{ w.hours }}</span>
+      <span class="viz-week-mix">{{ w.mix }}</span>
+    </li>
+  {% endfor %}
+  </ol>
+  {% if proofs %}
+  <ul class="viz-proof-tiles" aria-label="Examples of proof to keep">
+  {% for p in proofs %}
+    <li class="viz-proof-tile">
+      <span class="viz-icon-badge">{{ ic.svg_icon(p.icon|default('birth-cert')) }}</span>
+      <div>
+        <strong>{{ p.title }}</strong>
+        <span>{{ p.detail }}</span>
+      </div>
+    </li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+  {% if note %}<p class="viz-hours-note">{{ note }}</p>{% endif %}
+</section>
+{%- endmacro %}
+
+{% macro yes_no_split_board(yes_title, yes_items, no_title, no_items, yes_kicker='Covered or automatic', no_kicker='Action or limit', id='') -%}
+<section class="viz-split-board"{% if id %} id="{{ id }}"{% endif %} aria-label="{{ yes_title }} compared with {{ no_title }}">
+  <div class="viz-split-col viz-split-yes">
+    <div class="viz-split-head">
+      {{ il.medallion('shield') }}
+      <div>
+        <span class="id-field-kicker">{{ yes_kicker }}</span>
+        <strong class="viz-split-title">{{ yes_title }}</strong>
+      </div>
+    </div>
+    <ul class="viz-split-list">
+    {% for item in yes_items %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+  </div>
+  <div class="viz-split-col viz-split-no">
+    <div class="viz-split-head">
+      {{ il.medallion('warning') }}
+      <div>
+        <span class="id-field-kicker">{{ no_kicker }}</span>
+        <strong class="viz-split-title">{{ no_title }}</strong>
+      </div>
+    </div>
+    <ul class="viz-split-list">
+    {% for item in no_items %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+{%- endmacro %}
+
+{% macro swimlane_timeline(title, steps, heading_id='swimlane-h', note='') -%}
+<section class="viz-swimlane" aria-labelledby="{{ heading_id }}">
+  <h2 id="{{ heading_id }}">{{ title }}</h2>
+  <ol class="viz-swimlane-list viz-swimlane-{{ steps|length }}">
+  {% for s in steps %}
+    <li class="viz-swimlane-card">
+      <div class="viz-flow-head">
+        <span class="viz-flow-num" aria-hidden="true">{{ loop.index }}</span>
+        <span class="viz-medallion-wrap">{{ il.medallion(s.icon|default('appeal')) }}</span>
+      </div>
+      <strong class="viz-flow-title">{{ s.title }}</strong>
+      <p class="viz-flow-body">{{ s.body }}</p>
+      {% if s.tag is defined and s.tag %}<span class="viz-swimlane-tag">{{ s.tag }}</span>{% endif %}
+    </li>
+  {% endfor %}
+  </ol>
+  {% if note %}<p class="viz-strip-citations">{{ note }}</p>{% endif %}
+</section>
+{%- endmacro %}
+
+{% macro jargon_flashcards(pairs, id='jargon-cards') -%}
+<ul class="viz-jargon-grid" id="{{ id }}">
+{% for p in pairs %}
+  <li class="viz-jargon-card"{% if p.id is defined and p.id %} id="{{ p.id }}"{% endif %}>
+    <div class="jargon-term-row">
+      <span class="jargon-chip">{{ p.term }}</span>
+      <span class="jargon-arrow" aria-hidden="true">&rarr;</span>
+      <strong class="jargon-plain">{{ p.plain }}</strong>
+    </div>
+    {% if p.detail is defined and p.detail %}<p class="jargon-detail">{{ p.detail }}</p>{% endif %}
+  </li>
+{% endfor %}
+</ul>
+{%- endmacro %}
+
+{% macro channel_cards(channels, ready_items=None, id='ways-cards') -%}
+<div class="viz-channel-wrap"{% if id %} id="{{ id }}"{% endif %}>
+  <ul class="viz-channel-grid viz-channel-cols-{{ channels|length }}">
+  {% for c in channels %}
+    <li class="viz-channel-card">
+      <div class="viz-channel-art">{{ il.scene_channel(c.kind) }}</div>
+      <strong class="viz-channel-title">{{ c.title }}</strong>
+      <p class="viz-channel-body">{{ c.body }}</p>
+    </li>
+  {% endfor %}
+  </ul>
+  {% if ready_items %}
+  <div class="viz-flatlay">
+    <p class="matrix-kicker">Helpful to have nearby (not required just to start):</p>
+    <ul class="viz-flatlay-list">
+    {% for r in ready_items %}
+      <li>{{ ic.svg_icon(r.icon|default('exemption-check')) }}<span>{{ r.label }}</span></li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{%- endmacro %}
+
+{% macro trust_privacy_diagram(caption='') -%}
+<section class="viz-trust-diagram" aria-label="Zero-tracking architecture">
+  <div class="viz-trust-stage">
+    <div class="viz-trust-art">{{ il.scene_trust_privacy() }}</div>
+    <div class="viz-trust-copy">
+      <strong class="viz-trust-heading">One-way static pages — zero tracking</strong>
+      <ul class="viz-trust-pills">
+        <li>{{ ic.svg_icon('medicaid-shield') }}<span><strong>Your browser stays private:</strong> Check answers live in page memory only and vanish on reload.</span></li>
+        <li>{{ ic.svg_icon('warning-triangle') }}<span><strong>Blocked by CSP:</strong> Zero cookies, zero analytics pixels, zero accounts, and <code>connect-src 'none'</code>.</span></li>
+        <li>{{ ic.svg_icon('exemption-check') }}<span><strong>No referrer leaks:</strong> Outbound <code>.gov</code> links send <code>Referrer-Policy: no-referrer</code>.</span></li>
+      </ul>
+      {% if caption %}<p class="viz-hours-note">{{ caption }}</p>{% endif %}
+    </div>
+  </div>
+</section>
+{%- endmacro %}
+
+{% macro reading_theme_tiles() -%}
+<section class="viz-stat-strip viz-theme-showcase" aria-label="Built-in reading themes and controls">
+  <ul class="viz-stat-list viz-stat-cols-4">
+    <li class="viz-stat-card viz-swatch-light">
+      <span class="viz-stat-num">Aa</span>
+      <strong class="viz-stat-label">Plain white &amp; Warm paper</strong>
+      <span class="viz-stat-note">7:1+ AAA slate ink on low-glare paper</span>
+    </li>
+    <li class="viz-stat-card viz-swatch-dark">
+      <span class="viz-stat-num">Aa</span>
+      <strong class="viz-stat-label">Dark slate mode</strong>
+      <span class="viz-stat-note">Crisp white &amp; sky ink with dark form controls</span>
+    </li>
+    <li class="viz-stat-card viz-swatch-contrast">
+      <span class="viz-stat-num">AAA</span>
+      <strong class="viz-stat-label">High contrast</strong>
+      <span class="viz-stat-note">Pure black &amp; white borders + yellow focus bar</span>
+    </li>
+    <li class="viz-stat-card viz-stat-tone-3">
+      <span class="viz-stat-num">150%</span>
+      <strong class="viz-stat-label">XL text &amp; Wide spacing</strong>
+      <span class="viz-stat-note">Atkinson Hyperlegible Next + 1-column reflow</span>
+    </li>
+  </ul>
+</section>
+{%- endmacro %}
+
+{% macro lost_page_stage() -%}
+<div class="viz-404-art">
+  <div class="viz-404-stage">
+    {{ il.scene_lost_compass() }}
+    <div class="viz-404-copy">
+      <strong>Nothing was broken on your device.</strong>
+      <p>The link may have moved or had a typo. Pick a service desk below or use the 2-question router to jump straight to the right state guide.</p>
+      <p><a class="btn" href="{{ page_url('start') }}">Open the 2-question guide router</a></p>
+    </div>
+  </div>
+</div>
 {%- endmacro %}

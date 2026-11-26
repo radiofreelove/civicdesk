@@ -1,53 +1,50 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Utah Medicaid</p>
 <h1>Utah sent me a letter. Now what?</h1>
-    <p class="purpose">This page explains the letters and how to answer them on time.</p>
+<p class="purpose">Find the due date first, write your name and case number on every page you return, and keep copies with the date sent.</p>
 
-    <h2>The short version</h2>
-    <ul class="short">
-      <li><strong>First:</strong> Find the due date on the letter.</li>
-      <li><strong>Who writes:</strong> When you need to act, the Department of Workforce Services (DWS) sends a letter made for you.</li>
-      <li><strong>Proof needed?</strong> You may need to send a form within 30 days, or you could lose your coverage.</li>
-      <li><strong>Do not skip it:</strong> You can lose Medicaid if you do not return forms or you miss a due date.</li>
-      <li><strong>How to answer:</strong> Online, by mail, by fax, or in person.</li>
-      <li><strong>Missed the due date?</strong> <a href="{{ page_url('medicaid-utah-denied') }}">See your options</a>.</li>
-    </ul>
+{% set c1 %}Write your name and DWS case number on every sheet and keep a copy of what you send.{% endset %}
+{% set c2 %}If DWS needs community-engagement proof, you may have <strong>30 days</strong> to return the form or lose coverage.{% endset %}
+{% set c3 %}DWS sends a personalized notice whenever you must verify hours, income, Tribal status, or an exemption.{% endset %}
+{% set c4 %}Upload in <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">myCase</a>, mail PO Box 143245 (SLC, UT 84114-3245), fax <span class="nowrap">1-877-313-4717</span> / <span class="nowrap">801-526-9500</span>, or drop off at DWS.{% endset %}
+{{ v.doc_mockup_letter(
+  'Utah Medicaid',
+  'Utah DWS · Eligibility Notice',
+  '30-day form window',
+  [
+    {'title': 'Name & case number', 'body': c1},
+    {'title': 'Reply-by due date', 'body': c2},
+    {'title': 'Personalized proof request', 'body': c3},
+    {'title': '4 ways to return papers', 'body': c4}
+  ]
+) }}
 
-    <h2>Letters Utah mailed in 2026</h2>
-    <p>Utah printed each letter on paper of a different color. Utah's own pages list slightly different spring 2026 months for the first 3 letters (Utah's letter key lists April 2026, the letter PDF footers print March 2026, and Utah's AI/AN page lists May 2026 for the tribal letters). {{ src('MED-U29') }} {{ src('MED-U40') }}</p>
-    <dl class="glossary">
-      <dt>Blue letter</dt>
-      <dd>Changes for immigrants. Mailed spring 2026 (April 2026 on Utah's letter key; March 2026 on the PDF footer). <a href="{{ page_url('medicaid-utah-immigration') }}">Immigration status and Utah Medicaid</a></dd>
-      <dt>Yellow letter</dt>
-      <dd>For members whose tribal status is not verified yet. Mailed spring 2026 (April 2026 on the letter key; March 2026 on the PDF footer; May 2026 on Utah's AI/AN page). <a href="{{ page_url('medicaid-utah-reasons#tribal') }}">What proof to send</a></dd>
-      <dt>Pink letter</dt>
-      <dd>For members whose tribal status is verified. Mailed spring 2026 (April 2026 on the letter key; May 2026 on Utah's AI/AN page).</dd>
-      <dt>Green letter</dt>
-      <dd>The work or activity rules and reviews every 6 months. Mailed in July 2026. It says you do not need to do anything yet.</dd>
-    </dl>
+<h2>Color-coded letters Utah mailed in 2026</h2>
+<p>Utah printed its 2026 H.R.&nbsp;1 informational notices on four paper colors (spring dates vary between March, April, and May 2026 across Utah's PDF footers and web keys). {{ src('MED-U29') }} {{ src('MED-U40') }}</p>
+{% set l_blue %}Spring 2026 notice on Oct. 1, 2026 noncitizen eligibility changes. <a href="{{ page_url('medicaid-utah-immigration') }}">Read immigration rules</a>.{% endset %}
+{% set l_yellow %}Spring 2026 notice for members whose Tribal status is not verified yet. <a href="{{ page_url('medicaid-utah-reasons#tribal') }}">See Tribal proof list</a>.{% endset %}
+{% set l_pink %}Spring 2026 confirmation for members whose Tribal status is already verified.{% endset %}
+{% set l_green %}July 2026 notice introducing 2027 work rules and 6-month renewals (no action needed yet).{% endset %}
+{{ v.jargon_flashcards([
+  {'term': 'Blue letter', 'plain': 'Changes for immigrants', 'detail': l_blue},
+  {'term': 'Yellow letter', 'plain': 'Tribal status needs proof', 'detail': l_yellow},
+  {'term': 'Pink letter', 'plain': 'Tribal status verified', 'detail': l_pink},
+  {'term': 'Green letter', 'plain': '2027 work rules & 6-mo reviews', 'detail': l_green}
+]) }}
 
-    <h2 id="send">Ways to send papers</h2>
-    <ul>
-      <li><strong>Online:</strong> upload them in myCase at <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a></li>
-      <li><strong>Mail:</strong> Department of Workforce Services, Imaging Operations, PO Box 143245, Salt Lake City, UT 84114-3245</li>
-      <li><strong>Fax:</strong> <span class="nowrap">1-877-313-4717</span> or <span class="nowrap">801-526-9500</span></li>
-      <li><strong>In person:</strong> any DWS employment center<span class="more">, Monday to Friday, 8 a.m. to 5 p.m.</span></li>
-    </ul>
-    <p>Check your own letter first. If it lists a different address or fax number, use that one.</p>
+<h2 id="send">Ways to send papers</h2>
+<ul>
+  <li><strong>Online:</strong> Upload in myCase at <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a> (and keep your address, phone, and email updated there).</li>
+  <li><strong>Mail:</strong> Department of Workforce Services, Imaging Operations, PO Box 143245, Salt Lake City, UT 84114-3245.</li>
+  <li><strong>Fax or in person:</strong> Fax <span class="nowrap">1-877-313-4717</span> or <span class="nowrap">801-526-9500</span>, or visit any DWS employment center (Mon–Fri, 8 a.m.–5 p.m.). Always use a different address or fax if printed on your letter.</li>
+</ul>
 
-    <h2>Tips</h2>
-    <ul class="short">
-      <li><strong>Name and case number:</strong> Write your name and case number on every page you send.</li>
-      <li><strong>Keep copies:</strong> Keep a copy of everything you send, and write down the date you sent it.</li>
-      <li><strong>Do not wait:</strong> Answer as soon as you can. Mail takes time.</li>
-      <li><strong>Stay reachable:</strong> Keep your address, phone number, and email current in myCase.</li>
-    </ul>
-
-    <div class="callout">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
-      <h2>Missed the due date?</h2>
-      <p>If you miss a due date, you can lose Medicaid. You can apply again. <a href="{{ page_url('medicaid-utah-denied') }}">See your options</a></p>
-    </div>
+<div class="callout">
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+  <h2>Missed the due date?</h2>
+  <p>If you miss a deadline and lose Medicaid, you can apply again or request a fair hearing. <a href="{{ page_url('medicaid-utah-denied') }}">See your options</a></p>
+</div>
 {% endblock %}

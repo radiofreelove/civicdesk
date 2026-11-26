@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">2027 Medicaid Work &amp; Activity Rules</p>
 <h1>Primary sources for 2027 Medicaid guides (<code>MED-*</code>)</h1>
 {{ m.lede("Every statute, administrative rule, CMS guidance letter, court docket, and state agency explainer cited on the /medicaid/ desk, backed by data/sources/medicaid.yaml.") }}
+
+{{ m.onthispage([
+  ('src-oregon', 'Oregon (OHP)'),
+  ('src-washington', 'Washington (Apple Health)'),
+  ('src-utah', 'Utah Medicaid'),
+  ('src-all', 'Federal & court filings')
+]) }}
+
+{% set ns = namespace(total=0) %}
+{% for s in medicaid_sources if not s.get('docs_only') %}{% set ns.total = ns.total + 1 %}{% endfor %}
+{{ v.stat_hero_strip([
+  {'num': ns.total|string, 'label': 'Medicaid primary sources', 'note': 'Backed by data/sources/medicaid.yaml'},
+  {'num': '3', 'label': 'State Medicaid programs', 'note': 'OHP, Apple Health & Utah Medicaid'},
+  {'num': '4', 'label': 'Source honesty tiers', 'note': 'Official, Not official, Not confirmed, Our reading'}
+]) }}
 
 <p>Need ID and vital records sources too? <a href="{{ page_url('id-records-sources') }}">See ID &amp; vital records sources (<code>ID-*</code>)</a> or <a href="{{ page_url('sources#labels') }}">read what our 4 source honesty labels mean</a>.</p>
 

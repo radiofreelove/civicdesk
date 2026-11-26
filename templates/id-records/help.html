@@ -1,48 +1,47 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Get help</p>
 <h1>Free and low-cost help</h1>
-{{ m.lede("You do not need a lawyer for most name and gender marker changes. But it helps to have someone in your corner. That matters most if you have a court case going on, a criminal record, an immigration question, or a child involved.") }}
+{{ m.lede("Most name and gender-marker updates do not require a lawyer, though legal aid helps when a court case, custody rule, criminal record, or immigration question is involved.") }}
 {{ m.checked_line(page) }}
+
+{{ v.channel_cards([
+  {'kind': 'navigator', 'title': 'Court self-help & facilitators', 'body': 'Free courthouse staff in OR, WA, and UT who explain forms and filing steps (no legal advice).'},
+  {'kind': 'online', 'title': 'Guided form interviews', 'body': 'Oregon Guide & File and Utah MyPaperwork fill in official court petitions step by step.'},
+  {'kind': 'phone', 'title': 'Legal aid & peer lines', 'body': 'WA CLEAR, Oregon State Bar referral, Lambda Legal Help Desk, 988, and Trans Lifeline.'}
+]) }}
 
 {% call m.callout('watch', 'Need to talk to someone right now?', 'now') %}
 <ul>
-  <li><strong>In danger right now:</strong> call 911.</li>
-  <li><strong>Trans Lifeline:</strong> {{ m.copyable(fact('translifeline_phone'), 'Trans Lifeline phone number') }} Peer support run by trans people, weekdays 10 a.m. to 6 p.m. Pacific (11 a.m. to 7 p.m. Mountain). It does not call police or emergency services unless you ask, with limited exceptions it explains on its page. {{ src('ID-US-TRANSLIFELINE') }}</li>
-  <li><strong>988 Suicide and Crisis Lifeline:</strong> call or text 988, any time.</li>
+  <li><strong>In danger right now:</strong> call 911 · <strong>988 Suicide and Crisis Lifeline:</strong> call or text 988 any time.</li>
+  <li><strong>Trans Lifeline:</strong> {{ m.copyable(fact('translifeline_phone'), 'Trans Lifeline phone number') }} — peer support weekdays 10 a.m.–6 p.m. PT (11 a.m.–7 p.m. MT); does not call police/EMS unless asked, with limited page-listed exceptions. {{ src('ID-US-TRANSLIFELINE') }}</li>
 </ul>
 {% endcall %}
 
 <h2 id="oregon">Oregon</h2>
 <ul>
-  <li>{{ ext('ID-OR-OJD-SELF-HELP') }}: court self-help resources. Court staff can explain steps but cannot give legal advice. {{ src('ID-OR-OJD-ADULT-PACKET') }}</li>
-  <li>{{ ext('ID-OR-OJD-GUIDE-FILE') }}: free online interview that fills in your court forms.</li>
-  <li>Oregon State Bar referral service, to find a lawyer. Ask about costs when you call. {{ m.copyable(fact('or_osb_lrs'), 'phone numbers') }}</li>
-  <li>{{ ext('ID-OR-LAWHELP') }}: free legal information from Oregon legal aid programs.</li>
+  <li>{{ ext('ID-OR-OJD-SELF-HELP') }} ({{ src('ID-OR-OJD-ADULT-PACKET') }}), {{ ext('ID-OR-OJD-GUIDE-FILE') }}, and {{ ext('ID-OR-LAWHELP') }}.</li>
+  <li>Oregon State Bar referral service: {{ m.copyable(fact('or_osb_lrs'), 'phone numbers') }}</li>
 </ul>
 
 <h2 id="washington">Washington</h2>
 <ul>
-  <li>CLEAR, the referral line Washington's courts list for finding a lawyer or a free or low-cost legal service program. {{ src('ID-WA-COURTS-FORMS') }} {{ m.copyable(fact('wa_clear'), 'CLEAR phone number') }}</li>
-  <li>{{ ext('ID-WA-WLH-NAME') }}: free forms and instructions from a legal aid program.</li>
-  <li>Courthouse facilitators: your county may have one who can help you fill out paperwork. They cannot give legal advice. Ask your court. {{ src('ID-WA-COURTS-FORMS') }}</li>
+  <li>CLEAR legal aid line: {{ m.copyable(fact('wa_clear'), 'CLEAR phone number') }} ({{ src('ID-WA-COURTS-FORMS') }}), {{ ext('ID-WA-WLH-NAME') }}, and county courthouse facilitators.</li>
 </ul>
 
 <h2 id="utah">Utah</h2>
 <ul>
-  <li>{{ ext('ID-UT-COURTS-SELF-HELP') }}</li>
-  <li>{{ ext('ID-UT-MYPAPERWORK') }}: fills in your forms and files them for you.</li>
-  <li>{{ ext('ID-UT-COURTS-LEGAL-HELP') }}</li>
+  <li>{{ ext('ID-UT-COURTS-SELF-HELP') }}, {{ ext('ID-UT-MYPAPERWORK') }}, and {{ ext('ID-UT-COURTS-LEGAL-HELP') }}.</li>
 </ul>
 
 <h2 id="national">Anywhere</h2>
 <ul>
-  <li>{{ ext('ID-US-LAMBDA-HELPDESK') }}: general information and referrals through an online form. It is not legal advice and not for emergencies. {{ src('ID-US-LAMBDA-HELPDESK') }}</li>
-  <li>Born in another state? Find its birth certificate office: {{ ext('ID-US-CDC-W2W') }}.</li>
+  <li>{{ ext('ID-US-LAMBDA-HELPDESK') }} ({{ src('ID-US-LAMBDA-HELPDESK') }}) · Out-of-state birth records: {{ ext('ID-US-CDC-W2W') }}.</li>
 </ul>
 
 {% call m.callout('note', 'How we choose what to list', 'how-we-list', extra=true) %}
-<p>We list court and government help, legal aid programs, and national groups whose own pages we read. We check each listing on the date shown at the top of this page. If a phone number or link is wrong, <a href="{{ correction_mailto(page) }}">email {{ site.corrections_email }}</a> (pre-fills only this page path in the subject line) or <a href="{{ issues_url }}" rel="noreferrer">open a public GitHub issue</a>. Never include personal health or case details.</p>
+<p>We list court, government, legal-aid, and national programs whose own pages we verified on the date above. Spot an outdated number or link? <a href="{{ correction_mailto(page) }}">Email {{ site.corrections_email }}</a> (pre-fills only this page path) or <a href="{{ issues_url }}" rel="noreferrer">open a public GitHub issue</a>—never include personal health or case details.</p>
 {% endcall %}
 {% endblock %}

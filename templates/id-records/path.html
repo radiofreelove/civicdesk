@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
+{% import "illustrations.html" as il %}
 {% block head %}<script src="{{ asset('js/path.js') }}" defer></script>{% endblock %}
 {% block main %}
 <p class="kicker">Legal Name, ID &amp; Vital Records</p>
 <h1>Find your record-update path</h1>
 {{ m.lede("Answer a few quick questions to see only the steps that fit your situation—whether you are updating your name after marriage or divorce, filing a court petition, or updating a sex or gender designation. Birth-certificate questions are optional. Your answers never leave this page.") }}
+
+{{ v.stat_hero_strip([
+  {'num': '4', 'label': 'Quick questions', 'note': 'Filtered to your exact agencies'},
+  {'num': 'Optional', 'label': 'Birth-record step', 'note': 'Skip if only updating IDs'},
+  {'num': '0', 'label': 'Answers saved or sent', 'note': 'Runs in page memory only'}
+]) }}
 
 <div class="callout callout-note no-js-only">
   <p class="callout-title"><strong>JavaScript is off, so use these full step-by-step pages instead:</strong></p>
@@ -21,10 +29,10 @@
 
   <fieldset id="q-live">
     <legend>1. Where do you live?</legend>
-    <label><input type="radio" name="live" value="or"> <span class="choice-icon">{{ m.icon('state-or') }}</span><span>Oregon</span></label>
-    <label><input type="radio" name="live" value="wa"> <span class="choice-icon">{{ m.icon('state-wa') }}</span><span>Washington</span></label>
-    <label><input type="radio" name="live" value="ut"> <span class="choice-icon">{{ m.icon('state-ut') }}</span><span>Utah</span></label>
-    <label><input type="radio" name="live" value="other"> <span class="choice-icon">{{ m.icon('federal-star') }}</span><span>Another state</span></label>
+    <label><input type="radio" name="live" value="or"> {{ il.state_map_badge('oregon', 'choice-map') }}<span>Oregon</span></label>
+    <label><input type="radio" name="live" value="wa"> {{ il.state_map_badge('washington', 'choice-map') }}<span>Washington</span></label>
+    <label><input type="radio" name="live" value="ut"> {{ il.state_map_badge('utah', 'choice-map') }}<span>Utah</span></label>
+    <label><input type="radio" name="live" value="other"> {{ il.state_map_badge('federal', 'choice-map') }}<span>Another state</span></label>
   </fieldset>
 
   <fieldset id="q-change">

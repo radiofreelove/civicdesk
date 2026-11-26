@@ -1,52 +1,42 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <h1>OHP sent me a letter. Now what?</h1>
-    <p class="purpose">This page explains the letters and how to answer them on time.</p>
+<p class="purpose">Spot the reply deadline first, see what OHP is asking for, and send your answer online, by phone, in person, or by mail.</p>
 
-    <h2>The short version</h2>
-    <ul class="short">
-      <li><strong>First:</strong> Find the due date on the letter.</li>
-      <li><strong>December 2026 notices:</strong> OHP plans to send notices to members in December 2026 explaining what to expect for 2027. {{ src('MED-S42') }}</li>
-      <li><strong>Proof needed?</strong> A Request for Information means OHP needs more from you. You have 35 days to reply. {{ src('MED-S04') }}</li>
-      <li class="more"><strong>Reminder:</strong> If you signed up for email, you get a reminder 5 days before it is due. {{ src('MED-S04') }}</li>
-      <li><strong>How to answer:</strong> Online, by phone, in person, by fax, or by mail. {{ src('MED-S08') }}</li>
-      <li><strong>Missed the due date?</strong> <a href="{{ page_url('medicaid-oregon-denied') }}">See your options</a>.</li>
-    </ul>
+{% set c1 %}Write your case number on every page you send and keep a copy with the date sent.{% endset %}
+{% set c2 %}A <strong>Request for Information</strong> gives you <strong>35 days</strong> to reply (plus an email reminder 5 days before if enrolled). {{ src('MED-S04') }}{% endset %}
+{% set c3 %}OHP only asks for what its electronic databases could not confirm—or you can report an exemption. {{ src('MED-S03') }} {{ src('MED-S04') }}{% endset %}
+{% set c4 %}Reply in ONE (<a href="https://benefits.oregon.gov/" rel="noreferrer">benefits.oregon.gov</a>), call <span class="nowrap">800-699-9075</span>, visit ODHS, fax <span class="nowrap">503-378-5628</span>, or mail PO Box 14015, Salem, OR 97309. {{ src('MED-S08') }}{% endset %}
+{{ v.doc_mockup_letter(
+  'Oregon Health Plan',
+  'Oregon Health Authority · ONE Notice',
+  '35-day reply window',
+  [
+    {'title': 'Case number & notice date', 'body': c1},
+    {'title': '35-day due date box', 'body': c2},
+    {'title': 'Missing hours or exemption check', 'body': c3},
+    {'title': '5 ways to send your answer', 'body': c4}
+  ]
+) }}
 
-    <h2>Letters you may get</h2>
-    <dl class="glossary">
-      <dt>December 2026 member notice</dt>
-      <dd>An early notice OHP plans to send in December 2026. It explains how the 2027 work or activity rules may apply to you. {{ src('MED-S42') }}</dd>
-      <dt>Notice of Eligibility</dt>
-      <dd>OHP's decision about your coverage. {{ src('MED-S04') }}</dd>
-      <dt>Request for Information</dt>
-      <dd>OHP needs proof or more facts. The due date is on the letter. You have 35 days. {{ src('MED-S04') }}</dd>
-      <dt>Notice of Status</dt>
-      <dd>Your status for the new rules changed. Your benefits did not change. It helps you get ready for your next renewal. {{ src('MED-S04') }}</dd>
-    </dl>
+<h2>Four OHP letters you may see</h2>
+{% set l_dec %}Early notice OHP plans to mail in December 2026 explaining what to expect in 2027. {{ src('MED-S42') }}{% endset %}
+{% set l_elig %}OHP's official decision about your coverage. {{ src('MED-S04') }} {{ src('MED-S19') }}{% endset %}
+{% set l_rfi %}OHP needs proof or more facts within 35 days. Free help: <a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">find a community partner</a>. {{ src('MED-S04') }} {{ src('MED-S16') }}{% endset %}
+{% set l_stat %}Tells you your work-rule status changed without changing current benefits, so you can prepare for renewal. {{ src('MED-S04') }}{% endset %}
+{{ v.jargon_flashcards([
+  {'term': 'Dec. 2026 notice', 'plain': 'Heads-up for 2027 rules', 'detail': l_dec},
+  {'term': 'Notice of Eligibility', 'plain': 'Coverage decision letter', 'detail': l_elig},
+  {'term': 'Request for Information', 'plain': 'Proof needed within 35 days', 'detail': l_rfi},
+  {'term': 'Notice of Status', 'plain': 'Rule status update only', 'detail': l_stat}
+]) }}
 
-    <h2>Ways to answer</h2>
-    <ul>
-      <li><strong>Online:</strong> your ONE account at <a href="https://benefits.oregon.gov/" rel="noreferrer">benefits.oregon.gov</a></li>
-      <li><strong>Phone:</strong> <span class="nowrap">800-699-9075</span> (TTY 711)</li>
-      <li><strong>In person:</strong> any local ODHS office</li>
-      <li><strong>Fax:</strong> <span class="nowrap">503-378-5628</span></li>
-      <li><strong>Mail:</strong> PO Box 14015, Salem, OR 97309. Check your letter for the exact address. {{ src('MED-S08') }}</li>
-      <li><strong>With help:</strong> a <a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">free community partner</a> {{ src('MED-S16') }}</li>
-    </ul>
-
-    <h2>Tips</h2>
-    <ul class="short">
-      <li><strong>Keep copies:</strong> Keep a copy of everything you send, and write down the date you sent it.</li>
-      <li><strong>Case number:</strong> Write the case number from your letter on every page you send.</li>
-      <li><strong>Do not wait:</strong> Answer as soon as you can. Mail takes time.</li>
-    </ul>
-
-    <div class="callout">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
-      <h2>Missed the due date?</h2>
-      <p>If you do not send proof by the due date, OHP can turn you down. You can apply again any time. <a href="{{ page_url('medicaid-oregon-denied') }}">See your options</a> {{ src('MED-S04') }} {{ src('MED-S06') }}</p>
-    </div>
+<div class="callout">
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+  <h2>Missed the due date?</h2>
+  <p>If you miss the deadline and OHP turns you down, you can apply again any time or ask for a hearing. <a href="{{ page_url('medicaid-oregon-denied') }}">See your options</a> {{ src('MED-S04') }} {{ src('MED-S06') }}</p>
+</div>
 {% endblock %}

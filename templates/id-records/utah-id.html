@@ -1,23 +1,34 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Utah / License and ID</p>
 <h1>Utah driver license or ID: name and sex marker</h1>
-{{ m.lede("To change your name on a Utah license or ID, update Social Security first and bring a certified copy of your court order. Ask the Driver License Division before going for a sex marker update.") }}
+{{ m.lede("To change your name on a Utah license or ID, update Social Security first and bring court-sealed papers to an in-person appointment. Call the Driver License Division ahead of time for sex-marker requirements.") }}
 {{ m.checked_line(page) }}
 
-{{ m.bring_reminder('Utah Driver License Division', 'Court papers with the court seal (such as a certified copy of your order). Ask the office about sex marker updates first.') }}
+{% set h1 %}<strong>Name change ($23 replacement):</strong> Update Social Security first, then bring an updated birth certificate, updated passport, or court-sealed name-change order (certified copy) to DLD in person. {{ m.badge('our_reading') }} {{ src('ID-UT-DLD-NAME') }} {{ src('ID-UT-DLD-REPLACEMENT') }}{% endset %}
+{% set h2 %}<strong>Sex marker process not published online:</strong> Utah Code 53-3-205 requires listing sex on the application and Utah Code 68-3-12.5 defines "sex" code-wide unless context/statute differs, while DLD publishes no web or R708 rule list of accepted sex-marker documents. {{ m.badge('not_confirmed') }} {{ src('ID-UT-CODE-53-3-205') }} {{ src('ID-UT-CODE-68-3-12-5') }}{% endset %}
+{% set h3 %}<strong>Call DLD before your appointment:</strong> Follow Utah Courts Step 5 and call the {{ ext('ID-UT-DLD-REPLACEMENT', 'Driver License Division') }} at <span class="nowrap">801-965-4437</span> or <span class="nowrap">888-353-4224</span> to confirm exact documents. {{ src('ID-UT-COURTS-SEX-CHANGE') }}{% endset %}
+{{ v.doc_mockup_id_card(
+  'Utah DLD',
+  'Utah Driver License or Identification Card',
+  'Call DLD before going (not published online)',
+  '$23 replacement fee',
+  [
+    {'icon': 'ssa-card', 'title': 'SSA match + court-sealed copy', 'body': h1},
+    {'icon': 'warning-triangle', 'title': 'Unpublished sex-marker rule', 'body': h2},
+    {'icon': 'id-card', 'title': 'Confirm by phone first', 'body': h3}
+  ]
+) }}
 
-<h2 id="dld-steps">What to bring to the Driver License Division</h2>
-<p>For a name change, schedule an in-person appointment for a replacement license or ID (the regular replacement fee is $23) and bring legal documentation of the change. The Driver License Division's accepted list includes "A new birth certificate," "An updated passport," and "Court papers showing the name change, sealed by the court." We read that last item as papers with the court's seal on them, like a certified copy of your order. {{ m.badge('our_reading') }} {{ src('ID-UT-DLD-NAME') }} {{ src('ID-UT-DLD-REPLACEMENT') }}</p>
-<p>Utah law requires a driver license application to list the applicant's sex, and Utah Courts' official Step 5 instructs people with a court-ordered sex designation change to go to the Driver License Division and ask what records it requires. {{ src('ID-UT-CODE-53-3-205') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }} Utah law also includes a code-wide definition of "sex" as biological sex at birth unless a statute expressly provides another definition or the definition conflicts with legislative intent or context. {{ src('ID-UT-CODE-68-3-12-5') }} However, the Driver License Division does not publish a webpage or administrative rule (Utah Admin. Code R708) listing which documents it accepts for a sex marker update. {{ m.badge('not_confirmed') }} Call the {{ ext('ID-UT-DLD-REPLACEMENT', 'Driver License Division') }} at 801-965-4437 or 888-353-4224 before you go so you bring what your office asks for.</p>
+<div id="dld-steps">
+  {{ m.bring_reminder('Utah Driver License Division', 'Certified court order with the court seal (plus SSA name match) for a name update; call 801-965-4437 or 888-353-4224 ahead for a sex marker update.') }}
+</div>
 
 <h2 id="next-steps">Next steps</h2>
 <ul>
-  <li><a href="{{ page_url('id-records-utah-court') }}">Utah court order</a></li>
-  <li><a href="{{ page_url('id-records-utah-birth') }}">Utah birth certificate</a></li>
-  <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security in 2026</a></li>
-  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
-  <li><a href="{{ page_url('id-records-utah') }}">Back to the Utah overview</a></li>
+  <li><a href="{{ page_url('id-records-utah-court') }}">Utah court order</a> · <a href="{{ page_url('id-records-utah-birth') }}">Utah birth certificate</a></li>
+  <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security in 2026</a> · <a href="{{ page_url('id-records-after') }}">After-court checklist</a> · <a href="{{ page_url('id-records-utah') }}">Utah overview</a></li>
 </ul>
 {% endblock %}

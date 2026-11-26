@@ -1,63 +1,32 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <h1>Words on your OHP letters</h1>
-    <p class="purpose">Plain meanings for words OHP uses. Listed from A to Z.</p>
+<p class="purpose">Plain-language flashcards for official terms OHP uses in letters and forms, listed A to Z.</p>
 
-    <dl class="glossary">
-      <dt>CCO (coordinated care organization)</dt>
-      <dd>A local health plan that manages OHP care in your area.</dd>
-
-      <dt>Community engagement</dt>
-      <dd>The name federal law uses for the work or activity rules.</dd>
-
-      <dt>Community partner, or assister</dt>
-      <dd>A trained helper who can help you apply for OHP. Their help is free.</dd>
-
-      <dt>Exemption</dt>
-      <dd>A reason you do not have to meet the work or activity rules. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every reason</a>.</dd>
-
-      <dt>Half-time</dt>
-      <dd>A school schedule your school calls half-time or more.</dd>
-
-      <dt>Healthier Oregon</dt>
-      <dd>The program that gives full OHP benefits to people who qualify, no matter their immigration status.</dd>
-
-      <dt>Hearing</dt>
-      <dd>A way to challenge an OHP decision. Your letter says how to ask for one.</dd>
-
-      <dt>Household income</dt>
-      <dd>The combined income of your Medicaid household (generally you, your spouse, and people on your tax return; children's income often does not count).</dd>
-
-      <dt>Marketplace</dt>
-      <dd>Where you can buy a private health plan. Some people get help paying.</dd>
-
-      <dt>Medically frail</dt>
-      <dd>A federal term for people with serious health needs. It is one reason you may not have to meet the rules.</dd>
-
-      <dt>Notice of Eligibility</dt>
-      <dd>A letter with OHP's decision.</dd>
-
-      <dt>OHP Bridge</dt>
-      <dd>Coverage for adults with income just above the OHP limit. Members pay nothing.</dd>
-
-      <dt>ONE account</dt>
-      <dd>Your online account for OHP and other benefits, at benefits.oregon.gov.</dd>
-
-      <dt>Open Card</dt>
-      <dd>OHP without a CCO. It has full OHP benefits.</dd>
-
-      <dt>Renewal</dt>
-      <dd>When OHP checks again whether you still qualify.</dd>
-
-      <dt>Request for Information</dt>
-      <dd>A letter asking for proof or more facts. You have 35 days to reply.</dd>
-
-      <dt>Retroactive coverage</dt>
-      <dd>Help with medical bills from before you applied.</dd>
-
-      <dt>Work or activity rules</dt>
-      <dd>The new rules that start Jan.&nbsp;1, 2027. <a href="{{ page_url('medicaid-oregon-rules') }}">Read them in plain words</a>.</dd>
-    </dl>
+{% set d_exemption %}A reason you do not have to meet the work or activity rules. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every reason</a>. {{ src('MED-S03') }}{% endset %}
+{% set d_work %}The new rules starting Jan.&nbsp;1, 2027. <a href="{{ page_url('medicaid-oregon-rules') }}">Read them in plain words</a>. {{ src('MED-S01') }} {{ src('MED-S27') }}{% endset %}
+{{ v.jargon_flashcards([
+  {'term': 'CCO', 'plain': 'Your local OHP health plan', 'detail': 'Coordinated care organization managing OHP care in your area.'},
+  {'term': 'Community engagement', 'plain': 'Work or activity rules', 'detail': 'The federal law name for the 2027 monthly hour, school, or income rules.'},
+  {'term': 'Community partner', 'plain': 'Free trained application helper', 'detail': 'Certified local assister who helps you apply or reply for free.'},
+  {'term': 'Exemption', 'plain': 'Reason rules do not apply to you', 'detail': d_exemption},
+  {'term': 'Half-time', 'plain': 'Half-time or more school schedule', 'detail': 'Defined by your college, trade school, high school, or GED program.'},
+  {'term': 'Healthier Oregon', 'plain': 'Full OHP regardless of immigration status', 'detail': 'Covers qualifying Oregonians who meet income and state rules.'},
+  {'term': 'Hearing', 'plain': 'Formal appeal of an OHP decision', 'detail': 'Your notice explains how to ask and how to keep benefits while waiting.'},
+  {'term': 'Household income', 'plain': 'Combined Medicaid family income', 'detail': 'Usually you, your spouse, and tax dependents (children’s income often excluded).'},
+  {'term': 'Marketplace', 'plain': 'Private plan site (OregonHealthCare.gov)', 'detail': 'Where people over Medicaid limits compare private coverage.'},
+  {'term': 'Medically frail', 'plain': 'Serious or disabling health need', 'detail': 'Federal term for health conditions that excuse you from work rules.'},
+  {'term': 'Notice of Eligibility', 'plain': 'Official coverage decision letter', 'detail': 'Tells you whether your OHP application or renewal was approved.'},
+  {'term': 'OHP Bridge', 'plain': '$0-premium plan above OHP income limits', 'detail': 'Covers adults earning slightly above standard OHP thresholds.'},
+  {'term': 'ONE account', 'plain': 'Online portal at benefits.oregon.gov', 'detail': 'Where you apply, check letters, and upload proof online.'},
+  {'term': 'Open Card', 'plain': 'Fee-for-service OHP (no CCO)', 'detail': 'Full OHP benefits billed directly to the state rather than a local CCO.'},
+  {'term': 'Renewal', 'plain': 'Periodic eligibility re-check', 'detail': 'When OHP checks whether you still qualify to keep coverage.'},
+  {'term': 'Request for Information', 'plain': 'Letter asking for proof (35 days)', 'detail': 'Sent only when OHP’s electronic databases could not confirm a detail.'},
+  {'term': 'Retroactive coverage', 'plain': 'Help with past medical bills', 'detail': 'Up to 3 months through Dec. 31, 2026; 1–2 months starting Jan. 1, 2027.'},
+  {'term': 'Work or activity rules', 'plain': 'Jan. 1, 2027 OHP rules', 'detail': d_work}
+]) }}
+<p class="checked">Additional term references: {{ src('MED-S04') }} {{ src('MED-S05') }} {{ src('MED-S06') }} {{ src('MED-S09') }} {{ src('MED-S11') }} {{ src('MED-S13') }} {{ src('MED-S29') }}.</p>
 {% endblock %}

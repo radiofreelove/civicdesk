@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from pathlib import Path
+import time
+from playwright.sync_api import Error as PlaywrightError
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -11,31 +13,50 @@ SPACING_CSS = (
 )
 
 
+def goto_local(page, url: str):
+    try:
+        return page.goto(url, wait_until="load")
+    except PlaywrightError as exc:
+        if "ERR_ABORTED" not in str(exc):
+            raise
+        time.sleep(0.05)
+        return page.goto(url, wait_until="load")
+
+
 def test_all_pages_clean_load_and_reflow(site_server: str, browser_instance) -> None:
     pages_yaml = yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))
-    ctx = browser_instance.new_context(viewport={"width": 1280, "height": 900})
-    page = ctx.new_page()
     errors: list[str] = []
     outside_requests: list[str] = []
     csp_violations: list[str] = []
 
-    page.add_init_script(
-        "window.__csp = []; document.addEventListener('securitypolicyviolation', e => window.__csp.push(e.violatedDirective));"
-    )
-    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
-    page.on("pageerror", lambda exc: errors.append(str(exc)))
-    page.on("request", lambda req: outside_requests.append(req.url) if not req.url.startswith(site_server) else None)
+    def open_ctx_and_page(width: int = 1280, height: int = 900):
+        c = browser_instance.new_context(viewport={"width": width, "height": height})
+        c.add_init_script(
+            "window.__csp = []; document.addEventListener('securitypolicyviolation', e => window.__csp.push(e.violatedDirective));"
+        )
+        p = c.new_page()
+        p.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+        p.on("pageerror", lambda exc: errors.append(str(exc)))
+        p.on("request", lambda req: outside_requests.append(req.url) if not req.url.startswith(site_server) else None)
+        return c, p
 
-    for entry in pages_yaml:
+    ctx, page = open_ctx_and_page()
+
+    for idx, entry in enumerate(pages_yaml):
+        if idx and idx % 15 == 0:
+            ctx.close()
+            ctx, page = open_ctx_and_page()
         route = entry["route"]
         errors.clear()
         outside_requests.clear()
-        resp = page.goto(site_server + route, wait_until="load")
+        resp = goto_local(page, site_server + route)
         assert resp is not None and resp.status == 200, f"{route}: HTTP {resp and resp.status}"
         assert not errors, f"{route}: console/page errors: {errors}"
         assert not outside_requests, f"{route}: unexpected external requests: {outside_requests}"
         csp_violations = page.evaluate("() => window.__csp || []")
         assert not csp_violations, f"{route}: CSP violations: {csp_violations}"
+
+    ctx.close()
 
     # Check 200% zoom (640px) and 400% zoom (320px) reflow + >=44px touch targets on key pages across all desks
     key_routes = [
@@ -53,13 +74,11 @@ def test_all_pages_clean_load_and_reflow(site_server: str, browser_instance) -> 
         "/id-records/compare/",
         "/sources/",
     ]
-    spacing_ctx = browser_instance.new_context(viewport={"width": 320, "height": 800}, bypass_csp=True)
-    spacing_page = spacing_ctx.new_page()
-
+    ctx, page = open_ctx_and_page(640, 800)
     for route in key_routes:
+        goto_local(page, site_server + route)
         for width in (640, 320):
             page.set_viewport_size({"width": width, "height": 800})
-            page.goto(site_server + route, wait_until="load")
             overflow = page.evaluate("() => document.documentElement.scrollWidth - window.innerWidth")
             assert overflow <= 1, f"{route}: horizontal overflow of {overflow}px at {width}px viewport"
 
@@ -78,14 +97,16 @@ def test_all_pages_clean_load_and_reflow(site_server: str, browser_instance) -> 
             return out;
         }""")
         assert not small, f"{route}: interactive controls under 44x44px: {small}"
+    ctx.close()
 
-        spacing_page.goto(site_server + route, wait_until="load")
+    spacing_ctx = browser_instance.new_context(viewport={"width": 320, "height": 800}, bypass_csp=True)
+    spacing_page = spacing_ctx.new_page()
+    for route in key_routes:
+        goto_local(spacing_page, site_server + route)
         spacing_page.add_style_tag(content=SPACING_CSS)
         sp_overflow = spacing_page.evaluate("() => document.documentElement.scrollWidth - window.innerWidth")
         assert sp_overflow <= 1, f"{route}: horizontal overflow of {sp_overflow}px with WCAG text spacing at 320px"
-
     spacing_ctx.close()
-    ctx.close()
 
 
 def test_start_router_and_medicaid_checks(site_server: str, browser_instance) -> None:
@@ -93,7 +114,7 @@ def test_start_router_and_medicaid_checks(site_server: str, browser_instance) ->
     page = ctx.new_page()
 
     # 1. Test /start/ 2-question router
-    page.goto(site_server + "/start/", wait_until="load")
+    goto_local(page, site_server + "/start/")
     page.click("#start-form button[type=submit]")
     assert page.is_visible("#start-error")
     page.check('input[name="state"][value="oregon"]')
@@ -104,7 +125,7 @@ def test_start_router_and_medicaid_checks(site_server: str, browser_instance) ->
     assert 'href="/medicaid/oregon/check/"' in page.inner_html("#start-result-body")
 
     # 2. Test Washington 1-minute check (including the fixed 6th 'work' option!)
-    page.goto(site_server + "/medicaid/washington/check/", wait_until="load")
+    goto_local(page, site_server + "/medicaid/washington/check/")
     page.check('input[name="age"][value="19to64"]')
     page.click('[data-step="1"] button[data-next]')
     page.check('input[name="reason"][value="none"]')
@@ -117,14 +138,14 @@ def test_start_router_and_medicaid_checks(site_server: str, browser_instance) ->
     assert "You work at least 80 hours a month." in page.inner_text("#checker-result")
 
     # 3. Test Oregon 1-minute check under-19 short circuit
-    page.goto(site_server + "/medicaid/oregon/check/", wait_until="load")
+    goto_local(page, site_server + "/medicaid/oregon/check/")
     page.check('input[name="age"][value="under19"]')
     page.click('[data-step="1"] button[data-next]')
     assert page.is_visible("#checker-result")
     assert "do not apply to your age group" in page.inner_text("#checker-result")
 
     # 4. Test Utah 1-minute check exemption path
-    page.goto(site_server + "/medicaid/utah/check/", wait_until="load")
+    goto_local(page, site_server + "/medicaid/utah/check/")
     page.check('input[name="age"][value="19to64"]')
     page.click('[data-step="1"] button[data-next]')
     page.check('input[name="reason"][value="pregnant"]')
@@ -141,7 +162,7 @@ def test_broadened_id_records_path_finder(site_server: str, browser_instance) ->
     ctx = browser_instance.new_context(viewport={"width": 1280, "height": 900})
     page = ctx.new_page()
 
-    page.goto(site_server + "/id-records/path/", wait_until="load")
+    goto_local(page, site_server + "/id-records/path/")
 
     # 1. Marriage name change in Oregon WITHOUT answering optional birth-certificate question
     page.check('input[name="live"][value="or"]')
@@ -198,7 +219,7 @@ def test_scoped_leave_quickly_and_reading_settings(site_server: str, browser_ins
 
     # 1. Triple-Shift MUST NOT trigger exit on / or /medicaid/
     for non_exit_route in ("/", "/medicaid/"):
-        page.goto(site_server + non_exit_route, wait_until="load")
+        goto_local(page, site_server + non_exit_route)
         assert page.locator("[data-quick-exit]").count() == 0
         for _ in range(3):
             page.keyboard.press("Shift")
@@ -206,7 +227,7 @@ def test_scoped_leave_quickly_and_reading_settings(site_server: str, browser_ins
         assert "weather.gov" not in page.url
 
     # 2. Leave quickly click AND triple-Shift work on /id-records/* (and Shift+letter does NOT false-trigger)
-    page.goto(site_server + "/id-records/oregon/", wait_until="load")
+    goto_local(page, site_server + "/id-records/oregon/")
     page.locator("body").click(position={"x": 10, "y": 250})
     for ch in ("A", "B", "C"):
         page.keyboard.down("Shift")
@@ -218,18 +239,18 @@ def test_scoped_leave_quickly_and_reading_settings(site_server: str, browser_ins
         page.keyboard.press("Shift")
     page.wait_for_url("https://www.weather.gov/**", timeout=5000)
 
-    page.goto(site_server + "/id-records/", wait_until="load")
+    goto_local(page, site_server + "/id-records/")
     page.click("#quick-exit")
     page.wait_for_url("https://www.weather.gov/**", timeout=5000)
 
     # 3. Scoped domestic-safety callout Leave quickly works on /medicaid/oregon/reasons/
-    page.goto(site_server + "/medicaid/oregon/reasons/", wait_until="load")
+    goto_local(page, site_server + "/medicaid/oregon/reasons/")
     assert page.locator(".exit-bar").count() == 0
     page.click(".safety-exit-link[data-quick-exit]")
     page.wait_for_url("https://www.weather.gov/**", timeout=5000)
 
     # 4. Reading settings modal, dark slate theme, and Forget everything
-    page.goto(site_server + "/", wait_until="load")
+    goto_local(page, site_server + "/")
     page.click("#settings-open")
     assert page.evaluate("() => document.getElementById('settings').open")
     page.check('#settings input[name="theme"][value="dark"]')
@@ -251,7 +272,7 @@ def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_in
     page = ctx.new_page()
 
     # 1. Dark slate sets computed color-scheme: dark on native radio controls; light/warm/contrast set light
-    page.goto(site_server + "/medicaid/oregon/check/", wait_until="load")
+    goto_local(page, site_server + "/medicaid/oregon/check/")
     assert page.evaluate("""() => {
         document.documentElement.setAttribute('data-theme', 'dark');
         return getComputedStyle(document.querySelector('input[type="radio"]')).colorScheme;
@@ -263,7 +284,7 @@ def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_in
         }}""") == "light"
 
     # 2. Checker validation error sits above Step 1 fieldset inside viewport, and multi-select recap uses ', '
-    page.reload(wait_until="load")
+    goto_local(page, site_server + "/medicaid/oregon/check/")
     page.click('[data-step="1"] button[data-next]')
     assert page.is_visible("#step-1-error")
     checker_vis = page.evaluate("""() => {
@@ -290,7 +311,7 @@ def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_in
     # 3. Path Finder empty submit keeps both #path-error and #q-live visible below sticky .exit-bar (desktop & mobile)
     for vw in ({"width": 1280, "height": 800}, {"width": 360, "height": 740}):
         page.set_viewport_size(vw)
-        page.goto(site_server + "/id-records/path/", wait_until="load")
+        goto_local(page, site_server + "/id-records/path/")
         page.evaluate("() => window.scrollTo(0, document.body.scrollHeight)")
         page.click('#path-form button[type="submit"]')
         assert page.is_visible("#path-error")
@@ -314,7 +335,7 @@ def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_in
 
     # 4. /start/ searchable guide directory filters client-side with zero storage/network side effects
     page.set_viewport_size({"width": 1280, "height": 800})
-    page.goto(site_server + "/medicaid/", wait_until="load")
+    goto_local(page, site_server + "/medicaid/")
     card_align = page.evaluate("""() => {
         const cards = Array.from(document.querySelectorAll('.state-cards > .card'));
         const rowCards = cards.filter(c => Math.abs(c.getBoundingClientRect().top - cards[0].getBoundingClientRect().top) < 2);
@@ -326,7 +347,7 @@ def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_in
     assert len(set(card_align["heights"])) == 1, f"Unequal state card heights on same row: {card_align}"
     assert max(card_align["btnTops"]) - min(card_align["btnTops"]) <= 2, f"Misaligned .btn-row tops: {card_align}"
 
-    page.goto(site_server + "/start/", wait_until="load")
+    goto_local(page, site_server + "/start/")
     page.fill("#guide-filter", "passport")
     assert "matching guide" in page.inner_text("#guide-filter-status")
     assert page.locator('#all-guides a[href="/id-records/federal/"]').is_visible()
@@ -334,7 +355,7 @@ def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_in
     assert page.inner_text("#guide-filter-status") == ""
 
     # 5. Checklist non-persistence hint + state switcher focusout closing
-    page.goto(site_server + "/id-records/oregon/court/", wait_until="load")
+    goto_local(page, site_server + "/id-records/oregon/court/")
     first_check = page.locator("input[data-check]").first
     first_check.check()
     assert page.is_visible(".checklist-persistence-hint")
@@ -365,7 +386,7 @@ def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_in
         window.Date = MockDate;
     })();""")
     tz_page = tz_ctx.new_page()
-    tz_page.goto(site_server + "/medicaid/oregon/", wait_until="load")
+    goto_local(tz_page, site_server + "/medicaid/oregon/")
     # Confirm UTC date is already 2027-01-01 while local date in LA is still 2026-12-31
     assert tz_page.evaluate("() => new Date().toISOString().slice(0, 10)") == "2027-01-01"
     assert tz_page.evaluate("""() => {
@@ -379,30 +400,49 @@ def test_visual_system_xl_wide_reflow_brief_and_progress(site_server: str, brows
     visual_routes = [
         "/",
         "/start/",
+        "/privacy/",
+        "/accessibility/",
+        "/404.html",
         "/medicaid/",
         "/medicaid/oregon/",
         "/medicaid/oregon/rules/",
         "/medicaid/oregon/reasons/",
+        "/medicaid/oregon/letter/",
+        "/medicaid/oregon/denied/",
+        "/medicaid/oregon/words/",
+        "/medicaid/oregon/log/",
         "/medicaid/oregon/check/",
         "/id-records/",
         "/id-records/path/",
         "/id-records/oregon/",
+        "/id-records/oregon/court/",
+        "/id-records/oregon/birth/",
+        "/id-records/oregon/id/",
         "/id-records/federal/",
+        "/id-records/compare/",
         "/id-records/after/",
     ]
-    ctx = browser_instance.new_context(viewport={"width": 390, "height": 844})
-    page = ctx.new_page()
     errors: list[str] = []
-    page.add_init_script(
-        "window.__csp = []; document.addEventListener('securitypolicyviolation', e => window.__csp.push(e.violatedDirective));"
-    )
-    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
-    page.on("pageerror", lambda exc: errors.append(str(exc)))
+
+    def open_viz_ctx():
+        c = browser_instance.new_context(viewport={"width": 390, "height": 844})
+        c.add_init_script(
+            "window.__csp = []; document.addEventListener('securitypolicyviolation', e => window.__csp.push(e.violatedDirective));"
+        )
+        p = c.new_page()
+        p.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+        p.on("pageerror", lambda exc: errors.append(str(exc)))
+        return c, p
+
+    ctx, page = open_viz_ctx()
 
     # 1. Verify zero horizontal overflow and zero CSP errors at 320px and 390px with XL + Wide spacing active
-    for route in visual_routes:
+    for idx, route in enumerate(visual_routes):
+        if idx and idx % 12 == 0:
+            ctx.close()
+            ctx, page = open_viz_ctx()
         errors.clear()
-        page.goto(site_server + route, wait_until="load")
+        goto_local(page, site_server + route)
         page.evaluate(
             "() => { document.documentElement.dataset.size = 'xl'; document.documentElement.dataset.spacing = 'wide'; }"
         )
@@ -413,19 +453,26 @@ def test_visual_system_xl_wide_reflow_brief_and_progress(site_server: str, brows
         assert not errors, f"{route}: console/page errors: {errors}"
         assert page.evaluate("() => window.__csp || []") == []
 
-    # 2. Verify Short version mode (both data-brief="on" and data-brief="true") hides [data-deeper] visual grids cleanly
+    # 2. Verify Short version mode (both data-brief="on" and data-brief="true") hides [data-deeper] & details.deeper cleanly
     page.set_viewport_size({"width": 1280, "height": 800})
-    page.goto(site_server + "/medicaid/oregon/reasons/", wait_until="load")
-    assert page.locator(".viz-grid[data-deeper]").is_visible()
+    goto_local(page, site_server + "/medicaid/oregon/rules/")
+    assert page.locator(".viz-calendar[data-deeper]").is_visible()
     for brief_val in ("true", "on"):
         page.evaluate(f"() => {{ document.documentElement.dataset.brief = '{brief_val}'; }}")
-        assert page.locator(".viz-grid[data-deeper]").is_hidden()
+        assert page.locator(".viz-calendar[data-deeper]").is_hidden()
+        assert page.locator("details.deeper").first.is_hidden()
+    page.evaluate("() => { document.documentElement.dataset.brief = 'off'; }")
+    assert page.locator(".viz-calendar[data-deeper]").is_visible()
+
+    goto_local(page, site_server + "/medicaid/oregon/reasons/")
+    for brief_val in ("true", "on"):
+        page.evaluate(f"() => {{ document.documentElement.dataset.brief = '{brief_val}'; }}")
+        assert page.locator("details.deeper").first.is_hidden()
         assert page.locator(".safety-exit-link[data-quick-exit]").is_visible()
     page.evaluate("() => { document.documentElement.dataset.brief = 'off'; }")
-    assert page.locator(".viz-grid[data-deeper]").is_visible()
 
     # 3. Verify 3-step visual progress track aria-current="step", completion states, and outcome emblem on check wizard
-    page.goto(site_server + "/medicaid/oregon/check/", wait_until="load")
+    goto_local(page, site_server + "/medicaid/oregon/check/")
     assert page.is_visible("#checker-steps-track")
     assert page.get_attribute('[data-progress-step="1"]', "aria-current") == "step"
     assert page.get_attribute('[data-progress-step="2"]', "aria-current") is None

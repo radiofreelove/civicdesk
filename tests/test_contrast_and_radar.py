@@ -77,6 +77,10 @@ def test_horizon_palette_and_aaa_contrast() -> None:
         ("link", "badge-bg"), ("text", "badge-bg"), ("text", "code-bg"),
         ("text", "viz-surface"), ("heading", "viz-surface"), ("link", "viz-surface"),
         ("text", "viz-surface-2"), ("heading", "viz-surface-2"), ("link", "viz-surface-2"),
+        ("text", "viz-fill-1"), ("heading", "viz-fill-1"), ("link", "viz-fill-1"),
+        ("text", "viz-fill-2"), ("heading", "viz-fill-2"), ("link", "viz-fill-2"),
+        ("text", "viz-fill-3"), ("heading", "viz-fill-3"), ("link", "viz-fill-3"),
+        ("text", "viz-paper"), ("heading", "viz-paper"), ("link", "viz-paper"),
         ("viz-node-text", "viz-node-bg"), ("viz-node-text", "good-edge"),
     ]
     ui_pairs = [
@@ -84,10 +88,14 @@ def test_horizon_palette_and_aaa_contrast() -> None:
         ("focus-ring", "bg"), ("focus-ring", "surface"),
         ("nav-current", "header-bg"),
         ("mark-sky", "mark-bg"), ("mark-rose", "mark-bg"), ("mark-paper", "mark-bg"),
-        ("viz-border", "bg"), ("viz-border", "viz-surface"), ("viz-border", "card-bg"),
+        ("viz-border", "bg"), ("viz-border", "viz-surface"), ("viz-border", "card-bg"), ("viz-border", "viz-paper"),
+        ("viz-border", "viz-fill-1"), ("viz-border", "viz-fill-2"), ("viz-border", "viz-fill-3"),
         ("viz-accent", "bg"), ("viz-accent", "viz-surface"), ("viz-accent", "viz-track"),
+        ("viz-accent", "viz-paper"), ("viz-accent", "viz-fill-1"),
         ("viz-accent-2", "bg"), ("viz-accent-2", "viz-surface-2"), ("viz-accent-2", "viz-track"),
+        ("viz-accent-2", "viz-paper"), ("viz-accent-2", "viz-fill-2"),
         ("viz-accent-3", "bg"), ("viz-accent-3", "viz-surface"), ("viz-accent-3", "viz-track"),
+        ("viz-accent-3", "viz-paper"), ("viz-accent-3", "viz-fill-3"),
     ]
 
     for theme_name, tokens in [("light", light), ("warm", warm), ("dark", dark), ("contrast", contrast)]:
@@ -101,7 +109,8 @@ def test_horizon_palette_and_aaa_contrast() -> None:
     print_match = re.search(r"@media print\s*\{(.*)\Z", css, re.S)
     assert print_match, "Missing @media print block"
     print_tokens = extract_tokens(print_match.group(1))
-    assert print_tokens["viz-surface"].upper() == "#FFFFFF"
+    for k in ("viz-surface", "viz-fill-1", "viz-fill-2", "viz-fill-3", "viz-paper"):
+        assert print_tokens[k].upper() == "#FFFFFF"
     assert print_tokens["viz-border"].upper() == "#000000"
     assert print_tokens["viz-accent"].upper() == "#000000"
 

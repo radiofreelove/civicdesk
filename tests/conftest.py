@@ -8,6 +8,11 @@ import sys
 import threading
 from pathlib import Path
 
+try:
+    import resource
+except ImportError:  # pragma: no cover - Windows lacks POSIX resource module
+    resource = None  # type: ignore[assignment]
+
 import pytest
 from playwright.sync_api import sync_playwright
 
@@ -23,6 +28,7 @@ class QuietSiteHandler(http.server.SimpleHTTPRequestHandler):
 class ThreadingTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     allow_reuse_address = True
     daemon_threads = True
+    request_queue_size = 128
 
 
 @pytest.fixture(scope="session")
@@ -45,10 +51,24 @@ def site_server(built_site: Path) -> str:
 
 
 @pytest.fixture(scope="session")
-def browser_instance():
-    with sync_playwright() as pw:
-        browser = pw.chromium.launch(args=["--disable-dev-shm-usage"])
+def playwright_session():
+    if resource is not None:
         try:
-            yield browser
-        finally:
-            browser.close()
+            soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+            target = min(hard, 65536) if hard != resource.RLIM_INFINITY else 65536
+            if soft < target:
+                resource.setrlimit(resource.RLIMIT_NOFILE, (target, hard))
+        except (ValueError, OSError):
+            pass
+
+    with sync_playwright() as pw:
+        yield pw
+
+
+@pytest.fixture(scope="function")
+def browser_instance(playwright_session):
+    browser = playwright_session.chromium.launch(args=["--disable-dev-shm-usage"])
+    try:
+        yield browser
+    finally:
+        browser.close()

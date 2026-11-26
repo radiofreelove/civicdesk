@@ -1,84 +1,69 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Utah Medicaid</p>
 <h1>Hours log you can print</h1>
-    <p class="purpose">Write down your hours. Keep the page in case the state asks.</p>
+<p class="purpose">Track your work, job training, school, and volunteer hours for the month before you apply. Keep this sheet with your pay stubs or schedules in case DWS asks.</p>
 
-    <div class="warn">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Heads up</span></p>
-      <h2>Please read</h2>
-      <ul>
-        <li>This is not a Utah Medicaid form. It is for your own records.</li>
-        <li>The state decides what proof it accepts.</li>
-        <li>Utah has its own form for reporting, form 742. Ask the state for it.</li>
-        <li>When you apply, the state looks at the month before you apply.</li>
-        <li>The goal is 80 hours in a month. Work, job training, volunteering, and school all add up.</li>
-      </ul>
-    </div>
+{{ v.calendar_80hr_grid(
+  'Utah Medicaid',
+  [
+    {'week': 'Week 1', 'hours': '20 hrs', 'mix': 'Paid employment or self-employment'},
+    {'week': 'Week 2', 'hours': '20 hrs', 'mix': 'School or job training classes'},
+    {'week': 'Week 3', 'hours': '20 hrs', 'mix': 'Unpaid work with an organized community program'},
+    {'week': 'Week 4', 'hours': '20 hrs', 'mix': 'Any mix reaching 80 hrs total for the month'}
+  ],
+  proofs=[
+    {'icon': 'fee-waiver', 'title': 'Pay stubs or receipts', 'detail': 'Utah Code 26B-3-142.1 requires documentary proof'},
+    {'icon': 'school-cap', 'title': 'Enrollment or training record', 'detail': 'Class schedule or program attendance'},
+    {'icon': 'birth-cert', 'title': 'DWS Form 742 + volunteer log', 'detail': 'Ask DWS for official reporting form 742'}
+  ],
+  note='This worksheet is for your personal records (not an official Utah Medicaid form); DWS decides what proof it accepts and uses its own form 742.',
+  id='ut-log-calendar'
+) }}
 
-    <div class="actions no-print">
-      <button type="button" class="button" data-print hidden>Print this page</button>
-    </div>
+<div class="actions no-print">
+  <button type="button" class="button" data-print hidden>{{ m.icon('print-sheet') }}<span>Print this page</span></button>
+</div>
 
-    <div class="table-scroll" tabindex="0" role="region" aria-label="Hours log table">
-      <table class="log-table">
-        <caption>My hours for the month of: ______________________</caption>
-        <thead>
-          <tr>
-            <th scope="col" class="col-date">Date</th>
-            <th scope="col" class="col-what">What I did (work, volunteer, school, training)</th>
-            <th scope="col" class="col-hours">Hours</th>
-            <th scope="col" class="col-where">Where</th>
-            <th scope="col" class="col-contact">Contact name and phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td></td><td></td><td></td><td></td><td></td></tr>
-        </tbody>
-        <tfoot>
-          <tr><th scope="row" colspan="2">Total hours this month</th><td></td><td colspan="2">Goal: 80</td></tr>
-        </tfoot>
-      </table>
-    </div>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Hours log table">
+  <table class="log-table">
+    <caption>My hours for the month of: ______________________</caption>
+    <thead>
+      <tr>
+        <th scope="col" class="col-date">Date</th>
+        <th scope="col" class="col-what">What I did (work, volunteer, school, training)</th>
+        <th scope="col" class="col-hours">Hours</th>
+        <th scope="col" class="col-where">Where</th>
+        <th scope="col" class="col-contact">Contact name and phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for _ in range(18) %}
+      <tr><td></td><td></td><td></td><td></td><td></td></tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr><th scope="row" colspan="2">Total hours this month</th><td></td><td colspan="2">Goal: 80</td></tr>
+    </tfoot>
+  </table>
+</div>
 
-    <h2>Volunteer hours sheet</h2>
-    <p>The federal rule says volunteering means unpaid work with an organized program that helps the community. You can ask the program to fill this out.</p>
-    <div class="table-scroll" tabindex="0" role="region" aria-label="Volunteer hours table">
-      <table class="log-table form-table">
-        <caption>Volunteer hours</caption>
-        <tbody>
-          <tr><th scope="row">My name</th><td></td></tr>
-          <tr><th scope="row">Program or organization</th><td></td></tr>
-          <tr><th scope="row">Contact person</th><td></td></tr>
-          <tr><th scope="row">Contact phone or email</th><td></td></tr>
-          <tr><th scope="row">Month</th><td></td></tr>
-          <tr><th scope="row">Total hours</th><td></td></tr>
-          <tr><th scope="row">Signature of contact person (optional)</th><td></td></tr>
-        </tbody>
-      </table>
-    </div>
+<h2>Volunteer hours sheet</h2>
+<p>The federal rule says volunteering means unpaid work with an organized program that helps the community. Ask the program coordinator to fill this out.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Volunteer hours table">
+  <table class="log-table form-table">
+    <caption>Volunteer hours</caption>
+    <tbody>
+      <tr><th scope="row">My name</th><td></td></tr>
+      <tr><th scope="row">Program or organization</th><td></td></tr>
+      <tr><th scope="row">Contact person</th><td></td></tr>
+      <tr><th scope="row">Contact phone or email</th><td></td></tr>
+      <tr><th scope="row">Month</th><td></td></tr>
+      <tr><th scope="row">Total hours</th><td></td></tr>
+      <tr><th scope="row">Signature of contact person (optional)</th><td></td></tr>
+    </tbody>
+  </table>
+</div>
 {% endblock %}

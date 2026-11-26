@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "illustrations.html" as il %}
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <nav class="guide-switch" aria-labelledby="guide-switch-label">
@@ -11,100 +12,92 @@
     <li><a href="{{ page_url('medicaid-utah') }}"><span class="guide-state guide-state-row">{{ m.icon('state-ut') }}<span>Utah</span></span> <span class="guide-note">Go to the Utah Medicaid guide</span></a></li>
   </ul>
 </nav>
-    <h1>Applying for OHP? New rules start Jan.&nbsp;1, 2027.</h1>
-    <p class="purpose"><strong>Why this site exists:</strong> The state explains the new OHP rules across more than a dozen documents. This site puts what applicants need in one place, in plain words. Each page lists its official sources.</p>
 
-    {{ v.timeline_strip([
-      {'kind': 'info', 'icon': 'medicaid-shield', 'date': 'Nov. 2026', 'href': '#update-title', 'label': 'Policy update: delayed enforcement', 'note': 'Oregon joins hold harmless through June 30, 2027'},
-      {'kind': 'deadline', 'icon': 'warning-triangle', 'date': 'Jan. 1, 2027', 'href': '#bills-title', 'label': 'Deadline: rules start and bills cutoff', 'note': 'Past medical bills window drops from 3 months to 1', 'note_show_until': '2026-12-31'},
-      {'kind': 'ongoing', 'icon': 'hours-meter', 'date': 'Before & ongoing', 'href': page_url('medicaid-oregon-log'), 'label': 'Track your hours', 'note': 'OHP looks at the month before you apply'}
-    ], title='Key dates at a glance', heading_id='timeline-title') }}
+<h1>Applying for OHP? New rules start Jan.&nbsp;1, 2027.</h1>
+<p class="purpose"><strong>Why this site exists:</strong> The state explains the new OHP rules across more than a dozen documents. This guide puts what applicants need in one place, in plain words, with every official source linked.</p>
 
-    <section class="warn" aria-labelledby="update-title">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Policy update</span></p>
-      <h2 id="update-title">Update, Nov.&nbsp;2026: Oregon delays work-rule enforcement</h2>
-      <p><strong>Oregon's choice:</strong> Governor Tina Kotek directed OHA to use the federal hold harmless choice through June&nbsp;30, 2027 (subject to federal approval). OHA says you will not be turned down for OHP or lose coverage through June&nbsp;30, 2027 if you do not meet the work or activity rules. {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}</p>
-      <p><strong>Still starting:</strong> The work or activity rules still start Jan.&nbsp;1, 2027. The checking starts then too.</p>
-      <p><strong>Federal choice:</strong> On Nov.&nbsp;13, 2026, the federal government gave states this choice. Through June&nbsp;30, 2027, a state may choose not to turn anyone down, and not to end anyone's coverage, only for not meeting the work or activity rules. The state must still check whether each person meets the rules or does not have to. {{ src('MED-S41') }}</p>
-      <p><strong>What it does not do:</strong> This choice does not protect anyone from being turned down or losing coverage for other reasons, such as income.</p>
-      <p class="more"><strong>Court case:</strong> On Nov.&nbsp;5, 2026, Oregon, Washington, and two other states sued the federal government over the work or activity rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
-      <p><a href="{{ page_url('medicaid-oregon-rules#state-choice') }}">More about this choice</a></p>
-    </section>
+{{ v.stat_hero_strip([
+  {'num': '19–64', 'label': 'Adults covered by rules', 'note': 'OHP Plus & Healthier Oregon'},
+  {'num': 'June 30', 'label': '2027 hold harmless delay', 'note': 'No denials solely for work rules'},
+  {'num': '80 hrs', 'label': 'Or $580/mo or half-time school', 'note': 'Any 1 way meets the rules'},
+  {'num': '35 days', 'label': 'To answer an OHP letter', 'note': 'OHP checks records first'}
+]) }}
 
-    <section class="warn" aria-labelledby="bills-title">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Deadline</span></p>
-      <h2 id="bills-title">Have medical bills? <span data-show-until="2026-12-31">Read this before Jan.&nbsp;1, 2027.</span></h2>
-      <p data-show-until="2026-12-31">Through Dec.&nbsp;31, 2026, OHP can help with medical bills from up to 3 months before you apply. {{ src('MED-S01') }}</p>
-      <p>Starting Jan.&nbsp;1, 2027, OHP can help with medical bills from 1 month before you apply for most adults ages 19 to 64. {{ src('MED-S01') }}</p>
-      <p><a href="{{ page_url('medicaid-oregon-bills') }}">More about past medical bills</a></p>
-    </section>
+{{ v.timeline_strip([
+  {'kind': 'info', 'icon': 'shield', 'date': 'Nov. 2026', 'href': '#update-title', 'label': 'Delayed enforcement announced', 'note': 'Oregon joins hold harmless through June 30, 2027.'},
+  {'kind': 'deadline', 'icon': 'warning', 'date': 'Jan. 1, 2027', 'href': '#bills-title', 'label': 'Rules start & bills cutoff', 'note': 'Past bill help drops from 3 months to 1.', 'note_show_until': '2026-12-31'},
+  {'kind': 'ongoing', 'icon': 'hours', 'date': 'Month before applying', 'href': page_url('medicaid-oregon-log'), 'label': 'Lookback month', 'note': 'OHP checks the month before you apply.'}
+], title='Key dates at a glance', heading_id='timeline-title') }}
 
-    <h2>The short version</h2>
-    <ul class="short">
-      <li><strong>What's new:</strong> Starting Jan.&nbsp;1, 2027, many adults ages 19 to 64 must meet new work or activity rules to get OHP. {{ src('MED-S01') }}</li>
-      <li><strong>Good news:</strong> Many people already meet them, or don't have to.</li>
-      <li><strong>When OHP looks:</strong> The month before you apply. {{ src('MED-S04') }}</li>
-      <li><strong>Records first:</strong> OHP checks its own records, like payroll and school records, before it asks you for anything.</li>
-    </ul>
+<section class="warn" aria-labelledby="update-title">
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Policy update</span></p>
+  <h2 id="update-title">Update, Nov.&nbsp;2026: Oregon delays work-rule enforcement</h2>
+  <p><strong>Oregon's choice:</strong> Governor Tina Kotek directed OHA to use the federal hold harmless choice through June&nbsp;30, 2027 (subject to federal approval). OHA says you will not be turned down for OHP or lose coverage through June&nbsp;30, 2027 solely for not meeting the work or activity rules, though checking still starts Jan.&nbsp;1, 2027 and other rules like income still apply. {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}</p>
+  {% call m.deeper('Federal hold harmless details & Oregon v. Oz lawsuit', 'or-update-details') %}
+  <p><strong>Federal choice:</strong> On Nov.&nbsp;13, 2026, the federal government gave states this choice through June&nbsp;30, 2027 while still checking whether each person meets the rules or has an exemption. {{ src('MED-S41') }}</p>
+  <p><strong>Court case:</strong> On Nov.&nbsp;5, 2026, Oregon, Washington, and two other states sued the federal government over the work or activity rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435; oral argument set for Jan.&nbsp;12, 2027). As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+  {% endcall %}
+  <p><a href="{{ page_url('medicaid-oregon-rules#state-choice') }}">More about this choice</a></p>
+</section>
 
-    <h2>Meet the rules any one way</h2>
-    <div class="rule-bridge">
-      <ul class="bridge-lanes">
-        <li>
-          <div class="bridge-lane">
-            <span class="bridge-head"><span class="bridge-icon">{{ m.icon('income') }}</span><strong>Income</strong></span>
-            <span class="bridge-copy">Your household brings in $580 or more a month. {{ src('MED-S27') }}</span>
-          </div>
-          <span class="bridge-or">or</span>
-        </li>
-        <li>
-          <div class="bridge-lane">
-            <span class="bridge-head"><span class="bridge-icon">{{ m.icon('school') }}</span><strong>School</strong></span>
-            <span class="bridge-copy">You go to school at least half-time. {{ src('MED-S01') }}</span>
-          </div>
-          <span class="bridge-or">or</span>
-        </li>
-        <li>
-          <div class="bridge-lane">
-            <span class="bridge-head"><span class="bridge-icon">{{ m.icon('clock') }}</span><strong>80 hours</strong></span>
-            <span class="bridge-copy">You spend 80 hours a month on work, volunteering, school, or job training. Add them up. {{ src('MED-S01') }}</span>
-          </div>
-        </li>
-      </ul>
-      <p class="bridge-outcome">{{ m.icon('check') }} <span>Any 1 way meets the rules.</span></p>
-    </div>
-    <p><a href="{{ page_url('medicaid-oregon-rules') }}">What counts, in plain words</a></p>
+<section class="warn" aria-labelledby="bills-title">
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Deadline</span></p>
+  <h2 id="bills-title">Have medical bills? <span data-show-until="2026-12-31">Read this before Jan.&nbsp;1, 2027.</span></h2>
+  <p data-show-until="2026-12-31">Through Dec.&nbsp;31, 2026, OHP can help with medical bills from up to 3 months before you apply. {{ src('MED-S01') }}</p>
+  <p>Starting Jan.&nbsp;1, 2027, OHP can help with medical bills from 1 month before you apply for most adults ages 19 to 64. <a href="{{ page_url('medicaid-oregon-bills') }}">More about past medical bills</a> {{ src('MED-S01') }}</p>
+</section>
 
-    <h2>You may not have to if you</h2>
-    <ul>
-      <li>Are pregnant, or were in the last 12 months {{ src('MED-S03') }}</li>
-      <li>Care for a child 13 or younger, or for someone with a disability {{ src('MED-S03') }}</li>
-      <li>Have a serious or disabling health condition {{ src('MED-S03') }}</li>
-      <li>Are American Indian or Alaska Native</li>
-      <li>Were in foster care at 18 and are under 26</li>
-    </ul>
-    <p>There are more reasons. <span class="more">OHP checks some reasons itself. For others, you just tell OHP.</span> <a href="{{ page_url('medicaid-oregon-reasons') }}">See every reason</a></p>
+<h2>Meet the rules any one way</h2>
+<p>Starting Jan.&nbsp;1, 2027, OHP checks its own payroll and school records first for the month before you apply. {{ src('MED-S01') }} {{ src('MED-S04') }}</p>
+<div class="rule-bridge">
+  <ul class="bridge-lanes">
+    <li>
+      <div class="bridge-lane">
+        <span class="bridge-head"><span class="bridge-icon">{{ m.icon('income') }}</span><strong>Income</strong></span>
+        <span class="bridge-copy">Your household brings in $580 or more a month. {{ src('MED-S27') }}</span>
+      </div>
+      <span class="bridge-or">or</span>
+    </li>
+    <li>
+      <div class="bridge-lane">
+        <span class="bridge-head"><span class="bridge-icon">{{ m.icon('school') }}</span><strong>School</strong></span>
+        <span class="bridge-copy">You go to school at least half-time. {{ src('MED-S01') }}</span>
+      </div>
+      <span class="bridge-or">or</span>
+    </li>
+    <li>
+      <div class="bridge-lane">
+        <span class="bridge-head"><span class="bridge-icon">{{ m.icon('clock') }}</span><strong>80 hours</strong></span>
+        <span class="bridge-copy">You spend 80 hours a month on work, volunteering, school, or job training. Add them up. {{ src('MED-S01') }}</span>
+      </div>
+    </li>
+  </ul>
+  <p class="bridge-outcome">{{ m.icon('check') }} <span>Any 1 way meets the rules. <a href="{{ page_url('medicaid-oregon-rules') }}">What counts, in plain words</a></span></p>
+</div>
 
-    <h2>What to do</h2>
-    <ol class="steps">
-      <li><a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check.</a> Your answers stay on your device.</li>
-      <li><a href="{{ page_url('medicaid-oregon-apply') }}">Apply</a> online, by phone, in person, or on paper.</li>
-      <li>Answer every question about work, school, and volunteering. If a reason fits you, tell OHP.</li>
-    </ol>
+<h2>You may not have to if you</h2>
+<ul>
+  <li>Are pregnant, or were in the last 12 months {{ src('MED-S03') }}</li>
+  <li>Care for a child 13 or younger, or for someone with a disability {{ src('MED-S03') }}</li>
+  <li>Have a serious or disabling health condition {{ src('MED-S03') }}</li>
+  <li>Are American Indian or Alaska Native, or were in foster care at 18 and are under 26 {{ src('MED-S02') }}</li>
+</ul>
+<p>There are more exemptions. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every reason</a></p>
 
-    <div class="callout">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Bottom line</span></p>
-      <h2>Apply if you think you qualify</h2>
-      <p>If you think you qualify, apply. If OHP says no, you can apply again any time.</p>
-    </div>
+<h2>What to do</h2>
+<ol class="steps">
+  <li><a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check.</a> Your answers stay on your device.</li>
+  <li><a href="{{ page_url('medicaid-oregon-apply') }}">Apply</a> online, by phone, in person, or on paper. If OHP says no, you can apply again any time. {{ src('MED-S06') }}</li>
+  <li>Answer every question about work, school, and volunteering. If a reason fits you, tell OHP. {{ src('MED-S05') }} {{ src('MED-S08') }}</li>
+</ol>
 
-    <h2>Go deeper</h2>
-    <ul class="cards">
-      <li><a href="{{ page_url('medicaid-oregon-letter') }}"><span class="card-head">{{ m.icon('letter') }}<span>OHP sent me a letter</span></span> <span class="card-note">What it means and how to answer on time</span></a></li>
-      <li><a href="{{ page_url('medicaid-oregon-denied') }}"><span class="card-head">{{ m.icon('denied') }}<span>I was turned down</span></span> <span class="card-note">Your options, including free legal help</span></a></li>
-      <li><a href="{{ page_url('medicaid-oregon-health') }}"><span class="card-head">{{ m.icon('health') }}<span>I have a health condition</span></span> <span class="card-note">You may not have to meet the rules</span></a></li>
-      <li><a href="{{ page_url('medicaid-oregon-immigration') }}"><span class="card-head">{{ m.icon('immigration') }}<span>Immigration status</span></span> <span class="card-note">Healthier Oregon and your privacy</span></a></li>
-      <li><a href="{{ page_url('medicaid-oregon-words') }}"><span class="card-head">{{ m.icon('words') }}<span>Words on your letters</span></span> <span class="card-note">Plain meanings for OHP words</span></a></li>
-      <li><a href="{{ page_url('medicaid-oregon-log') }}"><span class="card-head">{{ m.icon('log') }}<span>Hours log</span></span> <span class="card-note">Print it and write down your hours</span></a></li>
-    </ul>
+<h2>Go deeper</h2>
+<ul class="cards">
+  <li><a href="{{ page_url('medicaid-oregon-letter') }}"><span class="card-head">{{ m.icon('letter') }}<span>OHP sent me a letter</span></span> <span class="card-note">What it means and how to answer on time</span></a></li>
+  <li><a href="{{ page_url('medicaid-oregon-denied') }}"><span class="card-head">{{ m.icon('denied') }}<span>I was turned down</span></span> <span class="card-note">Your options, including free legal help</span></a></li>
+  <li><a href="{{ page_url('medicaid-oregon-health') }}"><span class="card-head">{{ m.icon('health') }}<span>I have a health condition</span></span> <span class="card-note">You may not have to meet the rules</span></a></li>
+  <li><a href="{{ page_url('medicaid-oregon-immigration') }}"><span class="card-head">{{ m.icon('immigration') }}<span>Immigration status</span></span> <span class="card-note">Healthier Oregon and your privacy</span></a></li>
+  <li><a href="{{ page_url('medicaid-oregon-words') }}"><span class="card-head">{{ m.icon('words') }}<span>Words on your letters</span></span> <span class="card-note">Plain meanings for OHP words</span></a></li>
+  <li><a href="{{ page_url('medicaid-oregon-log') }}"><span class="card-head">{{ m.icon('log') }}<span>Hours log</span></span> <span class="card-note">Print it and write down your hours</span></a></li>
+</ul>
 {% endblock %}

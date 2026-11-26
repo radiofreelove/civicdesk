@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">404</p>
 <h1>Page not found</h1>
-{{ m.lede("That address does not match a page on CivicDesk. Use one of the starting points below.") }}
+{{ m.lede("That address does not match a page on CivicDesk. Use the router or one of the desk hubs below.") }}
+
+{{ v.lost_page_stage() }}
 
 <h2>Start here</h2>
 <ul>

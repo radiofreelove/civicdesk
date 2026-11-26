@@ -112,7 +112,7 @@
   <ol class="after-list">
   {% for item in steps %}
     <li class="after-item">
-      <span class="after-head"><span class="after-num">{{ loop.index }}</span><strong>{{ item.title }}</strong></span>
+      <span class="after-head"><span class="after-num" aria-hidden="true">{{ loop.index }}</span><strong>{{ item.title }}</strong></span>
       <span class="after-copy">{{ item.text }}</span>
     </li>
   {% endfor %}
@@ -121,11 +121,11 @@
 {%- endmacro %}
 
 {% macro onthispage(items) -%}
-<nav class="toc" aria-label="On this page">
-  <p class="toc-title">On this page</p>
-  <ol>
+<nav class="toc toc-pills" aria-label="On this page">
+  <span class="toc-title">Jump to:</span>
+  <ol class="toc-pill-list">
   {% for item in items %}
-    <li{% if item|length > 2 and item[2] == 'extra' %} class="brief-extra"{% endif %}><a href="#{{ item[0] }}">{{ item[1] }}</a></li>
+    <li{% if item|length > 2 and item[2] == 'extra' %} class="brief-extra"{% endif %}><a class="toc-pill" href="#{{ item[0] }}"><span>{{ item[1] }}</span><span class="toc-arrow" aria-hidden="true">&darr;</span></a></li>
   {% endfor %}
   </ol>
 </nav>
