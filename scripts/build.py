@@ -15,6 +15,7 @@ import re
 import shutil
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -359,6 +360,10 @@ def main() -> int:
             raise BuildError(f"page {state['page']}: missing static asset '{rel}'")
         return f"{base_prefix}static/{rel}"
 
+    def correction_mailto(page: dict) -> str:
+        route = str(page.get("route") or "/")
+        return f"mailto:{site['corrections_email']}?subject={quote(route, safe='/')}"
+
     def header_tagline(page: dict) -> str:
         desk = page.get("desk", "")
         st = page.get("state", "")
@@ -541,6 +546,7 @@ def main() -> int:
         footer_items=footer_items,
         repo_url=repo_url,
         issues_url=issues_url,
+        correction_mailto=correction_mailto,
         public_base_url=(pages_url.rstrip("/") + "/") if pages_url else "",
         fonts_available=fonts_available,
         csp_meta=CSP_META,

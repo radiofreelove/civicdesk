@@ -900,6 +900,8 @@ details.label-key[open] > summary { border-bottom: 1px solid var(--rule); }
   background: var(--surface); border-top: 4px solid var(--do-edge);
   padding: 1.5rem 0 2.25rem; font-size: 0.95rem;
 }
+.site-footer p a, main a[href^="mailto:"] { overflow-wrap: anywhere; }
+.site-footer p a { padding-top: 0.2em; padding-bottom: 0.2em; }
 .footer-links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.2rem; }
 .footer-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0.45rem 0; }
 .build-line { font-size: 0.85rem; }

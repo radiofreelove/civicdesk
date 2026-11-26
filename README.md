@@ -36,9 +36,9 @@ python3 scripts/check_brand_purge.py
 pytest
 ```
 
-## Reporting Corrections
+## Reporting a Mistake
 
-To report a factual error or outdated rule, email `corrections at civicdesk.net` or open a public issue. **Never share personal case details.**
+To report a factual error, broken link, or outdated rule, email [corrections@civicdesk.net](mailto:corrections@civicdesk.net) or open a public issue on GitHub. **Never include personal health or case details.**
 
 ## Licensing
 

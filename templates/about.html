@@ -27,9 +27,13 @@
   <li><strong>Public audit trail:</strong> Source registries (<code>data/sources/medicaid.yaml</code> and <code>data/sources/id_records.yaml</code>), build checks, and commit history are open for inspection on <a href="{{ repo_url }}" rel="noreferrer">GitHub</a>.</li>
 </ol>
 
-<h2 id="report">Report a correction</h2>
-<p>To report a factual error, broken link, or outdated rule, email <code>{{ site.corrections_email }}</code> or <a href="{{ issues_url }}" rel="noreferrer">open a public issue on GitHub</a>.</p>
-<p><strong>Never share personal case details.</strong> Public GitHub issues show your account name to everyone. Do not include your legal name, Social Security number, Medicaid ID, case number, or private medical or household details.</p>
+<h2 id="report">Report a mistake</h2>
+<p>Spot an outdated rule, wrong fee, broken link, or unclear sentence? You can reach us in two ways:</p>
+<ul>
+  <li><strong>By email (no GitHub account needed):</strong> <a href="{{ correction_mailto(page) }}">Email {{ site.corrections_email }}</a>. Selecting this link opens your email app and pre-fills only this page path in the subject line.</li>
+  <li><strong>On GitHub (public):</strong> <a href="{{ issues_url }}" rel="noreferrer">Open a public issue on GitHub</a>. This requires a free GitHub account, and your GitHub username and message are visible to everyone.</li>
+</ul>
+<p><strong>Never include personal health or case details.</strong> Whether you send an email or open a GitHub issue, do not include your legal name, Social Security number, Medicaid ID, court or agency case number, immigration status, or private health or household details.</p>
 
 <h2 id="license">Licensing and reuse</h2>
 <ul>

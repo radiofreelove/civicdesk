@@ -6,7 +6,7 @@ import subprocess
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 import yaml
 
@@ -320,6 +320,52 @@ def test_workers_static_assets_config_and_headers(built_site: Path) -> None:
             continue
         source = stripped.split()[0]
         assert source.startswith("/"), f"_redirects source must be a path for Cloudflare Workers Static Assets: {line}"
+
+
+def test_report_mistake_mailto_and_github_options(built_site: Path) -> None:
+    pages_yaml = yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))
+
+    for p in pages_yaml:
+        route = p["route"]
+        if p["slug"] == "404":
+            fpath = built_site / "404.html"
+        elif route == "/":
+            fpath = built_site / "index.html"
+        else:
+            fpath = built_site / route.strip("/") / "index.html"
+
+        raw = fpath.read_text(encoding="utf-8")
+        auditor = PageAuditor()
+        auditor.feed(raw)
+
+        # Top independent-bar 'Report a mistake' anchor must target #report on /about/ and #report-mistake elsewhere
+        expected_top_anchor = "#report" if p["slug"] == "about" else "#report-mistake"
+        assert f'<a href="{expected_top_anchor}">Report a mistake</a>' in raw, f"{route}: missing top Report a mistake anchor"
+
+        # Every page must expose a direct mailto:corrections@civicdesk.net link pre-filling ONLY the page path in subject
+        correction_links = [
+            href for href, _ in auditor.links if href.startswith("mailto:corrections@civicdesk.net")
+        ]
+        assert correction_links, f"{route}: missing mailto:corrections@civicdesk.net link"
+        for href in correction_links:
+            parsed = urlparse(href)
+            assert parsed.scheme == "mailto"
+            assert parsed.path == "corrections@civicdesk.net"
+            params = parse_qs(parsed.query, keep_blank_values=True)
+            assert list(params.keys()) == ["subject"], f"{route}: mailto must pre-fill ONLY subject, got {href}"
+            assert params["subject"] == [route], f"{route}: expected subject={route!r}, got {params['subject']!r}"
+
+        # GitHub issue option + plain privacy note must appear alongside the email option
+        assert 'href="https://github.com/radiofreelove/civicdesk/issues"' in raw, f"{route}: missing GitHub issues link"
+        assert "Never include personal health or case details." in raw, f"{route}: missing plain privacy note"
+        assert "corrections at civicdesk.net" not in raw, f"{route}: stale obfuscated email text"
+
+    # Specifically verify /about/ main body #report section has both contact options and the plain privacy warning
+    about_main = (built_site / "about" / "index.html").read_text(encoding="utf-8").split("<main", 1)[1].split("</main>", 1)[0]
+    assert '<h2 id="report">Report a mistake</h2>' in about_main
+    assert 'href="mailto:corrections@civicdesk.net?subject=/about/"' in about_main
+    assert 'href="https://github.com/radiofreelove/civicdesk/issues"' in about_main
+    assert "Never include personal health or case details." in about_main
 
 
 
