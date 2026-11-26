@@ -4,7 +4,7 @@
 {% block main %}
 <p class="kicker">Plain definitions</p>
 <h1>Words to know</h1>
-{{ m.lede("Court and vital-records forms use terms most people rarely see. Scan these flashcards in the order those words show up.") }}
+{{ m.lede("Court, DMV, and vital-records forms use legal words most people rarely see. Scan this plain-English definition table in the order those words show up.") }}
 
 {% set g_noe %}Oregon notice mailed once your judgment is entered in court records, making the change official. {{ src('ID-OR-OJD-ADULT-PACKET') }}{% endset %}
 {% set g_conf %}Oregon <strong>confidential</strong> cases restrict access to you, counsel, the court, and judge-authorized people; Washington <strong>sealed</strong> superior-court files have zero public access; Utah <strong>private</strong> cases shield filed papers while case history and hearings stay public. {{ src('ID-OR-2026-CH52') }} {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}{% endset %}
@@ -12,7 +12,7 @@
 {% set g_x %}Nonbinary/unspecified marker: Oregon court forms say "nonbinary" (DMV X = "not specified", birth record X = nonbinary); Washington defines X as not exclusively male or female. {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-OHA-GENDER') }} {{ src('ID-WA-DOH-SEX') }}{% endset %}
 {% set g_gal %}Court-appointed representative for a child; required in Utah sex-designation cases at age 15 years and 6 months+. {{ src('ID-UT-CODE-26B-8-111') }}{% endset %}
 
-{{ v.jargon_flashcards([
+{{ v.glossary_list([
   {'id': 'petition', 'term': 'Petition', 'plain': 'Form asking a court for an order', 'detail': 'The person filing it is called the petitioner.'},
   {'id': 'fee-waiver', 'term': 'Fee waiver / deferral', 'plain': 'No-cost or pay-later court filing', 'detail': 'Waives fees you cannot afford (Oregon also offers fee deferral).'},
   {'id': 'circuit-court', 'term': 'Circuit court', 'plain': 'Oregon’s county trial court', 'detail': 'Every Oregon county has a circuit court.'},

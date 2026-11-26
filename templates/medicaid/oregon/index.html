@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
-{% import "illustrations.html" as il %}
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <nav class="guide-switch" aria-labelledby="guide-switch-label">
   <p class="guide-switch-label" id="guide-switch-label">Switch Medicaid state guide</p>
   <ul>
-    <li><a href="{{ page_url('medicaid-oregon') }}" aria-current="page"><span class="guide-state guide-state-row">{{ m.icon('state-or') }}<span>Oregon</span></span> <span class="guide-note">This is the Oregon Health Plan guide.</span></a></li>
-    <li><a href="{{ page_url('medicaid-washington') }}"><span class="guide-state guide-state-row">{{ m.icon('state-wa') }}<span>Washington</span></span> <span class="guide-note">Go to the Washington Apple Health guide</span></a></li>
-    <li><a href="{{ page_url('medicaid-utah') }}"><span class="guide-state guide-state-row">{{ m.icon('state-ut') }}<span>Utah</span></span> <span class="guide-note">Go to the Utah Medicaid guide</span></a></li>
+    <li><a href="{{ page_url('medicaid-oregon') }}" aria-current="page"><span class="guide-state">Oregon</span> <span class="guide-note">This is the Oregon Health Plan guide.</span></a></li>
+    <li><a href="{{ page_url('medicaid-washington') }}"><span class="guide-state">Washington</span> <span class="guide-note">Go to the Washington Apple Health guide</span></a></li>
+    <li><a href="{{ page_url('medicaid-utah') }}"><span class="guide-state">Utah</span> <span class="guide-note">Go to the Utah Medicaid guide</span></a></li>
   </ul>
 </nav>
 
@@ -19,36 +18,33 @@
 {{ v.stat_hero_strip([
   {'num': '19–64', 'label': 'Adults covered by rules', 'note': 'OHP Plus & Healthier Oregon'},
   {'num': 'June 30', 'label': '2027 hold harmless delay', 'note': 'No denials solely for work rules'},
-  {'num': '80 hrs', 'label': 'Or $580/mo or half-time school', 'note': 'Any 1 way meets the rules'},
-  {'num': '35 days', 'label': 'To answer an OHP letter', 'note': 'OHP checks records first'}
+  {'num': '1 mo', 'label': 'Lookback before applying', 'note': 'OHP checks electronic records first'},
+  {'num': '35 days', 'label': 'To answer an OHP letter', 'note': 'Only sent if records could not confirm'}
 ]) }}
 
 {{ v.timeline_strip([
-  {'kind': 'info', 'icon': 'shield', 'date': 'Nov. 2026', 'href': '#update-title', 'label': 'Delayed enforcement announced', 'note': 'Oregon joins hold harmless through June 30, 2027.'},
-  {'kind': 'deadline', 'icon': 'warning', 'date': 'Jan. 1, 2027', 'href': '#bills-title', 'label': 'Rules start & bills cutoff', 'note': 'Past bill help drops from 3 months to 1.', 'note_show_until': '2026-12-31'},
-  {'kind': 'ongoing', 'icon': 'hours', 'date': 'Month before applying', 'href': page_url('medicaid-oregon-log'), 'label': 'Lookback month', 'note': 'OHP checks the month before you apply.'}
+  {'kind': 'deadline', 'date': 'Through Dec. 31, 2026', 'href': '#bills-title', 'label': '3-month past bill window', 'note': 'Past bill help drops from 3 months to 1 in 2027.', 'note_show_until': '2026-12-31'},
+  {'kind': 'info', 'date': 'Jan. 1, 2027', 'href': '#three-ways', 'label': 'Rules & record checks start', 'note': 'OHP checks payroll and school data for the prior month.'},
+  {'kind': 'ongoing', 'date': 'Through June 30, 2027', 'href': '#update-title', 'label': 'Hold harmless protection', 'note': 'Oregon delays work-rule denials and closures.'}
 ], title='Key dates at a glance', heading_id='timeline-title') }}
 
 <section class="warn" aria-labelledby="update-title">
   <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Policy update</span></p>
-  <h2 id="update-title">Update, Nov.&nbsp;2026: Oregon delays work-rule enforcement</h2>
-  <p><strong>Oregon's choice:</strong> Governor Tina Kotek directed OHA to use the federal hold harmless choice through June&nbsp;30, 2027 (subject to federal approval). OHA says you will not be turned down for OHP or lose coverage through June&nbsp;30, 2027 solely for not meeting the work or activity rules, though checking still starts Jan.&nbsp;1, 2027 and other rules like income still apply. {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}</p>
-  {% call m.deeper('Federal hold harmless details & Oregon v. Oz lawsuit', 'or-update-details') %}
-  <p><strong>Federal choice:</strong> On Nov.&nbsp;13, 2026, the federal government gave states this choice through June&nbsp;30, 2027 while still checking whether each person meets the rules or has an exemption. {{ src('MED-S41') }}</p>
-  <p><strong>Court case:</strong> On Nov.&nbsp;5, 2026, Oregon, Washington, and two other states sued the federal government over the work or activity rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435; oral argument set for Jan.&nbsp;12, 2027). As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+  <h2 id="update-title">Nov.&nbsp;2026 update: what Oregon's enforcement delay covers</h2>
+  <p>Governor Tina Kotek directed OHA to use the federal hold harmless option through June&nbsp;30, 2027 (subject to federal approval). Standard eligibility rules such as income still apply, and OHP still checks work-rule or exemption status starting Jan.&nbsp;1, 2027. <a href="{{ page_url('medicaid-oregon-rules#state-choice') }}">More about this choice</a> {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}</p>
+  {% call m.deeper('Federal hold harmless rules & State of Oregon v. Oz lawsuit', 'or-update-details') %}
+  <p>On Nov.&nbsp;13, 2026, CMS let states delay denials caused solely by work rules through June&nbsp;30, 2027 while running eligibility checks. Separately, on Nov.&nbsp;5, 2026, Oregon, Washington, and two other states sued in <em>State of Oregon v. Oz</em> (No.&nbsp;6:26-cv-02435; oral argument Jan.&nbsp;12, 2027). No court order has halted the rules. {{ src('MED-S41') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
   {% endcall %}
-  <p><a href="{{ page_url('medicaid-oregon-rules#state-choice') }}">More about this choice</a></p>
 </section>
 
 <section class="warn" aria-labelledby="bills-title">
-  <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Deadline</span></p>
-  <h2 id="bills-title">Have medical bills? <span data-show-until="2026-12-31">Read this before Jan.&nbsp;1, 2027.</span></h2>
-  <p data-show-until="2026-12-31">Through Dec.&nbsp;31, 2026, OHP can help with medical bills from up to 3 months before you apply. {{ src('MED-S01') }}</p>
-  <p>Starting Jan.&nbsp;1, 2027, OHP can help with medical bills from 1 month before you apply for most adults ages 19 to 64. <a href="{{ page_url('medicaid-oregon-bills') }}">More about past medical bills</a> {{ src('MED-S01') }}</p>
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Unpaid medical bills</span></p>
+  <h2 id="bills-title">Have recent medical bills? <span data-show-until="2026-12-31">Apply before Jan.&nbsp;1, 2027 if you can.</span></h2>
+  <p><span data-show-until="2026-12-31">Applying by Dec.&nbsp;31, 2026 keeps the full 3-month retroactive bill window. </span>Starting Jan.&nbsp;1, 2027, most adults ages 19 to 64 can get help with unpaid bills from only 1 month before applying (2 months for children, seniors, pregnancy, and disability). <a href="{{ page_url('medicaid-oregon-bills') }}">Past medical bills details</a> {{ src('MED-S01') }}</p>
 </section>
 
-<h2>Meet the rules any one way</h2>
-<p>Starting Jan.&nbsp;1, 2027, OHP checks its own payroll and school records first for the month before you apply. {{ src('MED-S01') }} {{ src('MED-S04') }}</p>
+<h2 id="three-ways">Meet the rules any one way</h2>
+<p>OHP checks its own payroll and school databases first for the month before you apply. {{ src('MED-S01') }} {{ src('MED-S04') }}</p>
 <div class="rule-bridge">
   <ul class="bridge-lanes">
     <li>

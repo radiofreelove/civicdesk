@@ -1,32 +1,23 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
-{% import "illustrations.html" as il %}
 {% block main %}
-<div class="hero-stage">
-  <div class="hero-copy">
-    <p class="kicker">2027 Medicaid Work &amp; Activity Rules</p>
-    <h1>2027 Medicaid work and activity rules in Oregon, Washington, and Utah</h1>
-    {{ m.lede("Starting January 1, 2027, federal law adds work or activity rules, shorter retroactive bill windows, and 6-month renewals for many adults ages 19 to 64 in Medicaid expansion programs. Oregon and Washington have announced delayed work-rule enforcement through June 30, 2027.") }}
-    {{ m.checked_line(page) }}
-  </div>
-  {{ v.hero_horizon_art('medicaid') }}
-</div>
+<p class="kicker">2027 Medicaid Work &amp; Activity Rules</p>
+<h1>2027 Medicaid work and activity rules in Oregon, Washington, and Utah</h1>
+{{ m.lede("Starting January 1, 2027, federal law adds work or activity rules, shorter retroactive bill windows, and 6-month renewals for many adults ages 19 to 64 in Medicaid expansion programs. Oregon and Washington have announced delayed work-rule enforcement through June 30, 2027.") }}
+{{ m.checked_line(page) }}
 
 {% set med_cites %}Sources for key dates: retroactive bill cutoffs {{ src('MED-S01') }} {{ src('MED-WA03') }} {{ src('MED-U02') }}; federal start &amp; Utah tribal proof {{ src('MED-S27') }} {{ src('MED-U28') }}; hold harmless announcements {{ src('MED-S41') }} {{ src('MED-S53') }} {{ src('MED-WA27') }}.{% endset %}
 {{ v.timeline_strip([
-  {'kind': 'deadline', 'icon': 'warning', 'date': 'Dec. 31, 2026', 'href': page_url('medicaid-oregon-bills'), 'label': 'Last day for 3-month past bill help', 'note': 'Past bill help drops to 1 month in 2027.', 'note_show_until': '2026-12-31'},
-  {'kind': 'info', 'icon': 'calendar', 'date': 'Jan. 1, 2027', 'href': '#states', 'label': 'Federal work rules start', 'note': 'Applies to many adults 19 to 64 without Medicare.'},
-  {'kind': 'ongoing', 'icon': 'shield', 'date': 'Through June 30, 2027', 'href': '#hold-harmless', 'label': 'OR & WA enforcement delay', 'note': 'No denials solely for work rules during hold harmless.'}
+  {'kind': 'deadline', 'date': 'Through Dec. 31, 2026', 'href': page_url('medicaid-oregon-bills'), 'label': '3-month past bill window', 'note': 'Past bill help drops to 1 month for expansion adults in 2027.', 'note_show_until': '2026-12-31'},
+  {'kind': 'info', 'date': 'Jan. 1, 2027', 'href': '#states', 'label': 'Federal rules & 6-mo renewals start', 'note': 'Applies to many expansion adults 19 to 64 without Medicare.'},
+  {'kind': 'ongoing', 'date': 'Through June 30, 2027', 'href': '#hold-harmless', 'label': 'OR & WA enforcement delay', 'note': 'No denials solely for work rules during hold harmless.'}
 ], title='Key deadlines across states', heading_id='medicaid-dates-h', note=med_cites) }}
 
 <h2 id="states">Pick your state guide or 1-minute check</h2>
 <ul class="cards state-cards">
   <li class="card">
-    <div class="card-head">
-      {{ il.state_map_badge('oregon') }}
-      <h3><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a></h3>
-    </div>
+    <h3><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a></h3>
     <p>OHP Plus &amp; Healthier Oregon ages 19 to 64, hold harmless delay through June 30, 2027, 2027 health self-attestation, and 35-day letter deadlines.</p>
     <div class="btn-row">
       <a class="btn" href="{{ page_url('medicaid-oregon') }}">Oregon guide</a>
@@ -36,10 +27,7 @@
   </li>
 
   <li class="card">
-    <div class="card-head">
-      {{ il.state_map_badge('washington') }}
-      <h3><a href="{{ page_url('medicaid-washington') }}">Washington Apple Health</a></h3>
-    </div>
+    <h3><a href="{{ page_url('medicaid-washington') }}">Washington Apple Health</a></h3>
     <p>Apple Health for Adults ages 19 to 64, HCA delay through June 30, 2027, 6 ways to meet the rules, credit-hour conversion, and 15-day letters.</p>
     <div class="btn-row">
       <a class="btn" href="{{ page_url('medicaid-washington') }}">Washington guide</a>
@@ -49,10 +37,7 @@
   </li>
 
   <li class="card">
-    <div class="card-head">
-      {{ il.state_map_badge('utah') }}
-      <h3><a href="{{ page_url('medicaid-utah') }}">Utah Medicaid</a></h3>
-    </div>
+    <h3><a href="{{ page_url('medicaid-utah') }}">Utah Medicaid</a></h3>
     <p>Adult Expansion &amp; Targeted Adult Medicaid ages 19 to 64, Utah Code 26B-3-142.1 verification rules, Jan. 1, 2027 tribal proof, and myCase steps.</p>
     <div class="btn-row">
       <a class="btn" href="{{ page_url('medicaid-utah') }}">Utah guide</a>

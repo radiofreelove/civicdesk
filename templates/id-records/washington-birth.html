@@ -8,35 +8,42 @@
 {{ m.checked_line(page) }}
 
 {{ m.onthispage([
-  ('birth-anatomy', 'Certificate snapshot'),
-  ('birth-adults', 'Adults'),
+  ('birth-anatomy', 'Fees & timing'),
+  ('birth-adults', 'Sex vs. name forms'),
   ('birth-minors', 'Under 18'),
   ('questions', 'Good questions', 'extra'),
   ('next-steps', 'Next steps')
 ]) }}
 
-{{ v.doc_mockup_birth_cert(
-  'Washington',
-  'Washington DOH Birth Record (M, F, or X)',
-  'Sex designation (M, F, or X): notarized DOH 422-143 for adults (or DOH 422-144 for minors)—no fee to amend, no court order accepted.',
-  'Legal name change on birth record: attach certified court order + form DOH 422-126 (4–6 weeks by mail; free exchange if certificate is under 1 year old).',
-  fact('wa_doh_amend_fee') ~ '; ' ~ fact('wa_doh_cert_fee')
-) }}
-
-{{ m.bring_reminder('Washington DOH', 'Notarized DOH 422-143 (plus certified court order & DOH 422-126 if changing name) and ' ~ fact('wa_doh_cert_fee') ~ ' for copies.') }}
+{{ v.stat_hero_strip([
+  {'num': '$0', 'label': 'Sex-designation amendment fee', 'note': fact('wa_doh_amend_fee')},
+  {'num': '$25', 'label': 'Per certified copy', 'note': 'Free exchange if current copy is under 1 yr old'},
+  {'num': '4–6 wks', 'label': 'Mail processing window', 'note': 'Faster than booking a Tumwater appointment'}
+], id='birth-anatomy') }}
 
 {% call m.box('watch', 'Nov. 4, 2026 DOH form retirement (DOH 422-034)') %}
-<p>Washington DOH retired the old Affidavit for Correction (DOH 422-034) on Nov.&nbsp;4, 2026 in favor of dedicated forms on {{ ext('ID-WA-DOH-AMEND-BIRTH') }} (mailing takes 4–6 weeks and is faster than a Tumwater appointment; certificates issued within the past year exchange free in the same envelope). Keep using DOH 422-143 / 422-144 for sex designation and DOH 422-126 for court-ordered name changes. {{ src('ID-WA-DOH-AMEND-BIRTH') }} {{ src('ID-WA-DOH-SEX') }}</p>
+<p>Washington DOH retired the old Affidavit for Correction (DOH 422-034) on Nov.&nbsp;4, 2026 in favor of dedicated forms on {{ ext('ID-WA-DOH-AMEND-BIRTH') }} (certificates issued within the past year exchange free in the same envelope). Keep using DOH 422-143 / 422-144 for sex designation and DOH 422-126 for court-ordered name changes. {{ src('ID-WA-DOH-AMEND-BIRTH') }} {{ src('ID-WA-DOH-SEX') }}</p>
 {% endcall %}
 
-<h2 id="birth-adults">How adults update a Washington birth certificate</h2>
-<ul>
-  <li>Adults and emancipated minors sign {{ ext('ID-WA-DOH-422-143') }} in front of a notary to select M, F, or X (court orders and doctor letters are not accepted for sex designation). {{ src('ID-WA-DOH-SEX') }}</li>
-  <li>Also changing your name? Include a certified court order and {{ ext('ID-WA-DOH-422-126') }}. Amending is free; new certified copies cost {{ fact('wa_doh_cert_fee') }}.</li>
-</ul>
+<h2 id="birth-adults">How adults update sex designation vs. legal name</h2>
+{{ v.yes_no_split_board(
+  'Sex designation (M, F, or X) — DOH form only',
+  [
+    'Adults and emancipated minors sign ' ~ ext('ID-WA-DOH-422-143') ~ ' in front of a notary ' ~ src('ID-WA-DOH-SEX'),
+    'Court orders and doctor letters are not accepted for the sex designation',
+    'Order new copies at ' ~ fact('wa_doh_cert_fee') ~ ' (or return a certificate under 1 year old for a free exchange)'
+  ],
+  'Legal name on a Washington birth record',
+  [
+    'Requires a certified court order plus ' ~ ext('ID-WA-DOH-422-126'),
+    'Can be mailed in the same envelope as DOH 422-143 when updating both name and sex designation'
+  ],
+  yes_kicker='Administrative form',
+  no_kicker='Court-order path'
+) }}
 
 <h2 id="birth-minors">Under 18</h2>
-<p>Use {{ ext('ID-WA-DOH-422-144') }} signed by a parent/guardian and a licensed provider ({{ src('ID-WA-DOH-SEX') }}). Watch out: DOH's sex-designation page still links the retired 422-034 for minor first/middle name changes without court—use the new Application to Amend a Birth Certificate on {{ ext('ID-WA-DOH-AMEND-BIRTH') }} instead, or send a <a href="{{ page_url('id-records-washington-court#minors') }}">minor court order</a> with {{ ext('ID-WA-DOH-422-126') }}. {{ src('ID-WA-DOH-AMEND-BIRTH') }}</p>
+<p>Use {{ ext('ID-WA-DOH-422-144') }} signed by a parent/guardian and a licensed provider. Watch out: DOH's sex-designation page still links the retired 422-034 for minor first/middle name changes without court—use the new Application to Amend a Birth Certificate on {{ ext('ID-WA-DOH-AMEND-BIRTH') }} instead, or send a <a href="{{ page_url('id-records-washington-court#minors') }}">minor court order</a> with {{ ext('ID-WA-DOH-422-126') }}. {{ src('ID-WA-DOH-SEX') }} {{ src('ID-WA-DOH-AMEND-BIRTH') }}</p>
 
 <h2 id="questions" class="brief-extra">Good questions</h2>
 {% call m.qa("Does Washington change the gender marker on a birth certificate from another state?", 'q-other-state') %}

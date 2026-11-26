@@ -6,32 +6,29 @@
 <h1>Washington sent me a letter. Now what?</h1>
 <p class="purpose">Check the reply date right away—Apple Health proof letters give <strong>15 days</strong> to respond so your coverage stays open.</p>
 
-{% set wc1 %}HCA sends notices by mail or email based on your preference in Washington Healthplanfinder—keep your contact info current. {{ src('MED-WA01') }}{% endset %}
+{% set wc1 %}HCA sends notices by mail or email based on your preference in Washington Healthplanfinder—keep your contact info current and save dated copies of everything you send. {{ src('MED-WA01') }}{% endset %}
 {% set wc2 %}If a Post Eligibility Review or proof letter arrives, you have <strong>15 days</strong> to send proof—even if you recently updated your account. {{ src('MED-WA04') }} {{ src('MED-WA13') }}{% endset %}
 {% set wc3 %}HCA posted a <a href="https://www.hca.wa.gov/assets/free-or-low-cost/work-requirements-renewals-notice.pdf" rel="noreferrer">sample work-rules &amp; 6-month renewal notice</a> <span class="tag">PDF</span> (plus 8 translations on <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/i-need-medical-dental-or-vision-care/apple-health-medicaid-work-requirements" rel="noreferrer">HCA's work rules page</a>) before its Nov. 17, 2026 hold harmless delay. {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-WA30') }}{% endset %}
-{% set wc4 %}Follow HCA's <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/submit-my-verification" rel="noreferrer">Submit my verification</a> instructions or call MEDS at <span class="nowrap">1-800-562-3022</span>. {{ src('MED-WA07') }} {{ src('MED-WA13') }}{% endset %}
+{% set wc4 %}Follow HCA's <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/submit-my-verification" rel="noreferrer">Submit my verification</a> instructions, call MEDS at <span class="nowrap">1-800-562-3022</span>, or <a href="{{ page_url('medicaid-washington-denied') }}">request a hearing</a> if you disagree with a closure. {{ src('MED-WA07') }} {{ src('MED-WA13') }}{% endset %}
 {{ v.doc_mockup_letter(
   'Washington Apple Health',
-  'WA Health Care Authority (HCA)',
-  '15-day proof window',
+  'Washington State Health Care Authority (HCA)',
+  {'date': 'Dec. 3, 2026', 'id_label': 'Application ID', 'id_val': 'WA-8829410'},
+  'Notice of Eligibility / Post Eligibility Review',
+  {'due': 'Dec. 18, 2026', 'window': '15 calendar days from notice date'},
+  'We checked state wage and eligibility records first. Send verification for the item listed below within 15 days so your Apple Health coverage stays active.',
+  'Submit verification online, call MEDS at 1-800-562-3022, or ask for an administrative hearing within 10 days to keep benefits open during an appeal.',
   [
-    {'title': 'Mail or email delivery', 'body': wc1},
-    {'title': '15-day due date box', 'body': wc2},
-    {'title': '2027 sample notice & hold harmless', 'body': wc3},
-    {'title': 'Submit proof & keep copies', 'body': wc4}
+    {'title': 'Check Healthplanfinder contact settings & ID', 'body': wc1},
+    {'title': 'Reply within the 15-day due window', 'body': wc2},
+    {'title': 'Check whether it is a 2027 info notice or proof check', 'body': wc3},
+    {'title': 'Submit verification or request a hearing', 'body': wc4}
   ]
 ) }}
-
-<h2>Three quick habits that protect your coverage</h2>
-{{ v.process_flow([
-  {'icon': 'birth', 'title': 'Save dated copies', 'body': 'Keep a copy of every page you send and write down the date.'},
-  {'icon': 'calendar', 'title': 'Reply right away', 'body': 'Do not wait—mail takes time and proof windows are 15 days.'},
-  {'icon': 'letter', 'title': 'Missed the deadline?', 'body': 'You have appeal and 90-day renewal options if coverage closes.'}
-], cols=3) }}
 
 <div class="callout">
   <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
   <h2>Coverage closed after a missed deadline?</h2>
-  <p>You can still send a late renewal within 90 days, ask for a hearing, or reapply any time. <a href="{{ page_url('medicaid-washington-denied') }}">See your options</a></p>
+  <p>You can still send a late renewal within 90 days without starting a new application, ask for a hearing, or reapply any month. <a href="{{ page_url('medicaid-washington-denied') }}">See your options</a></p>
 </div>
 {% endblock %}

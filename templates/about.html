@@ -1,57 +1,33 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
-{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">About</p>
 <h1>About CivicDesk</h1>
-{{ m.lede("CivicDesk is an independent public-interest project offering plain-language guides to government rules, public benefits, and official records, backed by dated primary sources.") }}
+{{ m.lede("CivicDesk is an independent, ad-free public-interest project offering plain-language guides to government rules, public benefits, and official records, backed by dated primary sources.") }}
 
 {{ m.onthispage([
-  ('boundaries', 'Boundaries'),
+  ('boundaries', 'Mission & boundaries'),
   ('desks', 'Service desks'),
   ('how-we-research', 'How we verify'),
   ('report', 'Report a mistake'),
   ('license', 'Open license')
 ]) }}
 
-{{ v.stat_hero_strip([
-  {'num': '100%', 'label': 'Independent & ad-free', 'note': 'Not run by any court or agency'},
-  {'num': '2', 'label': 'Active service desks', 'note': '2027 Medicaid & ID / Vital Records'},
-  {'num': 'CC BY 4.0', 'label': 'Open guide text', 'note': 'MIT-licensed code & build checks'}
-]) }}
-
-{{ v.yes_no_split_board(
-  'What CivicDesk does',
-  [
-    'Translates statutes, rules, court forms, and agency guides into plain words.',
-    'Links every fee, deadline, and rule directly to its dated primary source.',
-    'Runs interactive checks in your browser memory only—zero tracking.'
-  ],
-  'Important boundaries',
-  [
-    'Not a government agency or court self-help office.',
-    'Not legal advice—only the court or state agency decides your case.',
-    'Always confirm current forms and fees on the linked official page.'
-  ],
-  yes_kicker='Public-interest mission',
-  no_kicker='What we never do',
-  id='boundaries'
-) }}
+<h2 id="boundaries">What CivicDesk does—and does not do</h2>
+<ul>
+  <li><strong>Plain-language translation:</strong> Translates statutes, administrative rules, court packets, and agency guidance into direct everyday steps, linking every fee, deadline, and rule to its dated primary source.</li>
+  <li><strong>Not a government office or legal advice:</strong> CivicDesk is not run by any court or government agency and does not give legal advice. Only the court or agency decides your case—always confirm current forms and fees on the linked official page.</li>
+  <li><strong>Private by design:</strong> Interactive checks run in your browser's local page memory only with zero cookies, zero analytics, and no accounts.</li>
+</ul>
 
 <h2 id="desks">Active service desks</h2>
-{% set desk_med %}<a href="{{ page_url('medicaid') }}">2027 Medicaid Work &amp; Activity Rules (<code>/medicaid/</code>)</a>: Oregon Health Plan (OHP), Washington Apple Health, and Utah Medicaid.{% endset %}
-{% set desk_id %}<a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records (<code>/id-records/</code>)</a>: Marriage, divorce, court name changes, and sex or gender designation updates across Oregon, Washington, Utah, Social Security, and passports.{% endset %}
-{{ v.icon_feature_grid([
-  {'icon': 'shield', 'title': '2027 Medicaid desk', 'body': desk_med},
-  {'icon': 'dmv', 'title': 'Legal Name, ID & Vital Records desk', 'body': desk_id}
-], cols=2) }}
+<ul>
+  <li><strong><a href="{{ page_url('medicaid') }}">2027 Medicaid Work &amp; Activity Rules (<code>/medicaid/</code>)</a>:</strong> Plain-language guides and 1-minute checks for the Oregon Health Plan (OHP), Washington Apple Health, and Utah Medicaid.</li>
+  <li><strong><a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records (<code>/id-records/</code>)</a>:</strong> Step-by-step agency sequences for marriage, divorce, court name changes, and sex or gender designation updates across Oregon, Washington, Utah, Social Security, and U.S. passports.</li>
+</ul>
 
 <h2 id="how-we-research">How we verify sources</h2>
-{{ v.process_flow([
-  {'icon': 'birth', 'title': 'Primary sources first', 'body': 'Published statutes, court orders, official forms, and agency guidance.'},
-  {'icon': 'shield', 'title': 'Human-reviewed updates', 'body': 'Automated Policy Wire flags changes; a human maintainer verifies every edit.'},
-  {'icon': 'appeal', 'title': 'Open public audit', 'body': 'Every source carries a 4-tier honesty badge and public GitHub history.'}
-], cols=3) }}
+<p>We prioritize primary government records—published statutes, administrative rules, court orders, official forms, and agency manuals. Automated Policy Wire sweeps flag regulatory or court-docket changes twice a week, and a human maintainer reviews and verifies every update before publication.</p>
 <p>Every cited source carries one of four explicit status labels: <span class="badge badge-official">Official</span>, <span class="badge badge-not-official">Not official</span>, <span class="badge badge-not-confirmed">Not confirmed</span>, or <span class="badge badge-our-reading">Our reading</span>. <a href="{{ page_url('sources#labels') }}">Read what each label means</a> or inspect our registries on <a href="{{ repo_url }}" rel="noreferrer">GitHub</a>.</p>
 
 <h2 id="report">Report a mistake</h2>

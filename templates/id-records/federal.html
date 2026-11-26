@@ -8,8 +8,8 @@
 {{ m.checked_line(page) }}
 
 {{ m.onthispage([
-  ('federal-anatomy', 'SSA & passport forms'),
-  ('passports', 'Passport rules'),
+  ('federal-anatomy', 'Passport form matrix'),
+  ('passports', '2026 passport rules'),
   ('before-you-apply', 'Before you mail a passport'),
   ('court-case', 'Orr v. Trump'),
   ('social-security', 'Social Security'),
@@ -17,26 +17,34 @@
   ('help', 'Get help')
 ]) }}
 
-{% set ssa_1 %}Free replacement card for a legal name change after marriage, divorce, or court order ({{ ext('ID-US-SSA-NAME') }}). {{ src('ID-US-SSA-NAME') }}{% endset %}
-{% set ssa_2 %}Update SSA before your state DMV so electronic name verification matches. {{ src('ID-OR-DMV-GENDER') }}{% endset %}
-{% set ssa_3 %}Cards do not print a sex marker; POMS RM 10212.200 (June 5, 2026) restricts internal sex-field edits to sex at birth. {{ src('ID-US-SSA-POMS-10212-200') }}{% endset %}
-{% set ppt_1 %}Legal name updates continue with certified marriage, divorce, or court proof ({{ ext('ID-US-STATE-CHANGE') }}). {{ src('ID-US-STATE-CHANGE') }}{% endset %}
-{% set ppt_2 %}Under EO 14168, new, renewed, and name-updated passports print sex assigned at birth (X eliminated). {{ src('ID-US-EO-14168') }} {{ src('ID-US-HRC-PASSPORT') }}{% endset %}
-{% set ppt_3 %}Existing unexpired passports remain valid for travel until expiration or replacement. {{ src('ID-US-STATE-SEX-MARKER') }}{% endset %}
-{{ v.doc_mockup_federal_ids(
-  [ssa_1, ssa_2, ssa_3],
-  [ppt_1, ppt_2, ppt_3],
-  [
-    {'code': 'DS-5504', 'when': 'Passport issued under 1 year ago', 'cost': '$0 routine fee by mail'},
-    {'code': 'DS-82', 'when': 'Eligible adult renewal by mail', 'cost': 'Standard renewal fee'},
-    {'code': 'DS-11', 'when': 'First-time or ineligible for DS-82', 'cost': 'In-person acceptance fee'}
-  ]
-) }}
-
 <div id="fed-marriage-divorce"></div>
 <div id="fed-why"></div>
 
-<h2 id="passports">Passport rules &amp; risk before applying</h2>
+{% set matrix_note %}Official State Department name-change instructions and forms: {{ ext('ID-US-STATE-CHANGE') }}. {{ src('ID-US-STATE-CHANGE') }}{% endset %}
+{{ v.passport_form_matrix([
+  {
+    'when': 'Current passport was issued less than 1 year ago',
+    'code': 'DS-5504',
+    'cost': '$0 routine fee',
+    'how': 'Mail your current passport, a new photo, and a certified marriage certificate, divorce decree, or court order.'
+  },
+  {
+    'when': 'Eligible adult passport issued more than 1 year ago (undamaged, issued within last 15 years at age 16+)',
+    'code': 'DS-82',
+    'cost': 'Standard renewal fee',
+    'how': 'Mail your expiring or current passport, photo, fee, and certified legal name-change proof.'
+  },
+  {
+    'when': 'First-time passport, child under 16, lost passport, or ineligible to renew by mail',
+    'code': 'DS-11',
+    'cost': 'Application + acceptance fee',
+    'how': 'Apply in person at a passport acceptance facility with citizenship proof, photo ID, and certified name-change proof.'
+  }
+], note=matrix_note) }}
+
+<h2 id="passports">2026 passport sex-marker rules &amp; risk before applying</h2>
+<p>Under Executive Order 14168, new, renewed, and name-updated U.S. passports print sex assigned at birth, and the X marker is no longer issued. Existing unexpired passports—including those with an updated M, F, or X marker—remain valid for travel until they expire or are replaced. {{ src('ID-US-EO-14168') }} {{ src('ID-US-STATE-SEX-MARKER') }} {{ src('ID-US-HRC-PASSPORT') }}</p>
+
 <div id="before-you-apply">
 {% call m.box('watch', 'Read before mailing an existing passport with a matching marker') %}
 <p>ACLU and HRC warn that <strong>any</strong> passport application—even a Form DS-5504 or DS-82 submitted solely for a name change—can return with sex assigned at birth, and federal agencies can check older records. If your current unexpired passport has the marker you want, weigh whether you need a new passport now and consult legal counsel first. {{ src('ID-US-ACLU-ORR') }} {{ src('ID-US-HRC-PASSPORT') }} {{ src('ID-US-STATE-SEX-MARKER') }} {{ m.badge('our_reading') }}</p>
@@ -52,8 +60,9 @@
 {% endcall %}
 </div>
 
-<h2 id="social-security">Social Security (NUMIDENT &amp; name updates)</h2>
-<p>Legal name changes work normally ({{ ext('ID-US-SSA-NAME') }}, {{ src('ID-US-SSA-NAME') }}), and Social Security cards never display a sex marker. Under POMS RM 10212.200 (revised June&nbsp;5, 2026, following the Jan.&nbsp;31, 2025 directive), SSA only changes the internal sex field to record sex at birth and requires amendment proof with any amended birth record. {{ src('ID-US-SSA-POMS-10212-200') }} {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-US-HRC-PASSPORT') }}</p>
+<h2 id="social-security">Social Security (free name updates &amp; NUMIDENT rules)</h2>
+<p>Request a free replacement Social Security card after marriage, divorce, or a court order ({{ ext('ID-US-SSA-NAME') }})—and update SSA <strong>before</strong> your state DMV so electronic name verification matches. {{ src('ID-US-SSA-NAME') }} {{ src('ID-OR-DMV-GENDER') }}</p>
+<p>Social Security cards never print a sex marker. Under POMS RM 10212.200 (revised June&nbsp;5, 2026, following the Jan.&nbsp;31, 2025 directive), SSA restricts internal NUMIDENT sex-field edits to recording sex at birth and requires amendment proof alongside any amended birth certificate. {{ src('ID-US-SSA-POMS-10212-200') }} {{ src('ID-US-HRC-PASSPORT') }}</p>
 
 <h2 id="still-works">What still works at the state level</h2>
 <ul>

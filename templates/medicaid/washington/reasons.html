@@ -13,18 +13,17 @@
   ('washington-reasons-safety', 'Domestic safety')
 ]) }}
 
-<div id="exemption-groups">
+<h2 id="exemption-groups">Exemption categories</h2>
 {% set wa_ex_1 %}Pregnant or 12 months postpartum, parent or caretaker of a child under 14 (including the month turning 14), or caregiver for a person with a disability. {{ src('MED-WA05') }} {{ src('MED-WA22') }}{% endset %}
 {% set wa_ex_2 %}Medically frail (self-attestation through 2027), substance-use treatment, or 100% total VA disability rating. {{ src('MED-WA04') }} {{ src('MED-WA05') }}{% endset %}
 {% set wa_ex_3 %}Under age 19, entitled to Medicare Part A or B, or meeting SNAP or TANF work rules. {{ src('MED-WA22') }}{% endset %}
-{% set wa_ex_4 %}American Indian or Alaska Native, foster or former foster youth under 26, incarcerated or released within 90 days, or short-term hardship. {{ src('MED-WA22') }}{% endset %}
-{{ v.icon_feature_grid([
-  {'icon': 'shield', 'title': 'Pregnancy & caregiving', 'body': wa_ex_1},
-  {'icon': 'hours', 'title': 'Medical frailty & treatment', 'body': wa_ex_2},
-  {'icon': 'ssa', 'title': 'Age, Medicare, SNAP & TANF', 'body': wa_ex_3},
-  {'icon': 'birth', 'title': 'Tribal, foster youth & hardships', 'body': wa_ex_4}
-], cols=2) }}
-</div>
+{% set wa_ex_4 %}American Indian or Alaska Native, foster or former foster youth under 26, or incarcerated or released within 90 days. {{ src('MED-WA22') }}{% endset %}
+{{ v.glossary_list([
+  {'term': 'Pregnancy & caregiving', 'detail': wa_ex_1},
+  {'term': 'Medical frailty & treatment', 'detail': wa_ex_2},
+  {'term': 'Age, Medicare, SNAP & TANF', 'detail': wa_ex_3},
+  {'term': 'Tribal, foster youth & release', 'detail': wa_ex_4}
+]) }}
 
 <h2 id="hardship">Short-term hardships: automatic vs. requested</h2>
 <p>HCA names 4 short-term hardships in Washington—2 applied automatically by county, and 2 you ask HCA to grant: {{ src('MED-WA22') }}</p>

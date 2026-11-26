@@ -4,11 +4,11 @@
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <h1>Words on your OHP letters</h1>
-<p class="purpose">Plain-language flashcards for official terms OHP uses in letters and forms, listed A to Z.</p>
+<p class="purpose">Plain-English definitions for official terms OHP uses in letters and forms, listed A to Z.</p>
 
 {% set d_exemption %}A reason you do not have to meet the work or activity rules. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every reason</a>. {{ src('MED-S03') }}{% endset %}
 {% set d_work %}The new rules starting Jan.&nbsp;1, 2027. <a href="{{ page_url('medicaid-oregon-rules') }}">Read them in plain words</a>. {{ src('MED-S01') }} {{ src('MED-S27') }}{% endset %}
-{{ v.jargon_flashcards([
+{{ v.glossary_list([
   {'term': 'CCO', 'plain': 'Your local OHP health plan', 'detail': 'Coordinated care organization managing OHP care in your area.'},
   {'term': 'Community engagement', 'plain': 'Work or activity rules', 'detail': 'The federal law name for the 2027 monthly hour, school, or income rules.'},
   {'term': 'Community partner', 'plain': 'Free trained application helper', 'detail': 'Certified local assister who helps you apply or reply for free.'},

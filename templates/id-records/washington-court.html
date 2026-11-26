@@ -7,30 +7,31 @@
 {{ m.lede("In Washington, your name changes in court—either publicly in any district court or sealed in any superior court when related to gender identity or safety. No court order is needed for a Washington license or birth-record gender marker.") }}
 {{ m.checked_line(page) }}
 
-{% set first_step = 'Choose public or sealed' %}
-{% set birth_cost %}{{ fact('wa_doh_amend_fee') }}; {{ fact('wa_doh_cert_fee') }}{% endset %}
-
 {{ m.onthispage([
-  ('court-anatomy', 'Order snapshot'),
-  ('name', 'Public vs. sealed'),
-  ('steps', 'Court steps'),
-  ('cost', 'Costs'),
+  ('cost', 'Key numbers & costs'),
+  ('court-anatomy', '4-step sequence'),
+  ('name', 'Sealed vs. public'),
+  ('steps', 'Filing checklist'),
   ('court-order-gender', 'Optional gender order'),
   ('minors', 'Under 18'),
   ('questions', 'Good questions', 'extra'),
   ('next-steps', 'Next steps')
 ]) }}
 
-{% set wa_ct_fee %}District court varies (e.g., Kitsap {{ fact('wa_fee_district_example') }}); sealed superior court is {{ fact('wa_fee_sealed') }}. Mandatory hardship waiver in district court &amp; GR 34 waivers statewide. {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }} {{ src('ID-WA-KITSAP-FEE-SCHEDULE') }}{% endset %}
-{% set wa_ct_priv %}Superior court cases filed for gender expression/identity or safety have zero public access to the filing, hearing, or order; no newspaper publication required. {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-WLH-NAME') }}{% endset %}
-{% set wa_ct_copy %}Superior court certified copies cost {{ fact('wa_fee_cert_copy') }}; WashingtonLawHelp recommends ordering 7 or more after your hearing. {{ src('ID-WA-RCW-36-18-016') }} {{ src('ID-WA-WLH-NAME') }}{% endset %}
-{{ v.doc_mockup_court_order(
-  'Washington',
-  'Washington District or Superior Court',
-  wa_ct_fee,
-  wa_ct_priv,
-  wa_ct_copy
-) }}
+{% set wa_cost_note %}Fee schedules: sealed superior court {{ fact('wa_fee_sealed') }}, Kitsap district court example, and superior court certified copies. {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }} {{ src('ID-WA-SUPERIOR-FEES') }} {{ src('ID-WA-KITSAP-FEE-SCHEDULE') }} {{ src('ID-WA-RCW-36-18-016') }}{% endset %}
+{{ v.stat_hero_strip([
+  {'num': '$290', 'label': 'Sealed superior court base fee', 'note': 'Plus local charges; GR 34 fee waiver'},
+  {'num': fact('wa_fee_district_example'), 'label': 'Sample public district fee', 'note': 'Kitsap schedule; mandatory hardship waiver'},
+  {'num': '$5 + $1/pg', 'label': 'Superior certified copy fee', 'note': 'Order 7+ copies after your hearing'},
+  {'num': 'No', 'label': 'Newspaper publication', 'note': 'Every name case has a brief judge hearing'}
+], id='cost', note=wa_cost_note) }}
+
+{{ v.process_flow([
+  {'title': 'Choose sealed or public', 'body': 'Pick any superior court (sealed) or any district court (public) statewide.'},
+  {'title': 'File & request waiver', 'body': 'Submit the WashingtonLawHelp packet with GR 34 or hardship waiver forms.'},
+  {'title': 'Attend brief hearing', 'body': 'Appear briefly before the judge so your name-change order is signed.'},
+  {'title': 'Buy 7+ certified copies', 'body': 'Purchase clerk-certified copies for Social Security, DOL, and accounts.'}
+], id='court-anatomy', cols=4) }}
 
 {% call m.callout("good", "Changing your name through marriage or divorce in Washington?", "wa-marriage-divorce") %}
 <ul>
@@ -39,17 +40,17 @@
 </ul>
 {% endcall %}
 
-<h2 id="name">Public district court vs. sealed superior court</h2>
+<h2 id="name">Sealed superior court vs. public district court</h2>
 {{ v.yes_no_split_board(
   'Sealed name change (any Superior Court)',
   [
     'Available when your name change relates to gender expression/identity or qualifying safety/immigration grounds ' ~ src('ID-WA-RCW-4-24-130'),
-    'No public access to the filing, hearing, or signed order—opened only for you/your representative or by judge order',
+    'Zero public access to the filing, hearing, or signed order—opened only for you/your representative or by judge order',
     'Not available while under DOC jurisdiction or sex-offender registration'
   ],
   'Public name change (any District Court)',
   [
-    'Open to any resident in any Washington district court (public court record)',
+    'Open to any resident in any Washington district court (public court record and auditor recording)',
     'District court must waive all fees on a signed financial-hardship statement (unless victim compensation covered them)',
     'People under DOC supervision or sex-offender registration face extra notice steps'
   ],
@@ -57,46 +58,26 @@
   no_kicker='Public option'
 ) }}
 
-<h2 id="steps">Court steps</h2>
+<h2 id="steps">Court filing checklist</h2>
 <p>Forms and instructions for both courts are in {{ ext('ID-WA-WLH-NAME') }}. {{ src('ID-WA-WLH-NAME') }}</p>
 <div class="btn-row js-only"><button type="button" class="btn-secondary" data-print>Print this checklist</button></div>
 <ol class="steps">
-{% call m.step('washington', 1, 'wa-step-choose', first_step) %}
-  <p>Pick superior court if sealing for gender identity/expression or safety applies, or district court for a standard public petition. {{ src('ID-WA-RCW-4-24-130') }}</p>
+{% call m.step('washington', 1, 'wa-step-choose', 'Pick your court and download the packet') %}
+  <p>Select superior court if sealing grounds apply or district court for a public petition, and print the {{ ext('ID-WA-WLH-NAME') }} forms. {{ src('ID-WA-RCW-4-24-130') }}</p>
 {% endcall %}
-{% call m.step('washington', 2, 'wa-step-forms', 'Fill out the forms') %}
-  <p>Follow the WashingtonLawHelp packet—no newspaper publication is required. {{ src('ID-WA-WLH-NAME') }}</p>
+{% call m.step('washington', 2, 'wa-step-file', 'File and pay, or submit a fee waiver') %}
+  <p>File in any county's court and attach GR 34 or district-court hardship waiver forms if needed ({{ ext('ID-WA-COURTS-FORMS') }}).</p>
 {% endcall %}
-{% call m.step('washington', 3, 'wa-step-file', 'File and pay, or ask for a fee waiver') %}
-  <p>File in any county's court and submit GR 34 or district-court hardship waiver forms if needed ({{ ext('ID-WA-COURTS-FORMS') }}).</p>
+{% call m.step('washington', 3, 'wa-step-hearing', 'Attend the hearing and buy certified copies') %}
+  <p>After the judge signs your order at the hearing, purchase certified copies ({{ fact('wa_fee_cert_copy') }} in superior court; 7+ copies recommended). {{ src('ID-WA-WLH-NAME') }}</p>
 {% endcall %}
-{% call m.step('washington', 4, 'wa-step-hearing', 'Go to the hearing') %}
-  <p>Every Washington court name change includes a brief hearing before a judge. {{ src('ID-WA-WLH-NAME') }}</p>
-{% endcall %}
-{% call m.step('washington', 5, 'wa-step-copies', 'Get certified copies of the order') %}
-  <p>Superior court certified copies are {{ fact('wa_fee_cert_copy') }} ({{ src('ID-WA-RCW-36-18-016') }}); order 7+ copies if updating multiple agencies. {{ src('ID-WA-WLH-NAME') }}</p>
-{% endcall %}
-{% call m.step('washington', 6, 'wa-step-update', 'Update your records') %}
-  <p>Update Social Security first, then DOL (using DOL's sealed-order process if applicable) and other accounts. {{ src('ID-WA-WLH-NAME') }} <a href="{{ page_url('id-records-after') }}">Open the after-court checklist</a>.</p>
+{% call m.step('washington', 4, 'wa-step-update', 'Update Social Security, then DOL') %}
+  <p>Update Social Security first, then bring certified proof to DOL (using DOL's Identity Management Team for sealed orders if needed). <a href="{{ page_url('id-records-after') }}">Open the after-court checklist</a>.</p>
 {% endcall %}
 </ol>
 
-{{ m.after_filing('wa-after-filing', [
-  {'title': 'Attend your brief hearing', 'text': 'Every Washington name change has a scheduled judge hearing.'},
-  {'title': 'Order 7+ certified copies', 'text': 'Superior court copies cost ' ~ fact('wa_fee_cert_copy') ~ '.'},
-  {'title': 'Update SSA then DOL', 'text': 'Bring certified copies to Social Security first, then Licensing.'}
-]) }}
-
-{% call m.callout('cost', 'What it costs', 'cost') %}
-<ul>
-  <li><strong>Sealed superior court:</strong> {{ fact('wa_fee_sealed') }} (e.g., Clallam schedule confirms the $290 statewide fee). {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }} {{ src('ID-WA-SUPERIOR-FEES') }}</li>
-  <li><strong>Public district court &amp; waivers:</strong> Varies by county (Kitsap: {{ fact('wa_fee_district_example') }}); hardship &amp; GR 34 fee waivers available. {{ src('ID-WA-KITSAP-FEE-SCHEDULE') }} {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-COURTS-FORMS') }}</li>
-  <li><strong>State records:</strong> Birth record {{ birth_cost }} ({{ src('ID-WA-DOH-SEX') }}); DOL card {{ fact('wa_dol_fee') }} ({{ src('ID-WA-DOL-GENDER') }}).</li>
-</ul>
-{% endcall %}
-
 <h2 id="court-order-gender">Optional court order confirming gender &amp; under-18 rules</h2>
-<p>Washington does not require a court order for WA licenses or birth records, though an optional gender-confirmation order ({{ ext('ID-WA-WLH-GENDER-ORDER') }}) can help with another birth state. {{ src('ID-WA-WLH-GENDER-ORDER') }}</p>
+<p>Washington does not require a court order for WA licenses or birth records, though an optional gender-confirmation order ({{ ext('ID-WA-WLH-GENDER-ORDER') }}) can help with another birth state. {{ src('ID-WA-DOL-GENDER') }} {{ src('ID-WA-DOH-SEX') }} {{ src('ID-WA-WLH-GENDER-ORDER') }}</p>
 <div id="minors">
 {% call m.deeper('Changes for someone under 18 in Washington', 'wa-minors-details') %}
 <ul>

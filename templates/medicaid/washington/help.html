@@ -13,20 +13,11 @@
   ('booklets', 'Booklets in 15 languages')
 ]) }}
 
-{% set wh_person %}Navigators, enrollment specialists, and Apple Health Community Connectors help in person for free (<a href="https://www.hca.wa.gov/health-care-services-supports/apple-health-medicaid-coverage/apply-or-renew-coverage" rel="noreferrer">HCA help page</a>). {{ src('MED-WA06') }}{% endset %}
-{% set wh_phone %}Call HCA MEDS at <span class="nowrap">1-800-562-3022</span> or Healthplanfinder Support at <span class="nowrap">1-855-923-4633</span>. {{ src('MED-WA08') }} {{ src('MED-WA10') }}{% endset %}
-{% set wh_paper %}Free interpreters, translated notices, and client booklets in English + 14 languages. {{ src('MED-WA02') }} {{ src('MED-WA09') }}{% endset %}
-{{ v.channel_cards([
-  {'kind': 'navigator', 'title': 'Free local navigators', 'body': wh_person},
-  {'kind': 'phone', 'title': 'State & interpreter lines', 'body': wh_phone},
-  {'kind': 'paper', 'title': '15-language booklets', 'body': wh_paper}
-]) }}
-
 <h2 id="in-person">Free local helpers</h2>
-<p>Navigators, community-based enrollment specialists, and Apple Health Community Connectors help you apply, renew, or submit proof at zero cost. {{ src('MED-WA06') }} {{ src('MED-WA07') }}</p>
+<p>Navigators, community-based enrollment specialists, and Apple Health Community Connectors help you apply, renew, or submit proof in person at zero cost (<a href="https://www.hca.wa.gov/health-care-services-supports/apple-health-medicaid-coverage/apply-or-renew-coverage" rel="noreferrer">HCA help page</a>). {{ src('MED-WA06') }} {{ src('MED-WA07') }}</p>
 
 <h2 id="phone">Key Washington phone numbers</h2>
-{{ v.jargon_flashcards([
+{{ v.glossary_list([
   {'term': 'HCA MEDS (MAGI cases)', 'plain': '1-800-562-3022', 'detail': 'Mon–Fri, 7 a.m. to 5 p.m. PT for Apple Health case questions.'},
   {'term': 'WA Healthplanfinder', 'plain': '1-855-923-4633 (TTY 1-855-627-9604)', 'detail': 'Apply by phone, report changes, and get free language help.'},
   {'term': 'DSHS (Apple Health Classic)', 'plain': '1-877-501-2233', 'detail': 'For adults 65+, blind or disabled applicants, and people with Medicare.'},

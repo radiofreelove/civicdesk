@@ -6,9 +6,9 @@
 <nav class="guide-switch" aria-labelledby="guide-switch-label">
   <p class="guide-switch-label" id="guide-switch-label">Switch Medicaid state guide</p>
   <ul>
-    <li><a href="{{ page_url('medicaid-oregon') }}"><span class="guide-state guide-state-row">{{ m.icon('state-or') }}<span>Oregon</span></span> <span class="guide-note">Go to the Oregon Health Plan guide</span></a></li>
-    <li><a href="{{ page_url('medicaid-washington') }}"><span class="guide-state guide-state-row">{{ m.icon('state-wa') }}<span>Washington</span></span> <span class="guide-note">Go to the Washington Apple Health guide</span></a></li>
-    <li><a href="{{ page_url('medicaid-utah') }}" aria-current="page"><span class="guide-state guide-state-row">{{ m.icon('state-ut') }}<span>Utah</span></span> <span class="guide-note">This is the Utah Medicaid guide.</span></a></li>
+    <li><a href="{{ page_url('medicaid-oregon') }}"><span class="guide-state">Oregon</span> <span class="guide-note">Go to the Oregon Health Plan guide</span></a></li>
+    <li><a href="{{ page_url('medicaid-washington') }}"><span class="guide-state">Washington</span> <span class="guide-note">Go to the Washington Apple Health guide</span></a></li>
+    <li><a href="{{ page_url('medicaid-utah') }}" aria-current="page"><span class="guide-state">Utah</span> <span class="guide-note">This is the Utah Medicaid guide.</span></a></li>
   </ul>
 </nav>
 
@@ -17,15 +17,14 @@
 
 {{ v.stat_hero_strip([
   {'num': '19–64', 'label': 'Adults covered by rules', 'note': 'Adult Expansion & TAM'},
-  {'num': 'Jan. 1', 'label': '2027 start for applicants', 'note': 'March 2027+ for renewals'},
-  {'num': '80 hrs', 'label': 'Or $580/mo or half-time school', 'note': 'Any 1 way meets the rules'},
+  {'num': '6 mos', 'label': 'Renewal cycle in 2027', 'note': 'Down from 12 months'},
   {'num': '30 days', 'label': 'To return a DWS form', 'note': 'State checks records first'}
 ]) }}
 
 {{ v.timeline_strip([
-  {'kind': 'info', 'icon': 'shield', 'date': 'Nov. 13, 2026', 'href': '#update-title', 'label': 'Federal choice announced', 'note': 'Utah has not announced a choice yet.'},
-  {'kind': 'deadline', 'icon': 'warning', 'date': 'Jan. 1, 2027', 'href': '#bills-title', 'label': 'Rules start & bills cutoff', 'note': 'Past bill window drops from 3 months to 1.', 'note_show_until': '2026-12-31'},
-  {'kind': 'ongoing', 'icon': 'hours', 'date': 'Month before applying', 'href': page_url('medicaid-utah-log'), 'label': 'Lookback month', 'note': 'DWS checks the month before you apply.'}
+  {'kind': 'info', 'date': 'Nov. 13, 2026', 'href': '#update-title', 'label': 'Federal choice announced', 'note': 'Utah has not announced a choice yet.'},
+  {'kind': 'deadline', 'date': 'Jan. 1, 2027', 'href': '#bills-title', 'label': 'Rules start & bills cutoff', 'note': 'Past bill window drops from 3 months to 1.', 'note_show_until': '2026-12-31'},
+  {'kind': 'ongoing', 'date': 'Month before applying', 'href': page_url('medicaid-utah-log'), 'label': 'Lookback month', 'note': 'DWS checks the month before you apply.'}
 ], title='Key dates at a glance', heading_id='timeline-title') }}
 
 <section class="warn" aria-labelledby="update-title">

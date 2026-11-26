@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
-{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Privacy and shared-computer safety</p>
 <h1>Zero cookies. Zero analytics. Built for shared computers.</h1>
@@ -13,27 +12,13 @@
   ('leave', 'Leave quickly')
 ]) }}
 
-{% set host_caption %}Hosted solely on Cloudflare Workers Static Assets with zero host analytics enabled; Cloudflare processes standard edge network data (such as IP addresses) to deliver pages and mitigate attacks. {{ src('ID-HOST-CLOUDFLARE-PRIVACY') }}{% endset %}
-{{ v.trust_privacy_diagram(host_caption) }}
-
-<h2 id="collect">What we collect</h2>
-{{ v.yes_no_split_board(
-  'Stays strictly in your browser',
-  [
-    'Answers in the 2-question router, 1-minute Medicaid checks, and ID path finder.',
-    'Strict Content Security Policy (connect-src \'none\', form-action \'none\', frame-ancestors \'none\').',
-    'Reloading any interactive tool clears your answers immediately.'
-  ],
-  'Never collected or loaded',
-  [
-    'Zero cookies, zero accounts, zero ad pixels, and zero analytics scripts.',
-    'Zero third-party fonts or external CDN requests.',
-    'Zero form submissions to any server.'
-  ],
-  yes_kicker='Private by architecture',
-  no_kicker='Blocked everywhere'
-) }}
-<p>Interactive tools—including the <a href="{{ page_url('start') }}">2-question router</a>, the <a href="{{ page_url('medicaid') }}">1-minute Medicaid checks</a>, and the <a href="{{ page_url('id-records-path') }}">ID &amp; records path finder</a>—run in local page memory only.</p>
+<h2 id="collect">What we collect (and block)</h2>
+<ul>
+  <li><strong>Zero tracking or accounts:</strong> CivicDesk sets zero cookies, runs zero analytics or advertising scripts, loads zero third-party fonts or CDN assets, and accepts zero form submissions to any server.</li>
+  <li><strong>Interactive tools stay in page memory:</strong> Answers in the <a href="{{ page_url('start') }}">2-question router</a>, the <a href="{{ page_url('medicaid') }}">1-minute Medicaid checks</a>, and the <a href="{{ page_url('id-records-path') }}">ID &amp; records path finder</a> live only in your current browser tab and clear immediately when you reload or close the page.</li>
+  <li><strong>Enforced by Content Security Policy:</strong> Every page serves <code>connect-src 'none'</code>, <code>form-action 'none'</code>, and <code>frame-ancestors 'none'</code> so scripts cannot transmit data off your device.</li>
+  <li><strong>Static edge delivery:</strong> CivicDesk is hosted solely on Cloudflare Workers Static Assets with host analytics turned off; Cloudflare processes standard network request data (such as IP addresses) to deliver static files and mitigate network attacks. {{ src('ID-HOST-CLOUDFLARE-PRIVACY') }}</li>
+</ul>
 
 <h2 id="referrer">Outbound links to government agencies</h2>
 <p>Every page sets <code>Referrer-Policy: no-referrer</code>. When you follow a link from CivicDesk to a court or agency website, your browser does not tell that website which CivicDesk page you came from. Once you open an outside website, its own privacy rules apply.</p>

@@ -7,30 +7,32 @@
 {{ m.lede("Utah uses district court for both a name change (1 year living in your county + hearing) and a sex designation change (clear and convincing proof of six statutory items).") }}
 {{ m.checked_line(page) }}
 
-{% set first_step = 'Check that you can file, and gather proof' %}
-
 {{ m.onthispage([
-  ('court-anatomy', 'Order snapshot'),
+  ('cost', 'Key numbers & costs'),
+  ('court-anatomy', '4-step sequence'),
   ('ut-2026', '2026 bill note'),
   ('name', 'Name & sex requirements'),
-  ('steps', 'Court steps'),
-  ('cost', 'Costs'),
+  ('steps', 'Filing checklist'),
   ('privacy', 'Privacy'),
   ('minors', 'Under 18'),
   ('questions', 'Good questions', 'extra'),
   ('next-steps', 'Next steps')
 ]) }}
 
-{% set ut_ct_fee %}{{ fact('ut_fee_petition') }} general civil fee under Utah Code 78A-2-301(1)(a) (confirm with clerk), or apply for a {{ ext('ID-UT-COURTS-WAIVER', 'fee waiver') }}. {{ src('ID-UT-CODE-78A-2-301') }} {{ src('ID-UT-COURTS-FEES') }}{% endset %}
-{% set ut_ct_priv %}Sex-designation petitions mark filed papers private, while case history and public hearings remain public; name-only filings appear public. {{ src('ID-UT-COURTS-SEX-CHANGE') }} {{ m.badge('our_reading') }}{% endset %}
-{% set ut_ct_copy %}Certified copies cost {{ fact('ut_fee_cert_copy') }}; order extra copies for Utah Vital Records (form 902), Social Security, and DLD. {{ src('ID-UT-COURTS-FEES') }}{% endset %}
-{{ v.doc_mockup_court_order(
-  'Utah',
-  'District Court of the State of Utah',
-  ut_ct_fee,
-  ut_ct_priv,
-  ut_ct_copy
-) }}
+{% set ut_cost_note %}Fee schedule &amp; waiver: general civil fee under Utah Code 78A-2-301(1)(a) (confirm with clerk) or {{ ext('ID-UT-COURTS-WAIVER') }}. {{ src('ID-UT-CODE-78A-2-301') }} {{ src('ID-UT-COURTS-FEES') }}{% endset %}
+{{ v.stat_hero_strip([
+  {'num': fact('ut_fee_petition'), 'label': 'General civil filing fee', 'note': 'Fee waiver available'},
+  {'num': '$4 + 50¢/pg', 'label': 'Certified copy fee', 'note': 'Order copies for Vital Records, SSA & DLD'},
+  {'num': '1 year', 'label': 'County residency rule', 'note': 'For name changes + court hearing'},
+  {'num': '6 findings', 'label': 'Sex-designation standard', 'note': 'Clear & convincing proof + provider letter'}
+], id='cost', note=ut_cost_note) }}
+
+{{ v.process_flow([
+  {'title': 'Gather 6-item proof', 'body': 'Collect residency proof, provider distress letter, and 6-month living proof.'},
+  {'title': 'File via MyPaperwork', 'body': 'Complete forms online or by PDF and file in your county district court.'},
+  {'title': 'Attend court hearing', 'body': 'Appear at your scheduled hearing so the judge can sign the order.'},
+  {'title': 'Buy certified copies', 'body': 'Purchase clerk-sealed copies for Vital Records (form 902), SSA, and DLD.'}
+], id='court-anatomy', cols=4) }}
 
 {% call m.callout("good", "Changing your name through marriage or divorce in Utah?", "ut-marriage-divorce") %}
 <ul>
@@ -40,7 +42,7 @@
 {% endcall %}
 
 {% call m.callout('changed', 'What happened in 2026 (H.B. 183 failed)', 'ut-2026') %}
-<p>2026 H.B.&nbsp;183 ("Sex Designation Amendments") returned to Rules on March&nbsp;4, 2026 and failed when the session ended March&nbsp;6, 2026 ({{ src('ID-UT-HB183-NOTICE') }} {{ src('ID-UT-HB183-LEGISCAN') }}). The May&nbsp;7, 2025 statute governs this page. {{ src('ID-UT-CODE-26B-8-111') }} {{ m.badge('our_reading') }}</p>
+<p>2026 H.B.&nbsp;183 ("Sex Designation Amendments") returned to Rules on March&nbsp;4, 2026 and failed when the session ended March&nbsp;6, 2026. The May&nbsp;7, 2025 statute governs this page. {{ m.badge('our_reading') }} {{ src('ID-UT-HB183-NOTICE') }} {{ src('ID-UT-HB183-LEGISCAN') }} {{ src('ID-UT-CODE-26B-8-111') }}</p>
 {% endcall %}
 
 <h2 id="name">Eligibility &amp; the 6 findings for a sex designation change</h2>
@@ -63,38 +65,26 @@
 ) }}
 </div>
 
-<h2 id="steps">Court steps</h2>
-<p>Follows Utah Courts' 5-step sequence. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+<h2 id="steps">Court filing checklist</h2>
+<p>Follows Utah Courts' filing sequence. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
 <div class="btn-row js-only"><button type="button" class="btn-secondary" data-print>Print this checklist</button></div>
 <ol class="steps">
-{% call m.step('utah', 1, 'ut-step-ready', first_step) %}
+{% call m.step('utah', 1, 'ut-step-ready', 'Check eligibility and gather proof') %}
   <p>Confirm county residency and gather your licensed-provider letter and 6-month proof before filling out forms.</p>
 {% endcall %}
 {% call m.step('utah', 2, 'ut-step-file', 'Fill out and file the forms') %}
-  <p>Use {{ ext('ID-UT-MYPAPERWORK') }} (online guided filing) or the PDFs on the {{ ext('ID-UT-COURTS-SEX-CHANGE', 'Utah Courts name and sex change page') }}, and file in your county's district court ({{ ext('ID-UT-COURTS-DIRECTORY') }}; Provo Courthouse for Utah County PDFs). Pay {{ fact('ut_fee_petition') }} or submit a {{ ext('ID-UT-COURTS-WAIVER') }}. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+  <p>Use {{ ext('ID-UT-MYPAPERWORK') }} (online guided filing) or the PDFs on the {{ ext('ID-UT-COURTS-SEX-CHANGE', 'Utah Courts name and sex change page') }}, and file in your county's district court ({{ ext('ID-UT-COURTS-DIRECTORY') }}; Provo Courthouse for Utah County PDFs) with your payment or {{ ext('ID-UT-COURTS-WAIVER') }}. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
 {% endcall %}
-{% call m.step('utah', 3, 'ut-step-hearing', 'Go to the hearing') %}
-  <p>Attend your scheduled hearing and request certified copies once signed ({{ src('ID-UT-COURTS-SEX-CHANGE') }} {{ src('ID-UT-CODE-42-1') }}). If on the offender registry for a name change, mail form 1703FA 30+ days ahead to {{ fact('ut_registry_mail') }}.</p>
+{% call m.step('utah', 3, 'ut-step-hearing', 'Attend the hearing and order certified copies') %}
+  <p>Attend your scheduled hearing and request certified copies ({{ fact('ut_fee_cert_copy') }}) once signed. If on the offender registry for a name change, mail form 1703FA 30+ days ahead to {{ fact('ut_registry_mail') }}. {{ src('ID-UT-COURTS-SEX-CHANGE') }} {{ src('ID-UT-CODE-42-1') }}</p>
 {% endcall %}
-{% call m.step('utah', 4, 'ut-step-vital', 'Send the order to Utah Vital Records') %}
-  <p>If born in Utah, mail a certified order, {{ ext('ID-UT-VITAL-902-2026') }}, and fee to {{ m.copyable(fact('ut_vital_mail'), 'mailing address') }} (<a href="{{ page_url('id-records-utah-birth') }}">Utah birth record details</a>). {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
-{% endcall %}
-{% call m.step('utah', 5, 'ut-step-tell', 'Tell everyone else') %}
-  <p>Update Social Security first (if your name changed), then DLD, passport, banks, payroll, and Medicaid (<a href="{{ page_url('id-records-after') }}">after-court checklist</a>).</p>
+{% call m.step('utah', 4, 'ut-step-vital', 'Update Utah Vital Records, Social Security & DLD') %}
+  <p>If born in Utah, mail a certified order and {{ ext('ID-UT-VITAL-902-2026') }} to {{ m.copyable(fact('ut_vital_mail'), 'mailing address') }} (<a href="{{ page_url('id-records-utah-birth') }}">Utah birth record details</a>). Update Social Security first (if your name changed), then DLD (<a href="{{ page_url('id-records-after') }}">after-court checklist</a>). {{ src('ID-UT-VITAL-FEES') }}</p>
 {% endcall %}
 </ol>
 
-{{ m.after_filing('ut-after-filing', [
-  {'title': 'Go to your hearing', 'text': 'Answer the judge’s questions and request certified copies.'},
-  {'title': 'Mail Vital Records packet', 'text': 'Send certified order + form 902 + fee if born in Utah.'},
-  {'title': 'Update SSA then DLD', 'text': 'Update Social Security first for any name change.'}
-]) }}
-
-{% call m.callout('cost', 'What it costs & scam alert', 'cost') %}
-<ul>
-  <li><strong>Court filing &amp; copies:</strong> {{ fact('ut_fee_petition') }} general civil fee (confirm with clerk; {{ ext('ID-UT-COURTS-WAIVER') }}); certified copies {{ fact('ut_fee_cert_copy') }}; Vital Records {{ fact('ut_vital_amend_fee') }}. {{ src('ID-UT-CODE-78A-2-301') }} {{ src('ID-UT-COURTS-FEES') }} {{ src('ID-UT-VITAL-FEES') }}</li>
-  <li><strong>Payment scam warning:</strong> Utah courts never text payment links or QR codes—pay only through official court channels. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
-</ul>
+{% call m.box('watch', 'Court payment scam alert') %}
+<p>Utah courts never text payment links or QR codes—pay filing and copy fees only through official court channels. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
 {% endcall %}
 
 <h2 id="privacy">Who can see your case</h2>

@@ -6,17 +6,12 @@
 <h1>Have a health condition?</h1>
 <p class="purpose">A serious or disabling health condition—or substance-use treatment or recovery—may mean you do not have to meet the new OHP rules.</p>
 
-{{ v.stat_hero_strip([
-  {'num': 'No note', 'label': 'Needed from a doctor in 2027', 'note': 'Just tell OHP about your condition'},
-  {'num': '12 mos', 'label': 'Past OHP records checked first', 'note': 'Automatic check if enrolled before'},
-  {'num': '2028', 'label': 'Provider statement may start', 'note': 'NPs, PAs, therapists & MDs count'}
-]) }}
-
+{% set or_health_note %}Sources: <a href="{{ page_url('medicaid-oregon-reasons') }}">see every exemption and how to tell OHP</a>. {{ src('MED-S01') }} {{ src('MED-S03') }} {{ src('MED-S07') }} {{ src('MED-S08') }} {{ src('MED-S29') }} {{ src('MED-S42') }}{% endset %}
 {{ v.yes_no_split_board(
   'In 2027: self-attestation + OHP records',
   [
     'No doctor’s note is needed in 2027—simply tell OHP about your condition.',
-    'OHP checks your past 12 months of OHP health records first.',
+    'OHP checks your past 12 months of OHP health records first if you were enrolled before.',
     'Getting SSI or SSDI, or being in drug/alcohol treatment or 5-year stable recovery, also counts.'
   ],
   'Starting in 2028: provider statement if asked',
@@ -25,9 +20,9 @@
     'Does not have to be an MD: nurse practitioners, PAs, psychologists, PTs, and clinical social workers can sign.'
   ],
   yes_kicker='2027 rule',
-  no_kicker='2028 rule'
+  no_kicker='2028 rule',
+  note=or_health_note
 ) }}
-<p>Sources: health exemptions &amp; 2027 self-attestation {{ src('MED-S01') }} {{ src('MED-S03') }} {{ src('MED-S07') }}; treatment/recovery {{ src('MED-S42') }}; eligible licensed providers {{ src('MED-S29') }}. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every exemption</a> and how to tell OHP ({{ src('MED-S08') }}).</p>
 
 {% call m.deeper('Examples OHA gives & federal court updates', 'or-health-examples') %}
 <p>This is not the full list—many conditions can count, and you can tell OHP even if yours is not listed: {{ src('MED-S03') }}</p>

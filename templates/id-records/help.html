@@ -1,17 +1,10 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
-{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Get help</p>
 <h1>Free and low-cost help</h1>
 {{ m.lede("Most name and gender-marker updates do not require a lawyer, though legal aid helps when a court case, custody rule, criminal record, or immigration question is involved.") }}
 {{ m.checked_line(page) }}
-
-{{ v.channel_cards([
-  {'kind': 'navigator', 'title': 'Court self-help & facilitators', 'body': 'Free courthouse staff in OR, WA, and UT who explain forms and filing steps (no legal advice).'},
-  {'kind': 'online', 'title': 'Guided form interviews', 'body': 'Oregon Guide & File and Utah MyPaperwork fill in official court petitions step by step.'},
-  {'kind': 'phone', 'title': 'Legal aid & peer lines', 'body': 'WA CLEAR, Oregon State Bar referral, Lambda Legal Help Desk, 988, and Trans Lifeline.'}
-]) }}
 
 {% call m.callout('watch', 'Need to talk to someone right now?', 'now') %}
 <ul>
@@ -22,23 +15,23 @@
 
 <h2 id="oregon">Oregon</h2>
 <ul>
-  <li>{{ ext('ID-OR-OJD-SELF-HELP') }} ({{ src('ID-OR-OJD-ADULT-PACKET') }}), {{ ext('ID-OR-OJD-GUIDE-FILE') }}, and {{ ext('ID-OR-LAWHELP') }}.</li>
-  <li>Oregon State Bar referral service: {{ m.copyable(fact('or_osb_lrs'), 'phone numbers') }}</li>
+  <li><strong>Court self-help &amp; guided forms:</strong> {{ ext('ID-OR-OJD-SELF-HELP') }}, {{ ext('ID-OR-OJD-GUIDE-FILE') }}, and {{ ext('ID-OR-LAWHELP') }}. {{ src('ID-OR-OJD-ADULT-PACKET') }}</li>
+  <li><strong>Oregon State Bar referral service:</strong> {{ m.copyable(fact('or_osb_lrs'), 'phone numbers') }}</li>
 </ul>
 
 <h2 id="washington">Washington</h2>
 <ul>
-  <li>CLEAR legal aid line: {{ m.copyable(fact('wa_clear'), 'CLEAR phone number') }} ({{ src('ID-WA-COURTS-FORMS') }}), {{ ext('ID-WA-WLH-NAME') }}, and county courthouse facilitators.</li>
+  <li><strong>CLEAR legal aid &amp; court facilitators:</strong> {{ m.copyable(fact('wa_clear'), 'CLEAR phone number') }}, {{ ext('ID-WA-WLH-NAME') }}, and county courthouse facilitators. {{ src('ID-WA-COURTS-FORMS') }}</li>
 </ul>
 
 <h2 id="utah">Utah</h2>
 <ul>
-  <li>{{ ext('ID-UT-COURTS-SELF-HELP') }}, {{ ext('ID-UT-MYPAPERWORK') }}, and {{ ext('ID-UT-COURTS-LEGAL-HELP') }}.</li>
+  <li><strong>Court self-help &amp; MyPaperwork:</strong> {{ ext('ID-UT-COURTS-SELF-HELP') }}, {{ ext('ID-UT-MYPAPERWORK') }}, and {{ ext('ID-UT-COURTS-LEGAL-HELP') }}.</li>
 </ul>
 
 <h2 id="national">Anywhere</h2>
 <ul>
-  <li>{{ ext('ID-US-LAMBDA-HELPDESK') }} ({{ src('ID-US-LAMBDA-HELPDESK') }}) · Out-of-state birth records: {{ ext('ID-US-CDC-W2W') }}.</li>
+  <li>{{ ext('ID-US-LAMBDA-HELPDESK') }} · Out-of-state birth records: {{ ext('ID-US-CDC-W2W') }}. {{ src('ID-US-LAMBDA-HELPDESK') }}</li>
 </ul>
 
 {% call m.callout('note', 'How we choose what to list', 'how-we-list', extra=true) %}

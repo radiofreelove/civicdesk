@@ -10,33 +10,17 @@
 {{ v.swimlane_timeline(
   'How far back OHP can help pay medical bills',
   [
-    {'icon': 'calendar', 'title': 'Through Dec. 31, 2026', 'body': 'OHP can help pay bills from up to 3 months before you apply.', 'tag': '90-day window'},
-    {'icon': 'warning', 'title': 'Starting Jan. 1, 2027 (ages 19–64)', 'body': 'Most expansion adults get up to 1 month before applying.', 'tag': '1-month window'},
-    {'icon': 'shield', 'title': 'Other OHP groups in 2027', 'body': 'Children, seniors 65+, pregnancy, and disability get up to 2 months.', 'tag': '2-month window'}
+    {'title': 'Through Dec. 31, 2026', 'body': 'OHP can help pay unpaid medical bills from up to 3 months before your application month.', 'tag': '90-day window'},
+    {'title': 'Jan. 1, 2027+ (ages 19–64)', 'body': 'Most adults in OHP Plus or Healthier Oregon get up to 1 month before applying.', 'tag': '1-month window'},
+    {'title': 'Other OHP groups in 2027', 'body': 'Children 18 or younger, adults 65+, pregnancy, and disability coverage keep up to 2 months.', 'tag': '2-month window'}
   ],
   heading_id='bills-timeline',
   note=or_bills_cite
 ) }}
 
-{{ v.yes_no_split_board(
-  'Up to 2 months back starting Jan. 1, 2027',
-  [
-    'Children 18 or younger.',
-    'Adults 65 or older.',
-    'People who are pregnant or get OHP because of a disability.'
-  ],
-  'Up to 1 month back starting Jan. 1, 2027',
-  [
-    'Most adults ages 19 to 64 in OHP Plus or Healthier Oregon.',
-    'Have unpaid bills from recent months? Apply as soon as possible.'
-  ],
-  yes_kicker='2-month window',
-  no_kicker='1-month window'
-) }}
-
 <div class="callout">
   <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Next step</span></p>
   <h2>Apply sooner if you have unpaid bills</h2>
-  <p><a href="{{ page_url('medicaid-oregon-apply') }}">See how to apply for OHP</a>, or call OHP at <span class="nowrap">800-699-9075</span> with questions about a specific bill.</p>
+  <p><a href="{{ page_url('medicaid-oregon-apply') }}">See how to apply for OHP</a>, or call ONE Customer Service at <span class="nowrap">800-699-9075</span> with questions about a specific bill.</p>
 </div>
 {% endblock %}

@@ -13,15 +13,6 @@
   ('languages', 'Form 7210 in 17 languages')
 ]) }}
 
-{% set h_person %}<a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">Find a free community partner</a> or <a href="https://www.oregon.gov/odhs/Pages/office-finder.aspx" rel="noreferrer">an ODHS office</a>. {{ src('MED-S15') }} {{ src('MED-S16') }}{% endset %}
-{% set h_phone %}Call ONE at <span class="nowrap">800-699-9075</span> (TTY 711), Mon–Fri 7 a.m.–6 p.m. PT, with free interpreters. {{ src('MED-S09') }}{% endset %}
-{% set h_paper %}Ask for large print/braille or download form 7210 in 17 languages below. {{ src('MED-S02') }} {{ src('MED-S10') }}{% endset %}
-{{ v.channel_cards([
-  {'kind': 'navigator', 'title': 'Free community partners', 'body': h_person},
-  {'kind': 'phone', 'title': 'Interpreter & phone lines', 'body': h_phone},
-  {'kind': 'paper', 'title': '17 languages & braille', 'body': h_paper}
-]) }}
-
 <h2 id="in-person">Help in person &amp; accessible formats</h2>
 <ul>
   <li><strong>In person:</strong> <a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">Certified community partners</a> never charge to help you apply, renew, or answer letters, and <a href="https://www.oregon.gov/odhs/Pages/office-finder.aspx" rel="noreferrer">local ODHS offices</a> take walk-ins. {{ src('MED-S09') }} {{ src('MED-S15') }} {{ src('MED-S16') }}</li>
@@ -29,9 +20,9 @@
 </ul>
 
 <h2 id="phone">Key Oregon phone numbers</h2>
-{{ v.jargon_flashcards([
+{{ v.glossary_list([
   {'term': 'ONE Customer Service', 'plain': '800-699-9075 (TTY 711)', 'detail': 'Mon–Fri, 7 a.m. to 6 p.m. PT. Online account tech support: 833-978-1073.'},
-  {'term': 'Spanish & Russian lines', 'plain': '800-743-9182 · 833-687-1508', 'detail': 'Dedicated ONE language lines; interpreters available in all languages.'},
+  {'term': 'Spanish & Russian lines', 'plain': '800-743-9182 · 833-687-1508', 'detail': 'Dedicated ONE language lines; free interpreters available in all languages.'},
   {'term': 'Public Benefits Hotline', 'plain': '503-241-4111 · 800-520-5292', 'detail': 'Free legal aid from LASO & Oregon Law Center (income limits apply).'},
   {'term': 'Disability & Marketplace', 'plain': 'ADRC 855-673-2372 · Mkt 855-268-3767', 'detail': 'Aging & Disability Resource Connection and OregonHealthCare.gov.'}
 ], id='or-phone-cards') }}

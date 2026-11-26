@@ -1,68 +1,40 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
-{% import "illustrations.html" as il %}
 {% block main %}
 <p class="kicker">Side by side</p>
 <h1>Compare Oregon, Washington, and Utah</h1>
-{{ m.lede("Oregon and Washington update state IDs and birth records by agency form, while Utah requires a district court order with clear and convincing proof. Compare fees, privacy, and rules at a glance.") }}
+{{ m.lede("Oregon and Washington update state IDs and birth records by agency form, while Utah requires a district court order with clear and convincing proof. Compare court filing fees and rules side by side.") }}
 {{ m.checked_line(page) }}
 
-<section class="viz-compare-board" aria-label="Visual court-fee and rule comparison across Oregon, Washington, and Utah">
+<section class="viz-compare-board" aria-label="Proportional court filing fee comparison across Oregon, Washington, and Utah">
   <div class="viz-compare-col">
-    <div class="viz-compare-head">
-      {{ il.state_map_badge('oregon') }}
-      <div>
-        <strong><a href="{{ page_url('id-records-oregon') }}">Oregon</a></strong>
-        <p class="card-meta">Court petition: {{ fact('or_fee_petition') }}</p>
-      </div>
-    </div>
+    <span class="viz-compare-state"><a href="{{ page_url('id-records-oregon') }}">Oregon</a></span>
+    <span class="viz-compare-fee">{{ fact('or_fee_petition') }}</span>
     <svg class="viz-compare-fee-bar" viewBox="0 0 200 12" width="200" height="12" aria-hidden="true" focusable="false">
-      <rect x="1" y="1" width="198" height="10" rx="5" class="viz-meter-track"/>
-      <rect x="2" y="2" width="66" height="8" rx="4" class="viz-seg-1"/>
+      <rect x="1" y="1" width="198" height="10" rx="4" class="viz-meter-track"/>
+      <rect x="2" y="2" width="66" height="8" rx="3" class="viz-seg-1"/>
     </svg>
-    <ul class="viz-compare-badges">
-      <li><span>Court hearing</span><strong>Usually none</strong></li>
-      <li><span>Sex-case privacy</span><strong>Confidential (2026)</strong></li>
-      <li><span>Birth &amp; DMV X marker</span><strong>Form, no court</strong></li>
-    </ul>
+    <p class="viz-compare-note">Circuit court petition (covers name, sex, or both; free waiver application)</p>
   </div>
 
   <div class="viz-compare-col">
-    <div class="viz-compare-head">
-      {{ il.state_map_badge('washington') }}
-      <div>
-        <strong><a href="{{ page_url('id-records-washington') }}">Washington</a></strong>
-        <p class="card-meta">Sealed superior: {{ fact('wa_fee_sealed') }}</p>
-      </div>
-    </div>
+    <span class="viz-compare-state"><a href="{{ page_url('id-records-washington') }}">Washington</a></span>
+    <span class="viz-compare-fee">$290</span>
     <svg class="viz-compare-fee-bar" viewBox="0 0 200 12" width="200" height="12" aria-hidden="true" focusable="false">
-      <rect x="1" y="1" width="198" height="10" rx="5" class="viz-meter-track"/>
-      <rect x="2" y="2" width="154" height="8" rx="4" class="viz-seg-3"/>
+      <rect x="1" y="1" width="198" height="10" rx="4" class="viz-meter-track"/>
+      <rect x="2" y="2" width="154" height="8" rx="3" class="viz-seg-3"/>
     </svg>
-    <ul class="viz-compare-badges">
-      <li><span>Court hearing</span><strong>Yes (every name case)</strong></li>
-      <li><span>Name-case privacy</span><strong>Sealed in superior ct.</strong></li>
-      <li><span>Birth &amp; DOL X marker</span><strong>Form, no court</strong></li>
-    </ul>
+    <p class="viz-compare-note">Sealed superior court statewide base (+ local charges; GR 34 &amp; hardship waivers)</p>
   </div>
 
   <div class="viz-compare-col">
-    <div class="viz-compare-head">
-      {{ il.state_map_badge('utah') }}
-      <div>
-        <strong><a href="{{ page_url('id-records-utah') }}">Utah</a></strong>
-        <p class="card-meta">District court: {{ fact('ut_fee_petition') }}</p>
-      </div>
-    </div>
+    <span class="viz-compare-state"><a href="{{ page_url('id-records-utah') }}">Utah</a></span>
+    <span class="viz-compare-fee">{{ fact('ut_fee_petition') }}</span>
     <svg class="viz-compare-fee-bar" viewBox="0 0 200 12" width="200" height="12" aria-hidden="true" focusable="false">
-      <rect x="1" y="1" width="198" height="10" rx="5" class="viz-meter-track"/>
-      <rect x="2" y="2" width="196" height="8" rx="4" class="viz-seg-2"/>
+      <rect x="1" y="1" width="198" height="10" rx="4" class="viz-meter-track"/>
+      <rect x="2" y="2" width="196" height="8" rx="3" class="viz-seg-2"/>
     </svg>
-    <ul class="viz-compare-badges">
-      <li><span>Court hearing</span><strong>Yes + 6 findings</strong></li>
-      <li><span>Sex-case privacy</span><strong>Papers private only</strong></li>
-      <li><span>Birth certificate</span><strong>Court order req.</strong></li>
-    </ul>
+    <p class="viz-compare-note">District court general civil petition (fee waiver available)</p>
   </div>
 </section>
 

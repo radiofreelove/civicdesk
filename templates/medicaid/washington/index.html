@@ -6,9 +6,9 @@
 <nav class="guide-switch" aria-labelledby="guide-switch-label">
   <p class="guide-switch-label" id="guide-switch-label">Switch Medicaid state guide</p>
   <ul>
-    <li><a href="{{ page_url('medicaid-oregon') }}"><span class="guide-state guide-state-row">{{ m.icon('state-or') }}<span>Oregon</span></span> <span class="guide-note">Go to the Oregon Health Plan guide</span></a></li>
-    <li><a href="{{ page_url('medicaid-washington') }}" aria-current="page"><span class="guide-state guide-state-row">{{ m.icon('state-wa') }}<span>Washington</span></span> <span class="guide-note">This is the Apple Health guide.</span></a></li>
-    <li><a href="{{ page_url('medicaid-utah') }}"><span class="guide-state guide-state-row">{{ m.icon('state-ut') }}<span>Utah</span></span> <span class="guide-note">Go to the Utah Medicaid guide</span></a></li>
+    <li><a href="{{ page_url('medicaid-oregon') }}"><span class="guide-state">Oregon</span> <span class="guide-note">Go to the Oregon Health Plan guide</span></a></li>
+    <li><a href="{{ page_url('medicaid-washington') }}" aria-current="page"><span class="guide-state">Washington</span> <span class="guide-note">This is the Apple Health guide.</span></a></li>
+    <li><a href="{{ page_url('medicaid-utah') }}"><span class="guide-state">Utah</span> <span class="guide-note">Go to the Utah Medicaid guide</span></a></li>
   </ul>
 </nav>
 
@@ -17,34 +17,33 @@
 
 {{ v.stat_hero_strip([
   {'num': '19–64', 'label': 'Apple Health for Adults', 'note': 'Under 138% FPL, no Medicare'},
-  {'num': 'June 30', 'label': '2027 hold harmless delay', 'note': 'No work-rule loss via HCA plan'},
-  {'num': '6 ways', 'label': '$580/mo, school, or 80 hrs', 'note': 'Any 1 way meets the rules'},
-  {'num': '15 days', 'label': 'To answer proof letters', 'note': 'State checks data first (~64%)'}
+  {'num': 'June 30', 'label': '2027 hold harmless delay', 'note': 'No work-rule loss under HCA plan'},
+  {'num': '~64%', 'label': 'Confirmed from state data', 'note': 'HCA checks records before asking'},
+  {'num': '15 days', 'label': 'To answer proof letters', 'note': '6-month renewals start in 2027'}
 ]) }}
 
 {{ v.timeline_strip([
-  {'kind': 'info', 'icon': 'shield', 'date': 'Nov. 17, 2026', 'href': '#update-title', 'label': 'Delayed enforcement announced', 'note': 'HCA plans no work-rule loss through June 30, 2027.'},
-  {'kind': 'deadline', 'icon': 'warning', 'date': 'Jan. 1, 2027', 'href': '#bills-title', 'label': '6-month renewals & bills cutoff', 'note': 'Past bill help drops from 3 months to 1.', 'note_show_until': '2026-12-31'},
-  {'kind': 'ongoing', 'icon': 'hours', 'date': 'Month before applying', 'href': page_url('medicaid-washington-log'), 'label': 'Lookback window', 'note': 'HCA checks the month before you apply.'}
+  {'kind': 'deadline', 'date': 'Through Dec. 31, 2026', 'href': '#bills-title', 'label': '3-month past bill window', 'note': 'Past bill help drops from 3 months to 1 in 2027.', 'note_show_until': '2026-12-31'},
+  {'kind': 'info', 'date': 'Jan. 1, 2027', 'href': '#six-ways-summary', 'label': '6-month renewals & checks start', 'note': 'Tribal members keep 12-month renewals.'},
+  {'kind': 'ongoing', 'date': 'Through June 30, 2027', 'href': '#update-title', 'label': 'Hold harmless protection', 'note': 'HCA plans no work-rule loss during delay.'}
 ], title='Key dates at a glance', heading_id='timeline-title') }}
 
 <section class="warn" aria-labelledby="update-title">
   <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Policy update</span></p>
-  <h2 id="update-title">Update, Nov.&nbsp;17, 2026: Washington delays work-rule enforcement</h2>
-  <p><strong>Washington's announcement:</strong> On Nov.&nbsp;17, 2026, the Health Care Authority (HCA) announced Washington will pursue delayed enforcement of the work rules (pending federal approval). Through June&nbsp;30, 2027, people in Apple Health for Adults will not lose or be denied coverage solely for not meeting the work rules—though 6-month renewals (Tribal members keep 12-month renewals), verification checks, and the 1-month past-bills limit still start Jan.&nbsp;1, 2027. Keep your contact info current in Healthplanfinder. {{ src('MED-WA01') }} {{ src('MED-WA16') }} {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-S41') }}</p>
+  <h2 id="update-title">Nov.&nbsp;17, 2026 update: what Washington's enforcement delay covers</h2>
+  <p>The Health Care Authority (HCA) announced Washington will pursue delayed enforcement through June&nbsp;30, 2027 (pending federal approval). Income rules, 6-month renewals (12 months for Tribal members), and verification checks still start Jan.&nbsp;1, 2027—keep your contact info current in Washington Healthplanfinder. {{ src('MED-WA01') }} {{ src('MED-WA16') }} {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-S41') }}</p>
   {% call m.deeper('Federal hold harmless details & Oregon v. Oz lawsuit', 'wa-update-details') %}
-  <p>Income and other eligibility rules still apply during hold harmless. On Nov.&nbsp;5, 2026, Washington, Oregon, and two other states sued the federal government over the work rules (<em>State of Oregon v. Oz</em>, No.&nbsp;6:26-cv-02435; oral argument Jan.&nbsp;12, 2027). No court order has changed these rules. <a href="{{ page_url('medicaid-washington-rules#state-choice') }}">More about this choice</a> {{ src('MED-WA14') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+  <p>On Nov.&nbsp;5, 2026, Washington, Oregon, and two other states sued the federal government over the work rules (<em>State of Oregon v. Oz</em>, No.&nbsp;6:26-cv-02435; oral argument Jan.&nbsp;12, 2027). No court order has changed these rules. <a href="{{ page_url('medicaid-washington-rules#state-choice') }}">More about this choice</a> {{ src('MED-WA14') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
   {% endcall %}
 </section>
 
 <section class="warn" aria-labelledby="bills-title">
-  <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Deadline</span></p>
-  <h2 id="bills-title">Have medical bills? <span data-show-until="2026-12-31">Read this before Jan.&nbsp;1, 2027.</span></h2>
-  <p data-show-until="2026-12-31">Before Jan.&nbsp;1, 2027, Apple Health may pay bills from up to 3 months before the month you apply. {{ src('MED-WA01') }} {{ src('MED-WA03') }}</p>
-  <p>On Jan.&nbsp;1, 2027, that window drops to 1 month for Apple Health for Adults. <a href="{{ page_url('medicaid-washington-bills') }}">More about past medical bills</a> {{ src('MED-WA01') }}</p>
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Unpaid medical bills</span></p>
+  <h2 id="bills-title">Have recent medical bills? <span data-show-until="2026-12-31">Apply before Jan.&nbsp;1, 2027 if you can.</span></h2>
+  <p><span data-show-until="2026-12-31">Applying before Jan.&nbsp;1, 2027 keeps the full 3-month retroactive bill window. </span>Starting Jan.&nbsp;1, 2027, Apple Health for Adults covers unpaid bills from only 1 month before applying (up to 2 months for other programs). <a href="{{ page_url('medicaid-washington-bills') }}">Past medical bills details</a> {{ src('MED-WA01') }} {{ src('MED-WA03') }}</p>
 </section>
 
-<h2>Meet the rules any one way</h2>
+<h2 id="six-ways-summary">Meet the rules any one way</h2>
 <p>Applies only to Apple Health for Adults (ages 19 to 64, no Medicare, low income). {{ src('MED-WA15') }} {{ src('MED-S27') }}</p>
 <div class="rule-bridge">
   <ul class="bridge-lanes">

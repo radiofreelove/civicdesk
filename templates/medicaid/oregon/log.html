@@ -10,15 +10,15 @@
 {{ v.calendar_80hr_grid(
   'Oregon Health Plan (OHP)',
   [
-    {'week': 'Week 1', 'hours': '20 hrs', 'mix': 'Paid work, gig work, or work for housing'},
-    {'week': 'Week 2', 'hours': '20 hrs', 'mix': 'College, trade school, or job training'},
-    {'week': 'Week 3', 'hours': '20 hrs', 'mix': 'Tracked nonprofit or public volunteering'},
-    {'week': 'Week 4', 'hours': '20 hrs', 'mix': 'Any mix reaching 80 hrs total for the month'}
+    {'week': 'Week 1', 'hours': '20 hrs', 'mix': '15 hrs part-time wages + 5 hrs food bank volunteering'},
+    {'week': 'Week 2', 'hours': '20 hrs', 'mix': '15 hrs part-time wages + 5 hrs GED or job class'},
+    {'week': 'Week 3', 'hours': '20 hrs', 'mix': '20 hrs self-employment, gig, or work for rent'},
+    {'week': 'Week 4', 'hours': '20 hrs', 'mix': '15 hrs wages + 5 hrs public program volunteering'}
   ],
   proofs=[
-    {'icon': 'fee-waiver', 'title': 'Pay stubs or gig payouts', 'detail': 'Or written record of work for rent/goods'},
-    {'icon': 'school-cap', 'title': 'Class or training schedule', 'detail': 'Enrollment or attendance sheet'},
-    {'icon': 'caregiver-heart', 'title': 'Signed volunteer sheet', 'detail': 'Nonprofit or public program contact'}
+    {'title': 'Pay stubs or gig payouts', 'detail': 'Or written record of work for housing/goods'},
+    {'title': 'Class or training schedule', 'detail': 'Enrollment or attendance sheet'},
+    {'title': 'Signed volunteer sheet', 'detail': 'Nonprofit or public program coordinator contact'}
   ],
   note=or_log_note,
   id='or-log-calendar'

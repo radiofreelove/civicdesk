@@ -555,8 +555,19 @@ def test_verify_sources_dynamic_discovery_dedup_retry_and_bot_gated(tmp_path: Pa
 
 
 def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
+    assert not (ROOT / "templates" / "illustrations.html").exists(), (
+        "templates/illustrations.html clip-art macro file must remain deleted"
+    )
+
     design_doc = (ROOT / "docs" / "DESIGN.md").read_text(encoding="utf-8")
-    for required_term in ("--viz-surface", "--viz-fill-1", "--viz-accent", "tabular-nums", "WCAG 2.2 AAA"):
+    for required_term in (
+        "Zero decorative clip-art",
+        "--viz-surface",
+        "--viz-fill-1",
+        "--viz-accent",
+        "tabular-nums",
+        "WCAG 2.2 AAA",
+    ):
         assert required_term in design_doc
 
     svg_open_re = re.compile(r"<svg\b([^>]*)>", re.I | re.S)
@@ -566,30 +577,26 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
     timeline_note_re = re.compile(r'<span class="viz-timeline-note"[^>]*>(.*?)</span>', re.S)
     strip_tags_re = re.compile(r"<[^>]+>")
 
-    major_visual_classes = (
-        "hero-stage",
-        "viz-stat-strip",
-        "doc-mockup",
-        "viz-calendar",
-        "viz-split-board",
-        "viz-swimlane",
-        "viz-jargon-grid",
-        "viz-channel-grid",
-        "viz-flow",
-        "viz-timeline",
-        "viz-progress",
+    retired_clip_art_markers = (
+        "illo-",
+        "state-silhouette",
+        "viz-medallion",
+        "id-card-facsimile",
+        "doc-mockup-id",
+        "doc-mockup-court",
+        "doc-mockup-birth",
+        "doc-mockup-federal",
         "viz-trust-diagram",
         "viz-404-art",
-        "viz-hours",
-        "viz-grid",
-        "viz-compare-board",
+        "viz-jargon-grid",
+        "viz-channel-grid",
+        "viz-theme-showcase",
     )
 
     pages_yaml = yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))
     assert len(pages_yaml) == 68
     html_files = sorted(built_site.rglob("*.html"))
     assert len(html_files) == 68
-    total_svgs = 0
 
     for p in pages_yaml:
         route = p["route"]
@@ -604,10 +611,8 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
         assert "<style" not in raw.lower(), f"{route}: inline <style> forbidden by CSP"
         assert not inline_style_attr_re.search(raw), f"{route}: inline style=... attribute forbidden by CSP"
 
-        # 100% programmatic 68-page visual component coverage
-        assert any(cls in raw for cls in major_visual_classes), (
-            f"{route} ({html_path}): missing major visual component from {major_visual_classes}"
-        )
+        for retired in retired_clip_art_markers:
+            assert retired not in raw, f"{route}: retired clip-art/cartoon class {retired!r} found"
 
         # SVG <text> may only be short <=5-char single-token visual stamps inside aria-hidden SVGs
         for tm in svg_text_re.finditer(raw):
@@ -616,16 +621,15 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
                 f"{route}: multi-word or long SVG <text> forbidden (got {stamp!r}); keep prose in HTML"
             )
 
-        # Concise <=140-char copy cap on flow cards and timeline notes
+        # Concise <=120-char copy cap on flow cards and <=140-char cap on timeline notes
         for fm in flow_body_re.finditer(raw):
             plain = re.sub(r"\s+", " ", strip_tags_re.sub("", fm.group(1))).strip()
-            assert len(plain) <= 140, f"{route}: .viz-flow-body exceeds 140 chars ({len(plain)}): {plain!r}"
+            assert len(plain) <= 120, f"{route}: .viz-flow-body exceeds 120 chars ({len(plain)}): {plain!r}"
         for tnm in timeline_note_re.finditer(raw):
             plain = re.sub(r"\s+", " ", strip_tags_re.sub("", tnm.group(1))).strip()
             assert len(plain) <= 140, f"{route}: .viz-timeline-note exceeds 140 chars ({len(plain)}): {plain!r}"
 
         for m in svg_open_re.finditer(raw):
-            total_svgs += 1
             attrs = m.group(1)
             is_hidden = 'aria-hidden="true"' in attrs
             is_labeled_img = 'role="img"' in attrs and ("aria-label=" in attrs or "aria-labelledby=" in attrs)
@@ -633,50 +637,66 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
                 f"{route}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
             )
 
-    assert total_svgs >= 500
-
+    # Core purposeful structural diagrams render only on routes where they earn their space
     expected_markers = {
-        "index.html": ('class="hero-stage"', 'illo-horizon', 'illo-medicaid', 'illo-id', 'class="viz-flow'),
-        "start/index.html": ('class="viz-stat-strip"', 'choice-map', 'class="guide-dir-icon"'),
-        "404.html": ('class="viz-404-art"', 'illo-404'),
-        "privacy/index.html": ('class="viz-trust-diagram"', 'illo-trust'),
-        "about/index.html": ('class="viz-stat-strip"', 'class="viz-split-board"', 'class="viz-flow'),
-        "accessibility/index.html": ('viz-theme-showcase',),
-        "medicaid/index.html": ('class="hero-stage"', 'illo-medicaid', 'state-silhouette', 'class="viz-timeline'),
+        "sources/index.html": ('class="viz-stat-strip"',),
+        "medicaid/index.html": ('class="viz-timeline',),
         "medicaid/oregon/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
         "medicaid/washington/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
         "medicaid/utah/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
-        "medicaid/oregon/rules/index.html": ('toc-pills', 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
-        "medicaid/washington/rules/index.html": ('toc-pills', 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
-        "medicaid/utah/rules/index.html": ('toc-pills', 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
-        "medicaid/oregon/reasons/index.html": ('class="viz-grid', 'class="viz-split-board"'),
-        "medicaid/washington/reasons/index.html": ('class="viz-grid', 'class="viz-split-board"'),
-        "medicaid/utah/reasons/index.html": ('class="viz-grid', 'class="viz-split-board"'),
-        "medicaid/oregon/letter/index.html": ('doc-mockup-letter', 'class="viz-jargon-grid"'),
-        "medicaid/washington/letter/index.html": ('doc-mockup-letter', 'class="viz-flow'),
-        "medicaid/utah/letter/index.html": ('doc-mockup-letter', 'class="viz-jargon-grid"'),
+        "medicaid/oregon/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/washington/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/utah/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/oregon/reasons/index.html": ('class="viz-split-board"',),
+        "medicaid/washington/reasons/index.html": ('class="viz-split-board"',),
+        "medicaid/utah/reasons/index.html": ('class="viz-split-board"',),
+        "medicaid/oregon/letter/index.html": ("doc-mockup-letter", 'class="glossary-grid"'),
+        "medicaid/washington/letter/index.html": ("doc-mockup-letter",),
+        "medicaid/utah/letter/index.html": ("doc-mockup-letter", 'class="glossary-grid"'),
         "medicaid/oregon/denied/index.html": ('class="viz-swimlane"',),
+        "medicaid/washington/denied/index.html": ('class="viz-swimlane"',),
+        "medicaid/utah/denied/index.html": ('class="viz-swimlane"',),
+        "medicaid/oregon/bills/index.html": ('class="viz-swimlane"',),
+        "medicaid/washington/bills/index.html": ('class="viz-swimlane"',),
+        "medicaid/utah/bills/index.html": ('class="viz-swimlane"',),
         "medicaid/oregon/log/index.html": ('class="viz-calendar"', 'class="viz-proof-tiles"'),
+        "medicaid/washington/log/index.html": ('class="viz-calendar"', 'class="viz-proof-tiles"'),
+        "medicaid/utah/log/index.html": ('class="viz-calendar"', 'class="viz-proof-tiles"'),
         "medicaid/oregon/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/washington/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/utah/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
-        "id-records/index.html": ('hero-stage-rose', 'illo-id', 'state-silhouette', 'class="viz-flow'),
-        "id-records/oregon/index.html": ('state-silhouette', 'class="viz-stat-strip"', 'class="viz-flow'),
-        "id-records/washington/index.html": ('state-silhouette', 'class="viz-stat-strip"', 'class="viz-flow'),
-        "id-records/utah/index.html": ('state-silhouette', 'class="viz-stat-strip"', 'class="viz-flow'),
-        "id-records/oregon/court/index.html": ('doc-mockup-court', 'toc-pills'),
-        "id-records/oregon/birth/index.html": ('doc-mockup-birth', 'toc-pills'),
-        "id-records/oregon/id/index.html": ('doc-mockup-id', 'id-card-facsimile'),
-        "id-records/federal/index.html": ('doc-mockup-federal', 'passport-form-matrix'),
-        "id-records/compare/index.html": ('class="viz-compare-board"', 'state-silhouette'),
-        "id-records/glossary/index.html": ('class="viz-jargon-grid"',),
-        "id-records/after/index.html": ('class="viz-flow', 'class="viz-grid'),
-        "id-records/path/index.html": ('class="viz-stat-strip"', 'choice-map', 'class="result-emblem'),
+        "medicaid/oregon/words/index.html": ('class="glossary-grid"',),
+        "medicaid/washington/words/index.html": ('class="glossary-grid"',),
+        "medicaid/utah/words/index.html": ('class="glossary-grid"',),
+        "id-records/index.html": ('class="viz-flow',),
+        "id-records/oregon/index.html": ('class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/washington/index.html": ('class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/utah/index.html": ('class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/oregon/court/index.html": ('class="viz-stat-strip"', 'class="viz-flow', "toc-pills"),
+        "id-records/washington/court/index.html": ('class="viz-stat-strip"', 'class="viz-flow', "toc-pills"),
+        "id-records/utah/court/index.html": ('class="viz-stat-strip"', 'class="viz-flow', "toc-pills"),
+        "id-records/oregon/birth/index.html": ('class="viz-stat-strip"', 'class="viz-split-board"', "toc-pills"),
+        "id-records/washington/birth/index.html": ('class="viz-stat-strip"', 'class="viz-split-board"', "toc-pills"),
+        "id-records/utah/birth/index.html": ('class="viz-stat-strip"',),
+        "id-records/oregon/id/index.html": ('class="viz-stat-strip"',),
+        "id-records/washington/id/index.html": ('class="viz-stat-strip"',),
+        "id-records/utah/id/index.html": ('class="viz-stat-strip"',),
+        "id-records/federal/index.html": ("passport-form-matrix",),
+        "id-records/compare/index.html": ('class="viz-compare-board"',),
+        "id-records/glossary/index.html": ('class="glossary-grid"',),
+        "id-records/after/index.html": ('class="viz-flow',),
+        "id-records/path/index.html": ('id="path-form"', 'class="result-emblem'),
     }
     for rel_file, markers in expected_markers.items():
         html = (built_site / rel_file).read_text(encoding="utf-8")
         for marker in markers:
             assert marker in html, f"{rel_file}: missing expected visual marker {marker!r}"
+
+    # Trust and utility pages stay clean and direct without forced diagram widgets
+    for clean_page in ("privacy/index.html", "about/index.html", "accessibility/index.html", "404.html"):
+        clean_html = (built_site / clean_page).read_text(encoding="utf-8")
+        assert "doc-mockup" not in clean_html, f"{clean_page}: unexpected doc-mockup widget"
+        assert 'class="viz-' not in clean_html, f"{clean_page}: unexpected forced .viz-* widget"
 
 
 def test_drop_in_artist_logo_system_and_make_mark_custom_mode(tmp_path: Path, built_site: Path) -> None:
@@ -886,20 +906,31 @@ def test_ordered_list_badges_aria_hidden_and_dynamic_letter_pins(built_site: Pat
             f"{parser.unhidden_badges}"
         )
 
-    pin_label_re = re.compile(r'<span class="mockup-line-label">(.*?)</span>', re.S)
-    legend_title_re = re.compile(
-        r'<li class="mockup-legend-item">\s*<span class="mockup-pin" aria-hidden="true">\d+</span>\s*'
+    sheet_block_re = re.compile(r'<div class="mockup-sheet"[^>]*>(.*?)<ol class="mockup-legend">', re.S)
+    sheet_pin_re = re.compile(
+        r'<div class="mockup-pin-spot[^"]*">\s*<span class="mockup-pin" aria-hidden="true">(\d+)</span>',
+        re.S,
+    )
+    legend_item_re = re.compile(
+        r'<li class="mockup-legend-item"[^>]*>\s*<span class="mockup-pin" aria-hidden="true">(\d+)</span>\s*'
         r'<div class="mockup-legend-copy">\s*<strong>(.*?)</strong>',
         re.S,
     )
     for st in ("oregon", "washington", "utah"):
         letter_html = (built_site / "medicaid" / st / "letter" / "index.html").read_text(encoding="utf-8")
-        sheet_labels = [m.strip() for m in pin_label_re.findall(letter_html)]
-        legend_titles = [m.strip() for m in legend_title_re.findall(letter_html)]
-        assert len(sheet_labels) == 4, f"{st} letter: expected 4 sheet pins, got {sheet_labels}"
-        assert sheet_labels == legend_titles, (
-            f"{st} letter: sheet pins {sheet_labels} drifted from legend titles {legend_titles}"
-        )
+        sheet_match = sheet_block_re.search(letter_html)
+        assert sheet_match, f"{st} letter: missing .mockup-sheet block"
+        sheet_html = sheet_match.group(1)
+        sheet_pins = sheet_pin_re.findall(sheet_html)
+        legend_items = legend_item_re.findall(letter_html)
+        legend_pins = [num for num, _ in legend_items]
+        legend_titles = [title.strip() for _, title in legend_items]
+        assert sheet_pins == ["1", "2", "3", "4"], f"{st} letter: expected 4 numbered sheet pins, got {sheet_pins}"
+        assert legend_pins == ["1", "2", "3", "4"], f"{st} letter: expected 4 numbered legend items, got {legend_pins}"
+        for title in legend_titles:
+            assert title and title not in sheet_html, (
+                f"{st} letter: legend title {title!r} must not be printed verbatim on the sample notice sheet"
+            )
 
 
 

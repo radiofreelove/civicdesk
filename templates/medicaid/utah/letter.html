@@ -6,19 +6,23 @@
 <h1>Utah sent me a letter. Now what?</h1>
 <p class="purpose">Find the due date first, write your name and case number on every page you return, and keep copies with the date sent.</p>
 
-{% set c1 %}Write your name and DWS case number on every sheet and keep a copy of what you send.{% endset %}
+{% set c1 %}Write your name and DWS case number on every sheet and keep a copy with the date sent (keep your address, phone, and email updated in myCase).{% endset %}
 {% set c2 %}If DWS needs community-engagement proof, you may have <strong>30 days</strong> to return the form or lose coverage.{% endset %}
-{% set c3 %}DWS sends a personalized notice whenever you must verify hours, income, Tribal status, or an exemption.{% endset %}
-{% set c4 %}Upload in <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">myCase</a>, mail PO Box 143245 (SLC, UT 84114-3245), fax <span class="nowrap">1-877-313-4717</span> / <span class="nowrap">801-526-9500</span>, or drop off at DWS.{% endset %}
+{% set c3 %}DWS sends a personalized notice whenever electronic records could not confirm hours, income, Tribal status, or an exclusion/exception.{% endset %}
+{% set c4 %}Upload in <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a>, mail DWS Imaging Operations (PO Box 143245, Salt Lake City, UT 84114-3245), fax <span class="nowrap">1-877-313-4717</span> or <span class="nowrap">801-526-9500</span>, or visit any DWS employment center (Mon–Fri, 8 a.m.–5 p.m.; use any different address or fax printed on your letter).{% endset %}
 {{ v.doc_mockup_letter(
   'Utah Medicaid',
-  'Utah DWS · Eligibility Notice',
-  '30-day form window',
+  'Utah Department of Workforce Services (DWS)',
+  {'date': 'Dec. 4, 2026', 'id_label': 'DWS Case #', 'id_val': 'UT-510392'},
+  'Notice of Eligibility / Verification Request',
+  {'due': 'Jan. 3, 2027', 'window': '30 calendar days from notice date'},
+  'We checked state wage and benefit records first. To finish reviewing your case, return proof for the item listed below or report an exclusion or exception.',
+  'Upload in myCase, mail, fax, or drop off at DWS—or request a fair hearing (within 15 days to keep benefits, 90 days to appeal).',
   [
-    {'title': 'Name & case number', 'body': c1},
-    {'title': 'Reply-by due date', 'body': c2},
-    {'title': 'Personalized proof request', 'body': c3},
-    {'title': '4 ways to return papers', 'body': c4}
+    {'title': 'Record your case number & date', 'body': c1},
+    {'title': 'Return forms within the 30-day window', 'body': c2},
+    {'title': 'Send missing proof or report an exclusion', 'body': c3},
+    {'id': 'send', 'title': 'Reply by any of 4 channels (or appeal)', 'body': c4}
   ]
 ) }}
 
@@ -28,19 +32,12 @@
 {% set l_yellow %}Spring 2026 notice for members whose Tribal status is not verified yet. <a href="{{ page_url('medicaid-utah-reasons#tribal') }}">See Tribal proof list</a>.{% endset %}
 {% set l_pink %}Spring 2026 confirmation for members whose Tribal status is already verified.{% endset %}
 {% set l_green %}July 2026 notice introducing 2027 work rules and 6-month renewals (no action needed yet).{% endset %}
-{{ v.jargon_flashcards([
+{{ v.glossary_list([
   {'term': 'Blue letter', 'plain': 'Changes for immigrants', 'detail': l_blue},
   {'term': 'Yellow letter', 'plain': 'Tribal status needs proof', 'detail': l_yellow},
   {'term': 'Pink letter', 'plain': 'Tribal status verified', 'detail': l_pink},
   {'term': 'Green letter', 'plain': '2027 work rules & 6-mo reviews', 'detail': l_green}
 ]) }}
-
-<h2 id="send">Ways to send papers</h2>
-<ul>
-  <li><strong>Online:</strong> Upload in myCase at <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a> (and keep your address, phone, and email updated there).</li>
-  <li><strong>Mail:</strong> Department of Workforce Services, Imaging Operations, PO Box 143245, Salt Lake City, UT 84114-3245.</li>
-  <li><strong>Fax or in person:</strong> Fax <span class="nowrap">1-877-313-4717</span> or <span class="nowrap">801-526-9500</span>, or visit any DWS employment center (Mon–Fri, 8 a.m.–5 p.m.). Always use a different address or fax if printed on your letter.</li>
-</ul>
 
 <div class="callout">
   <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>

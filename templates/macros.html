@@ -64,32 +64,12 @@
 </section>
 {%- endmacro %}
 
-{% macro quickfacts(page, q) -%}
-<section class="callout quick-facts" id="quick-facts" aria-labelledby="quick-facts-t">
-  <h2 class="callout-title" id="quick-facts-t"><span class="callout-icon">{{ icon('checklist') }}</span>Quick facts</h2>
-  <dl class="quick-facts-list">
-    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('gavel') }}</span><span>Court needed for a non-marriage name change</span></dt><dd>{{ q.court_name }}</dd></div>
-    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('gavel') }}</span><span>{{ q.sex_label }}</span></dt><dd>{{ q.court_sex }}</dd></div>
-    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('dollar') }}</span><span>Court filing fee</span></dt><dd>{{ q.filing_fee }} <span class="quick-facts-more">Can't pay? <a href="{{ q.cost_href if q.cost_href is defined else '#cost' }}">See what it costs</a>.</span></dd></div>
-    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('document') }}</span><span>Certified copies</span></dt><dd>{{ q.certified_copy }}</dd></div>
-    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('document') }}</span><span>{{ page.nav_label }} birth certificate cost</span></dt><dd>{{ q.birth_certificate }}</dd></div>
-    {% if q.license is defined %}
-    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('id_card') }}</span><span>Driver license or ID cost</span></dt><dd>{{ q.license }}</dd></div>
-    {% endif %}
-    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('check') }}</span><span>First step</span></dt><dd><a href="{{ q.first_step_href if q.first_step_href is defined else '#steps' }}">{{ q.first_step }}</a></dd></div>
-    {% if q.whats_new is defined %}
-    <div class="quick-facts-row"><dt><span class="qf-icon">{{ icon('shield') }}</span><span>{{ q.whats_new.label }}</span></dt><dd>{{ q.whats_new.text }} <span class="quick-facts-more"><a href="{{ q.whats_new.href if q.whats_new.href is defined else '#' ~ q.whats_new.anchor }}">{{ q.whats_new.link }}</a></span></dd></div>
-    {% endif %}
-  </dl>
-</section>
-{%- endmacro %}
-
 {% macro hub_cards(items) -%}
 <ul class="cards hub-cards">
   {% for item in items %}
   <li class="card card-interactive"{% if item.id is defined and item.id %} id="{{ item.id }}"{% endif %}>
     <div class="card-head">
-      <span class="card-icon">{{ icon(item.icon) }}</span>
+      {% if item.icon is defined and item.icon %}<span class="card-icon">{{ icon(item.icon) }}</span>{% endif %}
       <h3><a class="card-link" href="{{ item.href }}">{{ item.title }}</a></h3>
     </div>
     <p>{{ item.summary }}</p>
@@ -97,27 +77,6 @@
   </li>
   {% endfor %}
 </ul>
-{%- endmacro %}
-
-{% macro bring_reminder(where, items) -%}
-<aside class="bring-strip" aria-label="Reminder: {{ where }}">
-  <p class="bring-head"><span class="callout-icon">{{ icon('checklist') }}</span><span>You are here: {{ where }}</span></p>
-  <p class="bring-label"><strong>Bring or send:</strong> {{ items }}</p>
-</aside>
-{%- endmacro %}
-
-{% macro after_filing(id, steps) -%}
-<section class="after-strip" id="{{ id }}" aria-labelledby="{{ id }}-t">
-  <h3 class="after-title" id="{{ id }}-t"><span class="callout-icon">{{ icon('clock') }}</span>What happens after you file</h3>
-  <ol class="after-list">
-  {% for item in steps %}
-    <li class="after-item">
-      <span class="after-head"><span class="after-num" aria-hidden="true">{{ loop.index }}</span><strong>{{ item.title }}</strong></span>
-      <span class="after-copy">{{ item.text }}</span>
-    </li>
-  {% endfor %}
-  </ol>
-</section>
 {%- endmacro %}
 
 {% macro onthispage(items) -%}

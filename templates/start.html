@@ -1,18 +1,10 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
-{% import "visuals.html" as v %}
-{% import "illustrations.html" as il %}
 {% block head %}<script src="{{ asset('js/start.js') }}" defer></script>{% endblock %}
 {% block main %}
 <p class="kicker">Start here</p>
 <h1>Find the right guide in 2 questions</h1>
-{{ m.lede("Pick your state and topic below, or search the full guide directory beneath the questions. Your answers stay in your browser and are never saved or sent anywhere.") }}
-
-{{ v.stat_hero_strip([
-  {'num': '2', 'label': 'Quick questions', 'note': 'State + topic'},
-  {'num': '68', 'label': 'Plain-language guides', 'note': 'Oregon, Washington, Utah & federal'},
-  {'num': '0', 'label': 'Answers saved or sent', 'note': 'Runs in page memory only'}
-]) }}
+{{ m.lede("Pick your state and topic below, or search the full guide directory beneath the questions. Your answers stay in page memory only and are never saved or sent anywhere.") }}
 
 <div class="callout callout-note no-js-only">
   <p class="callout-title"><strong>JavaScript is off, so browse the full guide directory below.</strong></p>
@@ -24,16 +16,16 @@
 
   <fieldset id="q-state">
     <legend>1. Which state or level do you need?</legend>
-    <label><input type="radio" name="state" value="oregon"> {{ il.state_map_badge('oregon', 'choice-map') }}<span>Oregon</span></label>
-    <label><input type="radio" name="state" value="washington"> {{ il.state_map_badge('washington', 'choice-map') }}<span>Washington</span></label>
-    <label><input type="radio" name="state" value="utah"> {{ il.state_map_badge('utah', 'choice-map') }}<span>Utah</span></label>
-    <label><input type="radio" name="state" value="federal"> {{ il.state_map_badge('federal', 'choice-map') }}<span>Another U.S. state or federal agency only</span></label>
+    <label><input type="radio" name="state" value="oregon"> <span>Oregon</span></label>
+    <label><input type="radio" name="state" value="washington"> <span>Washington</span></label>
+    <label><input type="radio" name="state" value="utah"> <span>Utah</span></label>
+    <label><input type="radio" name="state" value="federal"> <span>Another U.S. state or federal agency only</span></label>
   </fieldset>
 
   <fieldset id="q-topic">
     <legend>2. What are you trying to do?</legend>
-    <label><input type="radio" name="topic" value="medicaid"> <span class="viz-medallion-wrap">{{ il.medallion('shield') }}</span><span>Understand or check 2027 Medicaid work and activity rules, exemptions, or applications</span></label>
-    <label><input type="radio" name="topic" value="id-records"> <span class="viz-medallion-wrap">{{ il.medallion('dmv') }}</span><span>Update a legal name (marriage, divorce, or court order), driver license or ID, birth certificate, Social Security card, or passport</span></label>
+    <label><input type="radio" name="topic" value="medicaid"> <span>Understand or check 2027 Medicaid work and activity rules, exemptions, or applications</span></label>
+    <label><input type="radio" name="topic" value="id-records"> <span>Update a legal name (marriage, divorce, or court order), driver license or ID, birth certificate, Social Security card, or passport</span></label>
   </fieldset>
 
   <div class="btn-row">
@@ -48,7 +40,6 @@
   <div id="start-result-body"></div>
 </section>
 
-{% set state_icons = {'oregon': 'state-or', 'washington': 'state-wa', 'utah': 'state-ut', 'federal': 'federal-star'} %}
 <section id="all-guides" class="guide-directory" aria-labelledby="all-guides-h">
   <h2 id="all-guides-h">Or browse and filter every guide</h2>
   <div class="guide-filter-box js-only">
@@ -59,12 +50,12 @@
 
   <div id="guide-directory-groups">
     <div class="guide-dir-group" data-guide-group>
-      <h3>{{ m.icon('medicaid-shield') }}<span>2027 Medicaid work and activity rules</span></h3>
+      <h3>2027 Medicaid work and activity rules</h3>
       <ul class="guide-dir-list">
       {% for p in pages if p.get('desk') == 'medicaid' %}
         {% set st = p.get('state', '') %}
         <li data-guide-item data-search="{{ (p.title ~ ' ' ~ p.description ~ ' ' ~ st ~ ' ' ~ p.route)|lower }}">
-          <span class="guide-dir-head"><span class="guide-dir-icon">{{ m.icon(state_icons.get(st, 'medicaid-shield')) }}</span><a href="{{ page_url(p.slug) }}">{% if st %}{{ st|capitalize }}: {% endif %}{{ p.title }}</a></span>
+          <span class="guide-dir-head"><a href="{{ page_url(p.slug) }}">{% if st %}{{ st|capitalize }}: {% endif %}{{ p.title }}</a></span>
           <span class="guide-dir-desc">{{ p.description }}</span>
         </li>
       {% endfor %}
@@ -72,12 +63,12 @@
     </div>
 
     <div class="guide-dir-group" data-guide-group>
-      <h3>{{ m.icon('id-card') }}<span>Legal name, ID, and vital records</span></h3>
+      <h3>Legal name, ID, and vital records</h3>
       <ul class="guide-dir-list">
       {% for p in pages if p.get('desk') == 'id-records' %}
         {% set st = p.get('state', '') %}
         <li data-guide-item data-search="{{ (p.title ~ ' ' ~ p.description ~ ' ' ~ st ~ ' ' ~ p.route)|lower }}">
-          <span class="guide-dir-head"><span class="guide-dir-icon">{{ m.icon(state_icons.get(st, 'id-card')) }}</span><a href="{{ page_url(p.slug) }}">{% if st and st|lower not in p.title|lower %}{{ st|capitalize }}: {% endif %}{{ p.title }}</a></span>
+          <span class="guide-dir-head"><a href="{{ page_url(p.slug) }}">{% if st and st|lower not in p.title|lower %}{{ st|capitalize }}: {% endif %}{{ p.title }}</a></span>
           <span class="guide-dir-desc">{{ p.description }}</span>
         </li>
       {% endfor %}
@@ -85,11 +76,11 @@
     </div>
 
     <div class="guide-dir-group" data-guide-group>
-      <h3>{{ m.icon('exemption-check') }}<span>Sources, accessibility &amp; privacy</span></h3>
+      <h3>Sources, accessibility &amp; privacy</h3>
       <ul class="guide-dir-list">
       {% for p in pages if not p.get('desk') and p.slug not in ['index', 'start', '404'] %}
         <li data-guide-item data-search="{{ (p.title ~ ' ' ~ p.description ~ ' ' ~ p.route)|lower }}">
-          <span class="guide-dir-head"><span class="guide-dir-icon">{{ m.icon('birth-cert') }}</span><a href="{{ page_url(p.slug) }}">{{ p.title }}</a></span>
+          <span class="guide-dir-head"><a href="{{ page_url(p.slug) }}">{{ p.title }}</a></span>
           <span class="guide-dir-desc">{{ p.description }}</span>
         </li>
       {% endfor %}

@@ -7,27 +7,18 @@
 {{ m.lede("Choose M, F, or X on a standard or REAL ID Oregon card in person with no court order or medical proof. If you are also changing your name, update Social Security first.") }}
 {{ m.checked_line(page) }}
 
-{% set h1 %}<strong>Update Social Security first for a name change:</strong> REAL ID requires an SSA name match; bring an original or certified marriage certificate, divorce judgment, or court order plus identity and address proof (2 address proofs for REAL ID). {{ src('ID-OR-DMV-NAME') }} {{ src('ID-OR-DMV-PROOF') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}{% endset %}
-{% set h2 %}<strong>Self-selected M, F, or X:</strong> On Oregon standard and REAL ID cards, X means "not specified" and requires zero medical or court paperwork. {{ src('ID-OR-DMV-GENDER') }}{% endset %}
-{% set h3 %}<strong>Separate vehicle titles &amp; record sharing:</strong> Update vehicle titles separately ({{ ext('ID-OR-DMV-NAME') }}); DMV keeps prior card history and shares data with Selective Service and law-enforcement systems. {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-NAME') }}{% endset %}
-{{ v.doc_mockup_id_card(
-  'Oregon DMV',
-  'Driver License · REAL ID · ID Card',
-  'M, F, or X (no proof required)',
-  fact('or_dmv_fee'),
-  [
-    {'icon': 'ssa-card', 'title': 'SSA name match first', 'body': h1},
-    {'icon': 'id-card', 'title': 'Walk-in or appointment', 'body': h2},
-    {'icon': 'warning-triangle', 'title': 'Titles & agency history', 'body': h3}
-  ]
-) }}
+{% set or_dmv_note %}8-year renewal option instead of replacement: $54 license or $43 ID (+$30 for REAL ID). {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}{% endset %}
+{{ v.stat_hero_strip([
+  {'num': '$30 / $40', 'label': 'Replacement license / ID', 'note': '+$30 for REAL ID, or renew'},
+  {'num': 'M, F, or X', 'label': 'Self-selected in person', 'note': 'X means "not specified"; zero proof'},
+  {'num': 'Step 1: SSA', 'label': 'Update Social Security first', 'note': 'Required before DMV for a name change'}
+], id='id-anatomy', note=or_dmv_note) }}
 
-{{ m.bring_reminder('Oregon DMV', 'Current card + ' ~ fact('or_dmv_fee') ~ ' (8-yr renewal: $54 license / $43 ID, +$30 REAL ID), plus certified name-change proof & address docs if updating your name.') }}
-
-<h2 id="dmv-steps">Quick checklist before your visit</h2>
+<h2 id="dmv-steps">What to bring &amp; what updates separately</h2>
 <ul>
-  <li>Go in person (appointment or walk-in) with your current card and fee ({{ fact('or_dmv_fee') }}; 8-year renewal is $54 license / $43 ID, plus $30 for REAL ID). {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}</li>
-  <li>Changing your name too? Confirm Social Security processed your new name first so REAL ID verification clears on the first visit.</li>
+  <li><strong>In-person visit (appointment or walk-in):</strong> Bring your current Oregon card and payment. For a marker-only change, request M, F, or X on the application—no court order or medical letter is asked. {{ src('ID-OR-DMV-GENDER') }}</li>
+  <li><strong>Adding a legal name change:</strong> Confirm Social Security has processed your new name first (REAL ID checks SSA electronically), then bring an original or certified marriage certificate, domestic partnership certificate, divorce judgment, or court order plus identity and address proof (2 address documents for REAL ID). {{ src('ID-OR-DMV-NAME') }} {{ src('ID-OR-DMV-PROOF') }}</li>
+  <li><strong>Vehicle titles &amp; agency records:</strong> Update vehicle titles separately ({{ ext('ID-OR-DMV-NAME') }}). Oregon DMV retains prior card history and shares records with Selective Service and law-enforcement databases. {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-NAME') }}</li>
 </ul>
 
 <h2 id="next-steps">Next steps</h2>

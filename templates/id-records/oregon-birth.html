@@ -7,45 +7,48 @@
 {{ m.lede("If you were born in Oregon, you can change the name, sex (M, F, or X), or both on your birth certificate with a notarized state form and no court order—or send a certified court judgment.") }}
 {{ m.checked_line(page) }}
 
-{% set birth_cost %}{{ fact('or_oha_amend_fee') }} to change it, plus {{ fact('or_oha_cert_fee') }}{% endset %}
-
 {{ m.onthispage([
-  ('birth-anatomy', 'Certificate snapshot'),
-  ('birth-form', 'Way 1: form OHA 2673'),
-  ('birth-court', 'Way 2: court judgment'),
+  ('birth-anatomy', 'Fees at a glance'),
+  ('birth-form', 'Administrative vs. court path'),
+  ('where-to-send', 'Where to mail or drop off'),
   ('minors', 'Under 18'),
   ('next-steps', 'Next steps')
 ]) }}
 
-{{ v.doc_mockup_birth_cert(
-  'Oregon',
-  'Oregon Birth Record (M, F, or X)',
-  'One-time notarized form OHA 2673 changes name, sex (M, F, or X), or both with no court order and no footnote when sex is updated.',
-  'Certified court judgment (from Oregon or another state) plus fee; sealed orders can omit the old-name footnote.',
-  birth_cost
+{{ v.stat_hero_strip([
+  {'num': fact('or_oha_amend_fee'), 'label': 'Vital Records amendment fee', 'note': 'Optional expedite: ' ~ fact('or_oha_expedite')},
+  {'num': '$25', 'label': 'Per certified copy', 'note': '$30 full image for 1903–2007 births'},
+  {'num': 'M, F, or X', 'label': 'Notarized form OHA 2673', 'note': 'One-time administrative change, no court'}
+], id='birth-anatomy') }}
+
+<h2 id="birth-form">Compare the two ways to amend an Oregon birth record</h2>
+<span id="birth-court"></span>
+{{ v.yes_no_split_board(
+  'Way 1: Administrative form OHA 2673 (no court)',
+  [
+    'Use ' ~ ext('ID-OR-OHA-2673') ~ ' or ' ~ ext('ID-OR-OHA-2673-ES') ~ ' once to update name, sex (M, F, or X), or both (later changes require a court order) ' ~ src('ID-OR-OHA-GENDER'),
+    'Fill out to match your current birth record, sign in front of a notary, and attach a photo ID copy (plus name-link proof if your ID shows a different name)',
+    'Changing sex (or name + sex) leaves zero change footnotes; changing name alone notes a name change without printing your prior name'
+  ],
+  'Way 2: Certified court judgment',
+  [
+    'Send a certified court judgment from Oregon or another state with the amendment and certificate fees ' ~ src('ID-OR-OHA-COURT-ORDER'),
+    'Accepted by outside agencies that still ask to see a signed court order for a legal name change',
+    'Court-ordered name-only changes add an old-name footnote unless the court sealed the order'
+  ],
+  yes_kicker='Vital Records form path',
+  no_kicker='Court-order path'
 ) }}
 
-{{ m.bring_reminder('Oregon Vital Records', 'Notarized form OHA 2673 (or certified court judgment), photo ID copy, and ' ~ birth_cost ~ '.') }}
+<h2 id="where-to-send">Where to mail or drop off your packet</h2>
+<p>Make your check or money order payable to <strong>OHA/Vital Records</strong> ({{ fact('or_oha_cert_fee') }}). Mail to {{ m.copyable(fact('or_oha_mail'), 'mailing address') }} or place in the drop box at {{ fact('or_oha_dropbox') }}.</p>
 
-<h2 id="birth-form">Way 1: a notarized form, no court</h2>
-<ul>
-  <li>Use {{ ext('ID-OR-OHA-2673') }} or {{ ext('ID-OR-OHA-2673-ES') }} to update name, sex (M, F, or X), or both once administratively (later changes require a court order). {{ src('ID-OR-OHA-GENDER') }}</li>
-  <li>Fill it out to match your current birth record, sign in front of a notary, and attach a photo ID copy (plus name-link proof if your ID shows a different name).</li>
-  <li>Pay {{ fact('or_oha_amend_fee') }} plus {{ fact('or_oha_cert_fee') }} (check/money order to "OHA/Vital Records"; expedite {{ fact('or_oha_expedite') }}). Mail to {{ m.copyable(fact('or_oha_mail'), 'mailing address') }} or use the drop box at {{ fact('or_oha_dropbox') }}.</li>
-</ul>
-
-<h2 id="birth-court">Way 2: use your court judgment</h2>
-<p>Send a certified court judgment (Oregon or out-of-state) with the {{ fact('or_oha_amend_fee') }} amendment fee. Court-ordered name-only changes add an old-name footnote unless the court sealed the order. {{ src('ID-OR-OHA-GENDER') }} {{ src('ID-OR-OHA-COURT-ORDER') }}</p>
-
-{% call m.deeper('Certificate footnote rules & 2026 confidential court orders', 'or-birth-footnotes') %}
-<ul>
-  <li><strong>Administrative OHA 2673 footnotes:</strong> Changing sex (or name + sex) leaves zero change footnotes and removes old ones; changing name alone via OHA 2673 notes a name change without printing your prior name. Note that some outside agencies still ask for a court order. {{ src('ID-OR-OHA-GENDER') }}</li>
-  <li><strong>2026 confidential court cases:</strong> 2026 Oregon Laws ch. 52 (HB 4088) makes post-July 1, 2026 sex-change court files confidential, but we have not confirmed whether Vital Records treats them like sealed orders for footnotes. {{ src('ID-OR-2026-CH52') }} {{ m.badge('not_confirmed') }} Ask first: {{ m.copyable(fact('or_oha_email'), 'email address') }}</li>
-</ul>
+{% call m.deeper('2026 confidential court orders & footnote question', 'or-birth-footnotes') %}
+<p>2026 Oregon Laws ch. 52 (HB 4088) makes post-July 1, 2026 sex-change court files confidential, but we have not confirmed whether Vital Records treats them like sealed orders for footnotes. {{ src('ID-OR-2026-CH52') }} {{ m.badge('not_confirmed') }} Ask Vital Records before mailing: {{ m.copyable(fact('or_oha_email'), 'email address') }}</p>
 {% endcall %}
 
 <h2 id="minors">Under 18</h2>
-<p>A parent or legal guardian can submit form OHA 2673 for a child born in Oregon ({{ src('ID-OR-OHA-GENDER') }}), or see <a href="{{ page_url('id-records-oregon-court#minors') }}">Oregon court rules for minors</a>.</p>
+<p>A parent or legal guardian can submit form OHA 2673 for a child born in Oregon, or see <a href="{{ page_url('id-records-oregon-court#minors') }}">Oregon court rules for minors</a>. {{ src('ID-OR-OHA-GENDER') }}</p>
 
 <h2 id="next-steps">Next steps</h2>
 <ul>

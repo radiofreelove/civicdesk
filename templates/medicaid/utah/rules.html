@@ -14,18 +14,17 @@
 ]) }}
 
 {{ v.stat_hero_strip([
-  {'num': '$580+', 'label': 'Monthly income', 'note': 'About $134/wk (or 6-mo average)'},
-  {'num': 'Half-time', 'label': 'School schedule', 'note': 'Defined by your school'},
-  {'num': '80 hrs', 'label': 'Monthly activity mix', 'note': 'Work, training, school, volunteer'},
-  {'num': '6 mos', 'label': 'Renewal cycle in 2027', 'note': 'Adult Expansion & TAM'}
+  {'num': '19–64', 'label': 'Adults covered', 'note': 'Adult Expansion & TAM'},
+  {'num': 'Jan. 1', 'label': '2027 applicant start', 'note': 'March 2027+ for renewals'},
+  {'num': '6 mos', 'label': 'Renewal cycle in 2027', 'note': 'Down from 12 months'},
+  {'num': '30 days', 'label': 'Form return window', 'note': 'DWS checks records first'}
 ]) }}
 
 <h2 id="state-choice">A new choice for states</h2>
 <p>On Nov.&nbsp;13, 2026, the federal government gave states a choice through June&nbsp;30, 2027 not to turn anyone down or end coverage solely for not meeting work or activity rules (a <strong>hold harmless period</strong>). As of Nov.&nbsp;21, 2026, Utah has not announced a choice, and its pages do not say what Utah will choose. {{ src('MED-S41') }} {{ src('MED-U01') }} {{ src('MED-U02') }}</p>
-{% call m.deeper('Who the rules cover, lookback windows & federal mitigation timing', 'ut-rules-scope-detail') %}
+{% call m.deeper('Lookback windows & federal mitigation timing', 'ut-rules-scope-detail') %}
 <ul>
-  <li><strong>Who:</strong> Adults ages 19 to 64 in Adult Expansion Medicaid or Targeted Adult Medicaid (TAM); other Utah Medicaid programs do not have these rules. {{ src('MED-U01') }}</li>
-  <li><strong>When they start:</strong> Jan.&nbsp;1, 2027 for new applicants (checking the month before you apply); renewals due March 2027 or later for current members (checking any 1 month since your last approval or renewal). Reviews run every 6 months instead of 12. {{ src('MED-U01') }} {{ src('MED-U04') }} {{ src('MED-U13') }}</li>
+  <li><strong>Lookback window:</strong> New applicants are checked for the month before applying; renewals due March 2027 or later check any 1 month since your last approval or renewal. Other Utah Medicaid programs outside Adult Expansion and TAM do not have these rules. {{ src('MED-U01') }} {{ src('MED-U04') }} {{ src('MED-U13') }}</li>
   <li><strong>Federal choice rules:</strong> States requesting hold harmless from Jan.&nbsp;1, 2027 were asked to notify CMS by Dec.&nbsp;11, 2026. Income and other rules still apply. Read <a href="https://medicaid.utah.gov/community-engagement-requirement/" rel="noreferrer">Utah's community engagement page</a>. {{ src('MED-S41') }}</li>
 </ul>
 {% endcall %}
@@ -54,9 +53,9 @@
   'How 80 monthly hours can add up (~20 hours a week)',
   'You can reach 80 hours in one activity or add qualifying hours together in the same month:',
   [
-    {'icon': 'id-card', 'label': 'Work', 'detail': 'Paid employment or self-employment hours'},
-    {'icon': 'school-cap', 'label': 'School or job training', 'detail': 'Classes or job training program hours'},
-    {'icon': 'caregiver-heart', 'label': 'Volunteering', 'detail': 'Unpaid work with an organized community program'}
+    {'label': 'Work', 'detail': 'Paid employment or self-employment hours'},
+    {'label': 'School or job training', 'detail': 'Classes or job training program hours'},
+    {'label': 'Volunteering', 'detail': 'Unpaid work with an organized community program'}
   ],
   note=ut_hours_note,
   id='ut-hours-stack'
@@ -68,16 +67,12 @@
     {'week': 'Week 1', 'hours': '20 hrs', 'mix': '15 hrs part-time work + 5 hrs community volunteer'},
     {'week': 'Week 2', 'hours': '20 hrs', 'mix': '15 hrs part-time work + 5 hrs job training class'},
     {'week': 'Week 3', 'hours': '20 hrs', 'mix': '20 hrs paid or self-employed work'},
-    {'week': 'Week 4', 'hours': '20 hrs', 'mix': '15 hrs work + 5 hrs organized volunteering = 80 hrs'}
+    {'week': 'Week 4', 'hours': '20 hrs', 'mix': '15 hrs work + 5 hrs organized volunteering'}
   ],
   extra=true,
   id='ut-rules-calendar'
 ) }}
 
-<h2 id="good-to-know">Proof &amp; review rules in Utah</h2>
-<ul class="short">
-  <li><strong>Records checked first:</strong> DWS checks work, school, and benefit databases before asking you for anything.</li>
-  <li><strong>Utah law requires proof:</strong> Under Utah Code 26B-3-142.1 (effective Jan.&nbsp;1, 2027), Utah must use records or documents and cannot rely only on your own word. {{ src('MED-U39') }}</li>
-  <li><strong>30-day form deadline &amp; 6-month reviews:</strong> If DWS asks for a form, you may need to return it within 30 days, and proof may be checked at 6-month renewals. <a href="{{ page_url('medicaid-utah-reasons') }}">See every exemption</a> or <a href="{{ page_url('medicaid-utah-check') }}">take the 1-minute check</a>. {{ src('MED-U04') }}</li>
-</ul>
+<h2 id="good-to-know">Proof rules in Utah</h2>
+<p>DWS checks work, school, and benefit databases before asking you for anything. If records do not show your activity, Utah Code 26B-3-142.1 requires documentary proof rather than self-attestation alone. <a href="{{ page_url('medicaid-utah-reasons') }}">See every exemption</a> or <a href="{{ page_url('medicaid-utah-check') }}">take the 1-minute check</a>. {{ src('MED-U04') }} {{ src('MED-U39') }}</p>
 {% endblock %}

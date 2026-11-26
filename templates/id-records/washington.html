@@ -1,84 +1,57 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
-{% import "illustrations.html" as il %}
 {% block main %}
-<div class="card-head">
-  {{ il.state_map_badge('washington') }}
-  <p class="kicker">Washington</p>
-</div>
+<p class="kicker">Washington</p>
 <h1>Change your name and gender marker in Washington</h1>
 {{ m.lede("Washington splits this into two jobs: your name changes in court (public in district court or sealed in superior court), while your gender marker on a Washington license or birth certificate updates by form with no court needed.") }}
 {{ m.checked_line(page) }}
 
-{% set first_step = 'Choose public or sealed' %}
-{% set birth_cost %}{{ fact('wa_doh_amend_fee') }}; {{ fact('wa_doh_cert_fee') }}{% endset %}
-{% set filing_fee %}varies by court. A sealed name change in superior court is the {{ fact_src('wa_fee_sealed') }}{% endset %}
-
+{% set wa_facts_note %}Sources: court venue &amp; fees {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }} {{ src('ID-WA-RCW-36-18-016') }}; license &amp; birth marker rules {{ src('ID-WA-DOL-GENDER') }} {{ src('ID-WA-DOH-SEX') }}.{% endset %}
 {{ v.stat_hero_strip([
-  {'num': '2 courts', 'label': 'Public district or sealed superior', 'note': 'GR 34 fee waivers available'},
-  {'num': 'No court', 'label': 'DOL & DOH gender marker', 'note': 'M, F, or X by state form'},
-  {'num': 'Nov. 2026', 'label': 'Dedicated DOH birth forms', 'note': 'Old DOH 422-034 retired'},
-  {'num': '$0', 'label': 'Marker-only DOL update', 'note': 'In person or mail form 520043'}
-]) }}
+  {'num': '$290', 'label': 'Sealed superior court base fee', 'note': 'GR 34 waivers; copies ' ~ fact('wa_fee_cert_copy')},
+  {'num': 'No court', 'label': 'DOL & DOH gender marker', 'note': 'Choose M, F, or X by state form'},
+  {'num': '$0', 'label': 'Marker-only update fee', 'note': fact('wa_dol_fee') ~ '; ' ~ fact('wa_doh_amend_fee')},
+  {'num': fact('wa_doh_cert_fee'), 'label': 'Birth certificate copy', 'note': 'Dedicated Nov. 2026 DOH forms'}
+], id='quick-facts', note=wa_facts_note) }}
 
-<h2 id="order">Recommended Washington sequence</h2>
+<h2 id="order">Why order matters in Washington</h2>
 {{ v.process_flow([
-  {'icon': 'court', 'title': 'Court (name change)', 'body': 'Public district court or sealed superior court.', 'meta': 'Waiver available'},
-  {'icon': 'ssa', 'title': 'Social Security', 'body': 'Update your legal name before visiting WA DOL.', 'meta': 'Free card'},
-  {'icon': 'dmv', 'title': 'Dept. of Licensing', 'body': 'Update name and choose M, F, or X.', 'meta': fact('wa_dol_fee')},
-  {'icon': 'birth', 'title': 'Birth & passport', 'body': 'Use DOH 422-143 / 422-126 and check federal rules.', 'meta': fact('wa_doh_cert_fee')}
+  {'title': 'Court (name change)', 'body': 'File in any district court (public) or superior court (sealed).'},
+  {'title': 'Social Security', 'body': 'Update your legal name with SSA before visiting WA DOL.'},
+  {'title': 'Dept. of Licensing', 'body': 'Update your name in person and select M, F, or X.'},
+  {'title': 'Birth & passport', 'body': 'Mail DOH 422-143 / 422-126 and review 2026 passport rules.'}
 ], cols=4) }}
 
 {% call m.callout('watch', 'Policy update: Washington birth certificate forms (Nov. 2026)', 'wa-policy-update') %}
 <p>On November 4, 2026, Washington DOH retired the old Affidavit for Correction (DOH 422-034). Keep using DOH 422-143 / 422-144 (sex designation) and DOH 422-126 (court-ordered name change); for minor name amendments without court, use the new form on {{ ext('ID-WA-DOH-AMEND-BIRTH') }}. {{ src('ID-WA-DOH-AMEND-BIRTH') }} {{ src('ID-WA-DOH-SEX') }} <a href="{{ page_url('id-records-washington-birth') }}">See dedicated forms &amp; timing</a>.</p>
 {% endcall %}
 
-{{ m.quickfacts(page, {
-  'court_name': fact_src('wa_court_name'),
-  'sex_label': 'Court needed to change your gender marker',
-  'court_sex': fact_src('wa_court_marker'),
-  'filing_fee': filing_fee,
-  'certified_copy': fact_src('wa_fee_cert_copy'),
-  'birth_certificate': birth_cost ~ ' ' ~ src('ID-WA-DOH-SEX'),
-  'license': fact_src('wa_dol_fee'),
-  'first_step': first_step,
-  'first_step_href': page_url('id-records-washington-court#steps'),
-  'cost_href': page_url('id-records-washington-court#cost'),
-  'whats_new': {'label': 'Nov. 2026 update', 'text': 'WA DOH retired the old birth certificate correction form (DOH 422-034). ' ~ src('ID-WA-DOH-AMEND-BIRTH'), 'href': page_url('id-records-washington-birth'), 'link': 'See which birth form to use'}
-}) }}
-
 <h2 id="guides">Your Washington record guides</h2>
 {{ m.hub_cards([
   {
     'id': 'steps',
-    'icon': 'court-gavel',
     'title': 'Court order',
     'href': page_url('id-records-washington-court'),
-    'summary': 'Change your legal name in district court (public) or superior court (sealed for gender identity or safety). Includes fee waivers, hearings, and minor rules.',
-    'meta': 'Sealed superior court: ' ~ fact('wa_fee_sealed') ~ ' (waiver available)'
+    'summary': 'How to choose between public district court and sealed superior court, hardship and GR 34 fee waivers, hearings, and minor rules.'
   },
   {
     'id': 'birth-certificate',
-    'icon': 'birth-cert',
     'title': 'Washington birth certificate',
     'href': page_url('id-records-washington-birth'),
-    'summary': 'Update sex designation (M, F, or X) with notarized DOH 422-143 and no court order; add DOH 422-126 + court order for a legal name change.',
-    'meta': 'Cost: ' ~ birth_cost
+    'summary': 'Update sex designation (M, F, or X) with notarized DOH 422-143 and no court order, plus DOH 422-126 for court-ordered name changes.'
   },
   {
     'id': 'license',
-    'icon': 'dmv-license',
     'title': 'Driver license or ID',
     'href': page_url('id-records-washington-id'),
-    'summary': 'Choose M, F, or X on a standard or enhanced (EDL/EID) card in person or by mail using form 520043.',
-    'meta': 'Cost: ' ~ fact('wa_dol_fee')
+    'summary': 'Choose M, F, or X on a standard or enhanced (EDL/EID) card in person or by mail using form 520043, including sealed-order assistance.'
   }
 ]) }}
 
 {% call m.deeper('Why sealed filings & agency forms matter, plus more tools', 'wa-why') %}
 <ul>
-  <li>Sealed superior court name changes allow zero public access to the filing, hearing, or order ({{ src('ID-WA-RCW-4-24-130') }}), and WA DOH requires its own form rather than a court order for birth-record sex designation ({{ src('ID-WA-DOH-SEX') }}).</li>
+  <li>Sealed superior court name changes allow zero public access to the filing, hearing, or order, and WA DOH requires its own form rather than a court order for birth-record sex designation. {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-DOH-SEX') }}</li>
   <li>Next tools: <a href="{{ page_url('id-records-federal') }}">Federal records in 2026</a>, <a href="{{ page_url('id-records-after') }}">After-court checklist</a>, and <a href="{{ page_url('id-records-help') }}">Free or low-cost help</a>.</li>
 </ul>
 {% endcall %}

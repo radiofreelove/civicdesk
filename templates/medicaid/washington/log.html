@@ -10,15 +10,15 @@
 {{ v.calendar_80hr_grid(
   'Washington Apple Health',
   [
-    {'week': 'Week 1', 'hours': '20 hrs', 'mix': 'Paid, self-employed, or in-kind work'},
-    {'week': 'Week 2', 'hours': '20 hrs', 'mix': 'Converted school credits (1–6 credits = 13–78 hrs/mo)'},
-    {'week': 'Week 3', 'hours': '20 hrs', 'mix': 'Work program or community service'},
-    {'week': 'Week 4', 'hours': '20 hrs', 'mix': 'Any combination totaling 80+ hrs in the month'}
+    {'week': 'Week 1', 'hours': '20 hrs', 'mix': '15 hrs paid wages + 5 hrs community service'},
+    {'week': 'Week 2', 'hours': '20 hrs', 'mix': '13 hrs converted school credit + 7 hrs work program'},
+    {'week': 'Week 3', 'hours': '20 hrs', 'mix': '20 hrs self-employment, seasonal, or in-kind work'},
+    {'week': 'Week 4', 'hours': '20 hrs', 'mix': '15 hrs paid wages + 5 hrs community service'}
   ],
   proofs=[
-    {'icon': 'fee-waiver', 'title': 'Pay stubs or seasonal ledger', 'detail': 'Seasonal workers may average $580/mo over 6 months'},
-    {'icon': 'school-cap', 'title': 'Credit or training schedule', 'detail': 'Shows half-time status or 1–6 credits'},
-    {'icon': 'caregiver-heart', 'title': 'Community service sheet', 'detail': 'Organization name, contact, and monthly total'}
+    {'title': 'Pay stubs or seasonal ledger', 'detail': 'Seasonal workers may average $580/mo over 6 months'},
+    {'title': 'Credit or training schedule', 'detail': 'Shows half-time status or 1–6 credits (13–78 hrs/mo)'},
+    {'title': 'Community service sheet', 'detail': 'Organization name, contact, and monthly total'}
   ],
   note=wa_log_note,
   id='wa-log-calendar'

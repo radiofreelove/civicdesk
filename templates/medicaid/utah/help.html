@@ -13,38 +13,27 @@
   ('languages', 'Languages & Spanish forms')
 ]) }}
 
-{% set h_person %}Book free statewide help with <a href="https://takecareutah.org/" rel="noreferrer">Take Care Utah</a> or visit a <a href="https://jobs.utah.gov/jsp/officesearch/" rel="noreferrer">DWS employment center</a>.{% endset %}
-{% set h_phone %}Call DWS eligibility at <span class="nowrap"><a href="tel:1-866-435-7414">1-866-435-7414</a></span> (or <span class="nowrap"><a href="tel:1-801-526-0950">801-526-0950</a></span> in Salt Lake).{% endset %}
-{% set h_lang %}Free interpreters for calls, visits, and hearings, plus Spanish application and appeal PDFs.{% endset %}
-{{ v.channel_cards([
-  {'kind': 'navigator', 'title': 'Take Care Utah & DWS offices', 'body': h_person},
-  {'kind': 'phone', 'title': 'Phone & Relay Utah (711)', 'body': h_phone},
-  {'kind': 'paper', 'title': 'Free interpreters & Spanish forms', 'body': h_lang}
-]) }}
+<h2 id="in-person">Help in person &amp; toolkits</h2>
+<p><a href="https://jobs.utah.gov/jsp/officesearch/" rel="noreferrer">Find a DWS employment center</a>, <a href="https://takecareutah.org/" rel="noreferrer">book free help with Take Care Utah</a>, or browse official H.R.&nbsp;1 letters and guides on the <a href="https://obbba.medicaid.utah.gov/" rel="noreferrer">Utah Medicaid H.R.&nbsp;1 page</a>.</p>
 
-<h2 id="in-person" class="icon-heading">{{ m.icon('inperson') }}<span>Help in person &amp; toolkits</span></h2>
-<p><a href="https://jobs.utah.gov/jsp/officesearch/" rel="noreferrer">Find a DWS office near you</a>, <a href="https://takecareutah.org/" rel="noreferrer">schedule with Take Care Utah</a>, or browse official H.R.&nbsp;1 letters and guides on the <a href="https://obbba.medicaid.utah.gov/" rel="noreferrer">Utah Medicaid H.R.&nbsp;1 page</a>.</p>
-
-<h2 id="other-formats" class="icon-heading">{{ m.icon('languages') }}<span>Disability aids &amp; other formats</span></h2>
+<h2 id="other-formats">Disability aids &amp; other formats</h2>
 <p>Need free auxiliary aids or disability accommodations to use DWS? Call <span class="nowrap"><a href="tel:1-801-526-9240">801-526-9240</a></span>.</p>
 
-<h2 id="phone" class="icon-heading">{{ m.icon('phone') }}<span>Key Utah phone numbers</span></h2>
-{% set p_dws %}<span class="nowrap"><a href="tel:1-866-435-7414">1-866-435-7414</a></span> (Salt Lake: <span class="nowrap"><a href="tel:1-801-526-0950">801-526-0950</a></span>).{% endset %}
-{% set p_med %}<span class="nowrap"><a href="tel:1-866-608-9422">1-866-608-9422</a></span> (some pages list <span class="nowrap"><a href="tel:1-866-659-6176">866-659-6176</a></span>).{% endset %}
-{% set p_tcu %}<span class="nowrap"><a href="tel:1-801-433-2299">801-433-2299</a></span> — free application, renewal, and letter help.{% endset %}
-{% set p_hear %}<span class="nowrap"><a href="tel:1-877-837-3247">877-837-3247</a></span> — DWS Fair Hearings.{% endset %}
-{% set p_uls %}<span class="nowrap"><a href="tel:1-801-328-8891">801-328-8891</a></span> or <span class="nowrap"><a href="tel:1-800-662-4245">800-662-4245</a></span>.{% endset %}
-{% set p_relay %}Dial <a href="tel:711">711</a> (Spanish Relay: <span class="nowrap"><a href="tel:1-888-346-3162">1-888-346-3162</a></span>); Marketplace: <span class="nowrap"><a href="tel:1-800-318-2596">1-800-318-2596</a></span>.{% endset %}
-{{ v.jargon_flashcards([
+<h2 id="phone">Key Utah phone numbers</h2>
+{% set p_dws %}Salt Lake local: <span class="nowrap"><a href="tel:1-801-526-0950">801-526-0950</a></span>. Applications, renewals, and eligibility questions.{% endset %}
+{% set p_med %}Alternative Utah Medicaid line listed on some state pages: <span class="nowrap"><a href="tel:1-866-659-6176">866-659-6176</a></span>.{% endset %}
+{% set p_uls %}Salt Lake local: <span class="nowrap"><a href="tel:1-801-328-8891">801-328-8891</a></span>. Free legal help with denials and appeals.{% endset %}
+{% set p_relay %}Spanish Relay: <span class="nowrap"><a href="tel:1-888-346-3162">1-888-346-3162</a></span>; HealthCare.gov Marketplace: <span class="nowrap"><a href="tel:1-800-318-2596">1-800-318-2596</a></span>.{% endset %}
+{{ v.glossary_list([
   {'term': 'DWS Eligibility', 'plain': '1-866-435-7414', 'detail': p_dws},
   {'term': 'Utah Medicaid', 'plain': '1-866-608-9422', 'detail': p_med},
-  {'term': 'Take Care Utah', 'plain': '801-433-2299', 'detail': p_tcu},
-  {'term': 'Fair Hearings', 'plain': '877-837-3247', 'detail': p_hear},
+  {'term': 'Take Care Utah', 'plain': '801-433-2299', 'detail': 'Free statewide application, renewal, and letter help.'},
+  {'term': 'DWS Fair Hearings', 'plain': '877-837-3247', 'detail': 'Appeal a Medicaid denial or closure within 90 days.'},
   {'term': 'Utah Legal Services', 'plain': '800-662-4245', 'detail': p_uls},
-  {'term': 'Relay Utah & Marketplace', 'plain': '711 / 1-800-318-2596', 'detail': p_relay}
+  {'term': 'Relay Utah (TTY)', 'plain': '711', 'detail': p_relay}
 ], id='ut-phone-cards') }}
 
-<h2 id="languages" class="icon-heading">{{ m.icon('paper') }}<span>Help in your language &amp; Spanish forms</span></h2>
+<h2 id="languages">Help in your language &amp; Spanish forms</h2>
 <ul>
   <li>Free translation and interpreter help is available when applying or at a fair hearing.</li>
   <li><a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_Spanish.pdf" hreflang="es" rel="noreferrer">Medical application, form 61MED (Spanish PDF)</a></li>
