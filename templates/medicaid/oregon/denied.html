@@ -11,7 +11,7 @@
   {{ v.editorial_art('official-notice.webp', variant='spot') }}
 </div>
 
-{% set or_denied_cites %}Sources: hearings &amp; continued benefits {{ src('MED-S04') }} {{ src('MED-S14') }}; reapplying any month {{ src('MED-S06') }}; hold harmless delay through June 30, 2027 {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}.{% endset %}
+{% set or_denied_cites %}{{ src('MED-S04') }} {{ src('MED-S14') }} {{ src('MED-S06') }} {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}{% endset %}
 {{ v.swimlane_timeline(
   'Appeal & aid-paid-pending timeline',
   [

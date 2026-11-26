@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "broadsheet.html" as bs %}
 {% block main %}
 <div class="hero-split">
   <div class="hero-copy">
@@ -12,7 +13,7 @@
   {{ v.editorial_art('medicaid-calendar.webp', variant='hero') }}
 </div>
 
-{% set med_cites %}Sources for key dates: retroactive bill cutoffs {{ src('MED-S01') }} {{ src('MED-WA03') }} {{ src('MED-U02') }}; federal start &amp; Utah tribal proof {{ src('MED-S27') }} {{ src('MED-U28') }}; hold harmless announcements {{ src('MED-S41') }} {{ src('MED-S53') }} {{ src('MED-WA27') }}.{% endset %}
+{% set med_cites %}{{ src('MED-S01') }} {{ src('MED-WA03') }} {{ src('MED-U02') }} {{ src('MED-S27') }} {{ src('MED-U28') }} {{ src('MED-S41') }} {{ src('MED-S53') }} {{ src('MED-WA27') }}{% endset %}
 {{ v.timeline_strip([
   {'kind': 'deadline', 'date': 'Through Dec. 31, 2026', 'href': page_url('medicaid-oregon-bills'), 'label': '3-month past bill window', 'note': 'Past bill help drops to 1 month for expansion adults in 2027.', 'note_show_until': '2026-12-31'},
   {'kind': 'info', 'date': 'Jan. 1, 2027', 'href': '#states', 'label': 'Federal rules & 6-mo renewals start', 'note': 'Applies to many expansion adults 19 to 64 without Medicare.'},
@@ -20,37 +21,23 @@
 ], title='Key deadlines across states', heading_id='medicaid-dates-h', note=med_cites) }}
 
 <h2 id="states">Pick your state guide or 1-minute check</h2>
-<ul class="cards state-cards">
-  <li class="card">
-    <h3><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a></h3>
-    <p>OHP Plus &amp; Healthier Oregon ages 19 to 64, hold harmless delay through June 30, 2027, 2027 health self-attestation, and 35-day letter deadlines.</p>
-    <div class="btn-row">
-      <a class="btn" href="{{ page_url('medicaid-oregon') }}">Oregon guide</a>
-      <a class="btn-secondary" href="{{ page_url('medicaid-oregon-check') }}">1-minute OHP check</a>
-    </div>
-    <p class="card-meta">Sources checked {% if state_checked['med_or']['oldest'] == state_checked['med_or']['newest'] %}<time datetime="{{ state_checked['med_or']['oldest'] }}">{{ state_checked['med_or']['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked['med_or']['oldest'] }}">{{ state_checked['med_or']['oldest']|human_date }}</time> to <time datetime="{{ state_checked['med_or']['newest'] }}">{{ state_checked['med_or']['newest']|human_date }}</time>{% endif %}</p>
-  </li>
-
-  <li class="card">
-    <h3><a href="{{ page_url('medicaid-washington') }}">Washington Apple Health</a></h3>
-    <p>Apple Health for Adults ages 19 to 64, HCA delay through June 30, 2027, 6 ways to meet the rules, credit-hour conversion, and 15-day letters.</p>
-    <div class="btn-row">
-      <a class="btn" href="{{ page_url('medicaid-washington') }}">Washington guide</a>
-      <a class="btn-secondary" href="{{ page_url('medicaid-washington-check') }}">1-minute Apple Health check</a>
-    </div>
-    <p class="card-meta">Sources checked {% if state_checked['med_wa']['oldest'] == state_checked['med_wa']['newest'] %}<time datetime="{{ state_checked['med_wa']['oldest'] }}">{{ state_checked['med_wa']['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked['med_wa']['oldest'] }}">{{ state_checked['med_wa']['oldest']|human_date }}</time> to <time datetime="{{ state_checked['med_wa']['newest'] }}">{{ state_checked['med_wa']['newest']|human_date }}</time>{% endif %}</p>
-  </li>
-
-  <li class="card">
-    <h3><a href="{{ page_url('medicaid-utah') }}">Utah Medicaid</a></h3>
-    <p>Adult Expansion &amp; Targeted Adult Medicaid ages 19 to 64, Utah Code 26B-3-142.1 verification rules, Jan. 1, 2027 tribal proof, and myCase steps.</p>
-    <div class="btn-row">
-      <a class="btn" href="{{ page_url('medicaid-utah') }}">Utah guide</a>
-      <a class="btn-secondary" href="{{ page_url('medicaid-utah-check') }}">1-minute Utah check</a>
-    </div>
-    <p class="card-meta">Sources checked {% if state_checked['med_ut']['oldest'] == state_checked['med_ut']['newest'] %}<time datetime="{{ state_checked['med_ut']['oldest'] }}">{{ state_checked['med_ut']['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked['med_ut']['oldest'] }}">{{ state_checked['med_ut']['oldest']|human_date }}</time> to <time datetime="{{ state_checked['med_ut']['newest'] }}">{{ state_checked['med_ut']['newest']|human_date }}</time>{% endif %}</p>
-  </li>
-</ul>
+{% macro checked(key) -%}
+Sources checked {% if state_checked[key]['oldest'] == state_checked[key]['newest'] %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time> to <time datetime="{{ state_checked[key]['newest'] }}">{{ state_checked[key]['newest']|human_date }}</time>{% endif %}
+{%- endmacro %}
+{{ bs.state_tiles([
+  {'state': 'Oregon', 'program': 'Oregon Health Plan (OHP)', 'href': page_url('medicaid-oregon'),
+   'summary': 'OHP Plus and Healthier Oregon, ages 19 to 64. Denials for work rules paused through June 30, 2027. You get 35 days to answer a letter.',
+   'meta': checked('med_or'),
+   'actions': [{'label': 'Oregon guide', 'href': page_url('medicaid-oregon')}, {'label': '1-minute OHP check', 'href': page_url('medicaid-oregon-check')}]},
+  {'state': 'Washington', 'program': 'Apple Health', 'href': page_url('medicaid-washington'),
+   'summary': 'Apple Health for Adults, ages 19 to 64. Denials for work rules paused through June 30, 2027. Six ways to meet the rules.',
+   'meta': checked('med_wa'),
+   'actions': [{'label': 'Washington guide', 'href': page_url('medicaid-washington')}, {'label': '1-minute Apple Health check', 'href': page_url('medicaid-washington-check')}]},
+  {'state': 'Utah', 'program': 'Utah Medicaid', 'href': page_url('medicaid-utah'),
+   'summary': 'Adult Expansion and Targeted Adult Medicaid, ages 19 to 64. No enforcement delay announced as of our last check. Tribal proof rules start Jan. 1, 2027.',
+   'meta': checked('med_ut'),
+   'actions': [{'label': 'Utah guide', 'href': page_url('medicaid-utah')}, {'label': '1-minute Utah Medicaid check', 'href': page_url('medicaid-utah-check')}]}
+]) }}
 
 {% call m.callout('changed', 'Nov. 2026 federal hold harmless update & active lawsuits', 'hold-harmless') %}
 <p><strong>Federal hold harmless option:</strong> On November 13, 2026, CMS allowed states to delay denials and coverage terminations caused solely by work rules through June 30, 2027 while still running eligibility checks. Oregon and Washington announced they are taking this option; Utah had not announced it as of our latest check. {{ src('MED-S41') }} {{ src('MED-S53') }} {{ src('MED-WA27') }}</p>

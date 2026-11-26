@@ -1,4 +1,4 @@
-<!doctype html>
+{% import "broadsheet.html" as bs %}<!doctype html>
 <html lang="en" data-theme="auto" data-size="m">
 <head>
 <meta charset="utf-8">
@@ -22,17 +22,19 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{{ asset(site.brand.favicon_svg) }}" type="image/svg+xml">
 {% if site.brand.apple_touch_icon %}<link rel="apple-touch-icon" href="{{ asset(site.brand.apple_touch_icon) }}">
-{% endif %}<link rel="stylesheet" href="{{ asset('css/site.css') }}">
-{% if fonts_available %}<link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
-{% endif %}<script src="{{ asset('js/prefs.js') }}"></script>
+{% endif %}{#- Preload the exact URL fonts.css requests (no ?v= query), or the browser fetches the font twice. -#}
+<link rel="preload" href="{{ asset('fonts/SourceSerif4-Latin.woff2').split('?')[0] }}" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ asset('css/site.css') }}">
+<link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
+<script src="{{ asset('js/prefs.js') }}"></script>
 <script src="{{ asset('js/site.js') }}" defer></script>
 {% for script_name in page.get('scripts', []) %}<script src="{{ asset('js/' ~ script_name ~ '.js') }}" defer></script>
 {% endfor %}{% block head %}{% endblock %}
 </head>
-<body>
+{% set desk = page.get('desk', '') %}
+<body class="desk-{{ desk or 'site' }}">
 <a class="skip-link" href="#main">Skip to main content</a>
 
-{% set desk = page.get('desk', '') %}
 {% set current_state = page.get('state', '') %}
 
 {% if desk == 'id-records' %}
@@ -83,6 +85,7 @@
       <button class="settings-btn js-only" type="button" id="settings-open" aria-haspopup="dialog" aria-controls="settings">Reading settings</button>
     </div>
   </div>
+  {{ bs.press_rule() }}
   <nav class="site-nav" aria-label="Main navigation">
     <ul class="wrap">
     {% for target_slug, label in nav_items(page) %}
@@ -104,34 +107,10 @@
     {% endif %}
 {% block main %}{% endblock %}
 
+{#- Filled after rendering by scripts/build.py apply_sources_layer(): one Sources panel, grouped
+    by page section (see broadsheet.html sources_panel). -#}
 {% if page.slug not in ['sources', 'medicaid-sources', 'id-records-sources', '404'] and used_sources() %}
-    {% set source_list %}
-      <p>Every source shows its 4-tier honesty label, the date printed on it, and when we last checked it. <a href="{{ page_url('sources#labels') }}">See every source and what each label means</a>.</p>
-      <ol>
-      {% for s in used_sources() %}
-        <li id="src-{{ s.id|lower }}">
-          <a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a>{% if s.get('format') == 'PDF' %} <span class="tag">PDF</span>{% endif %}, {{ s.publisher }}.
-          {{ status_badge(s.status) }}
-          Date on it: {{ s.document_date }}.
-          Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time>.
-          Read depth: {{ read_depth_labels[s.read_depth] }}.
-          Read by: {{ read_by_labels[s.read_by] }}.
-        </li>
-      {% endfor %}
-      </ol>
-    {% endset %}
-    <section class="page-sources" aria-labelledby="page-sources-h">
-      <h2 id="page-sources-h">Sources for this page</h2>
-      {% if page.get('tool') %}
-      <p>Each result step above links to its primary source.</p>
-      <details class="sources-toggle">
-        <summary>Show all {{ used_sources()|length }} sources</summary>
-        {{ source_list }}
-      </details>
-      {% else %}
-      {{ source_list }}
-      {% endif %}
-    </section>
+<!--cd-source-panel-->
 {% endif %}
   </div>
   <div class="vh" id="announcer" role="status" aria-live="polite"></div>
@@ -173,9 +152,9 @@
     <fieldset>
       <legend>Colors</legend>
       <label><input type="radio" name="theme" value="auto"> Match my device</label>
-      <label><input type="radio" name="theme" value="light"> Plain white paper</label>
-      <label><input type="radio" name="theme" value="warm"> Warm paper</label>
-      <label><input type="radio" name="theme" value="dark"> Dark slate</label>
+      <label><input type="radio" name="theme" value="light"> Newsprint (standard)</label>
+      <label><input type="radio" name="theme" value="warm"> Plain white paper</label>
+      <label><input type="radio" name="theme" value="dark"> Dark ink</label>
       <label><input type="radio" name="theme" value="contrast"> High contrast</label>
     </fieldset>
 

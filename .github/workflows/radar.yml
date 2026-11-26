@@ -151,10 +151,10 @@ jobs:
           fi
           gh label create "policy-radar" \
             --description "Opened or updated by the scheduled CivicDesk Policy Wire workflow" \
-            --color "1D70B8" 2>/dev/null || true
+            --color "0088B0" 2>/dev/null || true
           gh label create "$DESK_LABEL" \
             --description "CivicDesk Policy Wire dispatches for the $DESK desk" \
-            --color "C85A70" 2>/dev/null || true
+            --color "D6006C" 2>/dev/null || true
           if [ "$urgent_count" -gt 0 ]; then
             gh label create "wire:urgent" \
               --description "Contains primary regulatory/court filings or urgent statutory/fee changes" \

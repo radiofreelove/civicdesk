@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "broadsheet.html" as bs %}
 {% block main %}
-<p class="kicker">Oregon</p>
-<h1>Change your name and legal sex in Oregon</h1>
-{{ m.lede("One court form can change your name, your legal sex, or both. Since July 1, 2026, any case that includes a sex change is confidential by law, and your Oregon driver license and Oregon birth certificate can change without court.") }}
-{{ m.checked_line(page) }}
+{% set guide_lede %}{{ m.lede("One court form can change your name, your legal sex, or both. Since July 1, 2026, any case that includes a sex change is confidential by law, and your Oregon driver license and Oregon birth certificate can change without court.") }}{% endset %}
+{{ bs.page_head('Change your name and legal sex in Oregon', kicker='Oregon', purpose=guide_lede, art=v.editorial_art(page.art, variant='hero'), checked=m.checked_line(page)) }}
 
-{% set or_facts_note %}Sources: circuit court rules &amp; fees {{ src('ID-OR-ORS-33') }} {{ src('ID-OR-OJD-ADULT-PACKET') }} {{ src('ID-OR-OJD-FEES') }}; birth record {{ src('ID-OR-OHA-GENDER') }}; Oregon DMV {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}.{% endset %}
+{% set or_facts_note %}{{ src('ID-OR-ORS-33') }} {{ src('ID-OR-OJD-ADULT-PACKET') }} {{ src('ID-OR-OJD-FEES') }} {{ src('ID-OR-OHA-GENDER') }} {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}{% endset %}
 {{ v.stat_hero_strip([
   {'num': fact('or_fee_petition'), 'label': 'Circuit court petition fee', 'note': 'Free waiver; copies ' ~ fact('or_fee_certified_copy')},
   {'num': 'No court', 'label': 'DMV & Oregon birth record', 'note': 'M, F, or X by self-attested state form'},
@@ -16,7 +15,6 @@
 ], id='quick-facts', note=or_facts_note) }}
 
 <h2 id="order">Why order matters in Oregon</h2>
-{{ v.editorial_art('id-sequence.webp', variant='wide') }}
 {{ v.process_flow([
   {'title': 'Court or certificate', 'body': 'Use a circuit court order (or marriage/divorce record) for a name change.'},
   {'title': 'Social Security', 'body': 'Update your legal name with SSA first so DMV checks match.'},
@@ -29,26 +27,29 @@
 {% endcall %}
 
 <h2 id="guides">Your Oregon record guides</h2>
-{{ m.hub_cards([
+{{ bs.step_timeline([
   {
     'id': 'steps',
     'title': 'Court order',
     'href': page_url('id-records-oregon-court'),
-    'summary': 'Step-by-step adult and minor petitions for name, legal sex (M, F, or nonbinary), or both—including Guide & File, fee waivers, and confidentiality.'
+    'body': 'Step-by-step adult and minor petitions for name, legal sex (M, F, or nonbinary), or both—including Guide & File, fee waivers, and confidentiality.',
+    'link_label': 'Open the court order guide'
   },
   {
     'id': 'birth-certificate',
     'title': 'Oregon birth certificate',
     'href': page_url('id-records-oregon-birth'),
-    'summary': 'How to amend name, sex (M, F, or X), or both using one-time notarized form OHA 2673 or a certified court judgment, plus footnote rules.'
+    'body': 'How to amend name, sex (M, F, or X), or both using one-time notarized form OHA 2673 or a certified court judgment, plus footnote rules.',
+    'link_label': 'Open the Oregon birth certificate guide'
   },
   {
     'id': 'license',
     'title': 'Driver license or ID',
     'href': page_url('id-records-oregon-id'),
-    'summary': 'What to bring to an Oregon DMV office for a standard or REAL ID card, Social Security matching, and separate vehicle title updates.'
+    'body': 'What to bring to an Oregon DMV office for a standard or REAL ID card, Social Security matching, and separate vehicle title updates.',
+    'link_label': 'Open the driver license or ID guide'
   }
-]) }}
+], label='Your Oregon record guides, in order') }}
 
 {% call m.deeper('Why court judgments still help & more tools in your path', 'or-why') %}
 <ul>

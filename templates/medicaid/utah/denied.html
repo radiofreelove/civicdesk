@@ -11,7 +11,7 @@
   {{ v.editorial_art('official-notice.webp', variant='spot') }}
 </div>
 
-{% set ut_denied_cites %}Sources: 15-day continued benefits &amp; 90-day fair hearing deadlines {{ src('MED-U19') }}; Utah rule pages &amp; federal choice status {{ src('MED-U01') }} {{ src('MED-U02') }}.{% endset %}
+{% set ut_denied_cites %}{{ src('MED-U19') }} {{ src('MED-U01') }} {{ src('MED-U02') }}{% endset %}
 {{ v.swimlane_timeline(
   'Your appeal, continued-benefits & reapplication timeline',
   [

@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "broadsheet.html" as bs %}
 {% block main %}
-<p class="kicker">Washington</p>
-<h1>Change your name and gender marker in Washington</h1>
-{{ m.lede("Washington splits this into two jobs: your name changes in court (public in district court or sealed in superior court), while your gender marker on a Washington license or birth certificate updates by form with no court needed.") }}
-{{ m.checked_line(page) }}
+{% set guide_lede %}{{ m.lede("Washington splits this into two jobs: your name changes in court (public in district court or sealed in superior court), while your gender marker on a Washington license or birth certificate updates by form with no court needed.") }}{% endset %}
+{{ bs.page_head('Change your name and gender marker in Washington', kicker='Washington', purpose=guide_lede, art=v.editorial_art(page.art, variant='hero'), checked=m.checked_line(page)) }}
 
-{% set wa_facts_note %}Sources: court venue &amp; fees {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }} {{ src('ID-WA-RCW-36-18-016') }}; license &amp; birth marker rules {{ src('ID-WA-DOL-GENDER') }} {{ src('ID-WA-DOH-SEX') }}.{% endset %}
+{% set wa_facts_note %}{{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }} {{ src('ID-WA-RCW-36-18-016') }} {{ src('ID-WA-DOL-GENDER') }} {{ src('ID-WA-DOH-SEX') }}{% endset %}
 {{ v.stat_hero_strip([
   {'num': '$290', 'label': 'Sealed superior court base fee', 'note': 'GR 34 waivers; copies ' ~ fact('wa_fee_cert_copy')},
   {'num': 'No court', 'label': 'DOL & DOH gender marker', 'note': 'Choose M, F, or X by state form'},
@@ -16,7 +15,6 @@
 ], id='quick-facts', note=wa_facts_note) }}
 
 <h2 id="order">Why order matters in Washington</h2>
-{{ v.editorial_art('id-sequence.webp', variant='wide') }}
 {{ v.process_flow([
   {'title': 'Court (name change)', 'body': 'File in any district court (public) or superior court (sealed).'},
   {'title': 'Social Security', 'body': 'Update your legal name with SSA before visiting WA DOL.'},
@@ -29,26 +27,29 @@
 {% endcall %}
 
 <h2 id="guides">Your Washington record guides</h2>
-{{ m.hub_cards([
+{{ bs.step_timeline([
   {
     'id': 'steps',
     'title': 'Court order',
     'href': page_url('id-records-washington-court'),
-    'summary': 'How to choose between public district court and sealed superior court, hardship and GR 34 fee waivers, hearings, and minor rules.'
+    'body': 'How to choose between public district court and sealed superior court, hardship and GR 34 fee waivers, hearings, and minor rules.',
+    'link_label': 'Open the court order guide'
   },
   {
     'id': 'birth-certificate',
     'title': 'Washington birth certificate',
     'href': page_url('id-records-washington-birth'),
-    'summary': 'Update sex designation (M, F, or X) with notarized DOH 422-143 and no court order, plus DOH 422-126 for court-ordered name changes.'
+    'body': 'Update sex designation (M, F, or X) with notarized DOH 422-143 and no court order, plus DOH 422-126 for court-ordered name changes.',
+    'link_label': 'Open the Washington birth certificate guide'
   },
   {
     'id': 'license',
     'title': 'Driver license or ID',
     'href': page_url('id-records-washington-id'),
-    'summary': 'Choose M, F, or X on a standard or enhanced (EDL/EID) card in person or by mail using form 520043, including sealed-order assistance.'
+    'body': 'Choose M, F, or X on a standard or enhanced (EDL/EID) card in person or by mail using form 520043, including sealed-order assistance.',
+    'link_label': 'Open the driver license or ID guide'
   }
-]) }}
+], label='Your Washington record guides, in order') }}
 
 {% call m.deeper('Why sealed filings & agency forms matter, plus more tools', 'wa-why') %}
 <ul>

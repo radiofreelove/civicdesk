@@ -187,10 +187,13 @@
       var frag = block(id, answers);
       if (!frag) return;
       var h = frag.querySelector("h3");
-      var hasContent = frag.querySelector("li, p");
+      // Each block is a step-timeline <li>; only its body content counts.
+      var hasContent = frag.querySelector(".step-body li, .step-body p");
       if (!hasContent) return;
       n += 1;
       if (h) h.textContent = "Step " + n + ": " + h.textContent;
+      var node = frag.querySelector(".step-node");
+      if (node) node.textContent = String(n);
       body.appendChild(frag);
     });
 

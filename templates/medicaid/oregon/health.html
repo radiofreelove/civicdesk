@@ -11,7 +11,7 @@
   {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
 </div>
 
-{% set or_health_note %}Sources: <a href="{{ page_url('medicaid-oregon-reasons') }}">see every exemption and how to tell OHP</a>. {{ src('MED-S01') }} {{ src('MED-S03') }} {{ src('MED-S07') }} {{ src('MED-S08') }} {{ src('MED-S29') }} {{ src('MED-S42') }}{% endset %}
+{% set or_health_note %}<a href="{{ page_url('medicaid-oregon-reasons') }}">See every exemption and how to tell OHP</a>. {{ src('MED-S01') }} {{ src('MED-S03') }} {{ src('MED-S07') }} {{ src('MED-S08') }} {{ src('MED-S29') }} {{ src('MED-S42') }}{% endset %}
 {{ v.yes_no_split_board(
   'In 2027: self-attestation + OHP records',
   [

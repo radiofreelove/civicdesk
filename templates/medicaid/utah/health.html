@@ -11,7 +11,7 @@
   {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
 </div>
 
-{% set ut_health_note %}Sources: Utah medically frail screener &amp; verification law (Utah Code 26B-3-142.1) {{ src('MED-U03') }} {{ src('MED-U39') }}.{% endset %}
+{% set ut_health_note %}{{ src('MED-U03') }} {{ src('MED-U39') }}{% endset %}
 {{ v.process_flow([
   {'title': 'Automatic claims check', 'body': 'Utah checks Medicaid diagnosis codes first; no match is not a denial.'},
   {'title': 'Screener form (provisional)', 'body': 'Your signed screener gives temporary approval while verified.'},

@@ -34,22 +34,19 @@
 </section>
 {%- endmacro %}
 
+{#- Ordered agency sequence, drawn as the Broadsheet step timeline (numbered nodes on a rail).
+    cols is accepted for older call sites; the timeline is always one column. -#}
 {% macro process_flow(steps, id='', extra=false, cols=4, note='') -%}
 <div class="viz-flow-wrap"{% if id %} id="{{ id }}"{% endif %}{% if extra %} data-deeper{% endif %}>
-  <ol class="viz-flow viz-flow-{{ cols }}">
+  <ol class="viz-flow-steps step-timeline">
   {% for step in steps %}
-    <li class="viz-flow-item">
-      <div class="viz-flow-card">
-        <div class="viz-flow-head">
-          <span class="viz-flow-num" aria-hidden="true">{{ loop.index }}</span>
-          <strong class="viz-flow-title">{{ step.title }}</strong>
-        </div>
+    <li>
+      <span class="step-rail" aria-hidden="true"><span class="step-node">{{ loop.index }}</span><span class="step-line"></span></span>
+      <div class="step-body">
+        <strong class="step-flow-title">{{ step.title }}</strong>
         <p class="viz-flow-body">{{ step.body }}</p>
         {% if step.meta is defined and step.meta %}<p class="viz-flow-meta">{{ step.meta }}</p>{% endif %}
       </div>
-      {% if not loop.last %}
-      <span class="viz-flow-connector" aria-hidden="true">{{ ic.svg_icon('arrow-right') }}</span>
-      {% endif %}
     </li>
   {% endfor %}
   </ol>

@@ -14,7 +14,9 @@ BINARY_EXTENSIONS = {
 }
 
 FORBIDDEN_PATTERN = re.compile(
-    r"\b(?:stasis|strand|destiny\s+2|destiny|bungie|lightfall|beyond\s+light|spacefast)\b",
+    r"\b(?:stasis|strand|destiny\s+2|destiny|bungie|lightfall|beyond\s+light|spacefast"
+    # Retired Civic Horizon visual system (replaced by Broadsheet, 2026-11).
+    r"|civic\s+horizon|horizon-(?:sky|paper|rose|slate))\b",
     re.IGNORECASE,
 )
 

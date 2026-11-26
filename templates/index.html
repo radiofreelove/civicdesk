@@ -1,82 +1,58 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "broadsheet.html" as bs %}
+{% import "icons.html" as ic %}
 {% block main %}
-<div class="hero-split">
+<div class="fp-hero">
   <div class="hero-copy">
-    <h1>Government rules and paperwork, explained in plain words.</h1>
+    <h1>Government paperwork, in plain words.</h1>
     {{ m.lede("CivicDesk maps multi-agency rules, deadlines, fees, and forms across Oregon, Washington, Utah, and federal offices. Every fact links to a dated primary source, and nothing you read or click is tracked.") }}
   </div>
   {{ v.editorial_art('desk-overview.webp', variant='hero') }}
 </div>
 
-<section class="big-start" aria-labelledby="start-router-h">
-  <h2 id="start-router-h">Not sure where to start? Answer 2 quick questions</h2>
-  <p>Pick your state and topic to jump straight to the exact guide, 1-minute Medicaid check, or ID path finder.</p>
-  <p><a class="btn" href="{{ page_url('start') }}">Route me to the right guide</a></p>
-</section>
-
 <h2 id="desks">Choose a service desk</h2>
-<ul class="desk-cards">
-  <li class="desk-card">
-    {{ v.editorial_art('medicaid-calendar.webp', variant='card') }}
-    <h2><a href="{{ page_url('medicaid') }}">2027 Medicaid Work &amp; Activity Rules</a></h2>
-    <ul class="desk-pills" aria-label="Medicaid jurisdictions and start date">
-      <li>Oregon</li>
-      <li>Washington</li>
-      <li>Utah</li>
-      <li>Starts Jan. 1, 2027</li>
-    </ul>
-    <p>Plain-language guides to the January 1, 2027 work and activity rules, June 30, 2027 enforcement delays, exemptions, and past medical bill cutoffs.</p>
-    <ul>
-      <li><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a> &amp; <a href="{{ page_url('medicaid-oregon-check') }}">1-minute check</a></li>
-      <li><a href="{{ page_url('medicaid-washington') }}">Washington Apple Health</a> &amp; <a href="{{ page_url('medicaid-washington-check') }}">1-minute check</a></li>
-      <li><a href="{{ page_url('medicaid-utah') }}">Utah Medicaid</a> &amp; <a href="{{ page_url('medicaid-utah-check') }}">1-minute check</a></li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn" href="{{ page_url('medicaid') }}">Open Medicaid desk</a>
-    </div>
-  </li>
+{{ bs.desk_tiles([
+  {'id': 'medicaid', 'href': page_url('medicaid'), 'kicker': 'Medicaid', 'name': 'Health coverage',
+   'blurb': 'New work and activity rules start Jan. 1, 2027. Exemptions, deadlines, and a 1-minute check.',
+   'places': 'Oregon · Washington · Utah', 'art': asset('img/art/medicaid-calendar.webp'),
+   'art_w': v.ART_DIMS['medicaid-calendar.webp'][0], 'art_h': v.ART_DIMS['medicaid-calendar.webp'][1], 'soon': false},
+  {'id': 'id-records', 'href': page_url('id-records'), 'kicker': 'Legal name and vital records', 'name': 'Name, ID & records',
+   'blurb': 'Update your name or sex designation after marriage, divorce, or a court order, in the order offices check.',
+   'places': 'Oregon · Washington · Utah · Federal', 'art': asset('img/art/id-sequence.webp'),
+   'art_w': v.ART_DIMS['id-sequence.webp'][0], 'art_h': v.ART_DIMS['id-sequence.webp'][1], 'soon': false},
+  {'id': 'public-records', 'href': '', 'kicker': 'Coming in 2027', 'name': 'Public records',
+   'blurb': 'Ask a government office for its records.', 'places': '', 'art': '', 'soon': true}
+]) }}
 
-  <li class="desk-card desk-card-rose">
-    {{ v.editorial_art('id-sequence.webp', variant='card') }}
-    <h2><a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records</a></h2>
-    <ul class="desk-pills" aria-label="ID and vital record jurisdictions">
-      <li>Oregon</li>
-      <li>Washington</li>
-      <li>Utah</li>
-      <li>Social Security &amp; passports</li>
-    </ul>
-    <p>Step-by-step agency sequences for marriage, divorce, court name changes, and sex or gender designation updates.</p>
-    <ul>
-      <li><a href="{{ page_url('id-records-oregon') }}">Oregon</a>, <a href="{{ page_url('id-records-washington') }}">Washington</a>, and <a href="{{ page_url('id-records-utah') }}">Utah</a> state guides</li>
-      <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></li>
-      <li><a href="{{ page_url('id-records-path') }}">Personalized step-by-step path finder</a></li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn" href="{{ page_url('id-records') }}">Open ID &amp; Vital Records desk</a>
-    </div>
-  </li>
-</ul>
+<section class="big-start" aria-labelledby="start-router-h">
+  <h2 id="start-router-h">Not sure where to start?</h2>
+  <p>Pick your state and topic to jump straight to the right guide, 1-minute Medicaid check, or ID path finder.</p>
+  <p><a class="btn" href="{{ page_url('start') }}">Answer 2 questions</a></p>
+</section>
 
 {% call m.callout('why', 'When records and benefits overlap', 'cross-desk-link') %}
 <p>Medicaid agencies check Social Security, payroll, and school records automatically. If your name changed through marriage, divorce, or court, <a href="{{ page_url('id-records-after') }}">updating Social Security and IDs in order</a> prevents avoidable proof letters. {{ m.badge('our_reading') }} {{ src('MED-SSA-NAME') }}</p>
 {% endcall %}
 
 <h2 id="guarantees">How CivicDesk works</h2>
-<ul class="principles-grid">
-  <li class="principles-card">
+<ul class="how-grid">
+  <li>
+    {{ ic.svg_icon('check', 'how-icon', 44) }}
     <strong>Dated primary sources</strong>
-    <p>Every fee, deadline, and rule links directly to the published statute, court order, or agency form.</p>
+    <p>Every fee, deadline, and rule is backed by the published statute, court order, or agency form. Each page lists them in one Sources panel.</p>
   </li>
-  <li class="principles-card">
+  <li>
+    {{ ic.svg_icon('checklist', 'how-icon', 44) }}
     <strong>Whole-journey order</strong>
     <p>Court, federal, and state steps appear in the order agencies actually check each other's databases.</p>
   </li>
-  <li class="principles-card">
+  <li>
+    {{ ic.svg_icon('shield', 'how-icon', 44) }}
     <strong>Private on shared devices</strong>
     <p>Zero cookies, zero analytics, and <code>Referrer-Policy: no-referrer</code> on every page. <a href="{{ page_url('privacy') }}">Read our privacy rules</a>.</p>
   </li>
 </ul>
-<p class="viz-strip-citations">Every claim carries an explicit source label: <span class="badge badge-official">Official</span>, <span class="badge badge-not-official">Not official</span>, <span class="badge badge-not-confirmed">Not confirmed</span>, or <span class="badge badge-our-reading">Our reading</span>. <a href="{{ page_url('sources#labels') }}">See every source and label</a>.</p>
+<p class="viz-strip-citations">Every source carries an explicit label: <span class="badge badge-official">Official</span>, <span class="badge badge-not-official">Not official</span>, <span class="badge badge-not-confirmed">Not confirmed</span>, or <span class="badge badge-our-reading">Our reading</span>. <a href="{{ page_url('sources#labels') }}">See every source and label</a>.</p>
 {% endblock %}

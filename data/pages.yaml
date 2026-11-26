@@ -29,6 +29,7 @@
   checked: '2026-11-24'
   show_short_toggle: false
 - slug: medicaid-oregon
+  art: medicaid-calendar.webp
   route: /medicaid/oregon/
   desk: medicaid
   state: oregon
@@ -324,6 +325,7 @@
   - MED-S01
   show_short_toggle: false
 - slug: medicaid-washington
+  art: medicaid-calendar.webp
   route: /medicaid/washington/
   desk: medicaid
   state: washington
@@ -608,6 +610,7 @@
   - MED-WA22
   show_short_toggle: false
 - slug: medicaid-utah
+  art: medicaid-calendar.webp
   route: /medicaid/utah/
   desk: medicaid
   state: utah
@@ -942,6 +945,7 @@
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: id-records-oregon
+  art: id-sequence.webp
   route: /id-records/oregon/
   desk: id-records
   template: id-records/oregon.html
@@ -986,6 +990,7 @@
   nav_label: License & ID
   state: oregon
 - slug: id-records-washington
+  art: id-sequence.webp
   route: /id-records/washington/
   desk: id-records
   template: id-records/washington.html
@@ -1030,6 +1035,7 @@
   nav_label: License & ID
   state: washington
 - slug: id-records-utah
+  art: id-sequence.webp
   route: /id-records/utah/
   desk: id-records
   template: id-records/utah.html

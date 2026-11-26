@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import sys
 from collections.abc import Mapping
+from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import quote
 import xml.etree.ElementTree as ET
@@ -39,7 +40,7 @@ DEFAULT_BRAND = {
     "favicon_svg": "favicon.svg",
     "apple_touch_icon": "apple-touch-icon.png",
     "og_image": "og-card.png",
-    "og_image_alt": "CivicDesk five-stripe service-desk mark on dark slate",
+    "og_image_alt": "CivicDesk five-stripe service-desk mark on press ink",
 }
 VALID_BRAND_MODES = {"mark_and_wordmark", "lockup_only"}
 
@@ -69,7 +70,12 @@ FONT_HASHES = {
     "AtkinsonHyperlegibleNext-Regular.woff2": "5cb240a4d99ab7e6fc3a4d4e6d11d89789fdffe9c86a8384000d662c53283f6f",
     "AtkinsonHyperlegibleNext-Bold.woff2": "0dbe07ed7679407db9d90f747d5ca3bd1b2bb7ccbcbe41c8246cfc6d2c7bc3bc",
     "OFL.txt": "474a034e99845062f661855caaa505880d0e9009deddc2727a92795eab374955",
+    "SourceSerif4-Latin.woff2": "8e38e3fbd74dea20aabe0831ffef04c9f30bf6fc5b99b7a2649be0dd8c6d859c",
+    "SourceSerif4-LatinExt.woff2": "231f594ad829d45f905a8a6cdce704f659615e00f1a9db2699320e6e315c1d1f",
+    "SourceSerif4-OFL.txt": "c21d7293d87b6d7ab1d0229a2f55b77f33a7613a6a4e66f6693d68d7d8d09464",
 }
+# Source Serif 4 is the default text face, so these files are required. Atkinson stays optional.
+REQUIRED_FONTS = ("SourceSerif4-Latin.woff2", "SourceSerif4-LatinExt.woff2", "SourceSerif4-OFL.txt")
 
 CSP_META = (
     "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; "
@@ -83,13 +89,6 @@ PURPOSE_P_RE = re.compile(r'(<p class="purpose">.*?</p>)', re.S)
 
 _SRC_LINK_RE = r'<a class="src" [^>]+><span class="src-label">Source:</span>(?:&nbsp;|\s+)[^<]+</a>'
 _STATUS_BADGE_RE = r'<span class="badge badge-(?:official|not-official|not-confirmed|our-reading)">[^<]+</span>'
-_CITE_UNIT_RE = rf'(?:<span class="src-unit">{_SRC_LINK_RE}\s+{_STATUS_BADGE_RE}</span>|{_SRC_LINK_RE}|{_STATUS_BADGE_RE})'
-_CITE_RUN_INNER = rf'{_CITE_UNIT_RE}(?:\s+{_CITE_UNIT_RE})*'
-_BLOCK_END_TAIL = r'\s*</(?:p|li|td|dd)>|\s*</span>\s*</(?:li|p)>'
-PAREN_CITE_RUN_RE = re.compile(
-    rf'(?P<pre>[^\s(>])?\s*\(\s*(?P<run>{_CITE_RUN_INNER})\s*\)\.?(?={_BLOCK_END_TAIL})'
-)
-CITE_RUN_RE = re.compile(rf'({_CITE_RUN_INNER})(?={_BLOCK_END_TAIL})')
 HEX_SHA_RE = re.compile(r'^[0-9a-fA-F]{7,40}$')
 
 
@@ -181,29 +180,233 @@ def insert_label_key(html: str, sources_labels_url: str) -> str:
     return html
 
 
-def _strip_paren_cite_run(match: re.Match[str]) -> str:
-    pre = match.group("pre") or ""
-    run = match.group("run")
-    if not pre:
-        return run
-    if pre in ".!?:;":
-        return f"{pre} {run}"
-    return f"{pre}. {run}"
+# --- Broadsheet sources layer ------------------------------------------------------------------
+# src(), fact() and ext() leave an HTML comment marker where a source is used. After rendering,
+# apply_sources_layer() uses the markers to group sources by page section, strips the inline
+# "Source:" links from the reading flow, adds one "Sources for this section (n)" link per section,
+# and fills the single grouped Sources panel. Honesty badges that qualify a claim (Our reading,
+# Not confirmed) stay inline; a source's own Not official badge moves to the panel with it.
+SRC_MARK_RE = re.compile(r"<!--cd-src:([A-Za-z0-9_.-]+)-->")
+SOURCE_PANEL_MARK = "<!--cd-source-panel-->"
+# The front page is a directory of desks, not a guide, so it keeps one plain Sources panel and no tabs.
+NO_TAB_PAGES = {"index"}
+CONTENT_OPEN = '<div class="wrap content">'
+INLINE_CITE_RE = re.compile(
+    rf'<span class="src-unit">{_SRC_LINK_RE}\s+{_STATUS_BADGE_RE}</span>|{_SRC_LINK_RE}'
+)
+_EMPTY_PARENS_RE = re.compile(r"[ \t]*\(\s*\)")
+_DOUBLE_STOP_RE = re.compile(r"(?<=[.!?])\s+\.(?=[\s<]|$)")
+_SPACE_BEFORE_PUNCT_RE = re.compile(r"(?<=[^\s>])[ \t\n]+(?=[.,;](?:[\s<]|$))")
+_SPACE_BEFORE_CLOSE_RE = re.compile(r"[ \t]+(?=</(?:p|li|dd|td|th)>)")
+_EMPTY_P_RE = re.compile(r"<p(?![^>]*\bid=)(?:\s[^>]*)?>\s*</p>\s*")
+_ID_ATTR_RE = re.compile(r'\bid="([^"]+)"')
+_VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+_OPTIONAL_END_TAGS = {"li", "p", "dt", "dd", "tr", "td", "th", "option", "thead", "tbody"}
+HEAD_P_CLASSES = {"kicker", "lede", "purpose", "checked"}
+HEAD_BLOCK_CLASSES = {"hero-split", "page-head", "fp-hero", "guide-switch", "brief-strip", "label-key"}
 
 
-def group_citations(html: str) -> str:
-    main_idx = html.find("<main")
-    if main_idx == -1:
-        return html
-    main_end = html.find("</main>", main_idx)
-    if main_end == -1:
-        return html
-    sources_idx = html.find('<section class="page-sources"', main_idx, main_end)
-    body_end = sources_idx if sources_idx != -1 else main_end
-    body = html[main_idx:body_end]
-    body = PAREN_CITE_RUN_RE.sub(_strip_paren_cite_run, body)
-    body = CITE_RUN_RE.sub(r'<span class="cite-row">\1</span>', body)
-    return html[:main_idx] + body + html[body_end:]
+def strip_inline_citations(body: str) -> str:
+    """Remove inline source links, their wrappers and markers, then tidy the punctuation they leave."""
+    body = INLINE_CITE_RE.sub("", body)
+    body = SRC_MARK_RE.sub("", body)
+    body = _EMPTY_PARENS_RE.sub("", body)
+    body = _DOUBLE_STOP_RE.sub("", body)
+    body = _SPACE_BEFORE_PUNCT_RE.sub("", body)
+    body = _SPACE_BEFORE_CLOSE_RE.sub("", body)
+    body = _EMPTY_P_RE.sub("", body)
+    return body
+
+
+class _Outline(HTMLParser):
+    """Record element offsets, top-level children, and <h2> positions within an HTML fragment."""
+
+    def __init__(self, text: str) -> None:
+        super().__init__(convert_charrefs=True)
+        self._line_starts = [0] + [m.end() for m in re.finditer("\n", text)]
+        self.stack: list[dict] = []
+        self.top: list[dict] = []
+        self.h2s: list[dict] = []
+        self.h1_top: dict | None = None
+        self._h2: dict | None = None
+        self._template = 0
+        self._dated: list[str] = []  # open elements with data-show-until inside an <h2>
+
+    def _offset(self) -> int:
+        line, col = self.getpos()
+        return self._line_starts[line - 1] + col
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        start = self._offset()
+        a = {k: (v or "") for k, v in attrs}
+        node = {"tag": tag, "start": start, "tag_end": start + len(self.get_starttag_text() or ""),
+                "classes": set(a.get("class", "").split()), "id": a.get("id", ""), "end": None}
+        if not self.stack:
+            self.top.append(node)
+        if tag == "h1" and self.h1_top is None:
+            self.h1_top = self.stack[0] if self.stack else node
+        if tag == "h2" and not self._template:
+            self._h2 = {**node, "ancestors": list(self.stack), "text": ""}
+        if tag == "template":
+            self._template += 1
+        if self._h2 is not None and tag not in _VOID_TAGS and (self._dated or "data-show-until" in a):
+            # Date-limited heading text is hidden by site.js after its date; keep it out of titles.
+            self._dated.append(tag)
+        if tag not in _VOID_TAGS:
+            self.stack.append(node)
+
+    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        self.handle_starttag(tag, attrs)
+        if tag not in _VOID_TAGS and self.stack and self.stack[-1]["tag"] == tag:
+            self.stack.pop()["end"] = self._offset()
+
+    def handle_endtag(self, tag: str) -> None:
+        here = self._offset()
+        if tag == "template":
+            self._template = max(0, self._template - 1)
+        if self._dated and self._dated[-1] == tag:
+            self._dated.pop()
+        if tag == "h2" and self._h2 is not None:
+            self._h2["text"] = re.sub(r"\s+", " ", self._h2["text"]).strip()
+            self.h2s.append(self._h2)
+            self._h2 = None
+        while self.stack and self.stack[-1]["tag"] != tag and self.stack[-1]["tag"] in _OPTIONAL_END_TAGS:
+            self.stack.pop()["end"] = here
+        if self.stack and self.stack[-1]["tag"] == tag:
+            self.stack.pop()["end"] = here
+
+    def handle_data(self, data: str) -> None:
+        if self._h2 is not None and not self._dated:
+            self._h2["text"] += data
+
+
+def _slugify(text: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+    return slug[:48].rstrip("-") or "section"
+
+
+def _is_head_block(node: dict) -> bool:
+    if node["tag"] == "h1":
+        return True
+    if node["tag"] == "p" and node["classes"] & HEAD_P_CLASSES:
+        return True
+    return bool(node["classes"] & HEAD_BLOCK_CLASSES)
+
+
+def outline_sections(region: str, existing_ids: set[str], tabs: bool) -> dict:
+    """Split a page body into sections at each <h2>.
+
+    Returns the tab insertion offset, ids to add to <h2>s that lack one, and for each section its
+    id, title, the offset where its "Sources for this section" link goes, and the source ids used
+    in it (in first-use order). Section i runs from the previous link offset to its own.
+    """
+    ol = _Outline(region)
+    ol.feed(region)
+    ol.close()
+
+    tabs_at = None
+    if tabs:
+        seen_h1 = False
+        for node in ol.top:
+            if seen_h1 and not _is_head_block(node):
+                tabs_at = node["start"]
+                break
+            if node is ol.h1_top or node["tag"] == "h1":
+                seen_h1 = True
+        if tabs_at is None:
+            tabs_at = len(region) if seen_h1 else 0
+
+    add_ids: list[tuple[int, str]] = []
+    taken = set(existing_ids)
+    sections = [{"id": "top", "title": "Top of the page", "h2": None}]
+    for h in ol.h2s:
+        sid = h["id"]
+        if not sid:
+            base = "sec-" + _slugify(h["text"])
+            sid, n = base, 2
+            while sid in taken:
+                sid, n = f"{base}-{n}", n + 1
+            taken.add(sid)
+            add_ids.append((h["start"] + 3, sid))
+        sections.append({"id": sid, "title": h["text"] or "Untitled section", "h2": h})
+
+    # Link offset for each section: the start of the outermost block that holds the next <h2>
+    # (below the lowest element shared with this section's <h2>), or the end of the body.
+    for i, sec in enumerate(sections):
+        nxt = sections[i + 1]["h2"] if i + 1 < len(sections) else None
+        if nxt is None:
+            sec["link_at"] = len(region)
+            continue
+        cur_anc = sec["h2"]["ancestors"] if sec["h2"] else []
+        nxt_anc = nxt["ancestors"]
+        common = 0
+        while (common < len(cur_anc) and common < len(nxt_anc)
+               and cur_anc[common]["start"] == nxt_anc[common]["start"]):
+            common += 1
+        holder = nxt_anc[common] if common < len(nxt_anc) else nxt
+        sec["link_at"] = holder["start"]
+    if tabs_at is not None and sections[0]["link_at"] < tabs_at:
+        sections[0]["link_at"] = tabs_at
+
+    marks = [(m.start(), m.group(1)) for m in SRC_MARK_RE.finditer(region)]
+    lo = 0
+    for sec in sections:
+        hi = sec["link_at"]
+        ids: list[str] = []
+        for pos, sid in marks:
+            if lo <= pos < hi and sid not in ids:
+                ids.append(sid)
+        sec["sources"] = ids
+        lo = hi
+    return {"tabs_at": tabs_at, "add_ids": add_ids, "sections": sections}
+
+
+def apply_sources_layer(html: str, used: list[str], render_tabs, render_section_link, render_panel,
+                        tabs: bool) -> str:
+    """Strip inline citations, add per-section links and tabs, and fill the grouped Sources panel."""
+    open_idx = html.find(CONTENT_OPEN)
+    panel_idx = html.find(SOURCE_PANEL_MARK)
+    if open_idx == -1:
+        return SRC_MARK_RE.sub("", html)
+    body_start = open_idx + len(CONTENT_OPEN)
+    if panel_idx == -1:
+        main_end = html.find("</main>", body_start)
+        stripped = strip_inline_citations(html[body_start:main_end])
+        return SRC_MARK_RE.sub("", html[:body_start] + stripped + html[main_end:])
+
+    region = html[body_start:panel_idx]
+    info = outline_sections(region, set(_ID_ATTR_RE.findall(html)), tabs)
+    sections = info["sections"]
+
+    placed: list[str] = []
+    for sec in sections:
+        for sid in sec["sources"]:
+            if sid not in placed:
+                placed.append(sid)
+    rest = [sid for sid in used if sid not in placed]
+    groups = [{"id": s["id"], "title": s["title"], "sources": s["sources"]} for s in sections if s["sources"]]
+    if rest:
+        groups.append({"id": "more", "title": "Also used on this page", "sources": rest})
+
+    # (offset, order at that offset, text). Lower order lands first in the output.
+    inserts: list[tuple[int, int, str]] = []
+    for pos, new_id in info["add_ids"]:
+        inserts.append((pos, 0, f' id="{new_id}"'))
+    if info["tabs_at"] is not None:
+        inserts.append((info["tabs_at"], 0, str(render_tabs(len(used))) + '\n<div id="guide" class="page-guide">\n'))
+        inserts.append((len(region), 2, "\n</div>\n"))
+    for sec in sections:
+        if sec["sources"]:
+            link = str(render_section_link(sec["id"], len(sec["sources"])))
+            inserts.append((sec["link_at"], 1, f'\n<p class="section-sources-row">{link}</p>\n'))
+    # Apply from the end so earlier offsets stay valid.
+    for pos, _order, text in sorted(inserts, key=lambda t: (t[0], t[1]), reverse=True):
+        region = region[:pos] + text + region[pos:]
+
+    region = strip_inline_citations(region)
+    panel = str(render_panel(groups, len(used)))
+    out = html[:body_start] + region + panel + html[panel_idx + len(SOURCE_PANEL_MARK):]
+    return SRC_MARK_RE.sub("", out)
 
 
 def validate_registry(entries: list[dict], expected_prefix: str, expected_desk: str, errors: list[str]) -> dict[str, dict]:
@@ -242,20 +445,27 @@ def validate_registry(entries: list[dict], expected_prefix: str, expected_desk: 
     return out
 
 
-def verify_fonts(errors: list[str]) -> bool:
-    fonts_dir = STATIC / "fonts"
-    if not fonts_dir.exists():
-        return False
-    all_present = True
+def verify_fonts(errors: list[str], fonts_dir: Path | None = None) -> bool:
+    """Check self-hosted fonts against FONT_HASHES.
+
+    Source Serif 4 (the default face) is required: a missing file or a hash mismatch is a build
+    error. The return value reports whether the optional Atkinson Hyperlegible Next set is present,
+    which controls the reader-font toggle in Reading settings.
+    """
+    fonts_dir = fonts_dir or (STATIC / "fonts")
+    atkinson_present = True
     for fname, expected_sha in FONT_HASHES.items():
         fpath = fonts_dir / fname
         if not fpath.is_file():
-            all_present = False
+            if fname in REQUIRED_FONTS:
+                errors.append(f"required font file missing: static/fonts/{fname}")
+            else:
+                atkinson_present = False
             continue
         digest = hashlib.sha256(fpath.read_bytes()).hexdigest()
         if digest != expected_sha:
             errors.append(f"font checksum mismatch for {fname}: expected {expected_sha}, got {digest}")
-    return all_present and (fonts_dir / "AtkinsonHyperlegibleNext-Regular.woff2").is_file()
+    return atkinson_present
 
 
 def validate_svg_asset(svg_path: Path, label: str, errors: list[str]) -> None:
@@ -398,7 +608,7 @@ def main(argv: list[str] | None = None) -> int:
             if sid not in sources:
                 errors.append(f"fact {fid}: unknown source {sid}")
 
-    fonts_available = verify_fonts(errors)
+    fonts_available = verify_fonts(errors, static_dir / "fonts")
     validate_brand_config(site, static_dir, errors)
 
     pages_by_slug: dict[str, dict] = {}
@@ -480,7 +690,12 @@ def main(argv: list[str] | None = None) -> int:
             state["used"].append(sid)
         return sources[sid]
 
+    def mark(sid: str) -> str:
+        return f"<!--cd-src:{sid}-->"
+
     def src(sid: str, label: str | None = None) -> Markup:
+        # The inline link is stripped after rendering (apply_sources_layer); the marker records
+        # which section used the source so the Sources panel can group it.
         s = use(sid)
         short = label or s.get("short") or s["title"]
         link = (
@@ -489,20 +704,22 @@ def main(argv: list[str] | None = None) -> int:
         )
         if s["status"] != "official":
             b = status_badge(s["status"])
-            return Markup(f'<span class="src-unit">{link} {b}</span>')
-        return Markup(link)
+            return Markup(f'{mark(sid)}<span class="src-unit">{link} {b}</span>')
+        return Markup(mark(sid) + link)
 
     def fact(fid: str) -> Markup:
         if fid not in facts:
             raise BuildError(f"page {state['page']}: unknown fact id '{fid}'")
         if fid not in state["facts"]:
             state["facts"].append(fid)
+        marks = ""
         for sid in facts[fid].get("sources", []):
             use(sid)
+            marks += mark(sid)
         value = escape(str(facts[fid]["value"]))
         if facts[fid].get("reading"):
             value += Markup(' <span class="badge badge-our-reading">Our reading</span>')
-        return Markup(value)
+        return Markup(marks) + Markup(value)
 
     def fact_src(fid: str) -> Markup:
         value = fact(fid)
@@ -514,7 +731,7 @@ def main(argv: list[str] | None = None) -> int:
         label = text or s.get("link_text") or s["title"]
         kind = "official site" if s.get("official", True) else "outside site"
         return Markup(
-            f'<a class="ext" href="{escape(s["url"])}" rel="noreferrer">{escape(label)}'
+            f'{mark(sid)}<a class="ext" href="{escape(s["url"])}" rel="noreferrer">{escape(label)}'
             f'<span class="vh"> ({kind})</span></a>'
         )
 
@@ -744,6 +961,8 @@ def main(argv: list[str] | None = None) -> int:
         used_sources=lambda: [sources[i] for i in state["used"]],
     )
 
+    bs_macros = env.get_template("broadsheet.html").module
+
     if out_dir.exists():
         shutil.rmtree(out_dir)
     out_dir.mkdir(parents=True)
@@ -791,9 +1010,17 @@ def main(argv: list[str] | None = None) -> int:
             continue
 
         newest_checked_by_slug[slug] = newest_date
+        html = apply_sources_layer(
+            html,
+            list(state["used"]),
+            render_tabs=lambda n, _p=p: bs_macros.page_tabs(n, "Tool" if _p.get("tool") else "Guide"),
+            render_section_link=bs_macros.section_sources,
+            render_panel=lambda groups, n: bs_macros.sources_panel(
+                [{**g, "sources": [sources[sid] for sid in g["sources"]]} for g in groups], n
+            ),
+            tabs=slug not in NO_TAB_PAGES,
+        )
         body_badges = detect_body_badges(html)
-        if slug not in {"sources", "medicaid-sources", "id-records-sources", "about", "404"}:
-            html = group_citations(html)
         if body_badges and slug not in {"sources", "medicaid-sources", "id-records-sources", "about", "404"}:
             html = insert_label_key(html, page_url("sources#labels"))
 

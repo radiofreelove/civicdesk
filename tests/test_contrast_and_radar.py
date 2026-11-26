@@ -36,7 +36,7 @@ def extract_tokens(block: str) -> dict[str, str]:
     return {m.group(1): m.group(2) for m in re.finditer(r"--([a-z0-9-]+):\s*(#[0-9A-Fa-f]{3,6})", block)}
 
 
-def test_horizon_palette_and_aaa_contrast() -> None:
+def test_broadsheet_palette_and_aaa_contrast() -> None:
     css = CSS_PATH.read_text(encoding="utf-8")
 
     def block_after(selector_re: str) -> str:
@@ -52,14 +52,14 @@ def test_horizon_palette_and_aaa_contrast() -> None:
     assert auto_dark_match
     auto_dark = extract_tokens(auto_dark_match.group(1))
 
-    # Verify exact Civic Horizon palette anchors
-    assert light["horizon-sky"].upper() == "#1D70B8"
-    assert light["horizon-paper"].upper() == "#FFFFFF"
-    assert light["horizon-rose"].upper() == "#C85A70"
-    assert light["horizon-slate"].upper() == "#111827"
+    # Verify exact Broadsheet press anchors
+    assert light["press-cyan"].upper() == "#0088B0"
+    assert light["press-paper"].upper() == "#F3F2F2"
+    assert light["press-magenta"].upper() == "#D6006C"
+    assert light["press-ink"].upper() == "#201E1D"
 
     for k, v in dark.items():
-        if k.startswith("horizon-"):
+        if k.startswith("press-"):
             continue
         assert auto_dark.get(k, "").upper() == v.upper(), f"auto-dark mismatch on --{k}"
 
