@@ -1,0 +1,188 @@
+# CivicDesk Policy Wire Beat Profile — Medicaid Desk
+# Adding a jurisdiction or channel query here requires zero Python or workflow changes.
+
+desk: medicaid
+enabled: true
+label: "2027 Medicaid Work & Activity Rules"
+registry: "data/sources/medicaid.yaml"
+source_prefix: "MED-"
+route_prefix: "/medicaid/"
+
+editorial_brief: >-
+  CivicDesk's 2027 Medicaid Work and Activity Rules desk covering Oregon Health Plan (OHP)
+  and Healthier Oregon, Washington Apple Health, Utah Medicaid, federal 42 CFR Part 435
+  community engagement / work and activity rules, exemptions (medical frailty, caregiving,
+  pregnancy, tribal, domestic safety), retroactive coverage cutoffs, hold-harmless timelines,
+  Section 1115 waivers, and Medicaid public charge / noncitizen eligibility rules (8 CFR Part 212).
+
+jurisdictions:
+  US:
+    name: "Federal"
+    domains:
+      - medicaid.gov
+      - cms.gov
+      - hhs.gov
+      - uscis.gov
+      - ssa.gov
+      - federalregister.gov
+      - ecfr.gov
+      - uscourts.gov
+      - supremecourt.gov
+    keywords:
+      - "42 CFR"
+      - "435.552"
+      - "435.603"
+      - "8 CFR 212"
+      - "212.22"
+      - "public charge"
+      - "CMS"
+      - "Centers for Medicare"
+      - "H.R. 1"
+      - "71119"
+      - "hold harmless"
+  OR:
+    name: "Oregon"
+    domains:
+      - oregon.gov
+      - ohp.oregon.gov
+      - benefits.oregon.gov
+      - oregonhealthcare.gov
+      - oregonlegislature.gov
+      - sos.state.or.us
+      - dhsoha.state.or.us
+      - doj.state.or.us
+    media_domains:
+      - oregoncapitalchronicle.com
+    keywords:
+      - "Oregon"
+      - "Oregon Health Plan"
+      - "OHP"
+      - "Oregon Health Authority"
+      - "OHA"
+      - "ODHS"
+      - "Healthier Oregon"
+      - "OAR 410"
+      - "OAR 461"
+      - "ORS 414"
+  WA:
+    name: "Washington"
+    domains:
+      - wa.gov
+      - hca.wa.gov
+      - dshs.wa.gov
+    media_domains:
+      - washingtonstatestandard.com
+    keywords:
+      - "Washington state"
+      - "Olympia"
+      - "Apple Health"
+      - "Health Care Authority"
+      - "HCA"
+      - "DSHS"
+      - "WAC 182"
+      - "RCW 74.09"
+  UT:
+    name: "Utah"
+    domains:
+      - utah.gov
+      - medicaid.utah.gov
+    media_domains:
+      - utahnewsdispatch.com
+    keywords:
+      - "Utah"
+      - "Utah Medicaid"
+      - "Utah DHHS"
+      - "Workforce Services"
+      - "R414"
+      - "26B-3"
+      - "26B-3-142.1"
+
+channels:
+  federal_register:
+    terms:
+      - '"community engagement" Medicaid'
+      - '"435.552" OR "435.603" OR "hold harmless" Medicaid'
+      - 'Medicaid ("Oregon Health Plan" OR "Apple Health" OR "Utah Medicaid") ("1115" OR "work")'
+      - '"public charge" Medicaid'
+    always_keep_pattern: '\bpublic charge\b'
+    must_match_pattern: '\b(medicaid|chip|435\.552|435\.603|centers for medicare|oregon health plan|apple health)\b'
+    context_pattern: '\b(work|hour|hours|community engagement|exempt|exemption|exclusion|waiver|1115|hold harmless|h\.?r\.?\s*1\b|71119|renew|renewal|retroactive|eligibility|public charge|injunction|rule|rulemaking)\b'
+
+  ecfr:
+    - title: "42"
+      part: "435"
+      label: "42 CFR Part 435 (Medicaid Eligibility & Community Engagement)"
+      section_prefixes: []
+    - title: "8"
+      part: "212"
+      label: "8 CFR Part 212 (Public Charge Inadmissibility)"
+      section_prefixes:
+        - "212.20"
+        - "212.21"
+        - "212.22"
+        - "212.23"
+
+  courtlistener:
+    watched_dockets:
+      "73546826": "Commonwealth of Massachusetts v. Oz, No. 1:26-cv-12962 (D. Mass.)"
+      "74699899": "Neighborhood House v. HHS, No. 2:26-cv-03006 (W.D. Wash.)"
+      "74784748": "State of New York v. U.S. Department of Homeland Security, No. 1:26-cv-07978"
+      "75165734": "Mahmoud v. Oz, No. 1:26-cv-00881 (D.R.I.)"
+    v4_queries:
+      - search_type: "r"
+        label: "Federal RECAP dockets (Medicaid work rules)"
+        query: 'Medicaid AND ("community engagement" OR "work requirements" OR "435.552" OR "71119")'
+      - search_type: "r"
+        label: "Federal RECAP dockets (Public charge)"
+        query: '"public charge" AND ("Medicaid" OR "212.22" OR "Homeland Security")'
+      - search_type: "o"
+        label: "Federal judicial opinions (Medicaid & public charge)"
+        query: 'Medicaid AND ("community engagement" OR "work requirements" OR "435.552" OR "public charge")'
+
+  legiscan:
+    min_relevance: 50
+    year: 3
+    queries:
+      - state: "OR"
+        query: '("Medicaid" OR "Oregon Health Plan" OR "medical assistance" OR "Healthier Oregon") AND ("community engagement" OR "work requirement" OR "work requirements" OR (work NEAR requirement) OR "hold harmless" OR "public charge" OR "retroactive")'
+      - state: "WA"
+        query: '("Apple Health" OR "Medicaid" OR "74.09") AND ("community engagement" OR "work requirement" OR "work requirements" OR (work NEAR requirement) OR "hold harmless" OR "public charge")'
+      - state: "UT"
+        query: '("Medicaid" OR "26B-3") AND ("community engagement" OR "work requirement" OR "work requirements" OR (work NEAR requirement) OR "26B-3-142.1" OR "hold harmless")'
+      - state: "US"
+        query: 'Medicaid AND ("community engagement" OR "work requirement" OR "work requirements" OR "435.552" OR "hold harmless")'
+
+  rss:
+    primary_pattern: '\b(medicaid|oregon health plan|ohp|apple health|community engagement|work requirement|work requirements|medically frail|public charge|cms\b|42 c\.?f\.?r)\b'
+    context_pattern: '\b(work|hour|hours|community engagement|exempt|exemption|exclusion|waiver|1115|h\.?r\.?\s*1\b|71119|renew|renewal|retroactive|eligibility|public charge|injunction|lawsuit|court|rule|rulemaking|oregon|washington|utah|oha\b|odhs\b|hca\b|dshs\b|dhhs\b|dws\b)\b'
+    feeds:
+      - name: "KFF Health News (Medicaid)"
+        url: "https://kffhealthnews.org/topics/medicaid/feed/"
+        prefiltered: true
+      - name: "KFF Health News (All)"
+        url: "https://kffhealthnews.org/feed/"
+        prefiltered: false
+      - name: "Oregon Capital Chronicle"
+        url: "https://oregoncapitalchronicle.com/feed/"
+        prefiltered: false
+      - name: "Washington State Standard"
+        url: "https://washingtonstatestandard.com/feed/"
+        prefiltered: false
+      - name: "Utah News Dispatch"
+        url: "https://utahnewsdispatch.com/feed/"
+        prefiltered: false
+      - name: "Stateline (States Newsroom)"
+        url: "https://stateline.org/feed/"
+        prefiltered: false
+
+  tavily:
+    search_depth: "basic"
+    max_results_per_query: 6
+    min_score_dated: 0.55
+    min_score_undated: 0.65
+    extra_domains:
+      - courtlistener.com
+    queries:
+      - '("Oregon Health Plan" OR OHP OR OHA OR "OAR 410" OR "OAR 461") ("community engagement" OR "work requirements" OR "federal changes" OR exemption OR retroactive)'
+      - '("Apple Health" OR "WAC 182" OR "Utah Medicaid" OR "R414" OR "26B-3") ("community engagement" OR "work requirements" OR waiver OR exemption)'
+      - 'Medicaid ("community engagement" OR "435.552" OR "hold harmless" OR "public charge" OR noncitizen) (guidance OR rule OR letter OR injunction)'

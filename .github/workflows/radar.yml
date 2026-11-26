@@ -1,17 +1,27 @@
 name: Policy Radar
 
+# Twice-weekly CivicDesk Policy Wire (Tuesdays and Fridays, 16:23 UTC) plus
+# on-demand manual runs. Dynamically discovers enabled desks from `data/wire/*.yaml`
+# so new desks added to CivicDesk enter rotation without workflow edits.
+# Read-only against repository contents: opens or updates `policy-radar` issues only.
+
 on:
   schedule:
     - cron: "23 16 * * 2,5" # Tuesdays and Fridays, 16:23 UTC
   workflow_dispatch:
     inputs:
+      desk:
+        description: "Desk slug from data/wire/*.yaml, or 'all' for every enabled desk"
+        required: false
+        default: "all"
+        type: string
       lookback_days:
         description: "Days to look back (1 to 60)"
         required: false
         default: "7"
         type: string
       dry_run:
-        description: "Preview report in Job Summary without opening or commenting on an issue"
+        description: "Preview wire report in Job Summary without opening or commenting on an issue"
         required: false
         default: false
         type: boolean
@@ -24,16 +34,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  radar:
-    name: Policy Radar (${{ matrix.desk }})
+  discover:
+    name: Discover active wire desks
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      issues: write
-    strategy:
-      fail-fast: false
-      matrix:
-        desk: [medicaid, id-records]
+    outputs:
+      desks: ${{ steps.desks.outputs.desks }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -46,7 +53,52 @@ jobs:
       - name: Install PyYAML
         run: python3 -m pip install -r requirements.txt
 
-      - name: Fetch recent desk radar issues for deduplication
+      - name: Resolve target desk matrix from data/wire/*.yaml
+        id: desks
+        env:
+          DESK_INPUT: ${{ inputs.desk }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, sys
+          sys.path.insert(0, "scripts")
+          import policy_radar
+
+          requested = (os.environ.get("DESK_INPUT") or "all").strip()
+          active = policy_radar.list_active_desks(include_disabled=False)
+          all_known = policy_radar.list_active_desks(include_disabled=True)
+          if not requested or requested == "all":
+              selected = active
+          elif requested in all_known:
+              selected = [requested]
+          else:
+              raise SystemExit(f"Unknown desk {requested!r}; known desks: {all_known}")
+          print(f"desks={json.dumps(selected)}")
+          PY
+
+  radar:
+    name: Policy Wire (${{ matrix.desk }})
+    needs: discover
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    strategy:
+      fail-fast: false
+      matrix:
+        desk: ${{ fromJson(needs.discover.outputs.desks) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Install PyYAML
+        run: python3 -m pip install -r requirements.txt
+
+      - name: Fetch recent desk wire issues for deduplication
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DESK_LABEL: "radar:${{ matrix.desk }}"
@@ -54,15 +106,16 @@ jobs:
           gh issue list \
             --label "$DESK_LABEL" \
             --state all \
-            --limit 20 \
+            --limit 25 \
             --json number,state,title,body,comments > recent-radar-issues.json || echo "[]" > recent-radar-issues.json
 
-      - name: Run desk policy radar sweep
+      - name: Run CivicDesk Policy Wire sweep
         env:
           DESK: ${{ matrix.desk }}
           LOOKBACK_RAW: ${{ inputs.lookback_days }}
           COURTLISTENER_TOKEN: ${{ secrets.COURTLISTENER_TOKEN }}
           LEGISCAN_API_KEY: ${{ secrets.LEGISCAN_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           days="${LOOKBACK_RAW:-7}"
@@ -72,13 +125,14 @@ jobs:
           python3 scripts/policy_radar.py \
             --desk "$DESK" \
             --days "$days" \
+            --ai-brief \
             --seen-issues recent-radar-issues.json \
             --report radar-report.md \
             --results radar-results.json
           jq -r '.statuses[] | "  \(.source): \(.status)"' radar-results.json
           cat radar-report.md >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Open or update desk policy-radar issue when unseen items arrive
+      - name: Open or update desk policy-radar issue when unseen dispatches arrive
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DESK: ${{ matrix.desk }}
@@ -86,29 +140,51 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
           new_count="$(jq -r '.new_count // 0' radar-results.json)"
+          urgent_count="$(jq -r '.urgent_count // 0' radar-results.json)"
           if [ "$DRY_RUN" = "true" ]; then
-            echo "Dry run enabled ($new_count unseen item(s)); skipping GitHub issue creation."
+            echo "Dry run enabled ($new_count unseen dispatch(es), $urgent_count urgent); skipping GitHub issue update."
             exit 0
           fi
           if [ "$new_count" -le 0 ]; then
-            echo "No new unseen policy-radar items for $DESK."
+            echo "No new unseen policy-wire dispatches for $DESK."
             exit 0
           fi
           gh label create "policy-radar" \
-            --description "Opened or updated by the scheduled Policy Radar workflow" \
+            --description "Opened or updated by the scheduled CivicDesk Policy Wire workflow" \
             --color "1D70B8" 2>/dev/null || true
           gh label create "$DESK_LABEL" \
-            --description "Policy Radar items for the $DESK desk" \
+            --description "CivicDesk Policy Wire dispatches for the $DESK desk" \
             --color "C85A70" 2>/dev/null || true
+          if [ "$urgent_count" -gt 0 ]; then
+            gh label create "wire:urgent" \
+              --description "Contains primary regulatory/court filings or urgent statutory/fee changes" \
+              --color "111827" 2>/dev/null || true
+          fi
           today="$(date -u +%Y-%m-%d)"
           open_num="$(jq -r '[.[] | select(.state == "OPEN")][0].number // empty' recent-radar-issues.json)"
           if [ -n "$open_num" ]; then
             gh issue comment "$open_num" --body-file radar-report.md
-            gh issue edit "$open_num" --title "Policy radar ($DESK): items to verify (updated $today)"
+            if [ "$urgent_count" -gt 0 ]; then
+              gh issue edit "$open_num" \
+                --add-label "wire:urgent" \
+                --title "CivicDesk Wire ($DESK): dispatches to review, $urgent_count urgent (updated $today)"
+            else
+              gh issue edit "$open_num" \
+                --title "CivicDesk Wire ($DESK): dispatches to review (updated $today)"
+            fi
           else
-            gh issue create \
-              --title "Policy radar ($DESK): items to verify ($today)" \
-              --label "policy-radar" \
-              --label "$DESK_LABEL" \
-              --body-file radar-report.md
+            if [ "$urgent_count" -gt 0 ]; then
+              gh issue create \
+                --title "CivicDesk Wire ($DESK): $new_count dispatch(es) to review, $urgent_count urgent ($today)" \
+                --label "policy-radar" \
+                --label "$DESK_LABEL" \
+                --label "wire:urgent" \
+                --body-file radar-report.md
+            else
+              gh issue create \
+                --title "CivicDesk Wire ($DESK): $new_count dispatch(es) to review ($today)" \
+                --label "policy-radar" \
+                --label "$DESK_LABEL" \
+                --body-file radar-report.md
+            fi
           fi

@@ -18,8 +18,9 @@ CivicDesk is an independent public-interest project. It is **not** run by any co
 ## Directory Layout
 
 - `.agents/skills/` — Agent skill definitions
-- `.github/workflows/` — CI, checks, and Policy Radar workflows
+- `.github/workflows/` — CI, checks, and twice-weekly Policy Wire workflows
 - `data/sources/` — Desk-partitioned primary source registries
+- `data/wire/` — Declarative per-desk Policy Wire beat configurations
 - `docs/` — Project documentation and architecture decisions
 - `scripts/` — Build and verification scripts
 - `site-root/` — Static root configuration (`_headers`, `_redirects`)
