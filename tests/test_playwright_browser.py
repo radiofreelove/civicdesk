@@ -496,3 +496,78 @@ def test_visual_system_xl_wide_reflow_brief_and_progress(site_server: str, brows
     ctx.close()
 
 
+def test_state_switcher_summary_and_menu_never_clip_or_overflow_and_editorial_art_loads(
+    site_server: str, browser_instance
+) -> None:
+    ctx = browser_instance.new_context(viewport={"width": 390, "height": 844})
+    page = ctx.new_page()
+
+    for route in ("/", "/id-records/", "/medicaid/oregon/rules/"):
+        for size_mode in ("m", "xl"):
+            for width in (320, 375, 390, 430, 640, 820):
+                page.set_viewport_size({"width": width, "height": 844})
+                goto_local(page, site_server + route)
+                page.evaluate(f"() => {{ document.documentElement.dataset.size = '{size_mode}'; }}")
+
+                closed = page.evaluate("""() => {
+                    const s = document.querySelector('[data-state-switcher] > summary');
+                    const r = s.getBoundingClientRect();
+                    return {
+                        left: r.left,
+                        right: r.right,
+                        innerWidth: window.innerWidth,
+                        scrollWidth: s.scrollWidth,
+                        clientWidth: s.clientWidth,
+                    };
+                }""")
+                assert closed["left"] >= 0, f"{route}@{width}px ({size_mode}): summary clipped left: {closed}"
+                assert closed["right"] <= closed["innerWidth"] + 0.5, (
+                    f"{route}@{width}px ({size_mode}): summary overflows right: {closed}"
+                )
+                assert closed["scrollWidth"] <= closed["clientWidth"] + 2, (
+                    f"{route}@{width}px ({size_mode}): summary text clipped: {closed}"
+                )
+
+                page.click("[data-state-switcher] > summary")
+                opened = page.evaluate("""() => {
+                    const sw = document.querySelector('[data-state-switcher]');
+                    const m = sw.querySelector('.state-switcher-menu');
+                    const r = m.getBoundingClientRect();
+                    return {
+                        open: sw.open,
+                        left: r.left,
+                        right: r.right,
+                        innerWidth: window.innerWidth,
+                    };
+                }""")
+                assert opened["open"] is True
+                assert opened["left"] >= 0, f"{route}@{width}px ({size_mode}): menu clipped off left edge: {opened}"
+                assert opened["right"] <= opened["innerWidth"] + 0.5, (
+                    f"{route}@{width}px ({size_mode}): menu overflows right edge: {opened}"
+                )
+
+    # Verify self-hosted editorial WebP illustrations load cleanly with non-zero natural dimensions
+    for art_route in ("/", "/medicaid/", "/medicaid/oregon/reasons/", "/medicaid/oregon/letter/", "/medicaid/oregon/apply/", "/id-records/"):
+        page.set_viewport_size({"width": 1280, "height": 900})
+        goto_local(page, site_server + art_route)
+        art_stats = page.evaluate("""async () => {
+            const imgs = Array.from(document.querySelectorAll('.editorial-art img'));
+            for (const img of imgs) {
+                img.loading = 'eager';
+                if (!img.complete) {
+                    await new Promise((resolve) => {
+                        img.addEventListener('load', resolve, { once: true });
+                        img.addEventListener('error', resolve, { once: true });
+                    });
+                }
+            }
+            return imgs.map(i => ({ src: i.getAttribute('src'), complete: i.complete, w: i.naturalWidth, h: i.naturalHeight }));
+        }""")
+        assert art_stats, f"{art_route}: expected .editorial-art img elements"
+        for item in art_stats:
+            assert item["complete"] and item["w"] > 0 and item["h"] > 0, f"{art_route}: broken editorial art {item}"
+
+    ctx.close()
+
+
+

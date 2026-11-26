@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Washington Apple Health</p>
-<h1>Hours log you can print</h1>
-<p class="purpose">Track your work, school credits, work program, and community service hours (for the month before applying, or 1 of the 6 months before renewing).</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Washington Apple Health</p>
+    <h1>Hours log you can print</h1>
+    <p class="purpose">Track your work, school credits, work program, and community service hours (for the month before applying, or 1 of the 6 months before renewing).</p>
+  </div>
+  {{ v.editorial_art('medicaid-calendar.webp', variant='spot') }}
+</div>
 
 {% set wa_log_note %}Personal worksheet (not an official HCA form); keep pay stubs, schedules, and service records in case HCA sends a 15-day Post Eligibility Review letter. {{ src('MED-WA05') }} {{ src('MED-WA13') }} {{ src('MED-WA22') }}{% endset %}
 {{ v.calendar_80hr_grid(
@@ -21,7 +26,8 @@
     {'title': 'Community service sheet', 'detail': 'Organization name, contact, and monthly total'}
   ],
   note=wa_log_note,
-  id='wa-log-calendar'
+  id='wa-log-calendar',
+  show_donut=true
 ) }}
 
 <div class="actions no-print">

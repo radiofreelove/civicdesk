@@ -3,6 +3,22 @@
     Reflow-safe across Light, Warm, Dark, High Contrast, XL + Wide spacing, 320px mobile, and @media print. -#}
 {% import "icons.html" as ic %}
 
+{% set ART_DIMS = {
+  'desk-overview.webp': (960, 668),
+  'medicaid-calendar.webp': (880, 433),
+  'id-sequence.webp': (960, 351),
+  'medicaid-exemptions.webp': (760, 736),
+  'official-notice.webp': (760, 687),
+  'community-help.webp': (800, 517)
+} %}
+
+{% macro editorial_art(filename, variant='banner', extra=false) -%}
+{% set dims = ART_DIMS.get(filename, (800, 500)) %}
+<div class="editorial-art editorial-art--{{ variant }}"{% if extra %} data-deeper{% endif %}>
+  <img src="{{ asset('img/art/' ~ filename) }}" alt="" width="{{ dims[0] }}" height="{{ dims[1] }}" loading="{{ 'eager' if (not extra and variant in ('hero', 'card', 'wide', 'spot')) else 'lazy' }}" decoding="async">
+</div>
+{%- endmacro %}
+
 {% macro stat_hero_strip(stats, id='', label='Key facts at a glance', note='') -%}
 <section class="viz-stat-strip"{% if id %} id="{{ id }}"{% endif %} aria-label="{{ label }}">
   <ul class="viz-stat-list viz-stat-cols-{{ stats|length }}">
@@ -42,18 +58,26 @@
 {%- endmacro %}
 
 {% macro timeline_strip(phases, title='Key dates at a glance', heading_id='timeline-title', note='') -%}
+{% set kind_icons = {'info': 'calendar', 'deadline': 'alert', 'ongoing': 'clock'} %}
 <section class="viz-timeline-wrap" aria-labelledby="{{ heading_id }}">
   <h2 id="{{ heading_id }}">{{ title }}</h2>
   <ol class="viz-timeline viz-timeline-{{ phases|length }}">
   {% for p in phases %}
-    <li class="viz-timeline-item viz-phase-{{ p.kind|default('info') }}"{% if p.item_show_until is defined and p.item_show_until %} data-show-until="{{ p.item_show_until }}"{% endif %}>
-      <span class="viz-timeline-date">{{ p.date }}</span>
-      {% if p.href is defined and p.href %}
-      <a class="viz-timeline-label" href="{{ p.href }}">{{ p.label }}</a>
-      {% else %}
-      <strong class="viz-timeline-label">{{ p.label }}</strong>
-      {% endif %}
-      <span class="viz-timeline-note"{% if p.note_show_until is defined and p.note_show_until %} data-show-until="{{ p.note_show_until }}"{% endif %}>{{ p.note }}</span>
+    {% set kind = p.kind|default('info') %}
+    {% set icon_name = p.icon if (p.icon is defined and p.icon) else kind_icons.get(kind, 'calendar') %}
+    <li class="viz-timeline-track-item viz-phase-{{ kind }}"{% if p.item_show_until is defined and p.item_show_until %} data-show-until="{{ p.item_show_until }}"{% endif %}>
+      <div class="viz-rail-head" aria-hidden="true">
+        <span class="viz-rail-node" aria-hidden="true">{{ ic.svg_icon(icon_name, size=20) }}</span>
+      </div>
+      <div class="viz-timeline-item viz-phase-{{ kind }}">
+        <span class="viz-timeline-date">{{ p.date }}</span>
+        {% if p.href is defined and p.href %}
+        <a class="viz-timeline-label" href="{{ p.href }}">{{ p.label }}</a>
+        {% else %}
+        <strong class="viz-timeline-label">{{ p.label }}</strong>
+        {% endif %}
+        <span class="viz-timeline-note"{% if p.note_show_until is defined and p.note_show_until %} data-show-until="{{ p.note_show_until }}"{% endif %}>{{ p.note }}</span>
+      </div>
     </li>
   {% endfor %}
   </ol>
@@ -66,18 +90,46 @@
   <h2 id="{{ heading_id }}">{{ title }}</h2>
   <ol class="viz-swimlane-list viz-swimlane-{{ steps|length }}">
   {% for s in steps %}
-    <li class="viz-swimlane-card">
-      <div class="viz-flow-head">
-        <span class="viz-flow-num" aria-hidden="true">{{ loop.index }}</span>
-        {% if s.tag is defined and s.tag %}<span class="viz-swimlane-tag">{{ s.tag }}</span>{% endif %}
+    <li class="viz-swimlane-item">
+      <div class="viz-rail-head" aria-hidden="true">
+        <span class="viz-rail-node" aria-hidden="true">{{ loop.index }}</span>
       </div>
-      <strong class="viz-flow-title">{{ s.title }}</strong>
-      <p class="viz-flow-body">{{ s.body }}</p>
+      <div class="viz-swimlane-card">
+        {% if s.tag is defined and s.tag %}
+        <div class="viz-flow-head">
+          <span class="viz-swimlane-tag">{{ s.tag }}</span>
+        </div>
+        {% endif %}
+        <strong class="viz-flow-title">{{ s.title }}</strong>
+        <p class="viz-flow-body">{{ s.body }}</p>
+      </div>
     </li>
   {% endfor %}
   </ol>
   {% if note %}<p class="viz-strip-citations">{{ note }}</p>{% endif %}
 </section>
+{%- endmacro %}
+
+{% macro _hours_donut_svg() -%}
+<svg class="viz-donut-svg" viewBox="0 0 136 136" width="136" height="136" aria-hidden="true" focusable="false">
+  <circle cx="68" cy="68" r="50" class="viz-donut-track"/>
+  <g transform="rotate(-90 68 68)">
+    <circle cx="68" cy="68" r="50" class="viz-donut-seg viz-donut-seg-1"/>
+    <circle cx="68" cy="68" r="50" class="viz-donut-seg viz-donut-seg-2"/>
+    <circle cx="68" cy="68" r="50" class="viz-donut-seg viz-donut-seg-3"/>
+  </g>
+  <text x="68" y="65" text-anchor="middle" class="viz-donut-num">80h</text>
+  <text x="68" y="85" text-anchor="middle" class="viz-donut-unit">/mo</text>
+</svg>
+{%- endmacro %}
+
+{% macro _hours_stacked_bar_svg() -%}
+<svg class="viz-hours-svg" viewBox="0 0 600 36" width="600" height="36" aria-hidden="true" focusable="false">
+  <rect x="1" y="1" width="598" height="34" rx="9" class="viz-meter-track"/>
+  <rect x="5" y="5" width="272" height="26" rx="6" class="viz-seg-1"/>
+  <rect x="283" y="5" width="180" height="26" rx="6" class="viz-seg-2"/>
+  <rect x="469" y="5" width="126" height="26" rx="6" class="viz-seg-3"/>
+</svg>
 {%- endmacro %}
 
 {% macro hours_breakdown(title, intro, segments, note='', id='hours-breakdown', extra=false) -%}
@@ -86,30 +138,52 @@
     <h3 class="viz-hours-title" id="{{ id }}-h">{{ title }}</h3>
     <p class="viz-hours-intro">{{ intro }}</p>
   </div>
-  <div class="viz-hours-bar-wrap" aria-hidden="true">
-    <svg class="viz-hours-svg" viewBox="0 0 600 20" width="600" height="20" aria-hidden="true" focusable="false">
-      <rect x="1" y="1" width="598" height="18" rx="5" class="viz-meter-track"/>
-      <rect x="4" y="4" width="276" height="12" rx="3" class="viz-seg-1"/>
-      <rect x="284" y="4" width="180" height="12" rx="3" class="viz-seg-2"/>
-      <rect x="468" y="4" width="128" height="12" rx="3" class="viz-seg-3"/>
-    </svg>
-  </div>
-  <ul class="viz-hours-legend">
-  {% for seg in segments %}
-    <li class="viz-hours-item viz-hours-tone-{{ loop.index }}">
-      <div class="viz-hours-copy">
-        <strong>{{ seg.label }}</strong>
-        <span>{{ seg.detail }}</span>
+  <div class="viz-hours-graphic">
+    <div class="viz-donut-wrap" aria-hidden="true">
+      {{ _hours_donut_svg() }}
+    </div>
+    <div class="viz-hours-main">
+      <div class="viz-hours-bar-wrap" aria-hidden="true">
+        {{ _hours_stacked_bar_svg() }}
       </div>
-    </li>
-  {% endfor %}
-  </ul>
+      <ul class="viz-hours-legend">
+      {% for seg in segments %}
+        <li class="viz-hours-item viz-hours-tone-{{ loop.index }}">
+          <span class="viz-swatch viz-swatch-{{ loop.index }}" aria-hidden="true"></span>
+          <div class="viz-hours-copy">
+            <strong>{{ seg.label }}</strong>
+            <span>{{ seg.detail }}</span>
+          </div>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
   {% if note %}<p class="viz-hours-note">{{ note }}</p>{% endif %}
 </section>
 {%- endmacro %}
 
-{% macro calendar_80hr_grid(state_label, weeks, proofs=None, note='', id='calendar-80hr', extra=false) -%}
+{% macro calendar_80hr_grid(state_label, weeks, proofs=None, note='', id='calendar-80hr', extra=false, show_donut=false) -%}
 <section class="viz-calendar"{% if id %} id="{{ id }}"{% endif %}{% if extra %} data-deeper{% endif %} aria-label="{{ state_label }} 4-week 80-hour monthly example">
+  {% if show_donut %}
+  <div class="viz-calendar-graphic">
+    <div class="viz-donut-wrap" aria-hidden="true">
+      {{ _hours_donut_svg() }}
+    </div>
+    <div class="viz-calendar-graphic-copy">
+      <div class="viz-calendar-head">
+        <div>
+          <strong class="viz-calendar-title">Sample 4-week mix adding up to 80 hours</strong>
+          <p class="viz-calendar-sub">About 20 hours a week from one activity or a combination in {{ state_label }}.</p>
+        </div>
+        <span class="viz-calendar-total">80 hrs / mo</span>
+      </div>
+      <div class="viz-hours-bar-wrap" aria-hidden="true">
+        {{ _hours_stacked_bar_svg() }}
+      </div>
+    </div>
+  </div>
+  {% else %}
   <div class="viz-calendar-head">
     <div>
       <strong class="viz-calendar-title">Sample 4-week mix adding up to 80 hours</strong>
@@ -117,6 +191,7 @@
     </div>
     <span class="viz-calendar-total">80 hrs / mo</span>
   </div>
+  {% endif %}
   <ol class="viz-week-grid">
   {% for w in weeks %}
     <li class="viz-week-cell">

@@ -336,6 +336,29 @@
 
   /* ---------- Switcher menus ---------- */
   var switchers = Array.prototype.slice.call(document.querySelectorAll("[data-state-switcher]"));
+  function clampSwitcherMenu(switcher) {
+    if (!switcher || !switcher.open) {
+      if (switcher) {
+        switcher.classList.remove("is-align-left");
+        switcher.classList.remove("is-align-right");
+      }
+      return;
+    }
+    var menu = switcher.querySelector(".state-switcher-menu");
+    if (!menu) return;
+    switcher.classList.remove("is-align-left");
+    switcher.classList.remove("is-align-right");
+    if (window.getComputedStyle(menu).position !== "absolute") return;
+    var rect = menu.getBoundingClientRect();
+    if (rect.right > window.innerWidth - 8 && window.innerWidth - rect.width >= 8) {
+      switcher.classList.add("is-align-right");
+      rect = menu.getBoundingClientRect();
+    }
+    if (rect.left < 8) {
+      switcher.classList.remove("is-align-right");
+      switcher.classList.add("is-align-left");
+    }
+  }
   if (switchers.length) {
     document.addEventListener("click", function (event) {
       switchers.forEach(function (switcher) {
@@ -355,7 +378,13 @@
         }
       });
     });
+    window.addEventListener("resize", function () {
+      switchers.forEach(clampSwitcherMenu);
+    });
     switchers.forEach(function (switcher) {
+      switcher.addEventListener("toggle", function () {
+        clampSwitcherMenu(switcher);
+      });
       switcher.addEventListener("focusout", function (event) {
         if (!switcher.open) return;
         var next = event.relatedTarget;

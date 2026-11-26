@@ -40,16 +40,18 @@ Inside `@media print`, all `--viz-*` tokens reset to crisp `#000000` ink on `#FF
 
 ---
 
-## 4. Six Purposeful Information-Design Patterns (`templates/visuals.html`)
+## 4. Purposeful Information Design & Cohesive Editorial Art (`templates/visuals.html`)
 
 - **Readable Labels in Semantic HTML:** All labels, dates, fees, and callouts live in semantic HTML (`<ol>`, `<ul>`, `<dl>`, `<table>`, `<h3>`, `<p>`) inside CSS Grid/Flex layouts so **Extra large** text (`150%`), **Wide spacing** (WCAG 1.4.12), and `320px` viewports (WCAG 1.4.10) reflow cleanly without horizontal scrollbars or clipped words.
+- **Cohesive Self-Hosted Editorial Spot Illustrations (`static/img/art/*.webp` & `editorial_art`):**
+  - Six cohesive vector-editorial `.webp` spot illustrations (`desk-overview.webp`, `medicaid-calendar.webp`, `id-sequence.webp`, `medicaid-exemptions.webp`, `official-notice.webp`, `community-help.webp`) sit directly on Light and Warm paper surfaces, receive a crisp `#F1F5F9` soft-lit frame in Dark slate and High contrast so `#111827` linework stays high-contrast, and hide automatically in `@media print` (with secondary spot art hidden in `data-brief` Short version mode).
 - **Purposeful Macro Suite (`templates/visuals.html` & `templates/icons.html`):**
   1. `stat_hero_strip`: Architectural hairline key-facts strip (`tabular-nums`) for concrete fees, ages, deadlines, and verified counts.
   2. `process_flow`: Sequential numbered dependency cards (`<= 120` chars per step) with directional arrows where order genuinely matters (`Court -> SSA -> DMV -> Passport`, court filing steps, post-application checks).
-  3. `timeline_strip` & `swimlane_timeline`: 3-phase 2027 effective-date strips, appeal & aid-paid-pending windows (`denied.html`), and 90-day retroactive bill windows (`bills.html`).
-  4. `hours_breakdown`, `calendar_80hr_grid`, & `.viz-compare-board`: Proportional 80-hour monthly stacked bar + concrete 4-week sample mix (`rules.html`, `log.html`) and fact-driven 3-state court fee comparison (`id-records/compare.html`).
+  3. `timeline_strip` & `swimlane_timeline`: Graphical `4px` colored timeline rails with `36x36` circular icon/step nodes (`.viz-rail-node`, horizontal connected track on desktop, vertical left-spine track on mobile) for 2027 effective dates, appeal & aid-paid-pending windows (`denied.html`), and 90-day retroactive bill windows (`bills.html`).
+  4. `hours_breakdown`, `calendar_80hr_grid`, & `.viz-compare-board`: `136x136` SVG Donut Ring Chart (`80h / mo`) paired with a chunky `36px` rounded horizontal stacked bar + color-keyed legend pills and concrete 4-week sample mix (`rules.html`, `log.html`), plus `viewBox="0 0 320 22"` proportional horizontal court-fee comparison bars alongside `$0 with approved fee waiver` badges (`id-records/compare.html`).
   5. `passport_form_matrix` & `yes_no_split_board`: `DS-5504` vs. `DS-82` vs. `DS-11` decision table (`id-records/federal.html`) and 2-column administrative vs. action/court eligibility comparisons (`*-birth.html`, `reasons.html`, `health.html`).
-  6. `doc_mockup_letter` & `glossary_list`: Realistic typographic state notice sheet with numbered markers `1`–`4` paired with `<ol class="mockup-legend">` on `medicaid/*/letter.html`, plus 2-column typographic `<dl class="glossary-grid">` tables on glossary and directory pages (`words.html`, `id-records/glossary.html`, `help.html`). Small `20–24px` semantic UI icons in `templates/icons.html` are used sparingly on buttons, callout kickers, and card links.
+  6. `doc_mockup_letter` & `glossary_list`: Realistic typographic state notice sheet with numbered markers `1`–`4` paired with `<ol class="mockup-legend">` on `medicaid/*/letter.html`, plus 2-column typographic `<dl class="glossary-grid">` tables on glossary and directory pages (`words.html`, `id-records/glossary.html`, `help.html`). Small `20–24px` semantic UI icons in `templates/icons.html` are used sparingly on buttons, timeline nodes, callout kickers, and card links.
 
 ---
 

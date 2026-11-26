@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah Medicaid</p>
-<h1>Free help with Utah Medicaid, and other languages</h1>
-<p class="purpose">Free community navigators, DWS offices, disability aids, and Spanish forms across Utah.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah Medicaid</p>
+    <h1>Free help with Utah Medicaid, and other languages</h1>
+    <p class="purpose">Free community navigators, DWS offices, disability aids, and Spanish forms across Utah.</p>
+  </div>
+  {{ v.editorial_art('community-help.webp', variant='spot') }}
+</div>
 
 {{ m.onthispage([
   ('in-person', 'In person'),

@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
-<h1>Government rules and paperwork, explained in plain words.</h1>
-{{ m.lede("CivicDesk maps multi-agency rules, deadlines, fees, and forms across Oregon, Washington, Utah, and federal offices. Every fact links to a dated primary source, and nothing you read or click is tracked.") }}
+<div class="hero-split">
+  <div class="hero-copy">
+    <h1>Government rules and paperwork, explained in plain words.</h1>
+    {{ m.lede("CivicDesk maps multi-agency rules, deadlines, fees, and forms across Oregon, Washington, Utah, and federal offices. Every fact links to a dated primary source, and nothing you read or click is tracked.") }}
+  </div>
+  {{ v.editorial_art('desk-overview.webp', variant='hero') }}
+</div>
 
 <section class="big-start" aria-labelledby="start-router-h">
   <h2 id="start-router-h">Not sure where to start? Answer 2 quick questions</h2>
@@ -13,6 +19,7 @@
 <h2 id="desks">Choose a service desk</h2>
 <ul class="desk-cards">
   <li class="desk-card">
+    {{ v.editorial_art('medicaid-calendar.webp', variant='card') }}
     <h2><a href="{{ page_url('medicaid') }}">2027 Medicaid Work &amp; Activity Rules</a></h2>
     <ul class="desk-pills" aria-label="Medicaid jurisdictions and start date">
       <li>Oregon</li>
@@ -32,6 +39,7 @@
   </li>
 
   <li class="desk-card desk-card-rose">
+    {{ v.editorial_art('id-sequence.webp', variant='card') }}
     <h2><a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records</a></h2>
     <ul class="desk-pills" aria-label="ID and vital record jurisdictions">
       <li>Oregon</li>

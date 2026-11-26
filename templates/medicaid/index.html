@@ -2,10 +2,15 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">2027 Medicaid Work &amp; Activity Rules</p>
-<h1>2027 Medicaid work and activity rules in Oregon, Washington, and Utah</h1>
-{{ m.lede("Starting January 1, 2027, federal law adds work or activity rules, shorter retroactive bill windows, and 6-month renewals for many adults ages 19 to 64 in Medicaid expansion programs. Oregon and Washington have announced delayed work-rule enforcement through June 30, 2027.") }}
-{{ m.checked_line(page) }}
+<div class="hero-split">
+  <div class="hero-copy">
+    <p class="kicker">2027 Medicaid Work &amp; Activity Rules</p>
+    <h1>2027 Medicaid work and activity rules in Oregon, Washington, and Utah</h1>
+    {{ m.lede("Starting January 1, 2027, federal law adds work or activity rules, shorter retroactive bill windows, and 6-month renewals for many adults ages 19 to 64 in Medicaid expansion programs. Oregon and Washington have announced delayed work-rule enforcement through June 30, 2027.") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.editorial_art('medicaid-calendar.webp', variant='hero') }}
+</div>
 
 {% set med_cites %}Sources for key dates: retroactive bill cutoffs {{ src('MED-S01') }} {{ src('MED-WA03') }} {{ src('MED-U02') }}; federal start &amp; Utah tribal proof {{ src('MED-S27') }} {{ src('MED-U28') }}; hold harmless announcements {{ src('MED-S41') }} {{ src('MED-S53') }} {{ src('MED-WA27') }}.{% endset %}
 {{ v.timeline_strip([

@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah Medicaid</p>
-<h1>Have a health condition?</h1>
-<p class="purpose">Blindness, a disability, a mental health or substance-use condition, or difficulty with daily tasks (Utah calls this <strong>medically frail or special needs</strong>) can exempt you from the new Utah rules.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah Medicaid</p>
+    <h1>Have a health condition?</h1>
+    <p class="purpose">Blindness, a disability, a mental health or substance-use condition, or difficulty with daily tasks (Utah calls this <strong>medically frail or special needs</strong>) can exempt you from the new Utah rules.</p>
+  </div>
+  {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
+</div>
 
 {% set ut_health_note %}Sources: Utah medically frail screener &amp; verification law (Utah Code 26B-3-142.1) {{ src('MED-U03') }} {{ src('MED-U39') }}.{% endset %}
 {{ v.process_flow([

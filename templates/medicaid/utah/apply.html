@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah Medicaid</p>
-<h1>How to apply for Utah Medicaid</h1>
-<p class="purpose">The Department of Workforce Services (DWS) decides who qualifies. Pick any of the 3 ways below—and get free help from Take Care Utah or in your language.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah Medicaid</p>
+    <h1>How to apply for Utah Medicaid</h1>
+    <p class="purpose">The Department of Workforce Services (DWS) decides who qualifies. Pick any of the 3 ways below—and get free help from Take Care Utah or in your language.</p>
+  </div>
+  {{ v.editorial_art('community-help.webp', variant='spot') }}
+</div>
 
 {{ m.onthispage([
   ('apply-online', 'Online (myCase)'),

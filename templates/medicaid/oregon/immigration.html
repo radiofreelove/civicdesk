@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
-<h1>Immigration status and OHP</h1>
-<p class="purpose">Your immigration status alone does not stop you from getting full OHP benefits through <strong>Healthier Oregon</strong>—and CivicDesk never asks about immigration status.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon Health Plan (OHP)</p>
+    <h1>Immigration status and OHP</h1>
+    <p class="purpose">Your immigration status alone does not stop you from getting full OHP benefits through <strong>Healthier Oregon</strong>—and CivicDesk never asks about immigration status.</p>
+  </div>
+  {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
+</div>
 
 {% set or_imm_note %}Sources: Healthier Oregon &amp; work rules {{ src('MED-S01') }} {{ src('MED-S05') }} {{ src('MED-S06') }} {{ src('MED-S11') }} {{ src('MED-S22') }}; Jan. 1, 2027 Open Card transition {{ src('MED-S43') }}; public charge updates {{ src('MED-S12') }} {{ src('MED-S48') }}.{% endset %}
 {{ v.yes_no_split_board(

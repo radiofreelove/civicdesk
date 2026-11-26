@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
-<h1>Medical bills from before you apply</h1>
-<p class="purpose">OHP calls this <strong>retroactive coverage</strong>. Starting Jan.&nbsp;1, 2027, the window for unpaid past medical bills gets shorter for most adults.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon Health Plan (OHP)</p>
+    <h1>Medical bills from before you apply</h1>
+    <p class="purpose">OHP calls this <strong>retroactive coverage</strong>. Starting Jan.&nbsp;1, 2027, the window for unpaid past medical bills gets shorter for most adults.</p>
+  </div>
+  {{ v.editorial_art('official-notice.webp', variant='spot') }}
+</div>
 
 {% set or_bills_cite %}Source for retroactive coverage windows: {{ src('MED-S01') }}{% endset %}
 {{ v.swimlane_timeline(

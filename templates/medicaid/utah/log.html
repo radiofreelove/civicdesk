@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah Medicaid</p>
-<h1>Hours log you can print</h1>
-<p class="purpose">Track your work, job training, school, and volunteer hours for the month before you apply. Keep this sheet with your pay stubs or schedules in case DWS asks.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah Medicaid</p>
+    <h1>Hours log you can print</h1>
+    <p class="purpose">Track your work, job training, school, and volunteer hours for the month before you apply. Keep this sheet with your pay stubs or schedules in case DWS asks.</p>
+  </div>
+  {{ v.editorial_art('medicaid-calendar.webp', variant='spot') }}
+</div>
 
 {{ v.calendar_80hr_grid(
   'Utah Medicaid',
@@ -20,7 +25,8 @@
     {'title': 'DWS Form 742 + volunteer log', 'detail': 'Ask DWS for official reporting form 742'}
   ],
   note='This worksheet is for your personal records (not an official Utah Medicaid form); DWS decides what proof it accepts and uses its own form 742.',
-  id='ut-log-calendar'
+  id='ut-log-calendar',
+  show_donut=true
 ) }}
 
 <div class="actions no-print">

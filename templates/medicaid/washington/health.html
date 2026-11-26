@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Washington Apple Health</p>
-<h1>Have a health condition?</h1>
-<p class="purpose">People who are <strong>medically frail</strong>—or in alcohol or substance-use treatment—do not have to meet the new Apple Health work rules.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Washington Apple Health</p>
+    <h1>Have a health condition?</h1>
+    <p class="purpose">People who are <strong>medically frail</strong>—or in alcohol or substance-use treatment—do not have to meet the new Apple Health work rules.</p>
+  </div>
+  {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
+</div>
 
 {% set wa_health_note %}Sources: medical frailty &amp; self-attestation {{ src('MED-WA05') }} {{ src('MED-WA07') }} {{ src('MED-WA21') }} {{ src('MED-WA22') }} {{ src('MED-S27') }} {{ src('MED-S29') }}.{% endset %}
 {{ v.yes_no_split_board(

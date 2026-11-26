@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Washington Apple Health</p>
-<h1>How to apply for Apple Health</h1>
-<p class="purpose">Apple Health enrollment is open all year, and local navigator help is always free.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Washington Apple Health</p>
+    <h1>How to apply for Apple Health</h1>
+    <p class="purpose">Apple Health enrollment is open all year, and local navigator help is always free.</p>
+  </div>
+  {{ v.editorial_art('community-help.webp', variant='spot') }}
+</div>
 
 {{ m.onthispage([
   ('apply-online', 'Online'),

@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Get help</p>
-<h1>Free and low-cost help</h1>
-{{ m.lede("Most name and gender-marker updates do not require a lawyer, though legal aid helps when a court case, custody rule, criminal record, or immigration question is involved.") }}
-{{ m.checked_line(page) }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Get help</p>
+    <h1>Free and low-cost help</h1>
+    {{ m.lede("Most name and gender-marker updates do not require a lawyer, though legal aid helps when a court case, custody rule, criminal record, or immigration question is involved.") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.editorial_art('community-help.webp', variant='spot') }}
+</div>
 
 {% call m.callout('watch', 'Need to talk to someone right now?', 'now') %}
 <ul>

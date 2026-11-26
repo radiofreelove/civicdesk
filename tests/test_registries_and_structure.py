@@ -637,41 +637,95 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
                 f"{route}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
             )
 
-    # Core purposeful structural diagrams render only on routes where they earn their space
+    # Verify all 6 cohesive editorial WebP assets exist with exact expected dimensions
+    expected_art_dims = {
+        "desk-overview.webp": (960, 668),
+        "medicaid-calendar.webp": (880, 433),
+        "id-sequence.webp": (960, 351),
+        "medicaid-exemptions.webp": (760, 736),
+        "official-notice.webp": (760, 687),
+        "community-help.webp": (800, 517),
+    }
+
+    def _webp_dims(data: bytes) -> tuple[int, int]:
+        assert data[:4] == b"RIFF" and data[8:12] == b"WEBP"
+        chunk = data[12:16]
+        if chunk == b"VP8X":
+            return (1 + int.from_bytes(data[24:27], "little"), 1 + int.from_bytes(data[27:30], "little"))
+        if chunk == b"VP8L":
+            bits = int.from_bytes(data[21:25], "little")
+            return ((bits & 0x3FFF) + 1, ((bits >> 14) & 0x3FFF) + 1)
+        if chunk == b"VP8 ":
+            return (int.from_bytes(data[26:28], "little") & 0x3FFF, int.from_bytes(data[28:30], "little") & 0x3FFF)
+        raise AssertionError(f"Unsupported WebP chunk {chunk!r}")
+
+    for fname, want_wh in expected_art_dims.items():
+        src_art = ROOT / "static" / "img" / "art" / fname
+        built_art = built_site / "static" / "img" / "art" / fname
+        assert src_art.is_file(), f"Missing static/img/art/{fname}"
+        assert built_art.is_file(), f"Missing built public/static/img/art/{fname}"
+        assert _webp_dims(src_art.read_bytes()) == want_wh, f"{fname}: unexpected dimensions"
+
+    art_img_re = re.compile(r'<div class="editorial-art[^"]*">\s*<img\s+([^>]+)>', re.S)
+    seen_art_files: set[str] = set()
+    for html_path in html_files:
+        raw = html_path.read_text(encoding="utf-8")
+        for im in art_img_re.finditer(raw):
+            attrs_str = im.group(1)
+            src_m = re.search(r'src="(/static/img/art/([a-z0-9-]+)\.webp)\?v=[0-9a-f]{8}"', attrs_str)
+            assert src_m, f"{html_path}: editorial-art <img> missing fingerprinted /static/img/art/*.webp?v=hash: {attrs_str}"
+            rel_asset, stem = src_m.group(1), src_m.group(2) + ".webp"
+            assert (built_site / rel_asset.lstrip("/")).is_file(), f"{html_path}: broken editorial art {rel_asset}"
+            assert 'alt=""' in attrs_str, f"{html_path}: decorative editorial art must carry alt=\"\""
+            w_m = re.search(r'width="(\d+)"', attrs_str)
+            h_m = re.search(r'height="(\d+)"', attrs_str)
+            assert w_m and h_m and (int(w_m.group(1)), int(h_m.group(1))) == expected_art_dims[stem]
+            seen_art_files.add(stem)
+    assert seen_art_files == set(expected_art_dims), f"Unused editorial art files: {set(expected_art_dims) - seen_art_files}"
+
+    # Core purposeful structural diagrams & editorial art render on routes where they belong
     expected_markers = {
+        "index.html": ("desk-overview.webp", "medicaid-calendar.webp", "id-sequence.webp"),
+        "start/index.html": ("desk-overview.webp",),
         "sources/index.html": ('class="viz-stat-strip"',),
-        "medicaid/index.html": ('class="viz-timeline',),
-        "medicaid/oregon/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
-        "medicaid/washington/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
-        "medicaid/utah/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
-        "medicaid/oregon/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
-        "medicaid/washington/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
-        "medicaid/utah/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
-        "medicaid/oregon/reasons/index.html": ('class="viz-split-board"',),
-        "medicaid/washington/reasons/index.html": ('class="viz-split-board"',),
-        "medicaid/utah/reasons/index.html": ('class="viz-split-board"',),
-        "medicaid/oregon/letter/index.html": ("doc-mockup-letter", 'class="glossary-grid"'),
-        "medicaid/washington/letter/index.html": ("doc-mockup-letter",),
-        "medicaid/utah/letter/index.html": ("doc-mockup-letter", 'class="glossary-grid"'),
-        "medicaid/oregon/denied/index.html": ('class="viz-swimlane"',),
-        "medicaid/washington/denied/index.html": ('class="viz-swimlane"',),
-        "medicaid/utah/denied/index.html": ('class="viz-swimlane"',),
-        "medicaid/oregon/bills/index.html": ('class="viz-swimlane"',),
-        "medicaid/washington/bills/index.html": ('class="viz-swimlane"',),
-        "medicaid/utah/bills/index.html": ('class="viz-swimlane"',),
-        "medicaid/oregon/log/index.html": ('class="viz-calendar"', 'class="viz-proof-tiles"'),
-        "medicaid/washington/log/index.html": ('class="viz-calendar"', 'class="viz-proof-tiles"'),
-        "medicaid/utah/log/index.html": ('class="viz-calendar"', 'class="viz-proof-tiles"'),
+        "medicaid/index.html": ("medicaid-calendar.webp", 'class="viz-timeline', 'class="viz-rail-node"'),
+        "medicaid/oregon/index.html": ("medicaid-calendar.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),
+        "medicaid/washington/index.html": ("medicaid-calendar.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),
+        "medicaid/utah/index.html": ("medicaid-calendar.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),
+        "medicaid/oregon/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-donut-svg"', 'viewBox="0 0 600 36"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/washington/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-donut-svg"', 'viewBox="0 0 600 36"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/utah/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-donut-svg"', 'viewBox="0 0 600 36"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/oregon/reasons/index.html": ("medicaid-exemptions.webp", 'class="viz-split-board"'),
+        "medicaid/washington/reasons/index.html": ("medicaid-exemptions.webp", 'class="viz-split-board"'),
+        "medicaid/utah/reasons/index.html": ("medicaid-exemptions.webp", 'class="viz-split-board"'),
+        "medicaid/oregon/letter/index.html": ("official-notice.webp", "doc-mockup-letter", 'class="glossary-grid"'),
+        "medicaid/washington/letter/index.html": ("official-notice.webp", "doc-mockup-letter"),
+        "medicaid/utah/letter/index.html": ("official-notice.webp", "doc-mockup-letter", 'class="glossary-grid"'),
+        "medicaid/oregon/denied/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/washington/denied/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/utah/denied/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/oregon/bills/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/washington/bills/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/utah/bills/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/oregon/log/index.html": ("medicaid-calendar.webp", 'class="viz-donut-svg"', 'class="viz-calendar"', 'class="viz-proof-tiles"'),
+        "medicaid/washington/log/index.html": ("medicaid-calendar.webp", 'class="viz-donut-svg"', 'class="viz-calendar"', 'class="viz-proof-tiles"'),
+        "medicaid/utah/log/index.html": ("medicaid-calendar.webp", 'class="viz-donut-svg"', 'class="viz-calendar"', 'class="viz-proof-tiles"'),
+        "medicaid/oregon/apply/index.html": ("community-help.webp", 'class="viz-flow'),
+        "medicaid/washington/apply/index.html": ("community-help.webp", 'class="viz-flow'),
+        "medicaid/utah/apply/index.html": ("community-help.webp", 'class="viz-flow'),
+        "medicaid/oregon/help/index.html": ("community-help.webp", 'class="glossary-grid"'),
+        "medicaid/washington/help/index.html": ("community-help.webp", 'class="glossary-grid"'),
+        "medicaid/utah/help/index.html": ("community-help.webp", 'class="glossary-grid"'),
         "medicaid/oregon/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/washington/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/utah/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/oregon/words/index.html": ('class="glossary-grid"',),
         "medicaid/washington/words/index.html": ('class="glossary-grid"',),
         "medicaid/utah/words/index.html": ('class="glossary-grid"',),
-        "id-records/index.html": ('class="viz-flow',),
-        "id-records/oregon/index.html": ('class="viz-stat-strip"', 'class="viz-flow'),
-        "id-records/washington/index.html": ('class="viz-stat-strip"', 'class="viz-flow'),
-        "id-records/utah/index.html": ('class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/index.html": ("id-sequence.webp", 'class="viz-flow'),
+        "id-records/oregon/index.html": ("id-sequence.webp", 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/washington/index.html": ("id-sequence.webp", 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/utah/index.html": ("id-sequence.webp", 'class="viz-stat-strip"', 'class="viz-flow'),
         "id-records/oregon/court/index.html": ('class="viz-stat-strip"', 'class="viz-flow', "toc-pills"),
         "id-records/washington/court/index.html": ('class="viz-stat-strip"', 'class="viz-flow', "toc-pills"),
         "id-records/utah/court/index.html": ('class="viz-stat-strip"', 'class="viz-flow', "toc-pills"),
@@ -681,10 +735,11 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
         "id-records/oregon/id/index.html": ('class="viz-stat-strip"',),
         "id-records/washington/id/index.html": ('class="viz-stat-strip"',),
         "id-records/utah/id/index.html": ('class="viz-stat-strip"',),
-        "id-records/federal/index.html": ("passport-form-matrix",),
-        "id-records/compare/index.html": ('class="viz-compare-board"',),
+        "id-records/federal/index.html": ("id-sequence.webp", "passport-form-matrix"),
+        "id-records/compare/index.html": ('class="viz-compare-board"', 'viewBox="0 0 320 22"'),
         "id-records/glossary/index.html": ('class="glossary-grid"',),
-        "id-records/after/index.html": ('class="viz-flow',),
+        "id-records/after/index.html": ("id-sequence.webp", 'class="viz-flow'),
+        "id-records/help/index.html": ("community-help.webp",),
         "id-records/path/index.html": ('id="path-form"', 'class="result-emblem'),
     }
     for rel_file, markers in expected_markers.items():
@@ -692,11 +747,12 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
         for marker in markers:
             assert marker in html, f"{rel_file}: missing expected visual marker {marker!r}"
 
-    # Trust and utility pages stay clean and direct without forced diagram widgets
+    # Trust and utility pages stay clean and direct without forced diagram widgets or illustrations
     for clean_page in ("privacy/index.html", "about/index.html", "accessibility/index.html", "404.html"):
         clean_html = (built_site / clean_page).read_text(encoding="utf-8")
         assert "doc-mockup" not in clean_html, f"{clean_page}: unexpected doc-mockup widget"
         assert 'class="viz-' not in clean_html, f"{clean_page}: unexpected forced .viz-* widget"
+        assert "editorial-art" not in clean_html, f"{clean_page}: unexpected editorial-art widget"
 
 
 def test_drop_in_artist_logo_system_and_make_mark_custom_mode(tmp_path: Path, built_site: Path) -> None:
@@ -876,7 +932,7 @@ def test_drop_in_artist_logo_system_and_make_mark_custom_mode(tmp_path: Path, bu
 
 
 def test_ordered_list_badges_aria_hidden_and_dynamic_letter_pins(built_site: Path) -> None:
-    badge_classes = {"mockup-pin", "viz-flow-num", "viz-progress-dot", "after-num"}
+    badge_classes = {"mockup-pin", "viz-flow-num", "viz-rail-node", "viz-progress-dot", "after-num"}
 
     class OrderedListBadgeParser(HTMLParser):
         def __init__(self) -> None:

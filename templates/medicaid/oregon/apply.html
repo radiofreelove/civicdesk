@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
-<h1>How to apply for OHP</h1>
-<p class="purpose">There are 4 ways to apply, and help from certified community partners is always free.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon Health Plan (OHP)</p>
+    <h1>How to apply for OHP</h1>
+    <p class="purpose">There are 4 ways to apply, and help from certified community partners is always free.</p>
+  </div>
+  {{ v.editorial_art('community-help.webp', variant='spot') }}
+</div>
 
 {{ m.onthispage([
   ('apply-online', '4 ways to apply'),

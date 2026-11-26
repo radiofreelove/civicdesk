@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah Medicaid</p>
-<h1>Immigration status and Utah Medicaid</h1>
-<p class="purpose">A federal law changed noncitizen eligibility for Utah Medicaid starting Oct.&nbsp;1, 2026. CivicDesk never asks about your immigration status.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah Medicaid</p>
+    <h1>Immigration status and Utah Medicaid</h1>
+    <p class="purpose">A federal law changed noncitizen eligibility for Utah Medicaid starting Oct.&nbsp;1, 2026. CivicDesk never asks about your immigration status.</p>
+  </div>
+  {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
+</div>
 
 {{ v.yes_no_split_board(
   'Groups still covered & emergency care',

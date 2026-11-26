@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Washington Apple Health</p>
-<h1>Turned down for Apple Health? You have options.</h1>
-<p class="purpose">Always check the exact deadlines printed on your letter—you have strong appeal, continued-coverage, and 90-day renewal protections.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Washington Apple Health</p>
+    <h1>Turned down for Apple Health? You have options.</h1>
+    <p class="purpose">Always check the exact deadlines printed on your letter—you have strong appeal, continued-coverage, and 90-day renewal protections.</p>
+  </div>
+  {{ v.editorial_art('official-notice.webp', variant='spot') }}
+</div>
 
 {% set wa_den_cites %}Sources: 90-day hearing deadline &amp; 10-day continued coverage {{ src('MED-WA17') }} {{ src('MED-WA18') }} {{ src('MED-WA19') }} {{ src('MED-WA29') }}; 90-day late renewal window {{ src('MED-WA16') }}; hold harmless delay {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-S41') }}.{% endset %}
 {{ v.swimlane_timeline(
