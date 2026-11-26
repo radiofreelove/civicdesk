@@ -1,0 +1,200 @@
+# CivicDesk Policy Wire Beat Profile — Legal Name, ID & Vital Records Desk
+# Broadened CivicDesk scope: marriage, divorce, adult & minor court name changes,
+# sex/gender designation updates, vital records, driver licenses / REAL ID, SSA, USCIS, and passports.
+
+desk: id-records
+enabled: true
+label: "Legal Name, ID & Vital Records"
+registry: "data/sources/id_records.yaml"
+source_prefix: "ID-"
+route_prefix: "/id-records/"
+
+editorial_brief: >-
+  CivicDesk's Legal Name, ID, and Vital Records desk covering marriage certificate name changes,
+  divorce or dissolution name restoration, adult and minor court-ordered name changes, sex or
+  gender designation updates, court filing fee schedules, court packet revisions, record sealing
+  and confidentiality rules, birth certificate amendments, driver licenses and REAL ID, Social
+  Security (Form SS-5 / NUMIDENT), USCIS identity records, and U.S. Passports (DS-11, DS-82,
+  DS-5504, Orr v. Trump) across Oregon, Washington, Utah, and federal agencies.
+
+jurisdictions:
+  US:
+    name: "Federal"
+    domains:
+      - travel.state.gov
+      - state.gov
+      - ssa.gov
+      - uscis.gov
+      - dhs.gov
+      - federalregister.gov
+      - ecfr.gov
+      - uscourts.gov
+      - ca1.uscourts.gov
+      - supremecourt.gov
+    keywords:
+      - "passport"
+      - "DS-11"
+      - "DS-82"
+      - "DS-5504"
+      - "Social Security"
+      - "SS-5"
+      - "NUMIDENT"
+      - "REAL ID"
+      - "USCIS"
+      - "Orr v. Trump"
+      - "14168"
+      - "22 CFR 51"
+      - "20 CFR 422"
+      - "6 CFR 37"
+  OR:
+    name: "Oregon"
+    domains:
+      - oregon.gov
+      - courts.oregon.gov
+      - oregonlegislature.gov
+      - sos.state.or.us
+    media_domains:
+      - oregoncapitalchronicle.com
+    keywords:
+      - "Oregon"
+      - "Oregon Judicial Department"
+      - "courts.oregon.gov"
+      - "ORS 33.410"
+      - "ORS 33.420"
+      - "ORS 33.460"
+      - "ORS 106.220"
+      - "ORS 107.105"
+      - "ORS 432.235"
+      - "ORS 21.145"
+      - "OAR 333-011"
+      - "OAR 735-062"
+      - "Oregon DMV"
+      - "Oregon Vital Records"
+  WA:
+    name: "Washington"
+    domains:
+      - wa.gov
+      - doh.wa.gov
+      - dol.wa.gov
+      - courts.wa.gov
+    media_domains:
+      - washingtonstatestandard.com
+    keywords:
+      - "Washington state"
+      - "Washington courts"
+      - "Olympia"
+      - "RCW 4.24.130"
+      - "RCW 26.09.150"
+      - "RCW 70.58A"
+      - "RCW 36.18.020"
+      - "RCW 36.18.016"
+      - "WAC 246-490"
+      - "WAC 308-104"
+      - "422-143"
+      - "422-126"
+      - "Washington DOL"
+      - "Washington DOH"
+  UT:
+    name: "Utah"
+    domains:
+      - utah.gov
+      - utcourts.gov
+      - vitalrecords.utah.gov
+      - dld.utah.gov
+    media_domains:
+      - utahnewsdispatch.com
+    keywords:
+      - "Utah"
+      - "42-1-1"
+      - "26B-8-111"
+      - "68-3-12.5"
+      - "53-3-205"
+      - "78A-2-301"
+      - "30-3-5"
+      - "R436"
+      - "utcourts"
+      - "Utah Vital Records"
+      - "Driver License Division"
+
+channels:
+  federal_register:
+    terms:
+      - '("passport" OR "passports") AND ("sex" OR "gender" OR "name change" OR "14168" OR "DS-11" OR "DS-82" OR "DS-5504")'
+      - '("Social Security" OR "NUMIDENT" OR "SS-5") AND ("sex" OR "gender" OR "name change")'
+      - '("REAL ID" OR "USCIS") AND ("sex" OR "gender" OR "name change" OR "birth certificate")'
+    always_keep_pattern: '\b(ds-11|ds-82|ds-5504|numident|14168|orr v\.?\s*trump)\b'
+    must_match_pattern: '\b(passport|passports|social security|numident|ss-5|real id|uscis|22 cfr|20 cfr|6 cfr|state department)\b'
+    context_pattern: '\b(sex|gender|name change|marital|marriage|divorce|birth certificate|identity|driver''?s? license|documentary|application|form|fee)\b'
+
+  ecfr:
+    - title: "22"
+      part: "51"
+      label: "22 CFR Part 51 (Passports)"
+      section_prefixes: []
+    - title: "20"
+      part: "422"
+      label: "20 CFR Part 422 (Social Security Numbers & Records)"
+      section_prefixes:
+        - "422.103"
+        - "422.107"
+        - "422.110"
+    - title: "6"
+      part: "37"
+      label: "6 CFR Part 37 (REAL ID Driver's Licenses and Identification Cards)"
+      section_prefixes: []
+
+  courtlistener:
+    watched_dockets:
+      "69623342": "Orr v. Trump, No. 1:25-cv-10313 (D. Mass. passport sex-marker litigation)"
+    v4_queries:
+      - search_type: "r"
+        label: "Federal RECAP dockets (Passports, SSA & identity records)"
+        query: '("passport" OR "Social Security" OR "REAL ID" OR "birth certificate") AND ("sex marker" OR "gender marker" OR "sex designation" OR "14168" OR "Orr v. Trump")'
+      - search_type: "o"
+        label: "Federal & appellate judicial opinions (Passports & vital records)"
+        query: '("Orr v. Trump" OR ("passport" AND ("sex marker" OR "sex designation" OR "14168")) OR ("birth certificate" AND "sex designation"))'
+
+  legiscan:
+    min_relevance: 50
+    year: 3
+    queries:
+      - state: "OR"
+        query: '"name change" OR "change of sex" OR "sex designation" OR "gender marker" OR "33.410" OR "33.420" OR "33.460" OR "106.220" OR "107.105" OR "432.235" OR "21.145"'
+      - state: "WA"
+        query: '"name change" OR "sex designation" OR "gender designation" OR "gender marker" OR "4.24.130" OR "26.09.150" OR "70.58A" OR "36.18.020" OR "36.18.016"'
+      - state: "UT"
+        query: '"name change" OR "sex designation" OR "gender marker" OR ("birth certificate" AND (sex OR gender OR amend)) OR "42-1-1" OR "26B-8-111" OR "68-3-12.5" OR "53-3-205" OR "78A-2-301"'
+      - state: "US"
+        query: '("passport" OR "Social Security" OR "REAL ID" OR "birth certificate") AND ("sex marker" OR "gender marker" OR "sex designation" OR "biological sex" OR "name change")'
+
+  rss:
+    primary_pattern: '\b(passport|passports|sex marker|gender marker|sex designation|gender designation|birth certificate|name change|orr v\.?\s*trump|14168|real id|driver''?s? license)\b'
+    context_pattern: '\b(sex marker|gender marker|sex designation|gender designation|nonbinary|transgender|sex assigned at birth|name change|marriage|divorce|birth certificate|passport|orr v\.?\s*trump|14168|vital records|court fee|filing fee)\b'
+    feeds:
+      - name: "Oregon Capital Chronicle"
+        url: "https://oregoncapitalchronicle.com/feed/"
+        prefiltered: false
+      - name: "Washington State Standard"
+        url: "https://washingtonstatestandard.com/feed/"
+        prefiltered: false
+      - name: "Utah News Dispatch"
+        url: "https://utahnewsdispatch.com/feed/"
+        prefiltered: false
+      - name: "Stateline (States Newsroom)"
+        url: "https://stateline.org/feed/"
+        prefiltered: false
+      - name: "KFF Health News"
+        url: "https://kffhealthnews.org/feed/"
+        prefiltered: false
+
+  tavily:
+    search_depth: "basic"
+    max_results_per_query: 6
+    min_score_dated: 0.55
+    min_score_undated: 0.65
+    extra_domains:
+      - courtlistener.com
+    queries:
+      - '(passport OR "DS-11" OR "DS-82" OR "DS-5504" OR "Social Security" OR "SS-5" OR USCIS OR "REAL ID") ("sex marker" OR "sex designation" OR "gender marker" OR "name change" OR "Orr v. Trump")'
+      - '("Oregon" OR "courts.oregon.gov" OR "Washington" OR "doh.wa.gov" OR "dol.wa.gov") ("name change" OR "change of sex" OR "sex designation" OR "gender designation" OR "filing fee" OR marriage OR dissolution) (form OR fee OR packet OR rule)'
+      - '("Utah" OR "utcourts.gov" OR "vitalrecords.utah.gov" OR "dld.utah.gov") ("name change" OR "sex designation" OR "gender marker" OR "birth certificate" OR "78A-2-301") (form OR fee OR rule)'

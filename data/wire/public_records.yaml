@@ -1,0 +1,120 @@
+# CivicDesk Policy Wire Beat Profile — Public Records Desk (Q1 2027 Scaffold)
+# Flip `enabled: true` when `/public-records/` and `data/sources/public_records.yaml` go live.
+
+desk: public-records
+enabled: false
+label: "Public Records & Government Transparency"
+registry: "data/sources/public_records.yaml"
+source_prefix: "PUB-"
+route_prefix: "/public-records/"
+
+editorial_brief: >-
+  CivicDesk's upcoming Public Records desk covering Federal Freedom of Information Act (FOIA,
+  5 U.S.C. 552) requests, fee waivers, and response deadlines, plus state public records laws,
+  fee schedules, and ombuds/appeal rules in Oregon (ORS Chapter 192), Washington (Public Records
+  Act, RCW Chapter 42.56), and Utah (GRAMA, Utah Code Title 63G, Chapter 2).
+
+jurisdictions:
+  US:
+    name: "Federal"
+    domains:
+      - foia.gov
+      - justice.gov
+      - archives.gov
+      - federalregister.gov
+      - ecfr.gov
+      - uscourts.gov
+    keywords:
+      - "FOIA"
+      - "Freedom of Information Act"
+      - "5 U.S.C. 552"
+      - "Office of Information Policy"
+  OR:
+    name: "Oregon"
+    domains:
+      - oregon.gov
+      - doj.state.or.us
+      - oregonlegislature.gov
+    keywords:
+      - "ORS 192"
+      - "Public Records Advocate"
+      - "Oregon public records"
+  WA:
+    name: "Washington"
+    domains:
+      - wa.gov
+      - atg.wa.gov
+    keywords:
+      - "RCW 42.56"
+      - "Public Records Act"
+      - "WAC 44-14"
+  UT:
+    name: "Utah"
+    domains:
+      - utah.gov
+      - archives.utah.gov
+      - ombudsman.utah.gov
+    keywords:
+      - "GRAMA"
+      - "63G-2"
+      - "State Records Committee"
+
+channels:
+  federal_register:
+    terms:
+      - '"Freedom of Information Act" AND ("fee" OR "deadline" OR "exemption" OR "portal")'
+    must_match_pattern: '\b(freedom of information act|foia|5 u\.?s\.?c\.?\s*552)\b'
+    context_pattern: '\b(fee|waiver|expedited|regulation|rule|amendment|request|portal)\b'
+
+  ecfr:
+    - title: "28"
+      part: "16"
+      label: "28 CFR Part 16 (DOJ Production or Disclosure of Material / FOIA)"
+      section_prefixes: []
+
+  courtlistener:
+    watched_dockets: {}
+    v4_queries:
+      - search_type: "o"
+        label: "Federal FOIA appellate opinions"
+        query: '"Freedom of Information Act" AND ("fee waiver" OR "expedited processing")'
+
+  legiscan:
+    min_relevance: 60
+    year: 3
+    queries:
+      - state: "OR"
+        query: '"public records" AND ("192.314" OR "192.324" OR "fee waiver" OR "public interest")'
+      - state: "WA"
+        query: '"Public Records Act" OR "42.56"'
+      - state: "UT"
+        query: '"GRAMA" OR "Government Records Access" OR "63G-2"'
+      - state: "US"
+        query: '"Freedom of Information Act" AND ("552" OR "fee waiver" OR "response")'
+
+  rss:
+    primary_pattern: '\b(public records|foia|freedom of information|grama|open records)\b'
+    context_pattern: '\b(fee|lawsuit|court|legislature|bill|rule|agency|exemption|oregon|washington|utah)\b'
+    feeds:
+      - name: "Oregon Capital Chronicle"
+        url: "https://oregoncapitalchronicle.com/feed/"
+        prefiltered: false
+      - name: "Washington State Standard"
+        url: "https://washingtonstatestandard.com/feed/"
+        prefiltered: false
+      - name: "Utah News Dispatch"
+        url: "https://utahnewsdispatch.com/feed/"
+        prefiltered: false
+      - name: "Stateline (States Newsroom)"
+        url: "https://stateline.org/feed/"
+        prefiltered: false
+
+  tavily:
+    search_depth: "basic"
+    max_results_per_query: 5
+    min_score_dated: 0.55
+    min_score_undated: 0.65
+    extra_domains:
+      - courtlistener.com
+    queries:
+      - '("ORS 192" OR "RCW 42.56" OR "GRAMA" OR "63G-2") ("public records" OR "fee schedule" OR guidance)'
