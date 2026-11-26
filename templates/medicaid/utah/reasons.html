@@ -2,49 +2,44 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah Medicaid</p>
-<h1>Reasons you may not have to meet the Utah rules</h1>
-<p class="purpose">Utah calls these <strong>exclusions</strong> and <strong>exceptions</strong>. DWS checks its own records first in the month you apply or renew; if it cannot confirm your reason, you report it with proof. <a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check</a>.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah Medicaid</p>
+    <h1>Reasons you may not have to meet the Utah rules</h1>
+    <p class="purpose">Utah calls these <strong>exclusions</strong> and <strong>exceptions</strong>. DWS checks its own records first in the month you apply or renew; if it cannot confirm your reason, you report it with proof. <a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check</a>.</p>
+  </div>
+  {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
+</div>
 
 {{ m.onthispage([
-  ('exemption-shields', 'Exemption categories'),
   ('exclusions-vs-hardships', 'Exclusions vs. hardships'),
   ('tribal', 'Tribal proof'),
   ('how-to-tell', 'How to tell DWS')
 ]) }}
 
 <div id="exemption-shields">
-  {% set ut_ex_1 %}Pregnant or postpartum Medicaid, caring for a child 13 or younger, or caring for a person with a disability. {{ src('MED-U05') }}{% endset %}
-  {% set ut_ex_2 %}Blind or disabled, medically frail or special needs (<a href="{{ page_url('medicaid-utah-health') }}">health guide</a>), drug/alcohol treatment, or 100% VA disability. {{ src('MED-U05') }}{% endset %}
-  {% set ut_ex_3 %}Age 18 or younger, age 65 or older, Medicare Part A or B, SSI, low-income parent group, or SNAP/TANF work rules. {{ src('MED-U05') }}{% endset %}
-  {% set ut_ex_4 %}American Indian or Alaska Native (<a href="#tribal">proof rules</a>), foster care, in jail/prison or released in last 90 days, or short-term hardship. {{ src('MED-U05') }} {{ src('MED-U28') }}{% endset %}
-  {{ v.icon_feature_grid([
-    {'icon': 'caregiver-heart', 'title': 'Pregnancy & caregiving', 'body': ut_ex_1},
-    {'icon': 'medical-cross', 'title': 'Disability, frailty & treatment', 'body': ut_ex_2},
-    {'icon': 'medicaid-shield', 'title': 'Age, Medicare, SSI & SNAP/TANF', 'body': ut_ex_3},
-    {'icon': 'exemption-check', 'title': 'Tribal, foster care & hardships', 'body': ut_ex_4}
-  ], cols=2) }}
+  <h2 id="exclusions-vs-hardships">Checked from records vs. exceptions you must request</h2>
+  {% set ut_reasons_note %}Sources: Utah exclusions &amp; short-term exceptions (<a href="{{ page_url('medicaid-utah-health') }}">health condition guide</a>; <a href="#tribal">Tribal proof list</a>) {{ src('MED-U05') }} {{ src('MED-U28') }}.{% endset %}
+  {{ v.yes_no_split_board(
+    'Exclusions & county hardships DWS checks first',
+    [
+      'Age under 19 or 65+, Medicare Part A/B, SSI, low-income parent group, or programs outside Adult Expansion and TAM',
+      'Pregnancy, postpartum Medicaid, caregiving (child 13 or younger or disabled person), or SNAP/TANF work rules',
+      'Blind/disabled, medically frail or special needs, drug/alcohol treatment, 100% VA disability, foster care, or recent release (90 days)',
+      'County federal disaster declaration or high county unemployment'
+    ],
+    'Exceptions & verifications where you must act',
+    [
+      'Hospital, nursing home, or care-facility patient stay (you must request this short-term exception)',
+      'Travel outside your community for medical care for you or a dependent (you must request this exception)',
+      'Tribal status not yet verified in DWS records (Utah letter asks for proof by Jan. 1, 2027)',
+      'Any exemption DWS cannot confirm electronically—Utah Code 26B-3-142.1 requires documentary proof'
+    ],
+    yes_kicker='Records checked first',
+    no_kicker='Action or proof needed',
+    note=ut_reasons_note
+  ) }}
 </div>
-
-<h2 id="exclusions-vs-hardships">Checked from records vs. exceptions you must request</h2>
-{{ v.yes_no_split_board(
-  'Exclusions & county hardships DWS checks first',
-  [
-    'Age under 19 or 65+, Medicare Part A/B, SSI, or programs outside Adult Expansion and TAM',
-    'Pregnancy, postpartum Medicaid, caregiving (child 13 or younger or disabled person), or SNAP/TANF work rules',
-    'Medically frail / disability, substance-use treatment, 100% disabled veteran, foster care, or recent release (90 days)',
-    'County federal disaster declaration or high county unemployment'
-  ],
-  'Exceptions & verifications where you must act',
-  [
-    'Hospital, nursing home, or care-facility patient stay (you must request this short-term exception)',
-    'Travel outside your community for medical care for you or a dependent (you must request this exception)',
-    'Tribal status not yet verified in DWS records (Utah letter asks for proof by Jan. 1, 2027)',
-    'Any exemption DWS cannot confirm electronically—Utah Code 26B-3-142.1 requires documentary proof'
-  ],
-  yes_kicker='Records checked first',
-  no_kicker='Action or proof needed'
-) }}
 
 <h2 id="tribal">American Indian and Alaska Native members</h2>
 <p>Utah's letter asks members to send proof of status by <strong>Jan.&nbsp;1, 2027</strong>. Once verified, your renewal stays once every 12 months; if unverified, you may have to meet the work rules. <a href="{{ page_url('medicaid-utah-letter#send') }}">Ways to send papers to DWS</a></p>

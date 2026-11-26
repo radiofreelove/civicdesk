@@ -7,20 +7,17 @@
 {{ m.lede("Utah Vital Records updates a Utah birth certificate's sex designation only with a signed court order. Once your judge signs, mail a certified order, form 902, and the Vital Records fee.") }}
 {{ m.checked_line(page) }}
 
-{{ v.doc_mockup_birth_cert(
-  'Utah',
-  'Utah Vital Records Birth Certificate',
-  'No administrative-only sex-marker form: Utah law requires a signed court order for Utah-born certificates.',
-  'Mail certified court order + form 902 + fee; Vital Records prints a clean certificate (unless asked otherwise) and keeps a separate amendment history.',
-  fact('ut_vital_amend_fee')
-) }}
-
-{{ m.bring_reminder('Utah Vital Records', 'Certified copy of signed court order, form 902, and ' ~ fact('ut_vital_amend_fee') ~ '.') }}
+{% set ut_birth_note %}Fee breakdown: {{ fact('ut_vital_amend_fee') }}. {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}{% endset %}
+{{ v.stat_hero_strip([
+  {'num': '$50', 'label': 'Amendment + 1 copy', 'note': '$25 amend + $25 copy (+$40 if sealing)'},
+  {'num': 'Court order', 'label': 'Required by Utah law', 'note': 'No administrative-only sex-marker form'},
+  {'num': 'Form 902', 'label': 'Vital Records application', 'note': 'Mail with certified signed court order'}
+], id='birth-anatomy', note=ut_birth_note) }}
 
 <h2 id="how-to-send">How to update a Utah birth certificate</h2>
 <ul>
-  <li>Applies to birth records issued by Utah ({{ src('ID-UT-CODE-26B-8-111') }}). Mail a certified signed order, {{ ext('ID-UT-VITAL-902-2026') }}, and {{ fact('ut_vital_amend_fee') }} to {{ m.copyable(fact('ut_vital_mail'), 'mailing address') }} (allow several weeks). {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
-  <li><strong>Clean face + amendment history:</strong> The reissued certificate does not show which fields changed unless you ask, while Vital Records also issues and retains an amendment history—ask {{ ext('ID-UT-VITAL') }} who can view that history before mailing.</li>
+  <li><strong>Where to mail:</strong> Applies only to birth records issued by Utah. Mail a certified signed court order, {{ ext('ID-UT-VITAL-902-2026') }}, and payment to {{ m.copyable(fact('ut_vital_mail'), 'mailing address') }} (allow several weeks). {{ src('ID-UT-CODE-26B-8-111') }}</li>
+  <li><strong>Clean face + separate amendment history:</strong> The reissued certificate does not show which fields changed unless you ask, while Vital Records also issues and retains an amendment history—ask {{ ext('ID-UT-VITAL') }} who can view that history before mailing.</li>
 </ul>
 
 <h2 id="next-steps">Next steps</h2>

@@ -2,47 +2,41 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
-<h1>Reasons you may not have to meet the rules</h1>
-<p class="purpose">OHP calls these <strong>exemptions</strong>. In 2027, you do not need a doctor's note for health exemptions. Not sure? <a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check</a>.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon Health Plan (OHP)</p>
+    <h1>Reasons you may not have to meet the rules</h1>
+    <p class="purpose">OHP calls these <strong>exemptions</strong>. In 2027, you do not need a doctor's note for health exemptions. Not sure? <a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check</a>.</p>
+  </div>
+  {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
+</div>
 
 {{ m.onthispage([
-  ('exemption-groups', 'Exemption categories'),
   ('how-checked', 'Auto-checked vs. tell OHP'),
+  ('or-reasons-full-list', 'Proof & 2028 rules', 'extra'),
   ('tell-ohp', 'How to tell OHP'),
   ('oregon-reasons-safety', 'Domestic safety')
 ]) }}
 
-<div id="exemption-groups">
-{% set or_ex_1 %}Pregnant or within 12 months after pregnancy, caring for a child 13 or younger, or caring for someone with a disability. {{ src('MED-S03') }}{% endset %}
-{% set or_ex_2 %}Serious or disabling health condition (no doctor's note needed in 2027), SSI/SSDI, substance-use treatment or recovery, or 100% VA disability. {{ src('MED-S03') }} {{ src('MED-S07') }}{% endset %}
-{% set or_ex_3 %}Age 18 or younger, age 65 or older, having Medicare, or meeting SNAP or TANF work rules. {{ src('MED-S02') }} {{ src('MED-S03') }}{% endset %}
-{% set or_ex_4 %}American Indian or Alaska Native, former foster youth under 26, recent release from jail or prison, or hospital/medical travel hardship. {{ src('MED-S03') }}{% endset %}
-{{ v.icon_feature_grid([
-  {'icon': 'shield', 'title': 'Pregnancy & caregiving', 'body': or_ex_1},
-  {'icon': 'hours', 'title': 'Health, disability & recovery', 'body': or_ex_2},
-  {'icon': 'ssa', 'title': 'Age, Medicare, SNAP & TANF', 'body': or_ex_3},
-  {'icon': 'birth', 'title': 'Tribal, foster youth & hardships', 'body': or_ex_4}
-], cols=2) }}
-</div>
-
 <h2 id="how-checked">What OHP checks automatically vs. what you tell OHP</h2>
+<div id="exemption-groups">
 {{ v.yes_no_split_board(
   'OHP checks its own records first',
   [
-    'Age 18 or younger, or 65 or older, or applying because of disability or pregnancy.',
-    'Having Medicare, or meeting SNAP or TANF work rules (being excused from SNAP work rules is not enough).',
-    'Former foster youth under 26, or living in a federal disaster or high-unemployment county.'
+    'Age 18 or younger, age 65 or older, or applying because of disability or pregnancy ' ~ src('MED-S02') ~ ' ' ~ src('MED-S03'),
+    'Having Medicare, or meeting SNAP or TANF work rules (being excused from SNAP work rules is not enough)',
+    'Former foster youth under 26, or living in a federal disaster or high-unemployment county'
   ],
   'Tell OHP yourself (proof may be asked in 2028)',
   [
-    'American Indian or Alaska Native, pregnant/postpartum, or out of jail/prison in the last 4 months.',
-    'Serious health condition (no doctor note in 2027), SSI/SSDI, or 100% VA disability.',
-    'Caring for a child 13 or younger, caring for a person with a disability, treatment/recovery, hospital stay, or 7+ day medical travel.'
+    'American Indian or Alaska Native, pregnant or 12 months postpartum, or out of jail/prison in the last 4 months ' ~ src('MED-S03'),
+    'Serious or disabling health condition (no doctor note in 2027), SSI/SSDI, or 100% VA disability ' ~ src('MED-S07'),
+    'Caring for a child 13 or younger, caring for a person with a disability, substance-use treatment/recovery, inpatient hospital stay, or 7+ day medical travel'
   ],
   yes_kicker='Automatic or excluded',
   no_kicker='Self-attest or report'
 ) }}
+</div>
 
 {% call m.deeper('Full list of proof rules & 2028 changes for each exemption', 'or-reasons-full-list') %}
 <ul>

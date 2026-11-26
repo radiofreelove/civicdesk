@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah Medicaid</p>
-<h1>How to apply for Utah Medicaid</h1>
-<p class="purpose">The Department of Workforce Services (DWS) decides who qualifies. Pick any of the 3 ways below—and get free help from Take Care Utah or in your language.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah Medicaid</p>
+    <h1>How to apply for Utah Medicaid</h1>
+    <p class="purpose">The Department of Workforce Services (DWS) decides who qualifies. Pick any of the 3 ways below—and get free help from Take Care Utah or in your language.</p>
+  </div>
+  {{ v.editorial_art('community-help.webp', variant='spot') }}
+</div>
 
 {{ m.onthispage([
   ('apply-online', 'Online (myCase)'),
@@ -13,36 +18,22 @@
   ('after-apply', 'After you apply')
 ]) }}
 
-{% set ch_online %}Apply at <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a> and upload proof from your phone or computer.{% endset %}
-{% set ch_paper %}Mail or fax <a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_English.pdf" rel="noreferrer">form 61MED</a> (<a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_Spanish.pdf" hreflang="es" rel="noreferrer">Spanish PDF</a>), or call <span class="nowrap">1-866-435-7414</span> to request one by mail.{% endset %}
-{% set ch_person %}Visit any <a href="https://jobs.utah.gov/jsp/officesearch/" rel="noreferrer">DWS employment center</a> (Mon–Fri, 8 a.m.–5 p.m.) or get free help from Take Care Utah.{% endset %}
-{{ v.channel_cards(
-  [
-    {'kind': 'online', 'title': '1. Online in myCase', 'body': ch_online},
-    {'kind': 'paper', 'title': '2. Paper form 61MED', 'body': ch_paper},
-    {'kind': 'navigator', 'title': '3. In person or Take Care Utah', 'body': ch_person}
-  ],
-  ready_items=[
-    {'icon': 'birth-cert', 'label': 'ID or birth certificate if requested (10-day return list)'},
-    {'icon': 'hours-meter', 'label': 'Prior-month work, school, or volunteer hours'},
-    {'icon': 'exemption-check', 'label': 'Proof for any exclusion or exception'}
-  ]
-) }}
+<p>Helpful to have nearby (not required just to start): ID or birth certificate if requested (10-day return window), prior-month work/school/volunteer hours, and proof for any exclusion or exception.</p>
 
-<h2 id="apply-online" class="icon-heading">{{ m.icon('online') }}<span>Apply online</span></h2>
-<p>Start at <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a>. You do not need a paper application when you apply in myCase, and keeping your address, phone, and email current there helps you avoid missed notices.</p>
+<h2 id="apply-online">Apply online (myCase)</h2>
+<p>Start at <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a> and upload proof from your phone or computer. You do not need a paper application when applying in myCase; keep your address, phone, and email current there so you do not miss notices.</p>
 
-<h2 id="apply-paper" class="icon-heading">{{ m.icon('paper') }}<span>Apply on paper</span></h2>
-<p>Mail <a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_English.pdf" rel="noreferrer">form 61MED (English PDF)</a> or <a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_Spanish.pdf" hreflang="es" rel="noreferrer">form 61MED (Spanish PDF)</a> to <strong>Department of Workforce Services, PO Box 143245, Salt Lake City, UT 84114-3245</strong>, or fax the number printed on your form. Note: the April&nbsp;1, 2026 paper form does not yet ask about the 2027 work rules, so DWS may ask after you apply.</p>
+<h2 id="apply-paper">Apply on paper (form 61MED)</h2>
+<p>Mail <a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_English.pdf" rel="noreferrer">form 61MED (English PDF)</a> or <a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_Spanish.pdf" hreflang="es" rel="noreferrer">form 61MED (Spanish PDF)</a> to <strong>Department of Workforce Services, PO Box 143245, Salt Lake City, UT 84114-3245</strong>, fax the number printed on your form, or call <span class="nowrap">1-866-435-7414</span> to request a copy by mail. Because the April&nbsp;1, 2026 paper form does not yet ask about the 2027 work rules, DWS may follow up after you apply.</p>
 
-<h2 id="apply-inperson" class="icon-heading">{{ m.icon('inperson') }}<span>Apply in person &amp; free language help</span></h2>
-<p><a href="https://jobs.utah.gov/jsp/officesearch/" rel="noreferrer">Find a DWS employment center</a>, or ask DWS for free interpreter help when you call (<span class="nowrap">1-866-435-7414</span>) or visit. <a href="{{ page_url('medicaid-utah-help') }}">More free help and phone numbers</a></p>
+<h2 id="apply-inperson">Apply in person &amp; free language help</h2>
+<p>Visit any <a href="https://jobs.utah.gov/jsp/officesearch/" rel="noreferrer">DWS employment center</a> (Mon–Fri, 8 a.m.–5 p.m.), get free help from Take Care Utah, or ask DWS for free interpreter help when you call (<span class="nowrap">1-866-435-7414</span>) or visit. <a href="{{ page_url('medicaid-utah-help') }}">More free help and phone numbers</a></p>
 
 <h2 id="after-apply">What happens after you apply</h2>
 {{ v.process_flow([
-  {'icon': 'shield', 'title': 'Records checked first', 'body': 'DWS checks wage, school, and benefit records.'},
-  {'icon': 'letter', 'title': '10- to 30-day proof window', 'body': 'Return requested proofs or work-rule forms on time.'},
-  {'icon': 'calendar', 'title': 'Written decision in 30 days', 'body': 'Up to 90 days if based on disability.'}
+  {'title': 'Records checked first', 'body': 'DWS checks wage, school, and benefit records.'},
+  {'title': '10- to 30-day proof window', 'body': 'Return requested proofs or work-rule forms on time.'},
+  {'title': 'Written decision in 30 days', 'body': 'Up to 90 days if based on disability.'}
 ], id='ut-after-flow', cols=3) }}
 
 {% call m.deeper('Income tables & employer health insurance rules', 'ut-apply-good-to-know') %}

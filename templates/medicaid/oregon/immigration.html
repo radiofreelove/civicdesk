@@ -2,36 +2,42 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
-<h1>Immigration status and OHP</h1>
-<p class="purpose">Your immigration status alone does not stop you from getting full OHP benefits through <strong>Healthier Oregon</strong>—and CivicDesk never asks about immigration status.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon Health Plan (OHP)</p>
+    <h1>Immigration status and OHP</h1>
+    <p class="purpose">Your immigration status alone does not stop you from getting full OHP benefits through <strong>Healthier Oregon</strong>—and CivicDesk never asks about immigration status.</p>
+  </div>
+  {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
+</div>
 
+{% set or_imm_note %}Sources: Healthier Oregon &amp; work rules {{ src('MED-S01') }} {{ src('MED-S05') }} {{ src('MED-S06') }} {{ src('MED-S11') }} {{ src('MED-S22') }}; Jan. 1, 2027 Open Card transition {{ src('MED-S43') }}; public charge updates {{ src('MED-S12') }} {{ src('MED-S48') }}.{% endset %}
 {{ v.yes_no_split_board(
   'What stays protected in Oregon',
   [
     'Healthier Oregon provides full OHP benefits regardless of immigration status (income & state rules still apply).',
     'Adults ages 19 to 64 in Healthier Oregon follow the same 2027 work rules and exemptions as other OHP adults.',
-    'Most OHP benefits received before Sept. 18, 2026 do not count under federal public charge rules.'
+    'Most non-cash OHP benefits received before Sept. 18, 2026 do not count under federal public charge rules.'
   ],
   'Changes to check for 2026–2027',
   [
-    'Jan. 1, 2027: Healthier Oregon members move from local CCOs to OHP Open Card—confirm your doctor accepts Open Card.',
+    'Jan. 1, 2027: Healthier Oregon members move from local CCOs to OHP Open Card (full benefits stay the same).',
     'Sept. 18, 2026: Federal public charge rules changed; consult an immigration attorney if your case is complex.'
   ],
   yes_kicker='Coverage & privacy',
-  no_kicker='2026–2027 changes'
+  no_kicker='2026–2027 changes',
+  note=or_imm_note
 ) }}
-<p>Sources: Healthier Oregon &amp; work rules {{ src('MED-S01') }} {{ src('MED-S05') }} {{ src('MED-S06') }} {{ src('MED-S11') }} {{ src('MED-S22') }}; Jan. 1, 2027 Open Card transition {{ src('MED-S43') }}; public charge updates {{ src('MED-S12') }} {{ src('MED-S48') }}.</p>
 
-<h2>Moving to OHP Open Card on Jan.&nbsp;1, 2027</h2>
-<p>Full OHP benefits stay the same, though your provider network changes from a local CCO to Open Card (<a href="https://www.oregon.gov/oha/HSD/OHP/Announcements/HR1-Changes0426.pdf" rel="noreferrer">read OHA's announcement</a>&nbsp;<span class="tag">PDF</span>): {{ src('MED-S43') }}</p>
+<h2>Confirming providers under OHP Open Card</h2>
+<p>Read <a href="https://www.oregon.gov/oha/HSD/OHP/Announcements/HR1-Changes0426.pdf" rel="noreferrer">OHA's Open Card transition announcement</a>&nbsp;<span class="tag">PDF</span>:</p>
 <ul>
-  <li>Ask your clinics if they accept OHP Open Card, or search <a href="https://ohpopencard.org/" rel="noreferrer">OHPOpenCard.org</a>.</li>
-  <li>Starting Jan.&nbsp;1, 2027, call Open Card at <span class="nowrap">800-562-4620</span> for help finding providers.</li>
+  <li>Ask your current clinics if they accept OHP Open Card, or search <a href="https://ohpopencard.org/" rel="noreferrer">OHPOpenCard.org</a>.</li>
+  <li>Starting Jan.&nbsp;1, 2027, call Open Card Member Services at <span class="nowrap">800-562-4620</span> for help finding providers. {{ src('MED-S43') }}</li>
 </ul>
 
 {% call m.deeper('Sept. 2026 federal public charge change & multistate lawsuits', 'or-public-charge-detail') %}
-<p>On Sept.&nbsp;18, 2026, federal public charge rules changed so immigration officers may look at more benefit types—though eligibility rules for OHP did not change, and most non-cash OHP benefits before Sept.&nbsp;18, 2026 do not count (cash income maintenance and institutional long-term care still can). <a href="https://www.oregon.gov/OHA/ERD/Pages/public-charge.aspx" rel="noreferrer">Read OHA's public charge page</a>. {{ src('MED-S12') }} {{ src('MED-S36') }} {{ src('MED-S37') }} {{ src('MED-S38') }} {{ src('MED-S48') }}</p>
+<p>On Sept.&nbsp;18, 2026, federal public charge rules changed so immigration officers may look at more benefit types—though eligibility rules for OHP did not change, and cash income maintenance or institutional long-term care remain distinct from routine care. <a href="https://www.oregon.gov/OHA/ERD/Pages/public-charge.aspx" rel="noreferrer">Read OHA's public charge page</a>. {{ src('MED-S12') }} {{ src('MED-S36') }} {{ src('MED-S37') }} {{ src('MED-S38') }} {{ src('MED-S48') }}</p>
 <p>On Sept.&nbsp;14, 2026, Oregon, Washington, New York, and 19 other jurisdictions sued to block the rule (<em>State of New York v. DHS</em>, No.&nbsp;1:26-cv-07978, alongside parallel suits). As of Nov.&nbsp;21, 2026, no court order has blocked it. {{ src('MED-S49') }} {{ src('MED-S51') }}</p>
 {% endcall %}
 

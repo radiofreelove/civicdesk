@@ -15,12 +15,12 @@
 
 {{ v.stat_hero_strip([
   {'num': '19–64', 'label': 'Apple Health for Adults', 'note': 'Under 138% FPL, no Medicare'},
-  {'num': '$580+', 'label': 'Monthly household MAGI', 'note': '6-month average for seasonal work'},
-  {'num': '6 ways', 'label': 'Work, school, service, or mix', 'note': '1–6 credits convert to 13–78 hrs'},
-  {'num': '6 mos', 'label': 'Renewal cycle in 2027', 'note': '12 mos kept for Tribal members'}
+  {'num': 'June 30', 'label': '2027 hold harmless delay', 'note': 'No work-rule loss under HCA plan'},
+  {'num': '6 mos', 'label': 'Renewal cycle in 2027', 'note': '12 mos kept for Tribal members'},
+  {'num': '15 days', 'label': 'Proof reply window', 'note': 'Only if state data could not confirm'}
 ]) }}
 
-<h2 id="state-choice">A new choice for states (hold harmless through June 30, 2027)</h2>
+<h2 id="state-choice">Washington's hold harmless delay (through June 30, 2027)</h2>
 <p>On Nov.&nbsp;17, 2026, HCA announced Washington will pursue delayed enforcement of the work rules (pending federal approval). Through June&nbsp;30, 2027, people in Apple Health for Adults will not lose or be denied coverage solely for not meeting the work rules—though 6-month renewals, checking, and the 1-month past-bills limit still start Jan.&nbsp;1, 2027. {{ src('MED-WA01') }} {{ src('MED-WA03') }} {{ src('MED-WA15') }} {{ src('MED-WA16') }} {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-S41') }}</p>
 {% call m.deeper('Federal mitigation timeline & State of Oregon v. Oz lawsuit', 'wa-rules-legal') %}
 <p>CMS asked states requesting a Jan.&nbsp;1, 2027 hold harmless period to submit mitigation plans by Dec.&nbsp;11, 2026. Income and other rules still apply. On Nov.&nbsp;5, 2026, Washington, Oregon, and two other states sued in <em>State of Oregon v. Oz</em> (No.&nbsp;6:26-cv-02435; oral argument Jan.&nbsp;12, 2027). No court order has halted the rules. {{ src('MED-WA14') }} {{ src('MED-S27') }} {{ src('MED-S41') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
@@ -28,23 +28,23 @@
 
 <h2 id="six-ways">Meet the rules any one of 6 ways</h2>
 <p>HCA's work requirements page lists 6 ways for Apple Health for Adults—you need only one (checked in the month before you apply, or 1 of the 6 months before a renewal): {{ src('MED-WA05') }} {{ src('MED-WA22') }}</p>
-{{ v.icon_feature_grid([
-  {'icon': 'bank', 'title': '1. $580+ monthly household income', 'body': 'Combined MAGI household income ($7.25 × 80 hrs); seasonal workers may average over 6 months.'},
-  {'icon': 'dmv', 'title': '2. Work 80+ hours a month', 'body': 'Paid work, self-employment, unpaid work, or in-kind work for housing or goods.'},
-  {'icon': 'school', 'title': '3. Half-time school or GED', 'body': 'Enrolled at least half-time in college, trade school, high school, or GED study.'},
-  {'icon': 'shield', 'title': '4. Work program (80+ hrs/mo)', 'body': 'Participating at least 80 hours a month in a qualifying work program.'},
-  {'icon': 'birth', 'title': '5. Community service (80+ hrs/mo)', 'body': 'Completing at least 80 hours a month of community service.'},
-  {'icon': 'hours', 'title': '6. Any 80-hour monthly mix', 'body': 'Combine work, community service, work program, and converted school credits (1–6 credits = 13–78 hrs).'}
-], cols=2) }}
+{{ v.glossary_list([
+  {'term': '1. $580+ monthly income', 'detail': 'Combined MAGI household income ($7.25 × 80 hrs); seasonal workers may average over 6 months.'},
+  {'term': '2. Work 80+ hours/month', 'detail': 'Paid work, self-employment, unpaid work, or in-kind work for housing or goods.'},
+  {'term': '3. Half-time school or GED', 'detail': 'Enrolled at least half-time in college, trade school, high school, or GED study.'},
+  {'term': '4. Work program (80+ hrs/mo)', 'detail': 'Participating at least 80 hours a month in a qualifying work program.'},
+  {'term': '5. Community service (80+ hrs/mo)', 'detail': 'Completing at least 80 hours a month of community service.'},
+  {'term': '6. Any 80-hour monthly mix', 'detail': 'Combine work, community service, work program, and converted school credits (1–6 credits = 13–78 hrs).'}
+]) }}
 
 {% set wa_hours_note %}You can reach 80 hours in one category or combine any of these activities in the same month. {{ src('MED-WA22') }}{% endset %}
 {{ v.hours_breakdown(
   'How 80 monthly hours can add up (~20 hours a week)',
   'HCA lets you combine work, school credits, work programs, and community service to reach 80 hours:',
   [
-    {'icon': 'id-card', 'label': 'Paid, self-employed, or in-kind work', 'detail': 'Wages, self-employment, or work for housing'},
-    {'icon': 'school-cap', 'label': 'School credits or work program', 'detail': '1 to 6 converted credits (13 to 78 hrs) or training'},
-    {'icon': 'caregiver-heart', 'label': 'Community service', 'detail': 'Qualifying community service hours'}
+    {'label': 'Paid, self-employed, or in-kind work', 'detail': 'Wages, self-employment, or work for housing'},
+    {'label': 'School credits or work program', 'detail': '1 to 6 converted credits (13 to 78 hrs) or training'},
+    {'label': 'Community service', 'detail': 'Qualifying community service hours'}
   ],
   note=wa_hours_note,
   id='wa-hours-stack'
@@ -54,9 +54,9 @@
   'Washington Apple Health',
   [
     {'week': 'Week 1', 'hours': '20 hrs', 'mix': '15 hrs part-time work + 5 hrs community service'},
-    {'week': 'Week 2', 'hours': '20 hrs', 'mix': '3 converted college credits (39 hrs/mo) + work'},
+    {'week': 'Week 2', 'hours': '20 hrs', 'mix': '10 hrs work + 10 hrs from converted college credits'},
     {'week': 'Week 3', 'hours': '20 hrs', 'mix': '20 hrs paid, self-employed, or in-kind work'},
-    {'week': 'Week 4', 'hours': '20 hrs', 'mix': 'Any mix reaching 80 hrs total for the month'}
+    {'week': 'Week 4', 'hours': '20 hrs', 'mix': '15 hrs work + 5 hrs community service'}
   ],
   extra=true,
   id='wa-rules-calendar'
@@ -81,7 +81,7 @@
 
 <h2 id="how-checked">How the state checks</h2>
 <ul class="short">
-  <li><strong>Data check first:</strong> Washington checks its own records first (HCA estimated ~64% of Apple Health for Adults can be confirmed or found exempt automatically).</li>
-  <li><strong>Self-attestation &amp; 15-day proof window:</strong> You may state your own income, hours, or exemption (including medical frailty through 2027); if records cannot confirm it, HCA may send a letter giving 15 days to verify. <a href="{{ page_url('medicaid-washington-reasons') }}">See every exemption</a> or <a href="{{ page_url('medicaid-washington-help') }}">get free help</a>. {{ src('MED-WA04') }} {{ src('MED-WA22') }}</li>
+  <li><strong>Data check first (~64% automatic):</strong> Washington checks its own records before asking for proof.</li>
+  <li><strong>Self-attestation:</strong> You may state your own income, hours, or exemption (including medical frailty through 2027) in Healthplanfinder. <a href="{{ page_url('medicaid-washington-reasons') }}">See every exemption</a> or <a href="{{ page_url('medicaid-washington-help') }}">get free help</a>. {{ src('MED-WA04') }} {{ src('MED-WA22') }}</li>
 </ul>
 {% endblock %}

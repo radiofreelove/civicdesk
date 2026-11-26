@@ -4,13 +4,13 @@
 {% block main %}
 <p class="kicker">Utah Medicaid</p>
 <h1>Words on your Utah Medicaid letters</h1>
-<p class="purpose">Plain-language flashcards for words used by DWS and Utah Medicaid, listed from A to Z.</p>
+<p class="purpose">Plain-English definitions for official terms used by DWS and Utah Medicaid, listed from A to Z.</p>
 
 {% set w_ex %}Utah's words for reasons you do not have to meet the work rules. <a href="{{ page_url('medicaid-utah-reasons') }}">See every reason</a>.{% endset %}
 {% set w_mf %}People with a disability or health condition that makes daily tasks hard. <a href="{{ page_url('medicaid-utah-health') }}">Health conditions guide</a>.{% endset %}
 {% set w_tam %}Program for adults with very low income (such as homelessness or behavioral-health treatment needs); Utah says TAM ends June 30, 2027 and members move to Adult Expansion Medicaid.{% endset %}
 {% set w_wr %}New rules starting Jan. 1, 2027. <a href="{{ page_url('medicaid-utah-rules') }}">Read them in plain words</a>.{% endset %}
-{{ v.jargon_flashcards([
+{{ v.glossary_list([
   {'term': 'Adult Expansion Medicaid', 'plain': 'Low-income coverage for ages 19–64', 'detail': 'Utah Medicaid expansion program started in 2020.'},
   {'term': 'Community engagement', 'plain': 'Work or activity rules', 'detail': 'Utah’s official name for the 80-hour / $580 / school requirement.'},
   {'term': 'DHHS', 'plain': 'State Medicaid agency', 'detail': 'Utah Department of Health and Human Services.'},

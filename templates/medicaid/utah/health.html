@@ -2,15 +2,20 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah Medicaid</p>
-<h1>Have a health condition?</h1>
-<p class="purpose">Blindness, a disability, a mental health or substance-use condition, or difficulty with daily tasks (Utah calls this <strong>medically frail or special needs</strong>) can exempt you from the new Utah rules.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah Medicaid</p>
+    <h1>Have a health condition?</h1>
+    <p class="purpose">Blindness, a disability, a mental health or substance-use condition, or difficulty with daily tasks (Utah calls this <strong>medically frail or special needs</strong>) can exempt you from the new Utah rules.</p>
+  </div>
+  {{ v.editorial_art('medicaid-exemptions.webp', variant='spot') }}
+</div>
 
 {% set ut_health_note %}Sources: Utah medically frail screener &amp; verification law (Utah Code 26B-3-142.1) {{ src('MED-U03') }} {{ src('MED-U39') }}.{% endset %}
 {{ v.process_flow([
-  {'icon': 'shield', 'title': '1. Automatic claims check', 'body': 'Utah checks Medicaid health codes first; no match is not a denial.'},
-  {'icon': 'birth', 'title': '2. Screener form (provisional)', 'body': 'Your signed screener gives temporary approval while verified.'},
-  {'icon': 'court', 'title': '3. Health provider statement', 'body': 'A clinician confirms your condition if records are not enough.'}
+  {'title': 'Automatic claims check', 'body': 'Utah checks Medicaid diagnosis codes first; no match is not a denial.'},
+  {'title': 'Screener form (provisional)', 'body': 'Your signed screener gives temporary approval while verified.'},
+  {'title': 'Provider statement if needed', 'body': 'Utah Code 26B-3-142.1 requires clinical proof if records do not match.'}
 ], id='ut-health-flow', cols=3, note=ut_health_note) }}
 
 {{ v.yes_no_split_board(
@@ -18,16 +23,15 @@
   [
     'Blindness or a physical, developmental, or cognitive disability',
     'Mental health conditions or substance use disorders (plus active drug/alcohol treatment as its own exclusion)',
-    'Chronic conditions that make daily tasks hard (Utah posts a PDF diagnosis code list)'
+    'Chronic conditions that make daily tasks hard (see Utah’s PDF diagnosis code list below)'
   ],
-  'Proof & short-term medical hardships',
+  'Short-term medical hardships you must request',
   [
-    'Utah Code 26B-3-142.1 (Jan. 1, 2027) requires electronic data or a provider statement after provisional self-attestation',
-    'Hospital, nursing home, or care-facility stays count as short-term hardships—you must request them',
-    'Traveling outside your community for medical care for you or a dependent—you must request this exception'
+    'Hospital, nursing home, or care-facility stays count as short-term exceptions when you request them',
+    'Traveling outside your community for medical care for you or a dependent—request this exception from DWS'
   ],
-  yes_kicker='Qualifying health reasons',
-  no_kicker='Verification & hardship rules'
+  yes_kicker='Medically frail / special needs',
+  no_kicker='Request from DWS'
 ) }}
 
 <p><a href="{{ page_url('medicaid-utah-reasons') }}">See every Utah exclusion and exception</a> or call DWS at <span class="nowrap">1-866-435-7414</span>. (Utah also posts <a href="https://obbba-support.medicaid.utah.gov/wp-content/uploads/2026/10/DiagnosesforMedicallyFrail_10.2026-1.pdf" rel="noreferrer">its diagnosis code list PDF</a>.)</p>

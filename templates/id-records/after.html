@@ -9,24 +9,18 @@
 
 {% set after_seq_note %}Why order matters: state DMVs verify your new legal name electronically against Social Security first. {{ src('ID-OR-DMV-GENDER') }}{% endset %}
 <div id="after-why">
+{{ v.editorial_art('id-sequence.webp', variant='wide') }}
 {{ v.process_flow([
-  {'icon': 'court', 'title': 'Certified copies', 'body': 'Order official court, marriage, or divorce copies.'},
-  {'icon': 'ssa', 'title': 'Social Security', 'body': 'Update your legal name before visiting the DMV.'},
-  {'icon': 'dmv', 'title': 'State license or ID', 'body': 'Update your card once Social Security matches.'},
-  {'icon': 'passport', 'title': 'Birth, passport & accounts', 'body': 'Amend birth record, check passport, update accounts.'}
+  {'title': 'Certified copies', 'body': 'Order official court, marriage, or divorce copies.'},
+  {'title': 'Social Security', 'body': 'Update your legal name before visiting the DMV.'},
+  {'title': 'State license or ID', 'body': 'Update your card once Social Security matches.'},
+  {'title': 'Birth, passport & accounts', 'body': 'Amend birth record, check passport, update accounts.'}
 ], cols=4, note=after_seq_note) }}
 </div>
 
-<h2>Who to update after your core IDs</h2>
-{{ v.icon_feature_grid([
-  {'icon': 'bank', 'title': 'Payroll, tax & banking', 'body': 'Employer HR/payroll, state & local taxes, banks, credit cards, loans, and mortgage or lease.'},
-  {'icon': 'shield', 'title': 'Health care & Medicaid', 'body': 'Doctors, pharmacy, private health plans, and OHP, Apple Health, or Utah Medicaid portals.'},
-  {'icon': 'school', 'title': 'Schools, voter & legal', 'body': 'School or college records, voter registration, VA benefits, wills, and powers of attorney.'},
-  {'icon': 'dmv', 'title': 'Vehicles, mail & utilities', 'body': 'Vehicle title & registration (separate from your license), post office, phone, and utilities.'}
-], cols=2) }}
-
+<h2 id="after-steps">Step-by-step update checklist</h2>
 <div class="btn-row js-only">
-  <button type="button" class="btn" data-print>{{ m.icon('print-sheet') }}<span>&nbsp;Print this checklist</span></button>
+  <button type="button" class="btn" data-print>{{ m.icon('print-sheet') }}<span>Print this checklist</span></button>
 </div>
 <p class="no-js-only">To print, use your browser's Print command.</p>
 <p>Checkmarks stay in page memory only unless you turn on "Remember my checklist" in Reading settings.</p>
@@ -34,11 +28,11 @@
 <ol class="steps">
 {% call m.step(page.slug, 1, 'after-copies', 'Get certified copies of your court order') %}
   <ul>
-    <li>Oregon: {{ fact('or_fee_certified_copy') }} ({{ src('ID-OR-OJD-FEES') }}); Washington superior court: {{ fact('wa_fee_cert_copy') }}, 7+ recommended ({{ src('ID-WA-RCW-36-18-016') }} {{ src('ID-WA-WLH-NAME') }}); Utah: {{ fact('ut_fee_cert_copy') }} ({{ src('ID-UT-COURTS-FEES') }}).</li>
+    <li>Oregon: {{ fact('or_fee_certified_copy') }}; Washington superior court: {{ fact('wa_fee_cert_copy') }} (7+ recommended); Utah: {{ fact('ut_fee_cert_copy') }}. {{ src('ID-OR-OJD-FEES') }} {{ src('ID-WA-RCW-36-18-016') }} {{ src('ID-WA-WLH-NAME') }} {{ src('ID-UT-COURTS-FEES') }}</li>
   </ul>
 {% endcall %}
 {% call m.step(page.slug, 2, 'after-ssa', 'Social Security (name changes)') %}
-  <p>Request a free replacement card ({{ ext('ID-US-SSA-NAME') }}, {{ src('ID-US-SSA-NAME') }}). SSA does not update sex markers (<a href="{{ page_url('id-records-federal#social-security') }}">read why</a>).</p>
+  <p>Request a free replacement card ({{ ext('ID-US-SSA-NAME') }}). SSA does not update sex markers (<a href="{{ page_url('id-records-federal#social-security') }}">read why</a>). {{ src('ID-US-SSA-NAME') }}</p>
 {% endcall %}
 {% call m.step(page.slug, 3, 'after-license', 'Driver license or state ID') %}
   <ul>
@@ -54,7 +48,7 @@
   <p>Any new passport application can return with sex assigned at birth, even for a name change—<a href="{{ page_url('id-records-federal#before-you-apply') }}">read before mailing</a>. {{ src('ID-US-HRC-PASSPORT') }}</p>
 {% endcall %}
 {% call m.step(page.slug, 6, 'after-everyone', 'Everyone else') %}
-  <p>Ask each office what proof it needs. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
+  <p>Ask each office what proof it needs; remember vehicle titles and registrations update separately from your driver license. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</p>
   <ul class="checklist">
     {% for key, label in [
       ('bank', 'Banks, credit cards, and loans'),

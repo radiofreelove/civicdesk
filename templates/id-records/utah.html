@@ -1,81 +1,58 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
-{% import "illustrations.html" as il %}
 {% block main %}
-<div class="card-head">
-  {{ il.state_map_badge('utah') }}
-  <p class="kicker">Utah</p>
-</div>
+<p class="kicker">Utah</p>
 <h1>Change your name and sex designation in Utah</h1>
 {{ m.lede("Utah uses district court for both. A name change requires 1 year in your county and a hearing; a sex designation change requires clear and convincing proof of six statutory findings. MyPaperwork walks you through filing online.") }}
 {{ m.checked_line(page) }}
 
-{% set first_step = 'Check that you can file, and gather proof' %}
-
+{% set ut_facts_note %}Sources: court requirements &amp; fees {{ src('ID-UT-CODE-42-1') }} {{ src('ID-UT-CODE-26B-8-111') }} {{ src('ID-UT-CODE-78A-2-301') }} {{ src('ID-UT-COURTS-FEES') }}; Vital Records {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}.{% endset %}
 {{ v.stat_hero_strip([
-  {'num': fact('ut_fee_petition'), 'label': 'District court filing fee', 'note': 'Fee waiver available'},
-  {'num': '1 year', 'label': 'County residency rule', 'note': 'For court name changes'},
-  {'num': '6 items', 'label': 'Sex-designation findings', 'note': 'Includes 6-month living proof'},
-  {'num': 'Court req.', 'label': 'Utah birth record update', 'note': 'Signed order + form 902'}
-]) }}
+  {'num': fact('ut_fee_petition'), 'label': 'District court filing fee', 'note': 'Waiver available; copies ' ~ fact('ut_fee_cert_copy')},
+  {'num': '1 year', 'label': 'County residency rule', 'note': 'Required for court name changes'},
+  {'num': '6 items', 'label': 'Sex-designation findings', 'note': 'Clear & convincing proof + 6-mo living'},
+  {'num': '$50', 'label': 'Utah birth record update', 'note': fact('ut_vital_amend_fee')}
+], id='quick-facts', note=ut_facts_note) }}
 
-<h2 id="order">Recommended Utah sequence</h2>
+<h2 id="order">Why order matters in Utah</h2>
+{{ v.editorial_art('id-sequence.webp', variant='wide') }}
 {{ v.process_flow([
-  {'icon': 'court', 'title': 'Utah district court', 'body': 'File petition (or use marriage/divorce certificate).', 'meta': fact('ut_fee_petition') ~ ' or waiver'},
-  {'icon': 'ssa', 'title': 'Social Security', 'body': 'Update your legal name with a certified order.', 'meta': 'Free card'},
-  {'icon': 'dmv', 'title': 'Driver License Div.', 'body': 'Bring court-sealed order ($23 replacement).', 'meta': 'Call DLD for marker'},
-  {'icon': 'birth', 'title': 'Vital Records & passport', 'body': 'Mail form 902 + certified order; check federal rules.', 'meta': fact('ut_vital_amend_fee')}
+  {'title': 'Utah district court', 'body': 'File petition (or use marriage/divorce record for name).'},
+  {'title': 'Social Security', 'body': 'Update your legal name with SSA before visiting DLD.'},
+  {'title': 'Driver License Div.', 'body': 'Bring court-sealed order in person ($23 replacement).'},
+  {'title': 'Vital Records & passport', 'body': 'Mail form 902 + certified order; review 2026 passport rules.'}
 ], cols=4) }}
 
 {% call m.callout('changed', 'Policy update: 2026 bill H.B. 183 did not pass', 'ut-policy-update') %}
-<p>Utah's 2026 H.B.&nbsp;183 returned to Rules on March&nbsp;4, 2026 and failed when the session ended March&nbsp;6, 2026 ({{ src('ID-UT-HB183-NOTICE') }} {{ src('ID-UT-HB183-LEGISCAN') }}), leaving the May&nbsp;7, 2025 statute in place. {{ src('ID-UT-CODE-26B-8-111') }} {{ m.badge('our_reading') }} <a href="{{ page_url('id-records-utah-court#ut-2026') }}">Read the 2026 note</a>.</p>
+<p>Utah's 2026 H.B.&nbsp;183 returned to Rules on March&nbsp;4, 2026 and failed when the session ended March&nbsp;6, 2026, leaving the May&nbsp;7, 2025 statute in place (<a href="{{ page_url('id-records-utah-court#ut-2026') }}">read the 2026 note</a>). {{ m.badge('our_reading') }} {{ src('ID-UT-HB183-NOTICE') }} {{ src('ID-UT-HB183-LEGISCAN') }} {{ src('ID-UT-CODE-26B-8-111') }}</p>
 {% endcall %}
-
-{{ m.quickfacts(page, {
-  'court_name': fact_src('ut_court_name'),
-  'sex_label': 'Court needed for a sex designation change',
-  'court_sex': fact_src('ut_court_sex'),
-  'filing_fee': fact_src('ut_fee_petition'),
-  'certified_copy': fact_src('ut_fee_cert_copy'),
-  'birth_certificate': fact_src('ut_vital_amend_fee'),
-  'first_step': first_step,
-  'first_step_href': page_url('id-records-utah-court#steps'),
-  'cost_href': page_url('id-records-utah-court#cost'),
-  'whats_new': {'label': 'What happened in 2026', 'text': fact_src('ut_hb183_status'), 'href': page_url('id-records-utah-court#ut-2026'), 'link': 'More about the 2026 bill'}
-}) }}
 
 <h2 id="guides">Your Utah record guides</h2>
 {{ m.hub_cards([
   {
     'id': 'steps',
-    'icon': 'court-gavel',
     'title': 'Court order',
     'href': page_url('id-records-utah-court'),
-    'summary': 'Residency rules, the six statutory findings for a sex designation change, MyPaperwork online filing, hearings, fee waivers, privacy, and under-18 rules.',
-    'meta': 'Filing fee: ' ~ fact('ut_fee_petition') ~ ' (waiver available)'
+    'summary': 'Residency rules, the six statutory findings for a sex designation change, MyPaperwork online filing, hearings, fee waivers, privacy, and under-18 rules.'
   },
   {
     'id': 'birth-certificate',
-    'icon': 'birth-cert',
     'title': 'Utah birth certificate',
     'href': page_url('id-records-utah-birth'),
-    'summary': 'Mail a certified copy of your signed court order and form 902 to Utah Vital Records, plus what to ask about amendment history.',
-    'meta': 'Requires a court order'
+    'summary': 'How to mail a certified signed court order and form 902 to Utah Vital Records, plus what to ask about separate amendment history records.'
   },
   {
     'id': 'license',
-    'icon': 'dmv-license',
     'title': 'Driver license or ID',
     'href': page_url('id-records-utah-id'),
-    'summary': 'What Utah Driver License Division asks for to update your name, and what to check before updating a sex marker.',
-    'meta': 'Update Social Security first for a name change'
+    'summary': 'What Utah Driver License Division asks for to update your legal name, and why to call ahead before updating a sex marker.'
   }
 ]) }}
 
 {% call m.deeper('Why preparing proof early matters & more tools', 'ut-why') %}
 <ul>
-  <li>Utah Vital Records amends birth-certificate sex designations only with a signed court order ({{ src('ID-UT-COURTS-SEX-CHANGE') }}), so gathering proof for all six statutory items before filing saves repeat trips ({{ src('ID-UT-CODE-26B-8-111') }}).</li>
+  <li>Utah Vital Records amends birth-certificate sex designations only with a signed court order, so gathering proof for all six statutory items before filing saves repeat trips. {{ src('ID-UT-COURTS-SEX-CHANGE') }} {{ src('ID-UT-CODE-26B-8-111') }}</li>
   <li>Next tools: <a href="{{ page_url('id-records-federal') }}">Federal records in 2026</a>, <a href="{{ page_url('id-records-after') }}">After-court checklist</a>, and <a href="{{ page_url('id-records-help') }}">Free or low-cost help</a>.</li>
 </ul>
 {% endcall %}

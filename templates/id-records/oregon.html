@@ -1,78 +1,52 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
-{% import "illustrations.html" as il %}
 {% block main %}
-<div class="card-head">
-  {{ il.state_map_badge('oregon') }}
-  <p class="kicker">Oregon</p>
-</div>
+<p class="kicker">Oregon</p>
 <h1>Change your name and legal sex in Oregon</h1>
 {{ m.lede("One court form can change your name, your legal sex, or both. Since July 1, 2026, any case that includes a sex change is confidential by law, and your Oregon driver license and Oregon birth certificate can change without court.") }}
 {{ m.checked_line(page) }}
 
-{% set first_step = 'Get the forms' %}
-{% set birth_cost %}{{ fact('or_oha_amend_fee') }} to change it, plus {{ fact('or_oha_cert_fee') }}{% endset %}
-{% set confidential %}Sex change cases filed on or after {{ fact('or_confidential_date') }}, are confidential. {{ src('ID-OR-2026-CH52') }}{% endset %}
-
+{% set or_facts_note %}Sources: circuit court rules &amp; fees {{ src('ID-OR-ORS-33') }} {{ src('ID-OR-OJD-ADULT-PACKET') }} {{ src('ID-OR-OJD-FEES') }}; birth record {{ src('ID-OR-OHA-GENDER') }}; Oregon DMV {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}.{% endset %}
 {{ v.stat_hero_strip([
-  {'num': fact('or_fee_petition'), 'label': 'Circuit court petition fee', 'note': 'Free waiver application'},
-  {'num': 'No court', 'label': 'DMV & Oregon birth record', 'note': 'M, F, or X by agency form'},
-  {'num': 'Confidential', 'label': '2026 sex-change court files', 'note': 'Including combined name + sex'},
-  {'num': 'No doctor', 'label': 'Self-attested forms', 'note': 'No medical letter required'}
-]) }}
+  {'num': fact('or_fee_petition'), 'label': 'Circuit court petition fee', 'note': 'Free waiver; copies ' ~ fact('or_fee_certified_copy')},
+  {'num': 'No court', 'label': 'DMV & Oregon birth record', 'note': 'M, F, or X by self-attested state form'},
+  {'num': fact('or_oha_amend_fee'), 'label': 'Birth amendment fee', 'note': 'Plus ' ~ fact('or_oha_cert_fee')},
+  {'num': '$30 / $40', 'label': 'DMV replacement license / ID', 'note': '+$30 REAL ID, or standard renewal fee'}
+], id='quick-facts', note=or_facts_note) }}
 
-<h2 id="order">Recommended Oregon sequence</h2>
+<h2 id="order">Why order matters in Oregon</h2>
+{{ v.editorial_art('id-sequence.webp', variant='wide') }}
 {{ v.process_flow([
-  {'icon': 'court', 'title': 'Court or certificate', 'body': 'Circuit court for name; optional for state marker.', 'meta': fact('or_fee_petition') ~ ' or waiver'},
-  {'icon': 'ssa', 'title': 'Social Security', 'body': 'Update your legal name before visiting Oregon DMV.', 'meta': 'Free card'},
-  {'icon': 'dmv', 'title': 'Oregon DMV', 'body': 'Choose M, F, or X with no medical proof.', 'meta': fact('or_dmv_fee')},
-  {'icon': 'birth', 'title': 'Birth & passport', 'body': 'Use OHA 2673 and check federal passport rules.', 'meta': fact('or_oha_amend_fee') ~ ' + copy'}
+  {'title': 'Court or certificate', 'body': 'Use a circuit court order (or marriage/divorce record) for a name change.'},
+  {'title': 'Social Security', 'body': 'Update your legal name with SSA first so DMV checks match.'},
+  {'title': 'Oregon DMV', 'body': 'Visit in person to update your name and select M, F, or X.'},
+  {'title': 'Birth & passport', 'body': 'Mail notarized OHA 2673 (or judgment) and review 2026 passport rules.'}
 ], cols=4) }}
 
 {% call m.callout('changed', 'Policy update: 2026 confidentiality law', 'or-policy-update') %}
-<p>Oregon sex change cases filed on or after {{ fact('or_confidential_date') }}, are confidential by law, including cases that change name and sex together. Name-only cases remain public unless sealed under ACP. {{ src('ID-OR-2026-CH52') }} <a href="{{ page_url('id-records-oregon-court#privacy') }}">Read who can see your case</a>.</p>
+<p>Oregon sex-change cases filed on or after {{ fact('or_confidential_date') }} are confidential by law, including petitions that change name and sex together. Name-only cases remain public unless sealed through Oregon's Address Confidentiality Program. {{ src('ID-OR-2026-CH52') }} <a href="{{ page_url('id-records-oregon-court#privacy') }}">Read who can see your case</a>.</p>
 {% endcall %}
-
-{{ m.quickfacts(page, {
-  'court_name': fact_src('or_court_name'),
-  'sex_label': 'Court needed to change the sex on your records',
-  'court_sex': fact_src('or_court_sex'),
-  'filing_fee': fact_src('or_fee_petition'),
-  'certified_copy': fact_src('or_fee_certified_copy'),
-  'birth_certificate': birth_cost ~ ' ' ~ src('ID-OR-OHA-GENDER'),
-  'license': fact_src('or_dmv_fee'),
-  'first_step': first_step,
-  'first_step_href': page_url('id-records-oregon-court#steps'),
-  'cost_href': page_url('id-records-oregon-court#cost'),
-  'whats_new': {'label': 'New in 2026', 'text': confidential, 'href': page_url('id-records-oregon-court#privacy'), 'link': 'Who can see your case'}
-}) }}
 
 <h2 id="guides">Your Oregon record guides</h2>
 {{ m.hub_cards([
   {
     'id': 'steps',
-    'icon': 'court-gavel',
     'title': 'Court order',
     'href': page_url('id-records-oregon-court'),
-    'summary': 'One petition changes your legal name, your legal sex (M, F, or nonbinary), or both—with fee waivers, 2026 confidentiality rules, and minor rules.',
-    'meta': 'Filing fee: ' ~ fact('or_fee_petition') ~ ' (waiver available)'
+    'summary': 'Step-by-step adult and minor petitions for name, legal sex (M, F, or nonbinary), or both—including Guide & File, fee waivers, and confidentiality.'
   },
   {
     'id': 'birth-certificate',
-    'icon': 'birth-cert',
     'title': 'Oregon birth certificate',
     'href': page_url('id-records-oregon-birth'),
-    'summary': 'Change name, sex (M, F, or X), or both with notarized form OHA 2673 and no court order, or send a certified court judgment.',
-    'meta': 'Cost: ' ~ birth_cost
+    'summary': 'How to amend name, sex (M, F, or X), or both using one-time notarized form OHA 2673 or a certified court judgment, plus footnote rules.'
   },
   {
     'id': 'license',
-    'icon': 'dmv-license',
     'title': 'Driver license or ID',
     'href': page_url('id-records-oregon-id'),
-    'summary': 'Choose M, F, or X on a standard or REAL ID card at the Oregon DMV with no medical proof. Update Social Security first if changing your name.',
-    'meta': 'Cost: ' ~ fact('or_dmv_fee')
+    'summary': 'What to bring to an Oregon DMV office for a standard or REAL ID card, Social Security matching, and separate vehicle title updates.'
   }
 ]) }}
 

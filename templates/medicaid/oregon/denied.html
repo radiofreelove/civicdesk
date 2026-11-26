@@ -2,18 +2,22 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
-<h1>Turned down? You have options.</h1>
-<p class="purpose">If OHP says no or ends your coverage, you can ask for a hearing, request continued benefits, get free legal aid, or reapply any month.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon Health Plan (OHP)</p>
+    <h1>Turned down? You have options.</h1>
+    <p class="purpose">If OHP says no or ends your coverage, requesting a hearing before the notice cutoff can keep your benefits open while you appeal—or you can reapply any month.</p>
+  </div>
+  {{ v.editorial_art('official-notice.webp', variant='spot') }}
+</div>
 
 {% set or_denied_cites %}Sources: hearings &amp; continued benefits {{ src('MED-S04') }} {{ src('MED-S14') }}; reapplying any month {{ src('MED-S06') }}; hold harmless delay through June 30, 2027 {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}.{% endset %}
 {{ v.swimlane_timeline(
-  'How to protect your coverage after a denial or termination notice',
+  'Appeal & aid-paid-pending timeline',
   [
-    {'icon': 'letter', 'title': 'Check the notice deadline', 'body': 'Your letter lists the exact date and steps to challenge the decision.', 'tag': 'Step 1'},
-    {'icon': 'appeal', 'title': 'Ask for a hearing + benefits', 'body': 'Request a hearing and ask to keep your OHP benefits while waiting.', 'tag': 'Aid paid pending'},
-    {'icon': 'shield', 'title': 'Call free legal aid', 'body': 'Public Benefits Hotline: 503-241-4111 or 800-520-5292.', 'tag': 'Free help'},
-    {'icon': 'calendar', 'title': 'Or apply again any time', 'body': 'OHP checks the month before your new application.', 'tag': 'No wait period'}
+    {'title': 'Before the notice cutoff', 'body': 'Request a hearing and ask for continued OHP benefits while your appeal is decided.', 'tag': 'Aid paid pending'},
+    {'title': 'Full appeal window', 'body': 'Challenge the decision by the hearing deadline printed on your Notice of Eligibility.', 'tag': 'Free OHP hearing'},
+    {'title': 'Any month, no wait', 'body': 'Submit a new OHP application whenever your hours, income, or exemption changes.', 'tag': 'Reapply any time'}
   ],
   heading_id='appeal-swimlane',
   note=or_denied_cites

@@ -7,24 +7,18 @@
 {{ m.lede("To change your name on a Utah license or ID, update Social Security first and bring court-sealed papers to an in-person appointment. Call the Driver License Division ahead of time for sex-marker requirements.") }}
 {{ m.checked_line(page) }}
 
-{% set h1 %}<strong>Name change ($23 replacement):</strong> Update Social Security first, then bring an updated birth certificate, updated passport, or court-sealed name-change order (certified copy) to DLD in person. {{ m.badge('our_reading') }} {{ src('ID-UT-DLD-NAME') }} {{ src('ID-UT-DLD-REPLACEMENT') }}{% endset %}
-{% set h2 %}<strong>Sex marker process not published online:</strong> Utah Code 53-3-205 requires listing sex on the application and Utah Code 68-3-12.5 defines "sex" code-wide unless context/statute differs, while DLD publishes no web or R708 rule list of accepted sex-marker documents. {{ m.badge('not_confirmed') }} {{ src('ID-UT-CODE-53-3-205') }} {{ src('ID-UT-CODE-68-3-12-5') }}{% endset %}
-{% set h3 %}<strong>Call DLD before your appointment:</strong> Follow Utah Courts Step 5 and call the {{ ext('ID-UT-DLD-REPLACEMENT', 'Driver License Division') }} at <span class="nowrap">801-965-4437</span> or <span class="nowrap">888-353-4224</span> to confirm exact documents. {{ src('ID-UT-COURTS-SEX-CHANGE') }}{% endset %}
-{{ v.doc_mockup_id_card(
-  'Utah DLD',
-  'Utah Driver License or Identification Card',
-  'Call DLD before going (not published online)',
-  '$23 replacement fee',
-  [
-    {'icon': 'ssa-card', 'title': 'SSA match + court-sealed copy', 'body': h1},
-    {'icon': 'warning-triangle', 'title': 'Unpublished sex-marker rule', 'body': h2},
-    {'icon': 'id-card', 'title': 'Confirm by phone first', 'body': h3}
-  ]
-) }}
+{{ v.stat_hero_strip([
+  {'num': '$23', 'label': 'DLD replacement card fee', 'note': 'In-person appointment required'},
+  {'num': 'Step 1: SSA', 'label': 'Update Social Security first', 'note': 'Required before DLD for a name change'},
+  {'num': 'Call first', 'label': 'Unpublished sex-marker rule', 'note': 'Confirm documents before your visit'}
+], id='id-anatomy') }}
 
-<div id="dld-steps">
-  {{ m.bring_reminder('Utah Driver License Division', 'Certified court order with the court seal (plus SSA name match) for a name update; call 801-965-4437 or 888-353-4224 ahead for a sex marker update.') }}
-</div>
+<h2 id="dld-steps">What to bring &amp; what to confirm by phone</h2>
+<ul>
+  <li><strong>Name updates:</strong> Update Social Security first, then bring an updated birth certificate, updated passport, certified marriage certificate, divorce decree, or court-sealed name-change order (certified copy) to DLD in person. {{ m.badge('our_reading') }} {{ src('ID-UT-DLD-NAME') }} {{ src('ID-UT-DLD-REPLACEMENT') }}</li>
+  <li><strong>Sex marker process not published online:</strong> Utah Code 53-3-205 requires listing sex on the application and Utah Code 68-3-12.5 defines "sex" code-wide unless context/statute differs, while DLD publishes no web or R708 rule list of accepted sex-marker documents. {{ m.badge('not_confirmed') }} {{ src('ID-UT-CODE-53-3-205') }} {{ src('ID-UT-CODE-68-3-12-5') }}</li>
+  <li><strong>Call DLD before your appointment:</strong> Follow Utah Courts Step 5 and call the {{ ext('ID-UT-DLD-REPLACEMENT', 'Driver License Division') }} at <span class="nowrap">801-965-4437</span> or <span class="nowrap">888-353-4224</span> to confirm exact documents. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+</ul>
 
 <h2 id="next-steps">Next steps</h2>
 <ul>

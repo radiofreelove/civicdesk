@@ -7,30 +7,20 @@
 {{ m.lede("Choose M, F, or X on a standard or enhanced (EDL/EID) Washington card with no court order. Update Social Security first if you are also changing your legal name.") }}
 {{ m.checked_line(page) }}
 
-{% set h1 %}<strong>Name updates (SSA first):</strong> Update Social Security first, book a DOL appointment, and bring identity proof + a certified marriage certificate (not ceremonial), divorce decree, or court order. {{ src('ID-WA-DOL-NAME') }}{% endset %}
-{% set h2 %}<strong>In person or mail form 520043:</strong> Standard cards update in person or by mail (form 520043); Enhanced EDL/EID cards require an appointment + form 520043 (no online marker option). {{ src('ID-WA-DOL-GENDER') }}{% endset %}
-{% set h3 %}<strong>Sealed Superior Court orders:</strong> DOL's Identity Management Team assists with sealed orders at <code>dol-psdidentitymanagement@dol.wa.gov</code> (see {{ ext('ID-WA-WLH-NAME') }}), and vehicle registrations update separately. {{ src('ID-WA-DOL-NAME') }} {{ src('ID-WA-WLH-NAME') }}{% endset %}
-{{ v.doc_mockup_id_card(
-  'Washington DOL',
-  'Standard or Enhanced (EDL / EID)',
-  'M, F, or X (in person or form 520043)',
-  fact('wa_dol_fee'),
-  [
-    {'icon': 'ssa-card', 'title': 'SSA match + certified proof', 'body': h1},
-    {'icon': 'id-card', 'title': 'Standard vs. EDL/EID steps', 'body': h2},
-    {'icon': 'medicaid-shield', 'title': 'Privacy for sealed orders', 'body': h3}
-  ]
-) }}
-
-<div id="wa-id-name-proof">
-  {{ m.bring_reminder('Washington Department of Licensing', 'Current card, certified name-change proof if updating your name, and form 520043 for EDL/EID or mail gender-marker updates.') }}
-</div>
+{{ v.stat_hero_strip([
+  {'num': '$0', 'label': 'Gender-marker-only update', 'note': fact('wa_dol_fee')},
+  {'num': 'M, F, or X', 'label': 'In person or Form 520043', 'note': 'EDL / EID requires an appointment + 520043'},
+  {'num': 'Step 1: SSA', 'label': 'Update Social Security first', 'note': 'Required before DOL for any name change'}
+], id='id-anatomy') }}
 
 <h2 id="dol-steps">How to complete your DOL update</h2>
+<div id="wa-id-name-proof">
 <ul>
-  <li><strong>Gender marker only:</strong> Free ({{ fact('wa_dol_fee') }})—request M, F, or X at an appointment (bring form 520043 for EDL/EID) or mail form 520043 and watch for DOL's follow-up letter. {{ src('ID-WA-DOL-GENDER') }}</li>
-  <li><strong>Adding a name change:</strong> Update Social Security first, then bring your certified marriage certificate, divorce decree, or court order and pay the replacement card fee. {{ src('ID-WA-DOL-NAME') }}</li>
+  <li><strong>Gender designation only:</strong> Update a standard card at a DOL office or by mailing form 520043 (watch for DOL's follow-up letter); Enhanced EDL/EID cards require an in-person appointment plus form 520043 (no online marker option). {{ src('ID-WA-DOL-GENDER') }}</li>
+  <li><strong>Adding a legal name change:</strong> Update Social Security first, book a DOL appointment, and bring identity proof plus a certified marriage certificate (not ceremonial), divorce decree, or court order, along with the standard replacement card fee. {{ src('ID-WA-DOL-NAME') }}</li>
+  <li><strong>Sealed Superior Court orders &amp; vehicles:</strong> DOL's Identity Management Team assists with sealed orders at <code>dol-psdidentitymanagement@dol.wa.gov</code> (see {{ ext('ID-WA-WLH-NAME') }}). Update vehicle titles and registrations separately. {{ src('ID-WA-DOL-NAME') }} {{ src('ID-WA-WLH-NAME') }}</li>
 </ul>
+</div>
 
 <h2 id="next-steps">Next steps</h2>
 <ul>

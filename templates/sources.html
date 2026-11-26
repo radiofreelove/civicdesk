@@ -4,7 +4,7 @@
 {% block main %}
 <p class="kicker">Primary source registries</p>
 <h1>Every source we cite</h1>
-{{ m.lede("CivicDesk maintains separate, desk-partitioned primary source registries for Medicaid (MED-*) and Legal Name, ID & Vital Records (ID-*). Every source shows its 4-tier honesty label, printed document date, and check date.") }}
+{{ m.lede("CivicDesk maintains desk-partitioned primary source registries for Medicaid (MED-*) and Legal Name, ID & Vital Records (ID-*). Every entry records its 4-tier honesty label, printed document date, and check date.") }}
 
 {{ m.onthispage([
   ('labels', '4 honesty labels'),
@@ -12,14 +12,14 @@
   ('id-records-registry', 'ID & vital records sources (ID-*)')
 ]) }}
 
-{% set ns = namespace(total=0) %}
-{% for s in medicaid_sources if not s.get('docs_only') %}{% set ns.total = ns.total + 1 %}{% endfor %}
-{% for s in id_records_sources if not s.get('docs_only') %}{% set ns.total = ns.total + 1 %}{% endfor %}
+{% set ns = namespace(med=0, idr=0) %}
+{% for s in medicaid_sources if not s.get('docs_only') %}{% set ns.med = ns.med + 1 %}{% endfor %}
+{% for s in id_records_sources if not s.get('docs_only') %}{% set ns.idr = ns.idr + 1 %}{% endfor %}
 {{ v.stat_hero_strip([
-  {'num': ns.total|string, 'label': 'Verified public sources', 'note': 'Statutes, rules, court dockets & forms'},
-  {'num': '68', 'label': 'Plain-language guides', 'note': 'Every claim linked to its source'},
-  {'num': '4', 'label': 'Jurisdictions tracked', 'note': 'Oregon, Washington, Utah & federal'},
-  {'num': '2x/wk', 'label': 'Policy Wire checks', 'note': 'Automated source & docket watch'}
+  {'num': (ns.med + ns.idr)|string, 'label': 'Verified public sources', 'note': 'Statutes, rules, court dockets & forms'},
+  {'num': ns.med|string, 'label': 'Medicaid sources (MED-*)', 'note': 'OHP, Apple Health, Utah & federal'},
+  {'num': ns.idr|string, 'label': 'ID & vital sources (ID-*)', 'note': 'Courts, vital records, DMVs & federal'},
+  {'num': (facts|length)|string, 'label': 'Shared dated facts', 'note': 'Exported in facts.json'}
 ]) }}
 
 <h2 id="labels">Four-tier source honesty labels</h2>
@@ -27,12 +27,12 @@
 {% set lbl_not_official %}<span class="badge badge-not-official">Not official</span> Reported by an external legal aid group, advocacy survey, or bill tracker rather than published directly by the agency.{% endset %}
 {% set lbl_not_confirmed %}<span class="badge badge-not-confirmed">Not confirmed</span> Mentioned in draft policy or unconfirmed in a published official source. Verify directly with the agency before relying on it.{% endset %}
 {% set lbl_our_reading %}<span class="badge badge-our-reading">Our reading</span> CivicDesk's plain-language synthesis across multiple primary sources. Never legal advice.{% endset %}
-{{ v.icon_feature_grid([
-  {'icon': 'shield', 'title': 'Official government record', 'body': lbl_official},
-  {'icon': 'birth', 'title': 'External legal-aid or tracker report', 'body': lbl_not_official},
-  {'icon': 'warning', 'title': 'Draft or unconfirmed agency detail', 'body': lbl_not_confirmed},
-  {'icon': 'appeal', 'title': 'Plain-language multi-source synthesis', 'body': lbl_our_reading}
-], cols=2) }}
+{{ v.glossary_list([
+  {'term': 'Official', 'detail': lbl_official},
+  {'term': 'Not official', 'detail': lbl_not_official},
+  {'term': 'Not confirmed', 'detail': lbl_not_confirmed},
+  {'term': 'Our reading', 'detail': lbl_our_reading}
+]) }}
 
 <p>Browse desk-specific registries or machine-readable exports: <a href="{{ page_url('medicaid-sources') }}">Medicaid sources (<code>MED-*</code>)</a>, <a href="{{ page_url('id-records-sources') }}">ID &amp; vital records sources (<code>ID-*</code>)</a>, <a href="{{ root_prefix(page) }}sources.json"><code>sources.json</code></a>, <a href="{{ root_prefix(page) }}facts.json"><code>facts.json</code></a>, and <a href="{{ root_prefix(page) }}build-report.json"><code>build-report.json</code></a>.</p>
 

@@ -14,14 +14,14 @@
 ]) }}
 
 {{ v.stat_hero_strip([
-  {'num': '$580+', 'label': 'Monthly household income', 'note': 'About $134/wk combined'},
-  {'num': 'Half-time', 'label': 'School or career program', 'note': 'College, GED, or trade school'},
-  {'num': '80 hrs', 'label': 'Monthly activity mix', 'note': 'Work, school, training, volunteer'},
-  {'num': '1 mo', 'label': 'Lookback before applying', 'note': 'No monthly reporting'}
+  {'num': '19–64', 'label': 'Adults covered by rules', 'note': 'OHP Plus & Healthier Oregon'},
+  {'num': 'June 30', 'label': '2027 hold harmless delay', 'note': 'No denials solely for work rules'},
+  {'num': '1 mo', 'label': 'Lookback before applying', 'note': 'Checked at application & renewal'},
+  {'num': '0', 'label': 'Monthly reports required', 'note': 'OHP checks electronic data first'}
 ]) }}
 
-<h2 id="state-choice">A new choice for states (hold harmless through June 30, 2027)</h2>
-<p>Governor Tina Kotek directed OHA to use the federal hold harmless option through June&nbsp;30, 2027 (subject to federal approval). You will not be turned down for OHP or lose coverage through June&nbsp;30, 2027 solely for not meeting the work or activity rules—though checking still starts Jan.&nbsp;1, 2027 (including Healthier Oregon adults ages 19 to 64) and other rules like income still apply. {{ src('MED-S01') }} {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}</p>
+<h2 id="state-choice">Oregon's hold harmless delay (through June 30, 2027)</h2>
+<p>Governor Tina Kotek directed OHA to use the federal hold harmless option through June&nbsp;30, 2027 (subject to federal approval). You will not be turned down or lose OHP coverage through June&nbsp;30, 2027 solely for not meeting work or activity rules—though verification checks still begin Jan.&nbsp;1, 2027 and standard income and residency rules still apply. {{ src('MED-S01') }} {{ src('MED-S07') }} {{ src('MED-S53') }} {{ src('MED-S41') }}</p>
 {% call m.deeper('Proposed Oregon rules (OAR 410-200-0221) & federal lawsuit', 'or-rules-legal-detail') %}
 <p>On Nov.&nbsp;13, 2026, CMS let states request a hold harmless period in their mitigation plans (due Dec.&nbsp;11, 2026 for a Jan.&nbsp;1 start). {{ src('MED-S41') }}</p>
 <p><strong>Proposed state rules:</strong> On Oct.&nbsp;28, 2026, OHA proposed rules (OAR 410-200-0221; comment closed Nov.&nbsp;21, 2026) covering new applications from Jan.&nbsp;1, 2027 and renewals due March&nbsp;31, 2027 or later. {{ src('MED-S47') }}</p>
@@ -32,7 +32,7 @@
 <div class="good">
   <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Way 1</span></p>
   <h3>1. Household income of $580 or more a month</h3>
-  <p>Counts the combined income of your Medicaid household ($7.25 federal minimum wage &times; 80 hours). Two adults in the household do not each need $580. {{ src('MED-S27') }}</p>
+  <p>Counts the combined income of your Medicaid household ($7.25 federal minimum wage &times; 80 hours, or about $134 a week). Two adults in the household do not each need $580. {{ src('MED-S27') }}</p>
 </div>
 
 <div class="good">
@@ -52,9 +52,9 @@
   'How 80 monthly hours can add up (~20 hours a week)',
   'You do not need 80 hours in a single job. OHP lets you combine qualifying activities in the same month:',
   [
-    {'icon': 'id-card', 'label': 'Paid, self-employed, or in-kind work', 'detail': 'Wages, gig work, internships, or work for housing'},
-    {'icon': 'school-cap', 'label': 'School or job training', 'detail': 'Classes, GED study, or career training hours'},
-    {'icon': 'caregiver-heart', 'label': 'Organized volunteering', 'detail': 'Tracked hours with a nonprofit or public program'}
+    {'label': 'Paid, self-employed, or in-kind work', 'detail': 'Wages, gig work, internships, or work for housing'},
+    {'label': 'School or job training', 'detail': 'Classes, GED study, or career training hours'},
+    {'label': 'Organized volunteering', 'detail': 'Tracked hours with a nonprofit or public program'}
   ],
   note=or_hours_note,
   id='or-hours-stack'
@@ -66,7 +66,7 @@
     {'week': 'Week 1', 'hours': '20 hrs', 'mix': '15 hrs part-time work + 5 hrs nonprofit food pantry'},
     {'week': 'Week 2', 'hours': '20 hrs', 'mix': '15 hrs part-time work + 5 hrs GED or job class'},
     {'week': 'Week 3', 'hours': '20 hrs', 'mix': '20 hrs gig or self-employed work'},
-    {'week': 'Week 4', 'hours': '20 hrs', 'mix': '15 hrs work + 5 hrs tracked volunteering = 80 hrs'}
+    {'week': 'Week 4', 'hours': '20 hrs', 'mix': '15 hrs work + 5 hrs tracked volunteering'}
   ],
   extra=true,
   id='or-rules-calendar'
@@ -79,10 +79,9 @@
 </ul>
 {% endcall %}
 
-<h2 id="good-to-know">Good to know</h2>
+<h2 id="good-to-know">Household &amp; exemption rules</h2>
 <ul class="short">
-  <li><strong>Each adult checked individually for hours:</strong> One person's hours or school do not cover another adult, though the $580 income test uses combined household income. {{ src('MED-S05') }} {{ src('MED-S27') }}</li>
-  <li><strong>No monthly reports:</strong> OHP checks electronic records first when you apply and again at renewal—not every month. {{ src('MED-S04') }}</li>
-  <li><strong>Exemptions:</strong> People with a disability, pregnancy, caregiving duties, or Medicare do not have to meet these rules. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every exemption</a> or <a href="{{ page_url('medicaid-oregon-check') }}">take the 1-minute check</a>. {{ src('MED-S02') }} {{ src('MED-S03') }}</li>
+  <li><strong>Hours are checked per adult; income is combined:</strong> One person's hours or school do not cover another adult, while the $580 monthly income threshold counts your Medicaid household together. {{ src('MED-S05') }} {{ src('MED-S27') }}</li>
+  <li><strong>Exemptions:</strong> People with a disability, pregnancy, caregiving duties, or Medicare do not have to meet these rules. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every exemption</a> or <a href="{{ page_url('medicaid-oregon-check') }}">take the 1-minute check</a>. {{ src('MED-S02') }} {{ src('MED-S03') }} {{ src('MED-S04') }}</li>
 </ul>
 {% endblock %}

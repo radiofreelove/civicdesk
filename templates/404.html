@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
-{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">404</p>
 <h1>Page not found</h1>
-{{ m.lede("That address does not match a page on CivicDesk. Use the router or one of the desk hubs below.") }}
+{{ m.lede("That address does not match a page on CivicDesk. Nothing broke on your device—the link may have moved or had a typo.") }}
 
-{{ v.lost_page_stage() }}
+<p><a class="btn" href="{{ page_url('start') }}">Open the 2-question guide router</a></p>
 
 <h2>Start here</h2>
 <ul>

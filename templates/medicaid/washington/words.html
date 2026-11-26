@@ -4,13 +4,13 @@
 {% block main %}
 <p class="kicker">Washington Apple Health</p>
 <h1>Words on your Apple Health letters</h1>
-<p class="purpose">Plain-language flashcards for official terms Washington uses in Apple Health notices and pages, listed A to Z.</p>
+<p class="purpose">Plain-English definitions for official terms Washington uses in Apple Health notices and pages, listed A to Z.</p>
 
 {% set wd_adults %}Coverage group the 2027 work rules apply to (WAC 182-505-0250). <a href="{{ page_url('medicaid-washington-rules') }}">Who the rules are for</a>. {{ src('MED-WA15') }}{% endset %}
 {% set wd_exempt %}HCA's word for a reason you do not have to meet the work rules. <a href="{{ page_url('medicaid-washington-reasons') }}">See every reason</a>. {{ src('MED-WA05') }} {{ src('MED-WA22') }}{% endset %}
 {% set wd_frail %}Serious health, disability, or treatment need that excuses you from work rules. <a href="{{ page_url('medicaid-washington-health') }}">More about health conditions</a>. {{ src('MED-WA05') }} {{ src('MED-S29') }}{% endset %}
 {% set wd_work %}HCA's name for the Jan.&nbsp;1, 2027 rules (enforcement delayed through June&nbsp;30, 2027). <a href="{{ page_url('medicaid-washington-rules') }}">Read them in plain words</a>. {{ src('MED-WA01') }} {{ src('MED-WA27') }}{% endset %}
-{{ v.jargon_flashcards([
+{{ v.glossary_list([
   {'term': 'Apple Health', 'plain': 'Washington’s name for Medicaid', 'detail': 'Free or low-cost health coverage run by the Health Care Authority (HCA).'},
   {'term': 'Apple Health Classic', 'plain': 'Medicaid for 65+, blind, disabled, or Medicare', 'detail': 'Applied for through DSHS (Washington Connection) rather than Healthplanfinder.'},
   {'term': 'Apple Health for Adults', 'plain': 'Expansion group ages 19–64', 'detail': wd_adults},
@@ -23,6 +23,6 @@
   {'term': 'Post Eligibility Review', 'plain': 'Follow-up proof check (15 days)', 'detail': 'A check after applying or renewing asking for income or status verification.'},
   {'term': 'WA Healthplanfinder', 'plain': 'Online portal (wahealthplanfinder.org)', 'detail': 'Where adults under 65 without Medicare apply, renew, and report changes.'},
   {'term': 'Work requirements', 'plain': 'Jan. 1, 2027 Apple Health rules', 'detail': wd_work}
-]) }}
+], id='wa-words-cards') }}
 <p class="checked">Additional term references: {{ src('MED-WA03') }} {{ src('MED-WA04') }} {{ src('MED-WA06') }} {{ src('MED-WA07') }} {{ src('MED-WA13') }} {{ src('MED-S27') }}.</p>
 {% endblock %}

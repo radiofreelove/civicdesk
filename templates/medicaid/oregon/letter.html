@@ -2,41 +2,50 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
-<h1>OHP sent me a letter. Now what?</h1>
-<p class="purpose">Spot the reply deadline first, see what OHP is asking for, and send your answer online, by phone, in person, or by mail.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon Health Plan (OHP)</p>
+    <h1>OHP sent me a letter. Now what?</h1>
+    <p class="purpose">Spot the reply deadline first, check what OHP could not confirm electronically, and send your answer online, by phone, in person, by fax, or by mail.</p>
+  </div>
+  {{ v.editorial_art('official-notice.webp', variant='spot') }}
+</div>
 
-{% set c1 %}Write your case number on every page you send and keep a copy with the date sent.{% endset %}
-{% set c2 %}A <strong>Request for Information</strong> gives you <strong>35 days</strong> to reply (plus an email reminder 5 days before if enrolled). {{ src('MED-S04') }}{% endset %}
-{% set c3 %}OHP only asks for what its electronic databases could not confirm—or you can report an exemption. {{ src('MED-S03') }} {{ src('MED-S04') }}{% endset %}
-{% set c4 %}Reply in ONE (<a href="https://benefits.oregon.gov/" rel="noreferrer">benefits.oregon.gov</a>), call <span class="nowrap">800-699-9075</span>, visit ODHS, fax <span class="nowrap">503-378-5628</span>, or mail PO Box 14015, Salem, OR 97309. {{ src('MED-S08') }}{% endset %}
+{% set c1 %}Write your ONE case number on every page you send and save a copy with the date sent.{% endset %}
+{% set c2 %}A <strong>Request for Information</strong> gives you <strong>35 days</strong> to answer (plus an email reminder 5 days ahead if enrolled). {{ src('MED-S04') }}{% endset %}
+{% set c3 %}OHP asks only for what electronic databases could not confirm—or you can report an exemption. Free help: <a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">find a community partner</a>. {{ src('MED-S03') }} {{ src('MED-S04') }} {{ src('MED-S16') }}{% endset %}
+{% set c4 %}Reply in ONE (<a href="https://benefits.oregon.gov/" rel="noreferrer">benefits.oregon.gov</a>), call <span class="nowrap">800-699-9075</span>, visit ODHS, fax <span class="nowrap">503-378-5628</span>, or mail PO Box 14015, Salem, OR 97309. Disagree with a denial? <a href="{{ page_url('medicaid-oregon-denied') }}">Request a free hearing</a>. {{ src('MED-S08') }}{% endset %}
 {{ v.doc_mockup_letter(
   'Oregon Health Plan',
-  'Oregon Health Authority · ONE Notice',
-  '35-day reply window',
+  'Oregon Health Authority · ONE Customer Service',
+  {'date': 'Dec. 2, 2026', 'id_label': 'ONE Case #', 'id_val': '00481920'},
+  'Notice of Eligibility / Request for Information',
+  {'due': 'Jan. 6, 2027', 'window': '35 calendar days from notice date'},
+  'We checked state wage and school records first. To finish reviewing your coverage, send proof for the item listed below or tell us if an exemption applies.',
+  'Upload in ONE, call, visit ODHS, fax, or mail—or ask for a free hearing before the effective date if your coverage is ending.',
   [
-    {'title': 'Case number & notice date', 'body': c1},
-    {'title': '35-day due date box', 'body': c2},
-    {'title': 'Missing hours or exemption check', 'body': c3},
-    {'title': '5 ways to send your answer', 'body': c4}
+    {'title': 'Record your case number & date', 'body': c1},
+    {'title': 'Answer before the 35-day deadline', 'body': c2},
+    {'title': 'Send missing proof or report an exemption', 'body': c3},
+    {'title': 'Reply by any of 5 channels (or appeal)', 'body': c4}
   ]
 ) }}
 
 <h2>Four OHP letters you may see</h2>
 {% set l_dec %}Early notice OHP plans to mail in December 2026 explaining what to expect in 2027. {{ src('MED-S42') }}{% endset %}
-{% set l_elig %}OHP's official decision about your coverage. {{ src('MED-S04') }} {{ src('MED-S19') }}{% endset %}
-{% set l_rfi %}OHP needs proof or more facts within 35 days. Free help: <a href="https://healthcare.oregon.gov/Pages/find-help.aspx" rel="noreferrer">find a community partner</a>. {{ src('MED-S04') }} {{ src('MED-S16') }}{% endset %}
-{% set l_stat %}Tells you your work-rule status changed without changing current benefits, so you can prepare for renewal. {{ src('MED-S04') }}{% endset %}
-{{ v.jargon_flashcards([
-  {'term': 'Dec. 2026 notice', 'plain': 'Heads-up for 2027 rules', 'detail': l_dec},
-  {'term': 'Notice of Eligibility', 'plain': 'Coverage decision letter', 'detail': l_elig},
-  {'term': 'Request for Information', 'plain': 'Proof needed within 35 days', 'detail': l_rfi},
-  {'term': 'Notice of Status', 'plain': 'Rule status update only', 'detail': l_stat}
+{% set l_elig %}OHP's official decision approving, changing, or denying coverage. {{ src('MED-S04') }} {{ src('MED-S19') }}{% endset %}
+{% set l_rfi %}Follow-up letter when OHP needs proof or an exemption answer within 35 days. {{ src('MED-S04') }}{% endset %}
+{% set l_stat %}Notes that your work-rule status changed without changing current benefits, so you can prepare before renewal. {{ src('MED-S04') }}{% endset %}
+{{ v.glossary_list([
+  {'term': 'December 2026 informational notice', 'detail': l_dec},
+  {'term': 'Notice of Eligibility', 'detail': l_elig},
+  {'term': 'Request for Information', 'detail': l_rfi},
+  {'term': 'Notice of Status', 'detail': l_stat}
 ]) }}
 
 <div class="callout">
   <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
   <h2>Missed the due date?</h2>
-  <p>If you miss the deadline and OHP turns you down, you can apply again any time or ask for a hearing. <a href="{{ page_url('medicaid-oregon-denied') }}">See your options</a> {{ src('MED-S04') }} {{ src('MED-S06') }}</p>
+  <p>If you miss the deadline and OHP turns you down, you can apply again any month with no waiting period or ask for a hearing. <a href="{{ page_url('medicaid-oregon-denied') }}">See your options</a> {{ src('MED-S04') }} {{ src('MED-S06') }}</p>
 </div>
 {% endblock %}

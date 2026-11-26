@@ -1,68 +1,58 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
-{% import "illustrations.html" as il %}
 {% block main %}
 <p class="kicker">Side by side</p>
 <h1>Compare Oregon, Washington, and Utah</h1>
-{{ m.lede("Oregon and Washington update state IDs and birth records by agency form, while Utah requires a district court order with clear and convincing proof. Compare fees, privacy, and rules at a glance.") }}
+{{ m.lede("Oregon and Washington update state IDs and birth records by agency form, while Utah requires a district court order with clear and convincing proof. Compare court filing fees and rules side by side.") }}
 {{ m.checked_line(page) }}
 
-<section class="viz-compare-board" aria-label="Visual court-fee and rule comparison across Oregon, Washington, and Utah">
+<section class="viz-compare-board" aria-labelledby="compare-fees-h">
+  <div class="viz-compare-board-head">
+    <h2 id="compare-fees-h">Court filing fees &amp; fee waivers side by side</h2>
+  </div>
   <div class="viz-compare-col">
-    <div class="viz-compare-head">
-      {{ il.state_map_badge('oregon') }}
-      <div>
-        <strong><a href="{{ page_url('id-records-oregon') }}">Oregon</a></strong>
-        <p class="card-meta">Court petition: {{ fact('or_fee_petition') }}</p>
+    <div class="viz-compare-top">
+      <div class="viz-compare-title-group">
+        <span class="viz-compare-state"><a href="{{ page_url('id-records-oregon') }}">Oregon</a></span>
+        <span class="viz-compare-fee">{{ fact('or_fee_petition') }}</span>
       </div>
+      <span class="viz-waiver-pill">$0 with approved fee waiver (free to apply)</span>
     </div>
-    <svg class="viz-compare-fee-bar" viewBox="0 0 200 12" width="200" height="12" aria-hidden="true" focusable="false">
-      <rect x="1" y="1" width="198" height="10" rx="5" class="viz-meter-track"/>
-      <rect x="2" y="2" width="66" height="8" rx="4" class="viz-seg-1"/>
+    <svg class="viz-compare-fee-bar" viewBox="0 0 320 22" width="320" height="22" aria-hidden="true" focusable="false">
+      <rect x="1" y="1" width="318" height="20" rx="6" class="viz-meter-track"/>
+      <rect x="3" y="3" width="106" height="16" rx="4" class="viz-seg-1"/>
     </svg>
-    <ul class="viz-compare-badges">
-      <li><span>Court hearing</span><strong>Usually none</strong></li>
-      <li><span>Sex-case privacy</span><strong>Confidential (2026)</strong></li>
-      <li><span>Birth &amp; DMV X marker</span><strong>Form, no court</strong></li>
-    </ul>
+    <p class="viz-compare-note">Circuit court petition covering name, sex, or both in one filing. {{ src('ID-OR-OJD-FEES') }}</p>
   </div>
 
-  <div class="viz-compare-col">
-    <div class="viz-compare-head">
-      {{ il.state_map_badge('washington') }}
-      <div>
-        <strong><a href="{{ page_url('id-records-washington') }}">Washington</a></strong>
-        <p class="card-meta">Sealed superior: {{ fact('wa_fee_sealed') }}</p>
+  <div class="viz-compare-col viz-compare-col-wa">
+    <div class="viz-compare-top">
+      <div class="viz-compare-title-group">
+        <span class="viz-compare-state"><a href="{{ page_url('id-records-washington') }}">Washington</a></span>
+        <span class="viz-compare-fee">$290+</span>
       </div>
+      <span class="viz-waiver-pill">$0 with approved GR 34 or hardship waiver</span>
     </div>
-    <svg class="viz-compare-fee-bar" viewBox="0 0 200 12" width="200" height="12" aria-hidden="true" focusable="false">
-      <rect x="1" y="1" width="198" height="10" rx="5" class="viz-meter-track"/>
-      <rect x="2" y="2" width="154" height="8" rx="4" class="viz-seg-3"/>
+    <svg class="viz-compare-fee-bar" viewBox="0 0 320 22" width="320" height="22" aria-hidden="true" focusable="false">
+      <rect x="1" y="1" width="318" height="20" rx="6" class="viz-meter-track"/>
+      <rect x="3" y="3" width="247" height="16" rx="4" class="viz-seg-3"/>
     </svg>
-    <ul class="viz-compare-badges">
-      <li><span>Court hearing</span><strong>Yes (every name case)</strong></li>
-      <li><span>Name-case privacy</span><strong>Sealed in superior ct.</strong></li>
-      <li><span>Birth &amp; DOL X marker</span><strong>Form, no court</strong></li>
-    </ul>
+    <p class="viz-compare-note">Varies by court; sealed superior court cases use {{ fact('wa_fee_sealed') }} (district court must waive fees on a hardship statement). {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }}</p>
   </div>
 
-  <div class="viz-compare-col">
-    <div class="viz-compare-head">
-      {{ il.state_map_badge('utah') }}
-      <div>
-        <strong><a href="{{ page_url('id-records-utah') }}">Utah</a></strong>
-        <p class="card-meta">District court: {{ fact('ut_fee_petition') }}</p>
+  <div class="viz-compare-col viz-compare-col-ut">
+    <div class="viz-compare-top">
+      <div class="viz-compare-title-group">
+        <span class="viz-compare-state"><a href="{{ page_url('id-records-utah') }}">Utah</a></span>
+        <span class="viz-compare-fee">{{ fact('ut_fee_petition') }}</span>
       </div>
+      <span class="viz-waiver-pill">$0 with approved fee waiver</span>
     </div>
-    <svg class="viz-compare-fee-bar" viewBox="0 0 200 12" width="200" height="12" aria-hidden="true" focusable="false">
-      <rect x="1" y="1" width="198" height="10" rx="5" class="viz-meter-track"/>
-      <rect x="2" y="2" width="196" height="8" rx="4" class="viz-seg-2"/>
+    <svg class="viz-compare-fee-bar" viewBox="0 0 320 22" width="320" height="22" aria-hidden="true" focusable="false">
+      <rect x="1" y="1" width="318" height="20" rx="6" class="viz-meter-track"/>
+      <rect x="3" y="3" width="314" height="16" rx="4" class="viz-seg-2"/>
     </svg>
-    <ul class="viz-compare-badges">
-      <li><span>Court hearing</span><strong>Yes + 6 findings</strong></li>
-      <li><span>Sex-case privacy</span><strong>Papers private only</strong></li>
-      <li><span>Birth certificate</span><strong>Court order req.</strong></li>
-    </ul>
+    <p class="viz-compare-note">District court general civil petition covering name, sex designation, or both. {{ src('ID-UT-COURTS-FEES') }}</p>
   </div>
 </section>
 
@@ -84,18 +74,6 @@
       <td data-label="Oregon">Any circuit court. You swear you have had treatment appropriate for you. {{ src('ID-OR-ORS-33') }}</td>
       <td data-label="Washington">Optional court order that confirms your gender {{ src('ID-WA-WLH-GENDER-ORDER') }}</td>
       <td data-label="Utah">District court. Clear and convincing evidence of six things. {{ src('ID-UT-CODE-26B-8-111') }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Court filing fee</th>
-      <td data-label="Oregon">{{ fact('or_fee_petition') }} {{ src('ID-OR-OJD-FEES') }}</td>
-      <td data-label="Washington">Varies. Sealed cases: {{ fact('wa_fee_sealed') }}. {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }}</td>
-      <td data-label="Utah">{{ fact('ut_fee_petition') }} {{ src('ID-UT-COURTS-FEES') }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Fee waiver</th>
-      <td data-label="Oregon">Yes, and applying is free</td>
-      <td data-label="Washington">Yes. District court must waive fees on a hardship statement.</td>
-      <td data-label="Utah">Yes</td>
     </tr>
     <tr>
       <th scope="row">Hearing</th>

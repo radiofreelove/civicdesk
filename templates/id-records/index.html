@@ -1,17 +1,11 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
-{% import "illustrations.html" as il %}
 {% block main %}
-<div class="hero-stage hero-stage-rose">
-  <div class="hero-copy">
-    <p class="kicker">Legal Name, ID &amp; Vital Records</p>
-    <h1>Update your legal name, ID, and vital records in the right order</h1>
-    {{ m.lede("Whether you are changing your name after marriage or domestic partnership, restoring a name through divorce, filing a court petition, or updating a sex or gender designation, offices check each other's records across Oregon, Washington, Utah, and federal agencies.") }}
-    {{ m.checked_line(page) }}
-  </div>
-  {{ v.hero_horizon_art('id') }}
-</div>
+<p class="kicker">Legal Name, ID &amp; Vital Records</p>
+<h1>Update your legal name, ID, and vital records in the right order</h1>
+{{ m.lede("Whether you are changing your name after marriage or domestic partnership, restoring a name through divorce, filing a court petition, or updating a sex or gender designation, offices check each other's records across Oregon, Washington, Utah, and federal agencies.") }}
+{{ m.checked_line(page) }}
 
 <section class="big-start" aria-labelledby="start-h">
   <h2 id="start-h">Find your exact steps in about 1 minute</h2>
@@ -20,57 +14,46 @@
 </section>
 
 <h2 id="how">Why order matters: the 4-stage agency sequence</h2>
-{% set id_seq_note %}Update Social Security before your state DMV so electronic name checks match ({{ src('ID-US-SSA-NAME') }}); <a href="{{ page_url('id-records-compare') }}">compare state rules</a> or open the <a href="{{ page_url('id-records-after') }}">printable checklist</a>.{% endset %}
+{{ v.editorial_art('id-sequence.webp', variant='wide') }}
+{% set id_seq_note %}<a href="{{ page_url('id-records-compare') }}">Compare Oregon, Washington, and Utah</a> or open the <a href="{{ page_url('id-records-after') }}">printable record-update checklist</a>. {{ src('ID-US-SSA-NAME') }}{% endset %}
 {{ v.process_flow([
-  {'icon': 'court', 'title': 'Court or vital event', 'body': 'Certified marriage, divorce, or court order first.', 'meta': 'Or state marker form'},
-  {'icon': 'ssa', 'title': 'Social Security', 'body': 'Update your legal name before visiting the DMV.', 'meta': 'Free card'},
-  {'icon': 'dmv', 'title': 'Driver license or ID', 'body': 'Update your Oregon, Washington, or Utah card.', 'meta': 'Checks SSA name'},
-  {'icon': 'passport', 'title': 'Passport, birth & accounts', 'body': 'Amend birth record, passport, payroll, and Medicaid.', 'meta': 'Check federal rules'}
+  {'title': 'Court or vital record', 'body': 'Get a certified marriage certificate, divorce decree, or court order first.', 'meta': 'Or state marker form'},
+  {'title': 'Social Security', 'body': 'Update your legal name with SSA before visiting the DMV.', 'meta': 'Free replacement card'},
+  {'title': 'Driver license or ID', 'body': 'State DMVs verify your new legal name against SSA’s database.', 'meta': 'OR, WA, or UT card'},
+  {'title': 'Birth, passport & accounts', 'body': 'Amend your birth record, check passport rules, and update accounts.', 'meta': 'Check 2026 federal rules'}
 ], id='agency-order-flow', cols=4, note=id_seq_note) }}
 
 <h2 id="common-paths">Common ways a legal name or record updates</h2>
-{% set cp_mar %}Certified marriage or registered domestic partnership certificate updates SSA, your state ID, and your passport with no court petition. {{ src('ID-US-SSA-NAME') }} {{ src('ID-OR-ORS-106') }}{% endset %}
-{% set cp_div %}Restore a former name in your signed divorce or dissolution decree, then bring certified copies to SSA and the DMV. {{ src('ID-OR-ORS-107') }} {{ src('ID-WA-RCW-26-09-150') }}{% endset %}
+{% set cp_mar %}Certified marriage or registered domestic partnership certificate updates Social Security, your state ID, and your passport with no court petition. {{ src('ID-US-SSA-NAME') }} {{ src('ID-OR-ORS-106') }}{% endset %}
+{% set cp_div %}Restore a former name in your signed divorce or dissolution decree, then bring certified copies to Social Security and the DMV. {{ src('ID-OR-ORS-107') }} {{ src('ID-WA-RCW-26-09-150') }}{% endset %}
 {% set cp_crt %}File an adult or minor court petition in your state, including confidential or sealed options where state law allows. {{ src('ID-OR-ORS-33') }} {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-UT-CODE-42-1') }}{% endset %}
 {% set cp_sex %}Oregon and Washington update state IDs and birth records by form (M, F, or X); Utah requires a court order, and federal offices follow 2025–2026 rules. {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-WA-DOL-GENDER') }} {{ src('ID-UT-CODE-26B-8-111') }}{% endset %}
-{{ v.icon_feature_grid([
-  {'icon': 'birth', 'title': 'Marriage or domestic partnership', 'body': cp_mar},
-  {'icon': 'court', 'title': 'Divorce or dissolution', 'body': cp_div},
-  {'icon': 'appeal', 'title': 'Court-ordered name change', 'body': cp_crt},
-  {'icon': 'dmv', 'title': 'Sex or gender designation', 'body': cp_sex}
-], cols=2) }}
+{{ v.glossary_list([
+  {'term': 'Marriage or domestic partnership', 'detail': cp_mar},
+  {'term': 'Divorce or dissolution', 'detail': cp_div},
+  {'term': 'Court-ordered name change', 'detail': cp_crt},
+  {'term': 'Sex or gender designation', 'detail': cp_sex}
+]) }}
 
 <h2 id="states">Choose your state or federal guide</h2>
 <ul class="cards state-cards">
   <li class="card card-interactive">
-    <div class="card-head">
-      {{ il.state_map_badge('oregon') }}
-      <h3><a class="card-link" href="{{ page_url('id-records-oregon') }}">Oregon</a></h3>
-    </div>
+    <h3><a class="card-link" href="{{ page_url('id-records-oregon') }}">Oregon</a></h3>
     <p>Marriage and divorce updates, {{ fact('or_fee_petition') }} circuit court petitions (confidential when a sex change is included), form OHA 2673 birth certificates, and Oregon DMV cards.</p>
     <p class="card-meta">Sources checked {% if state_checked['id_or']['oldest'] == state_checked['id_or']['newest'] %}<time datetime="{{ state_checked['id_or']['oldest'] }}">{{ state_checked['id_or']['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked['id_or']['oldest'] }}">{{ state_checked['id_or']['oldest']|human_date }}</time> to <time datetime="{{ state_checked['id_or']['newest'] }}">{{ state_checked['id_or']['newest']|human_date }}</time>{% endif %}</p>
   </li>
   <li class="card card-interactive">
-    <div class="card-head">
-      {{ il.state_map_badge('washington') }}
-      <h3><a class="card-link" href="{{ page_url('id-records-washington') }}">Washington</a></h3>
-    </div>
+    <h3><a class="card-link" href="{{ page_url('id-records-washington') }}">Washington</a></h3>
     <p>Marriage and divorce updates, public district court or sealed superior court name changes, Department of Health birth certificates, and Department of Licensing cards.</p>
     <p class="card-meta">Sources checked {% if state_checked['id_wa']['oldest'] == state_checked['id_wa']['newest'] %}<time datetime="{{ state_checked['id_wa']['oldest'] }}">{{ state_checked['id_wa']['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked['id_wa']['oldest'] }}">{{ state_checked['id_wa']['oldest']|human_date }}</time> to <time datetime="{{ state_checked['id_wa']['newest'] }}">{{ state_checked['id_wa']['newest']|human_date }}</time>{% endif %}</p>
   </li>
   <li class="card card-interactive">
-    <div class="card-head">
-      {{ il.state_map_badge('utah') }}
-      <h3><a class="card-link" href="{{ page_url('id-records-utah') }}">Utah</a></h3>
-    </div>
+    <h3><a class="card-link" href="{{ page_url('id-records-utah') }}">Utah</a></h3>
     <p>Marriage and divorce updates, district court name and sex-designation orders ({{ fact('ut_fee_petition') }} filing fee, waiver available), Vital Records form 902, and Driver License Division steps.</p>
     <p class="card-meta">Sources checked {% if state_checked['id_ut']['oldest'] == state_checked['id_ut']['newest'] %}<time datetime="{{ state_checked['id_ut']['oldest'] }}">{{ state_checked['id_ut']['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked['id_ut']['oldest'] }}">{{ state_checked['id_ut']['oldest']|human_date }}</time> to <time datetime="{{ state_checked['id_ut']['newest'] }}">{{ state_checked['id_ut']['newest']|human_date }}</time>{% endif %}</p>
   </li>
   <li class="card card-interactive">
-    <div class="card-head">
-      {{ il.state_map_badge('federal') }}
-      <h3><a class="card-link" href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></h3>
-    </div>
+    <h3><a class="card-link" href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></h3>
     <p>Social Security replacement cards, passport name changes (DS-5504, DS-82, DS-11), and 2025–2026 federal sex-marker rules.</p>
     <p class="card-meta">Sources checked {% if state_checked['id_us']['oldest'] == state_checked['id_us']['newest'] %}<time datetime="{{ state_checked['id_us']['oldest'] }}">{{ state_checked['id_us']['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked['id_us']['oldest'] }}">{{ state_checked['id_us']['oldest']|human_date }}</time> to <time datetime="{{ state_checked['id_us']['newest'] }}">{{ state_checked['id_us']['newest']|human_date }}</time>{% endif %}</p>
   </li>

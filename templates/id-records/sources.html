@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
-{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Legal Name, ID &amp; Vital Records</p>
 <h1>Primary sources for Legal Name, ID &amp; Vital Records (<code>ID-*</code>)</h1>
@@ -12,14 +11,6 @@
   ('src-ut', 'Utah'),
   ('src-us', 'Federal & national'),
   ('src-standards', 'Accessibility & hosting')
-]) }}
-
-{% set ns = namespace(total=0) %}
-{% for s in id_records_sources if not s.get('docs_only') %}{% set ns.total = ns.total + 1 %}{% endfor %}
-{{ v.stat_hero_strip([
-  {'num': ns.total|string, 'label': 'ID & vital records sources', 'note': 'Backed by data/sources/id_records.yaml'},
-  {'num': '4', 'label': 'Jurisdictions covered', 'note': 'OR, WA, UT & federal agencies'},
-  {'num': '4', 'label': 'Source honesty tiers', 'note': 'Every claim shows its status badge'}
 ]) }}
 
 <p>Need Medicaid sources too? <a href="{{ page_url('medicaid-sources') }}">See Medicaid sources (<code>MED-*</code>)</a> or <a href="{{ page_url('sources#labels') }}">read what our 4 source honesty labels mean</a>.</p>
