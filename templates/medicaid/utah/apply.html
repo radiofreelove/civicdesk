@@ -1,65 +1,56 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Utah Medicaid</p>
 <h1>How to apply for Utah Medicaid</h1>
-    <p class="purpose">There are 3 ways to apply. Pick the one that is easiest for you.</p>
+<p class="purpose">The Department of Workforce Services (DWS) decides who qualifies. Pick any of the 3 ways below—and get free help from Take Care Utah or in your language.</p>
 
-    <h2>The short version</h2>
-    <ul class="short channel-list">
-      <li><span class="channel-icon">{{ m.icon('online') }}</span><span><strong>Online:</strong> in myCase, at <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a></span></li>
-      <li><span class="channel-icon">{{ m.icon('paper') }}</span><span><strong>On paper:</strong> the medical application, form 61MED, in English or Spanish. Mail it or fax it.</span></li>
-      <li><span class="channel-icon">{{ m.icon('inperson') }}</span><span><strong>In person:</strong> at any Department of Workforce Services (DWS) office.</span></li>
-      <li><span class="channel-icon">{{ m.icon('phone') }}</span><span><strong>Questions:</strong> Call DWS at <span class="nowrap">1-866-435-7414</span>.</span></li>
-      <li><span class="channel-icon">{{ m.icon('helper') }}</span><span><strong>Free help:</strong> Take Care Utah helps people apply. Its help is free.</span></li>
-    </ul>
+{{ m.onthispage([
+  ('apply-online', 'Online (myCase)'),
+  ('apply-paper', 'Paper (61MED)'),
+  ('apply-inperson', 'In person'),
+  ('after-apply', 'After you apply')
+]) }}
 
-    <h2>Who decides</h2>
-    <p>DWS decides who qualifies for Utah Medicaid.</p>
+{% set ch_online %}Apply at <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a> and upload proof from your phone or computer.{% endset %}
+{% set ch_paper %}Mail or fax <a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_English.pdf" rel="noreferrer">form 61MED</a> (<a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_Spanish.pdf" hreflang="es" rel="noreferrer">Spanish PDF</a>), or call <span class="nowrap">1-866-435-7414</span> to request one by mail.{% endset %}
+{% set ch_person %}Visit any <a href="https://jobs.utah.gov/jsp/officesearch/" rel="noreferrer">DWS employment center</a> (Mon–Fri, 8 a.m.–5 p.m.) or get free help from Take Care Utah.{% endset %}
+{{ v.channel_cards(
+  [
+    {'kind': 'online', 'title': '1. Online in myCase', 'body': ch_online},
+    {'kind': 'paper', 'title': '2. Paper form 61MED', 'body': ch_paper},
+    {'kind': 'navigator', 'title': '3. In person or Take Care Utah', 'body': ch_person}
+  ],
+  ready_items=[
+    {'icon': 'birth-cert', 'label': 'ID or birth certificate if requested (10-day return list)'},
+    {'icon': 'hours-meter', 'label': 'Prior-month work, school, or volunteer hours'},
+    {'icon': 'exemption-check', 'label': 'Proof for any exclusion or exception'}
+  ]
+) }}
 
-    <h2 id="apply-online" class="icon-heading">{{ m.icon('online') }}<span>Apply online</span></h2>
-    <p>Go to <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a>. If you apply online, you do not need a paper application.</p>
+<h2 id="apply-online" class="icon-heading">{{ m.icon('online') }}<span>Apply online</span></h2>
+<p>Start at <a href="https://jobs.utah.gov/mycase/" rel="noreferrer">jobs.utah.gov/mycase</a>. You do not need a paper application when you apply in myCase, and keeping your address, phone, and email current there helps you avoid missed notices.</p>
 
-    <h2 id="apply-paper" class="icon-heading">{{ m.icon('paper') }}<span>Apply on paper</span></h2>
-    <p><a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_English.pdf" rel="noreferrer">Download the medical application (form 61MED)</a> <span class="tag">PDF</span>. It also comes <a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_Spanish.pdf" hreflang="es" rel="noreferrer">in Spanish</a> <span class="tag">PDF</span>.</p>
-    <ul>
-      <li><strong>Mail it to:</strong> Department of Workforce Services, PO Box 143245, Salt Lake City, UT 84114-3245.</li>
-      <li><strong>Or fax it:</strong> Utah's pages list different fax numbers. Use the number printed on your form, or call DWS to check.</li>
-      <li><strong>No printer?</strong> Call <span class="nowrap">1-866-435-7414</span> and ask DWS to mail you an application. This can take longer.</li>
-    </ul>
-    <div class="warn">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Heads up</span></p>
-      <h3>Heads up about the paper form</h3>
-      <p>The paper form we read is dated April&nbsp;1, 2026. It does not ask about the new rules. The state may ask you about them after you apply.</p>
-    </div>
+<h2 id="apply-paper" class="icon-heading">{{ m.icon('paper') }}<span>Apply on paper</span></h2>
+<p>Mail <a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_English.pdf" rel="noreferrer">form 61MED (English PDF)</a> or <a href="https://medicaid-documents.dhhs.utah.gov/Documents/pdfs/61MED_Spanish.pdf" hreflang="es" rel="noreferrer">form 61MED (Spanish PDF)</a> to <strong>Department of Workforce Services, PO Box 143245, Salt Lake City, UT 84114-3245</strong>, or fax the number printed on your form. Note: the April&nbsp;1, 2026 paper form does not yet ask about the 2027 work rules, so DWS may ask after you apply.</p>
 
-    <h2 id="apply-inperson" class="icon-heading">{{ m.icon('inperson') }}<span>Apply in person</span></h2>
-    <p><a href="https://jobs.utah.gov/jsp/officesearch/" rel="noreferrer">Find a DWS office near you</a>. DWS calls its offices employment centers.</p>
-    <p class="more">Utah's letters say you can drop off papers Monday to Friday, 8 a.m. to 5 p.m.</p>
+<h2 id="apply-inperson" class="icon-heading">{{ m.icon('inperson') }}<span>Apply in person &amp; free language help</span></h2>
+<p><a href="https://jobs.utah.gov/jsp/officesearch/" rel="noreferrer">Find a DWS employment center</a>, or ask DWS for free interpreter help when you call (<span class="nowrap">1-866-435-7414</span>) or visit. <a href="{{ page_url('medicaid-utah-help') }}">More free help and phone numbers</a></p>
 
-    <h2>What to have ready</h2>
-    <ul>
-      <li>DWS tells you what proof it needs, like a birth certificate.</li>
-      <li>DWS sends a form that lists what it needs. Return those items within 10 days.</li>
-      <li>For the new rules: your work, school, or volunteer hours for the month before you apply, or the reason you don't have to meet the rules.</li>
-    </ul>
+<h2 id="after-apply">What happens after you apply</h2>
+{{ v.process_flow([
+  {'icon': 'shield', 'title': 'Records checked first', 'body': 'DWS checks wage, school, and benefit records.'},
+  {'icon': 'letter', 'title': '10- to 30-day proof window', 'body': 'Return requested proofs or work-rule forms on time.'},
+  {'icon': 'calendar', 'title': 'Written decision in 30 days', 'body': 'Up to 90 days if based on disability.'}
+], id='ut-after-flow', cols=3) }}
 
-    <h2 id="after-apply">What happens after you apply</h2>
-    <ol class="steps steps-flow">
-      <li><span class="flow-head">{{ m.icon('check') }}<strong>Records checked first</strong></span> The state checks records it already has first.</li>
-      <li><span class="flow-head">{{ m.icon('calendar') }}<strong>30 days if a form is needed</strong></span> If the state needs more for the new rules, you may need to send a form within 30 days, or you could lose your coverage. <a href="{{ page_url('medicaid-utah-letter') }}">How to answer a letter</a></li>
-      <li><span class="flow-head">{{ m.icon('letter') }}<strong>Decision in 30 days</strong></span> DWS has 30 days to decide. If you say you have a disability, it has 90 days. You get the decision in a letter.</li>
-    </ol>
-
-    <h2>Help in your language</h2>
-    <p>Language help is free. Ask DWS when you call or visit. <a href="{{ page_url('medicaid-utah-help') }}">More free help and phone numbers</a></p>
-
-    <h2 class="more">Good to know</h2>
-    <ul class="more">
-      <li>Income limits change. Check <a href="https://medicaid.utah.gov/expansion/" rel="noreferrer">the income table on Utah's Medicaid expansion page</a>.</li>
-      <li>Does your job offer health insurance? Utah Medicaid may require you to sign up for it. Medicaid then pays back your share of the monthly cost.</li>
-      <li>Keep your address, phone number, and email current in myCase, so you do not miss a letter.</li>
-    </ul>
+{% call m.deeper('Income tables & employer health insurance rules', 'ut-apply-good-to-know') %}
+<ul>
+  <li>Check current income limits on <a href="https://medicaid.utah.gov/expansion/" rel="noreferrer">Utah's Medicaid expansion page</a>, and see <a href="{{ page_url('medicaid-utah-letter') }}">how to answer a DWS letter</a>.</li>
+  <li>If your job offers health insurance, Utah Medicaid may require you to enroll and then reimburse your monthly premium share.</li>
+</ul>
+{% endcall %}
 
 {{ m.id_mismatch_callout('utah-id-mismatch', 'utah') }}
 {% endblock %}

@@ -1,16 +1,39 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "illustrations.html" as il %}
 {% block main %}
-<p class="kicker">Oregon</p>
+<div class="card-head">
+  {{ il.state_map_badge('oregon') }}
+  <p class="kicker">Oregon</p>
+</div>
 <h1>Change your name and legal sex in Oregon</h1>
-{{ m.lede("One court form can change your name, your legal sex, or both. Since July 1, 2026, any case that includes a sex change is confidential by law. Your Oregon driver license and Oregon birth certificate can change without going to court.") }}
+{{ m.lede("One court form can change your name, your legal sex, or both. Since July 1, 2026, any case that includes a sex change is confidential by law, and your Oregon driver license and Oregon birth certificate can change without court.") }}
 {{ m.checked_line(page) }}
 
-{#- Quick facts. Values come from data/facts.yml so they stay in step with the sub-pages. -#}
 {% set first_step = 'Get the forms' %}
 {% set birth_cost %}{{ fact('or_oha_amend_fee') }} to change it, plus {{ fact('or_oha_cert_fee') }}{% endset %}
 {% set confidential %}Sex change cases filed on or after {{ fact('or_confidential_date') }}, are confidential. {{ src('ID-OR-2026-CH52') }}{% endset %}
+
+{{ v.stat_hero_strip([
+  {'num': fact('or_fee_petition'), 'label': 'Circuit court petition fee', 'note': 'Free waiver application'},
+  {'num': 'No court', 'label': 'DMV & Oregon birth record', 'note': 'M, F, or X by agency form'},
+  {'num': 'Confidential', 'label': '2026 sex-change court files', 'note': 'Including combined name + sex'},
+  {'num': 'No doctor', 'label': 'Self-attested forms', 'note': 'No medical letter required'}
+]) }}
+
+<h2 id="order">Recommended Oregon sequence</h2>
+{{ v.process_flow([
+  {'icon': 'court', 'title': 'Court or certificate', 'body': 'Circuit court for name; optional for state marker.', 'meta': fact('or_fee_petition') ~ ' or waiver'},
+  {'icon': 'ssa', 'title': 'Social Security', 'body': 'Update your legal name before visiting Oregon DMV.', 'meta': 'Free card'},
+  {'icon': 'dmv', 'title': 'Oregon DMV', 'body': 'Choose M, F, or X with no medical proof.', 'meta': fact('or_dmv_fee')},
+  {'icon': 'birth', 'title': 'Birth & passport', 'body': 'Use OHA 2673 and check federal passport rules.', 'meta': fact('or_oha_amend_fee') ~ ' + copy'}
+], cols=4) }}
+
+{% call m.callout('changed', 'Policy update: 2026 confidentiality law', 'or-policy-update') %}
+<p>Oregon sex change cases filed on or after {{ fact('or_confidential_date') }}, are confidential by law, including cases that change name and sex together. Name-only cases remain public unless sealed under ACP. {{ src('ID-OR-2026-CH52') }} <a href="{{ page_url('id-records-oregon-court#privacy') }}">Read who can see your case</a>.</p>
+{% endcall %}
+
 {{ m.quickfacts(page, {
   'court_name': fact_src('or_court_name'),
   'sex_label': 'Court needed to change the sex on your records',
@@ -25,27 +48,14 @@
   'whats_new': {'label': 'New in 2026', 'text': confidential, 'href': page_url('id-records-oregon-court#privacy'), 'link': 'Who can see your case'}
 }) }}
 
-{% call m.callout('changed', 'Policy update: 2026 confidentiality law', 'or-policy-update') %}
-<p>Oregon sex change cases filed on or after {{ fact('or_confidential_date') }}, are confidential by law, including cases that change name and sex together. Name-only cases are still public. {{ src('ID-OR-2026-CH52') }} <a href="{{ page_url('id-records-oregon-court#privacy') }}">Read who can see your case</a>.</p>
-{% endcall %}
-
-<h2 id="order">Recommended Oregon sequence</h2>
-{{ v.process_flow([
-  {'icon': 'court-gavel', 'title': 'Court or certificate', 'body': 'File in circuit court for a name or combined change, or skip court for marker-only state updates.', 'meta': fact('or_fee_petition') ~ ' or waiver'},
-  {'icon': 'ssa-card', 'title': 'Social Security', 'body': 'Update your legal name at Social Security before visiting the Oregon DMV.', 'meta': 'Free card'},
-  {'icon': 'dmv-license', 'title': 'Oregon DMV', 'body': 'Update your license or ID (M, F, or X with no medical proof).', 'meta': 'Checks SSA name'},
-  {'icon': 'birth-cert', 'title': 'Birth & passport', 'body': 'Amend an Oregon birth record (form OHA 2673) and check federal passport rules.', 'meta': fact('or_oha_amend_fee') ~ ' + copy fee'}
-], cols=4) }}
-
-<h2 id="guides">At a glance: your Oregon guides</h2>
-<p>Pick the record you want to update. Each page has plain steps, costs, and official form links.</p>
+<h2 id="guides">Your Oregon record guides</h2>
 {{ m.hub_cards([
   {
     'id': 'steps',
     'icon': 'court-gavel',
     'title': 'Court order',
     'href': page_url('id-records-oregon-court'),
-    'summary': 'One petition changes your legal name, your legal sex (M, F, or nonbinary), or both. Includes fee waivers, 2026 confidentiality rules, and under-18 rules.',
+    'summary': 'One petition changes your legal name, your legal sex (M, F, or nonbinary), or both—with fee waivers, 2026 confidentiality rules, and minor rules.',
     'meta': 'Filing fee: ' ~ fact('or_fee_petition') ~ ' (waiver available)'
   },
   {
@@ -66,40 +76,16 @@
   }
 ]) }}
 
-{% call m.callout('why', 'Why it matters', 'or-why', extra=true) %}
+{% call m.deeper('Why court judgments still help & more tools in your path', 'or-why') %}
 <ul>
-  <li>A court judgment is the strongest proof of a legal change. Social Security, banks, and other states may ask for one even when Oregon offices do not.</li>
-  <li>In Oregon you choose male, female, or nonbinary, and you swear to the facts yourself. The court form does not ask for a doctor's letter. {{ src('ID-OR-OJD-ADULT-PACKET') }}</li>
+  <li>A court judgment is accepted nationwide when Social Security, banks, or another birth state ask for court proof, and Oregon's petition requires no doctor's letter. {{ src('ID-OR-OJD-ADULT-PACKET') }}</li>
+  <li>Next tools: <a href="{{ page_url('id-records-federal') }}">Federal records in 2026</a>, <a href="{{ page_url('id-records-after') }}">After-court checklist</a>, and <a href="{{ page_url('id-records-help') }}">Free or low-cost help</a>.</li>
 </ul>
 {% endcall %}
 
-<h2 id="more-steps">More steps in your path</h2>
-{{ m.hub_cards([
-  {
-    'icon': 'passport-globe',
-    'title': 'Federal records in 2026',
-    'href': page_url('id-records-federal'),
-    'summary': 'Passports and Social Security have different rules right now. Check before you apply or mail anything.'
-  },
-  {
-    'icon': 'ssa-card',
-    'title': 'After court checklist',
-    'href': page_url('id-records-after'),
-    'summary': 'Update Social Security, your license, your birth certificate, and other accounts in the right order.'
-  },
-  {
-    'icon': 'fee-waiver',
-    'title': 'Get free or low-cost help',
-    'href': page_url('id-records-help'),
-    'summary': 'Legal aid, court self-help centers, and peer support across Oregon, Washington, and Utah.'
-  }
-]) }}
-
 <h2 id="help">Get help in Oregon</h2>
 <ul>
-  <li>{{ ext('ID-OR-OJD-SELF-HELP') }}: court staff can explain the process but cannot give legal advice.</li>
-  <li>Oregon State Bar referral service, to find a lawyer. {{ src('ID-OR-OJD-ADULT-PACKET') }} {{ m.copyable(fact('or_osb_lrs'), 'phone numbers') }}</li>
-  <li>{{ ext('ID-OR-LAWHELP') }}: free legal information from Oregon legal aid programs.</li>
-  <li><a href="{{ page_url('id-records-help') }}">More free and low-cost help</a></li>
+  <li>{{ ext('ID-OR-OJD-SELF-HELP') }} and {{ ext('ID-OR-LAWHELP') }}.</li>
+  <li>Oregon State Bar referral service: {{ m.copyable(fact('or_osb_lrs'), 'phone numbers') }} {{ src('ID-OR-OJD-ADULT-PACKET') }} · <a href="{{ page_url('id-records-help') }}">All help directories</a>.</li>
 </ul>
 {% endblock %}

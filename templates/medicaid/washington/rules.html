@@ -4,132 +4,84 @@
 {% block main %}
 <p class="kicker">Washington Apple Health</p>
 <h1>The new Apple Health rules, in plain words</h1>
-    <p class="purpose">This page explains who the rules are for and the 6 ways to meet them.</p>
-    <p>Not sure if the rules fit you? <a href="{{ page_url('medicaid-washington-check') }}">Take the 1-minute check</a>.</p>
+<p class="purpose">Who the rules apply to starting Jan.&nbsp;1, 2027, and the 6 ways to meet them. Not sure if they fit you? <a href="{{ page_url('medicaid-washington-check') }}">Take the 1-minute check</a>.</p>
 
-    <h2>The short version</h2>
-    <ul class="short">
-      <li><strong>Starts:</strong> Jan.&nbsp;1, 2027 (with work-rule coverage loss delayed through June&nbsp;30, 2027). The Health Care Authority (HCA) tells members to keep their contact information up to date and read notices or text messages from HCA. {{ src('MED-WA01') }} {{ src('MED-WA27') }}</li>
-      <li><strong>Who:</strong> Only people in Apple Health for Adults. {{ src('MED-WA15') }}</li>
-      <li><strong>When the state looks:</strong> The month before you apply. At a renewal, one of the 6 months before. {{ src('MED-WA05') }}</li>
-      <li><strong>Records first:</strong> Washington checks its own data first.</li>
-      <li><strong>Names:</strong> HCA calls these rules work requirements. The federal name is community engagement.</li>
-    </ul>
+{{ m.onthispage([
+  ('state-choice', 'Hold harmless delay'),
+  ('six-ways', '6 ways to meet'),
+  ('wa-hours-stack', '80-hour mix & credits'),
+  ('how-checked', 'How HCA checks')
+]) }}
 
-    <h2 id="state-choice">A new choice for states</h2>
-    <p>On Nov.&nbsp;17, 2026, HCA announced Washington will pursue delayed enforcement of the work rules (pending federal approval). Through June&nbsp;30, 2027, people in Apple Health for Adults will not lose or be denied coverage for not meeting the work rules. Six-month renewals and the 1-month past-bills limit still start Jan.&nbsp;1, 2027. {{ src('MED-WA27') }} {{ src('MED-WA22') }}</p>
-    <p>On Nov.&nbsp;13, 2026, the federal government gave each state a choice. Through June&nbsp;30, 2027, a state may choose not to turn anyone down, and not to end anyone's coverage, only for not meeting the work rules. The state must still check whether each person meets the rules or does not have to. The federal name for this is a hold harmless period. {{ src('MED-S41') }}</p>
-    <p>The rules and checking still start Jan.&nbsp;1, 2027, and HCA says clients will still be asked to verify. Through June&nbsp;30, 2027, HCA says no one will lose or be denied Apple Health for not meeting them, pending federal approval of Washington's plan. The choice does not protect anyone from being turned down or losing coverage for other reasons, such as income. {{ src('MED-S41') }} {{ src('MED-WA27') }}</p>
-    <p class="more">A state has to ask the federal Medicaid agency in its mitigation plan and get its approval. The choice covers applications the state gets, and renewals the state starts, through June&nbsp;30, 2027. A state may pick a shorter time. A state that wants it from Jan.&nbsp;1, 2027 was asked to tell the agency by Dec.&nbsp;11, 2026. {{ src('MED-S41') }}</p>
-    <p class="more"><strong>Court case:</strong> On Nov.&nbsp;5, 2026, Washington, Oregon, and two other states sued the federal government over the work rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-WA14') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+{{ v.stat_hero_strip([
+  {'num': '19–64', 'label': 'Apple Health for Adults', 'note': 'Under 138% FPL, no Medicare'},
+  {'num': '$580+', 'label': 'Monthly household MAGI', 'note': '6-month average for seasonal work'},
+  {'num': '6 ways', 'label': 'Work, school, service, or mix', 'note': '1–6 credits convert to 13–78 hrs'},
+  {'num': '6 mos', 'label': 'Renewal cycle in 2027', 'note': '12 mos kept for Tribal members'}
+]) }}
 
-    <h2>Who the rules are for</h2>
-    <p>The work rules apply only to Apple Health for Adults. That group is people who:</p>
-    <ul>
-      <li>Are age 19 to 64</li>
-      <li>Do not have Medicare</li>
-      <li>Live in Washington</li>
-      <li>Have income under 138 percent of the federal poverty level</li>
-    </ul>
+<h2 id="state-choice">A new choice for states (hold harmless through June 30, 2027)</h2>
+<p>On Nov.&nbsp;17, 2026, HCA announced Washington will pursue delayed enforcement of the work rules (pending federal approval). Through June&nbsp;30, 2027, people in Apple Health for Adults will not lose or be denied coverage solely for not meeting the work rules—though 6-month renewals, checking, and the 1-month past-bills limit still start Jan.&nbsp;1, 2027. {{ src('MED-WA01') }} {{ src('MED-WA03') }} {{ src('MED-WA15') }} {{ src('MED-WA16') }} {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-S41') }}</p>
+{% call m.deeper('Federal mitigation timeline & State of Oregon v. Oz lawsuit', 'wa-rules-legal') %}
+<p>CMS asked states requesting a Jan.&nbsp;1, 2027 hold harmless period to submit mitigation plans by Dec.&nbsp;11, 2026. Income and other rules still apply. On Nov.&nbsp;5, 2026, Washington, Oregon, and two other states sued in <em>State of Oregon v. Oz</em> (No.&nbsp;6:26-cv-02435; oral argument Jan.&nbsp;12, 2027). No court order has halted the rules. {{ src('MED-WA14') }} {{ src('MED-S27') }} {{ src('MED-S41') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+{% endcall %}
 
-    <h2>Meet the rules any one way</h2>
-    <p>HCA's work requirements page lists 6 ways. You need only one.</p>
+<h2 id="six-ways">Meet the rules any one of 6 ways</h2>
+<p>HCA's work requirements page lists 6 ways for Apple Health for Adults—you need only one (checked in the month before you apply, or 1 of the 6 months before a renewal): {{ src('MED-WA05') }} {{ src('MED-WA22') }}</p>
+{{ v.icon_feature_grid([
+  {'icon': 'bank', 'title': '1. $580+ monthly household income', 'body': 'Combined MAGI household income ($7.25 × 80 hrs); seasonal workers may average over 6 months.'},
+  {'icon': 'dmv', 'title': '2. Work 80+ hours a month', 'body': 'Paid work, self-employment, unpaid work, or in-kind work for housing or goods.'},
+  {'icon': 'school', 'title': '3. Half-time school or GED', 'body': 'Enrolled at least half-time in college, trade school, high school, or GED study.'},
+  {'icon': 'shield', 'title': '4. Work program (80+ hrs/mo)', 'body': 'Participating at least 80 hours a month in a qualifying work program.'},
+  {'icon': 'birth', 'title': '5. Community service (80+ hrs/mo)', 'body': 'Completing at least 80 hours a month of community service.'},
+  {'icon': 'hours', 'title': '6. Any 80-hour monthly mix', 'body': 'Combine work, community service, work program, and converted school credits (1–6 credits = 13–78 hrs).'}
+], cols=2) }}
 
-    <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
-      <h3>1. Income</h3>
-      <p>Your household has at least $580 in income a month. {{ src('MED-WA22') }}</p>
-      <div class="more">
-        <p>Where $580 comes from: 80 hours times the federal minimum wage of $7.25.</p>
-        <p>Work only part of the year? Seasonal workers may use an average of $580 a month over 6 months.</p>
-        <p>This is your Medicaid household's monthly MAGI income (Modified Adjusted Gross Income), the same income HCA counts for Apple Health (generally you, your spouse, and people on your tax return; children's income often does not count). It does not have to come from a job.</p>
-      </div>
-    </div>
+{% set wa_hours_note %}You can reach 80 hours in one category or combine any of these activities in the same month. {{ src('MED-WA22') }}{% endset %}
+{{ v.hours_breakdown(
+  'How 80 monthly hours can add up (~20 hours a week)',
+  'HCA lets you combine work, school credits, work programs, and community service to reach 80 hours:',
+  [
+    {'icon': 'id-card', 'label': 'Paid, self-employed, or in-kind work', 'detail': 'Wages, self-employment, or work for housing'},
+    {'icon': 'school-cap', 'label': 'School credits or work program', 'detail': '1 to 6 converted credits (13 to 78 hrs) or training'},
+    {'icon': 'caregiver-heart', 'label': 'Community service', 'detail': 'Qualifying community service hours'}
+  ],
+  note=wa_hours_note,
+  id='wa-hours-stack'
+) }}
 
-    <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
-      <h3>2. Work</h3>
-      <p>You work at least 80 hours a month. {{ src('MED-WA22') }}</p>
-      <div class="more">
-        <p>Paid work, self-employment, in-kind work, and unpaid work can count. In-kind work means work paid in goods, housing, or services, such as lower rent.</p>
-        <p>Not sure how your job counts? <a href="{{ page_url('medicaid-washington-help') }}">Ask HCA or a free helper</a>.</p>
-      </div>
-    </div>
+{{ v.calendar_80hr_grid(
+  'Washington Apple Health',
+  [
+    {'week': 'Week 1', 'hours': '20 hrs', 'mix': '15 hrs part-time work + 5 hrs community service'},
+    {'week': 'Week 2', 'hours': '20 hrs', 'mix': '3 converted college credits (39 hrs/mo) + work'},
+    {'week': 'Week 3', 'hours': '20 hrs', 'mix': '20 hrs paid, self-employed, or in-kind work'},
+    {'week': 'Week 4', 'hours': '20 hrs', 'mix': 'Any mix reaching 80 hrs total for the month'}
+  ],
+  extra=true,
+  id='wa-rules-calendar'
+) }}
 
-    <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('school-cap') }}</span><span>Good to know</span></p>
-      <h3>3. School</h3>
-      <p>You are in an educational program at least half-time. {{ src('MED-WA05') }}</p>
-      <div class="more">
-        <p>Under the federal rule, this includes high school and GED programs.</p>
-        <p>Taking fewer credits? You can mix school credits with other hours in way 6 below.</p>
-      </div>
-    </div>
+{% call m.deeper('HCA 1-to-6 school credit conversion table', 'wa-credit-table') %}
+<div class="table-scroll" tabindex="0" role="region" aria-label="HCA school credit-hour conversion table">
+  <table class="log-table form-table">
+    <caption>HCA credit-hour conversion (1 to 6 credits)</caption>
+    <thead><tr><th scope="col">Credits</th><th scope="col">Hours a month</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">1 credit</th><td>13 hours</td></tr>
+      <tr><th scope="row">2 credits</th><td>26 hours</td></tr>
+      <tr><th scope="row">3 credits</th><td>39 hours</td></tr>
+      <tr><th scope="row">4 credits</th><td>52 hours</td></tr>
+      <tr><th scope="row">5 credits</th><td>66 hours</td></tr>
+      <tr><th scope="row">6 credits</th><td>78 hours</td></tr>
+    </tbody>
+  </table>
+</div>
+{% endcall %}
 
-    <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
-      <h3>4. A work program</h3>
-      <p>You are in a work program at least 80 hours a month. {{ src('MED-WA22') }}</p>
-    </div>
-
-    <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
-      <h3>5. Community service</h3>
-      <p>You do community service at least 80 hours a month. {{ src('MED-WA22') }}</p>
-    </div>
-
-    <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('hours-meter') }}</span><span>Good to know</span></p>
-      <h3>6. A mix</h3>
-      <p>You do a mix of activities. The total is at least 80 hours a month. {{ src('MED-WA22') }}</p>
-      <p>You may add up hours of work, community service, a work program, and school.</p>
-      <div class="more">
-        <p>If you take 1 to 6 school credits, HCA converts your credits into monthly hours so you can add them to other activities: {{ src('MED-WA22') }}</p>
-        <div class="table-scroll" tabindex="0" role="region" aria-label="HCA school credit-hour conversion table">
-          <table class="log-table form-table">
-            <caption>HCA credit-hour conversion (1 to 6 credits)</caption>
-            <thead>
-              <tr>
-                <th scope="col">Credits</th>
-                <th scope="col">Hours a month</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><th scope="row">1 credit</th><td>13 hours</td></tr>
-              <tr><th scope="row">2 credits</th><td>26 hours</td></tr>
-              <tr><th scope="row">3 credits</th><td>39 hours</td></tr>
-              <tr><th scope="row">4 credits</th><td>52 hours</td></tr>
-              <tr><th scope="row">5 credits</th><td>66 hours</td></tr>
-              <tr><th scope="row">6 credits</th><td>78 hours</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    {% set wa_hours_note %}You can reach 80 hours in one category or combine any of these activities in the same month. {{ src('MED-WA22') }}{% endset %}
-    {{ v.hours_breakdown(
-      'How 80 monthly hours can add up (~20 hours a week)',
-      'HCA lets you combine work, school credits, work programs, and community service to reach 80 hours:',
-      [
-        {'icon': 'id-card', 'label': 'Paid, self-employed, or in-kind work', 'detail': 'Wages, self-employment, or work for housing'},
-        {'icon': 'school-cap', 'label': 'School credits or work program', 'detail': '1 to 6 converted credits (13 to 78 hrs) or training'},
-        {'icon': 'caregiver-heart', 'label': 'Community service', 'detail': 'Qualifying community service hours'}
-      ],
-      note=wa_hours_note,
-      id='wa-hours-stack'
-    ) }}
-
-    <h2>How the state checks</h2>
-    <ul class="short">
-      <li><strong>Records first:</strong> Washington checks its own data first. <span class="more">HCA estimated that it could check about 64 percent of people in Apple Health for Adults this way, or find they are exempt.</span></li>
-      <li><strong>Your word:</strong> You may state your own income, work, or exemption status. HCA calls this self-attestation (including for medical frailty through 2027). If state records cannot confirm eligibility, a letter may ask for proof within 15 days. {{ src('MED-WA04') }} {{ src('MED-WA22') }}</li>
-      <li class="more"><strong>Shorter coverage:</strong> Starting Jan.&nbsp;1, 2027, Apple Health for Adults moves from 12-month to 6-month renewals (American Indian and Alaska Native adults keep 12-month renewals). {{ src('MED-WA16') }}</li>
-    </ul>
-
-    <div class="callout">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
-      <h2>Next step</h2>
-      <p>Not sure if the rules fit you? <a href="{{ page_url('medicaid-washington-check') }}">Take the 1-minute check</a> or <a href="{{ page_url('medicaid-washington-reasons') }}">see every reason you may not have to meet them</a>.</p>
-    </div>
+<h2 id="how-checked">How the state checks</h2>
+<ul class="short">
+  <li><strong>Data check first:</strong> Washington checks its own records first (HCA estimated ~64% of Apple Health for Adults can be confirmed or found exempt automatically).</li>
+  <li><strong>Self-attestation &amp; 15-day proof window:</strong> You may state your own income, hours, or exemption (including medical frailty through 2027); if records cannot confirm it, HCA may send a letter giving 15 days to verify. <a href="{{ page_url('medicaid-washington-reasons') }}">See every exemption</a> or <a href="{{ page_url('medicaid-washington-help') }}">get free help</a>. {{ src('MED-WA04') }} {{ src('MED-WA22') }}</li>
+</ul>
 {% endblock %}

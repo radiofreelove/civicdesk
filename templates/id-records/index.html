@@ -1,43 +1,50 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "illustrations.html" as il %}
 {% block main %}
-<p class="kicker">Legal Name, ID &amp; Vital Records</p>
-<h1>Update your legal name, ID, and vital records in the right order</h1>
-{{ m.lede("Whether you are changing your name after marriage or domestic partnership, restoring a name through divorce, filing a court petition, or updating a sex or gender designation, offices check each other's records. This desk maps the full sequence across courts, Social Security, driver licenses, birth certificates, and passports in Oregon, Washington, and Utah.") }}
-{{ m.checked_line(page) }}
+<div class="hero-stage hero-stage-rose">
+  <div class="hero-copy">
+    <p class="kicker">Legal Name, ID &amp; Vital Records</p>
+    <h1>Update your legal name, ID, and vital records in the right order</h1>
+    {{ m.lede("Whether you are changing your name after marriage or domestic partnership, restoring a name through divorce, filing a court petition, or updating a sex or gender designation, offices check each other's records across Oregon, Washington, Utah, and federal agencies.") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.hero_horizon_art('id') }}
+</div>
 
 <section class="big-start" aria-labelledby="start-h">
   <h2 id="start-h">Find your exact steps in about 1 minute</h2>
-  <p>Pick where you live and what you are updating—marriage, divorce, a court-ordered name change, a sex or gender designation update, or both. Birth-certificate questions are optional. Your answers never leave this page.</p>
+  <p>Pick where you live and what you are updating—marriage, divorce, a court-ordered name change, a sex or gender designation update, or both. Birth-certificate questions are optional, and your answers never leave this page.</p>
   <p><a class="btn" href="{{ page_url('id-records-path') }}">Open the path finder</a></p>
 </section>
 
 <h2 id="how">Why order matters: the 4-stage agency sequence</h2>
-{% set id_flow_1 %}Get a certified marriage certificate, divorce decree, or court judgment—or skip court when updating an Oregon or Washington sex/gender marker by form. <a href="{{ page_url('id-records-compare') }}">Compare states</a>.{% endset %}
-{% set id_flow_2 %}For any legal name change, update Social Security before visiting the DMV so electronic name verification matches. {{ src('ID-US-SSA-NAME') }}{% endset %}
-{% set id_flow_3 %}Update your Oregon DMV, Washington DOL, or Utah DLD driver license or ID card once Social Security has your new name.{% endset %}
-{% set id_flow_4 %}Optionally amend your birth certificate or passport, then update payroll, banks, and <a href="{{ page_url('medicaid') }}">Medicaid</a>. <a href="{{ page_url('id-records-after') }}">Printable checklist</a>.{% endset %}
+{% set id_seq_note %}Update Social Security before your state DMV so electronic name checks match ({{ src('ID-US-SSA-NAME') }}); <a href="{{ page_url('id-records-compare') }}">compare state rules</a> or open the <a href="{{ page_url('id-records-after') }}">printable checklist</a>.{% endset %}
 {{ v.process_flow([
-  {'icon': 'court-gavel', 'title': 'Court or vital event', 'body': id_flow_1, 'meta': 'Certified proof first'},
-  {'icon': 'ssa-card', 'title': 'Social Security', 'body': id_flow_2, 'meta': 'Free replacement card'},
-  {'icon': 'dmv-license', 'title': 'Driver license or ID', 'body': id_flow_3, 'meta': 'Checks SSA record'},
-  {'icon': 'passport-globe', 'title': 'Passport, birth & accounts', 'body': id_flow_4, 'meta': 'Check federal rules first'}
-], id='agency-order-flow', cols=4) }}
+  {'icon': 'court', 'title': 'Court or vital event', 'body': 'Certified marriage, divorce, or court order first.', 'meta': 'Or state marker form'},
+  {'icon': 'ssa', 'title': 'Social Security', 'body': 'Update your legal name before visiting the DMV.', 'meta': 'Free card'},
+  {'icon': 'dmv', 'title': 'Driver license or ID', 'body': 'Update your Oregon, Washington, or Utah card.', 'meta': 'Checks SSA name'},
+  {'icon': 'passport', 'title': 'Passport, birth & accounts', 'body': 'Amend birth record, passport, payroll, and Medicaid.', 'meta': 'Check federal rules'}
+], id='agency-order-flow', cols=4, note=id_seq_note) }}
 
 <h2 id="common-paths">Common ways a legal name or record updates</h2>
-<ul>
-  <li><strong>Marriage or registered domestic partnership:</strong> Your certified marriage or partnership certificate is your legal name-change proof for Social Security, your state driver license or ID, and your passport—no separate court petition needed. {{ src('ID-US-SSA-NAME') }} {{ src('ID-OR-ORS-106') }}</li>
-  <li><strong>Divorce or dissolution:</strong> Ask to restore a former name in your divorce or dissolution judgment, then use a certified copy of that signed decree at Social Security and the DMV. {{ src('ID-OR-ORS-107') }} {{ src('ID-WA-RCW-26-09-150') }}</li>
-  <li><strong>Court-ordered name change:</strong> File an adult or minor court petition in your state, including sealed or confidential options where state law provides them. {{ src('ID-OR-ORS-33') }} {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-UT-CODE-42-1') }}</li>
-  <li><strong>Sex or gender designation updates:</strong> Oregon and Washington update state licenses and birth certificates with an agency form (M, F, or X, no court needed), while Utah requires a district court order and federal offices follow separate 2025–2026 rules. {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-WA-DOL-GENDER') }} {{ src('ID-UT-CODE-26B-8-111') }}</li>
-</ul>
+{% set cp_mar %}Certified marriage or registered domestic partnership certificate updates SSA, your state ID, and your passport with no court petition. {{ src('ID-US-SSA-NAME') }} {{ src('ID-OR-ORS-106') }}{% endset %}
+{% set cp_div %}Restore a former name in your signed divorce or dissolution decree, then bring certified copies to SSA and the DMV. {{ src('ID-OR-ORS-107') }} {{ src('ID-WA-RCW-26-09-150') }}{% endset %}
+{% set cp_crt %}File an adult or minor court petition in your state, including confidential or sealed options where state law allows. {{ src('ID-OR-ORS-33') }} {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-UT-CODE-42-1') }}{% endset %}
+{% set cp_sex %}Oregon and Washington update state IDs and birth records by form (M, F, or X); Utah requires a court order, and federal offices follow 2025–2026 rules. {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-WA-DOL-GENDER') }} {{ src('ID-UT-CODE-26B-8-111') }}{% endset %}
+{{ v.icon_feature_grid([
+  {'icon': 'birth', 'title': 'Marriage or domestic partnership', 'body': cp_mar},
+  {'icon': 'court', 'title': 'Divorce or dissolution', 'body': cp_div},
+  {'icon': 'appeal', 'title': 'Court-ordered name change', 'body': cp_crt},
+  {'icon': 'dmv', 'title': 'Sex or gender designation', 'body': cp_sex}
+], cols=2) }}
 
 <h2 id="states">Choose your state or federal guide</h2>
 <ul class="cards state-cards">
   <li class="card card-interactive">
     <div class="card-head">
-      <span class="card-icon">{{ m.icon('state-or', 'state-mark') }}</span>
+      {{ il.state_map_badge('oregon') }}
       <h3><a class="card-link" href="{{ page_url('id-records-oregon') }}">Oregon</a></h3>
     </div>
     <p>Marriage and divorce updates, {{ fact('or_fee_petition') }} circuit court petitions (confidential when a sex change is included), form OHA 2673 birth certificates, and Oregon DMV cards.</p>
@@ -45,7 +52,7 @@
   </li>
   <li class="card card-interactive">
     <div class="card-head">
-      <span class="card-icon">{{ m.icon('state-wa', 'state-mark') }}</span>
+      {{ il.state_map_badge('washington') }}
       <h3><a class="card-link" href="{{ page_url('id-records-washington') }}">Washington</a></h3>
     </div>
     <p>Marriage and divorce updates, public district court or sealed superior court name changes, Department of Health birth certificates, and Department of Licensing cards.</p>
@@ -53,7 +60,7 @@
   </li>
   <li class="card card-interactive">
     <div class="card-head">
-      <span class="card-icon">{{ m.icon('state-ut', 'state-mark') }}</span>
+      {{ il.state_map_badge('utah') }}
       <h3><a class="card-link" href="{{ page_url('id-records-utah') }}">Utah</a></h3>
     </div>
     <p>Marriage and divorce updates, district court name and sex-designation orders ({{ fact('ut_fee_petition') }} filing fee, waiver available), Vital Records form 902, and Driver License Division steps.</p>
@@ -61,7 +68,7 @@
   </li>
   <li class="card card-interactive">
     <div class="card-head">
-      <span class="card-icon">{{ m.icon('passport-globe', 'state-mark') }}</span>
+      {{ il.state_map_badge('federal') }}
       <h3><a class="card-link" href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></h3>
     </div>
     <p>Social Security replacement cards, passport name changes (DS-5504, DS-82, DS-11), and 2025–2026 federal sex-marker rules.</p>

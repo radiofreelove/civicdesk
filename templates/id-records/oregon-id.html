@@ -1,38 +1,38 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Oregon / License and ID</p>
 <h1>Oregon driver license or ID: name and gender marker</h1>
-{{ m.lede("You can choose M, F, or X on an Oregon driver license or ID without a court order or medical proof. If you are also changing your name, update Social Security first.") }}
+{{ m.lede("Choose M, F, or X on a standard or REAL ID Oregon card in person with no court order or medical proof. If you are also changing your name, update Social Security first.") }}
 {{ m.checked_line(page) }}
 
-{{ m.bring_reminder('Oregon DMV', 'Your current card and fee. If changing your name, also bring an original or certified court order, plus proof of identity and address.') }}
+{% set h1 %}<strong>Update Social Security first for a name change:</strong> REAL ID requires an SSA name match; bring an original or certified marriage certificate, divorce judgment, or court order plus identity and address proof (2 address proofs for REAL ID). {{ src('ID-OR-DMV-NAME') }} {{ src('ID-OR-DMV-PROOF') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}{% endset %}
+{% set h2 %}<strong>Self-selected M, F, or X:</strong> On Oregon standard and REAL ID cards, X means "not specified" and requires zero medical or court paperwork. {{ src('ID-OR-DMV-GENDER') }}{% endset %}
+{% set h3 %}<strong>Separate vehicle titles &amp; record sharing:</strong> Update vehicle titles separately ({{ ext('ID-OR-DMV-NAME') }}); DMV keeps prior card history and shares data with Selective Service and law-enforcement systems. {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-NAME') }}{% endset %}
+{{ v.doc_mockup_id_card(
+  'Oregon DMV',
+  'Driver License · REAL ID · ID Card',
+  'M, F, or X (no proof required)',
+  fact('or_dmv_fee'),
+  [
+    {'icon': 'ssa-card', 'title': 'SSA name match first', 'body': h1},
+    {'icon': 'id-card', 'title': 'Walk-in or appointment', 'body': h2},
+    {'icon': 'warning-triangle', 'title': 'Titles & agency history', 'body': h3}
+  ]
+) }}
 
-<h2 id="dmv-steps">How to update your Oregon card</h2>
+{{ m.bring_reminder('Oregon DMV', 'Current card + ' ~ fact('or_dmv_fee') ~ ' (8-yr renewal: $54 license / $43 ID, +$30 REAL ID), plus certified name-change proof & address docs if updating your name.') }}
+
+<h2 id="dmv-steps">Quick checklist before your visit</h2>
 <ul>
-  <li>Choose M, F, or X. On Oregon cards, X means "not specified." This works for standard and REAL ID cards. {{ src('ID-OR-DMV-GENDER') }}</li>
-  <li>No proof of gender needed. Go in person, by appointment or walk-in, and bring your current card.</li>
-  <li><strong>Cost:</strong> {{ fact('or_dmv_fee') }}. Eight-year renewal is $54 for a license or $43 for an ID ($30 extra for REAL ID). {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}</li>
+  <li>Go in person (appointment or walk-in) with your current card and fee ({{ fact('or_dmv_fee') }}; 8-year renewal is $54 license / $43 ID, plus $30 for REAL ID). {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}</li>
+  <li>Changing your name too? Confirm Social Security processed your new name first so REAL ID verification clears on the first visit.</li>
 </ul>
-
-{% call m.box('note', 'Changing your name too?') %}
-<ul>
-  <li><strong>Update Social Security first.</strong> For REAL ID, your card name must match Social Security. For a standard card, DMV can verify under another name with proof of that name. {{ src('ID-OR-DMV-NAME') }}</li>
-  <li><strong>What to bring:</strong> an original or certified copy of your court order, plus proof of identity and address. REAL ID needs two address proofs from different sources. {{ src('ID-OR-DMV-NAME') }} {{ src('ID-OR-DMV-PROOF') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}</li>
-  <li><strong>Vehicle titles are separate:</strong> changing your license does not update your vehicle title. Update a title by mail or at a DMV office: {{ ext('ID-OR-DMV-NAME') }}. {{ src('ID-OR-DMV-NAME') }}</li>
-</ul>
-{% endcall %}
-
-{% call m.box('watch', 'Watch out') %}
-<p>The DMV keeps a history of every card and name. It shares name, date of birth, and sex with some other systems. These include the Selective Service System and a state police database that federal agencies can use. {{ src('ID-OR-DMV-GENDER') }}</p>
-{% endcall %}
 
 <h2 id="next-steps">Next steps</h2>
 <ul>
-  <li><a href="{{ page_url('id-records-oregon-court') }}">Oregon court order</a> (needed for a legal name change)</li>
-  <li><a href="{{ page_url('id-records-oregon-birth') }}">Oregon birth certificate</a></li>
-  <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security in 2026</a></li>
-  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
-  <li><a href="{{ page_url('id-records-oregon') }}">Back to the Oregon overview</a></li>
+  <li><a href="{{ page_url('id-records-oregon-court') }}">Oregon court order</a> · <a href="{{ page_url('id-records-oregon-birth') }}">Oregon birth certificate</a></li>
+  <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security in 2026</a> · <a href="{{ page_url('id-records-after') }}">After-court checklist</a> · <a href="{{ page_url('id-records-oregon') }}">Oregon overview</a></li>
 </ul>
 {% endblock %}

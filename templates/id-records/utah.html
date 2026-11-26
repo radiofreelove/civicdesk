@@ -1,14 +1,37 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "illustrations.html" as il %}
 {% block main %}
-<p class="kicker">Utah</p>
+<div class="card-head">
+  {{ il.state_map_badge('utah') }}
+  <p class="kicker">Utah</p>
+</div>
 <h1>Change your name and sex designation in Utah</h1>
-{{ m.lede("Utah uses court for both. A name change needs a year of living in your county and a hearing. A sex designation change needs a judge to find strong proof of six things. That is more proof than Oregon or Washington ask for. The court's own online tool and forms walk you through it.") }}
+{{ m.lede("Utah uses district court for both. A name change requires 1 year in your county and a hearing; a sex designation change requires clear and convincing proof of six statutory findings. MyPaperwork walks you through filing online.") }}
 {{ m.checked_line(page) }}
 
-{#- Quick facts. Values come from data/facts.yml so they stay in step with the sub-pages. -#}
 {% set first_step = 'Check that you can file, and gather proof' %}
+
+{{ v.stat_hero_strip([
+  {'num': fact('ut_fee_petition'), 'label': 'District court filing fee', 'note': 'Fee waiver available'},
+  {'num': '1 year', 'label': 'County residency rule', 'note': 'For court name changes'},
+  {'num': '6 items', 'label': 'Sex-designation findings', 'note': 'Includes 6-month living proof'},
+  {'num': 'Court req.', 'label': 'Utah birth record update', 'note': 'Signed order + form 902'}
+]) }}
+
+<h2 id="order">Recommended Utah sequence</h2>
+{{ v.process_flow([
+  {'icon': 'court', 'title': 'Utah district court', 'body': 'File petition (or use marriage/divorce certificate).', 'meta': fact('ut_fee_petition') ~ ' or waiver'},
+  {'icon': 'ssa', 'title': 'Social Security', 'body': 'Update your legal name with a certified order.', 'meta': 'Free card'},
+  {'icon': 'dmv', 'title': 'Driver License Div.', 'body': 'Bring court-sealed order ($23 replacement).', 'meta': 'Call DLD for marker'},
+  {'icon': 'birth', 'title': 'Vital Records & passport', 'body': 'Mail form 902 + certified order; check federal rules.', 'meta': fact('ut_vital_amend_fee')}
+], cols=4) }}
+
+{% call m.callout('changed', 'Policy update: 2026 bill H.B. 183 did not pass', 'ut-policy-update') %}
+<p>Utah's 2026 H.B.&nbsp;183 returned to Rules on March&nbsp;4, 2026 and failed when the session ended March&nbsp;6, 2026 ({{ src('ID-UT-HB183-NOTICE') }} {{ src('ID-UT-HB183-LEGISCAN') }}), leaving the May&nbsp;7, 2025 statute in place. {{ src('ID-UT-CODE-26B-8-111') }} {{ m.badge('our_reading') }} <a href="{{ page_url('id-records-utah-court#ut-2026') }}">Read the 2026 note</a>.</p>
+{% endcall %}
+
 {{ m.quickfacts(page, {
   'court_name': fact_src('ut_court_name'),
   'sex_label': 'Court needed for a sex designation change',
@@ -22,27 +45,14 @@
   'whats_new': {'label': 'What happened in 2026', 'text': fact_src('ut_hb183_status'), 'href': page_url('id-records-utah-court#ut-2026'), 'link': 'More about the 2026 bill'}
 }) }}
 
-{% call m.callout('changed', 'Policy update: 2026 bill H.B. 183 did not pass', 'ut-policy-update') %}
-<p>A 2026 bill called H.B. 183 would have changed Utah's rules, but a Senate committee sent it back to Rules on March 4, 2026, and it failed when the session ended March 6, 2026. {{ src('ID-UT-HB183-NOTICE') }} {{ src('ID-UT-HB183-LEGISCAN') }} The law on this guide is the May 7, 2025 version. {{ src('ID-UT-CODE-26B-8-111') }} {{ m.badge('our_reading') }} <a href="{{ page_url('id-records-utah-court#ut-2026') }}">Read the full 2026 note</a>.</p>
-{% endcall %}
-
-<h2 id="order">Recommended Utah sequence</h2>
-{{ v.process_flow([
-  {'icon': 'court-gavel', 'title': 'Utah district court', 'body': 'File your petition in district court (or use a marriage certificate or divorce decree for marriage/divorce name updates).', 'meta': fact('ut_fee_petition') ~ ' or waiver'},
-  {'icon': 'ssa-card', 'title': 'Social Security', 'body': 'Update your legal name at Social Security first using a certified copy of your signed order.', 'meta': 'Free card'},
-  {'icon': 'dmv-license', 'title': 'Driver License Division', 'body': 'Bring your certified court order to update your Utah license or ID card.', 'meta': 'After SSA updates'},
-  {'icon': 'birth-cert', 'title': 'Vital Records & passport', 'body': 'Mail form 902 and a certified court order to Utah Vital Records, and review federal passport rules.', 'meta': 'Court order required'}
-], cols=4) }}
-
-<h2 id="guides">At a glance: your Utah guides</h2>
-<p>Pick the record you want to update. Each page has plain steps, costs, and official form links.</p>
+<h2 id="guides">Your Utah record guides</h2>
 {{ m.hub_cards([
   {
     'id': 'steps',
     'icon': 'court-gavel',
     'title': 'Court order',
     'href': page_url('id-records-utah-court'),
-    'summary': 'Residency rules, the six things a judge looks for in a sex designation change, MyPaperwork online filing, hearings, fee waivers, privacy, and under-18 rules.',
+    'summary': 'Residency rules, the six statutory findings for a sex designation change, MyPaperwork online filing, hearings, fee waivers, privacy, and under-18 rules.',
     'meta': 'Filing fee: ' ~ fact('ut_fee_petition') ~ ' (waiver available)'
   },
   {
@@ -63,40 +73,16 @@
   }
 ]) }}
 
-{% call m.callout('why', 'Why it matters', 'ut-why', extra=true) %}
+{% call m.deeper('Why preparing proof early matters & more tools', 'ut-why') %}
 <ul>
-  <li>Utah's birth certificate office changes the sex designation only with a court order. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
-  <li>Knowing the six things the judge looks for, before you file, helps you gather the right proof the first time. {{ src('ID-UT-CODE-26B-8-111') }}</li>
+  <li>Utah Vital Records amends birth-certificate sex designations only with a signed court order ({{ src('ID-UT-COURTS-SEX-CHANGE') }}), so gathering proof for all six statutory items before filing saves repeat trips ({{ src('ID-UT-CODE-26B-8-111') }}).</li>
+  <li>Next tools: <a href="{{ page_url('id-records-federal') }}">Federal records in 2026</a>, <a href="{{ page_url('id-records-after') }}">After-court checklist</a>, and <a href="{{ page_url('id-records-help') }}">Free or low-cost help</a>.</li>
 </ul>
 {% endcall %}
 
-<h2 id="more-steps">More steps in your path</h2>
-{{ m.hub_cards([
-  {
-    'icon': 'passport-globe',
-    'title': 'Federal records in 2026',
-    'href': page_url('id-records-federal'),
-    'summary': 'Passports and Social Security have different rules right now. Check before you apply or mail anything.'
-  },
-  {
-    'icon': 'ssa-card',
-    'title': 'After court checklist',
-    'href': page_url('id-records-after'),
-    'summary': 'Update Social Security, your license, your birth certificate, and other accounts in the right order.'
-  },
-  {
-    'icon': 'fee-waiver',
-    'title': 'Get free or low-cost help',
-    'href': page_url('id-records-help'),
-    'summary': 'Legal aid, court self-help centers, and peer support across Oregon, Washington, and Utah.'
-  }
-]) }}
-
 <h2 id="help">Get help in Utah</h2>
 <ul>
-  <li>{{ ext('ID-UT-COURTS-SELF-HELP') }}: help with court forms and where to file.</li>
-  <li>{{ ext('ID-UT-COURTS-LEGAL-HELP') }}: the court's list of ways to find a lawyer or legal help.</li>
-  <li>{{ ext('ID-UT-MYPAPERWORK') }}</li>
+  <li>{{ ext('ID-UT-COURTS-SELF-HELP') }}, {{ ext('ID-UT-MYPAPERWORK') }}, and {{ ext('ID-UT-COURTS-LEGAL-HELP') }}.</li>
   <li><a href="{{ page_url('id-records-help') }}">More free and low-cost help</a></li>
 </ul>
 {% endblock %}

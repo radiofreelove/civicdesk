@@ -556,21 +556,73 @@ def test_verify_sources_dynamic_discovery_dedup_retry_and_bot_gated(tmp_path: Pa
 
 def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
     design_doc = (ROOT / "docs" / "DESIGN.md").read_text(encoding="utf-8")
-    for required_term in ("--viz-surface", "--viz-accent", "tabular-nums", "WCAG 2.2 AAA"):
+    for required_term in ("--viz-surface", "--viz-fill-1", "--viz-accent", "tabular-nums", "WCAG 2.2 AAA"):
         assert required_term in design_doc
 
     svg_open_re = re.compile(r"<svg\b([^>]*)>", re.I | re.S)
+    svg_text_re = re.compile(r"<text\b[^>]*>(.*?)</text>", re.I | re.S)
     inline_style_attr_re = re.compile(r"\sstyle\s*=", re.I)
+    flow_body_re = re.compile(r'<p class="viz-flow-body">(.*?)</p>', re.S)
+    timeline_note_re = re.compile(r'<span class="viz-timeline-note"[^>]*>(.*?)</span>', re.S)
+    strip_tags_re = re.compile(r"<[^>]+>")
 
+    major_visual_classes = (
+        "hero-stage",
+        "viz-stat-strip",
+        "doc-mockup",
+        "viz-calendar",
+        "viz-split-board",
+        "viz-swimlane",
+        "viz-jargon-grid",
+        "viz-channel-grid",
+        "viz-flow",
+        "viz-timeline",
+        "viz-progress",
+        "viz-trust-diagram",
+        "viz-404-art",
+        "viz-hours",
+        "viz-grid",
+        "viz-compare-board",
+    )
+
+    pages_yaml = yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))
+    assert len(pages_yaml) == 68
     html_files = sorted(built_site.rglob("*.html"))
     assert len(html_files) == 68
     total_svgs = 0
 
-    for html_path in html_files:
+    for p in pages_yaml:
+        route = p["route"]
+        if p["slug"] == "404":
+            html_path = built_site / "404.html"
+        elif route == "/":
+            html_path = built_site / "index.html"
+        else:
+            html_path = built_site / route.strip("/") / "index.html"
         raw = html_path.read_text(encoding="utf-8")
-        assert "<style" not in raw.lower(), f"{html_path}: inline <style> forbidden by CSP"
-        assert not inline_style_attr_re.search(raw), f"{html_path}: inline style=... attribute forbidden by CSP"
-        assert "<text" not in raw.lower(), f"{html_path}: SVG <text> forbidden (must use Hybrid HTML + SVG)"
+
+        assert "<style" not in raw.lower(), f"{route}: inline <style> forbidden by CSP"
+        assert not inline_style_attr_re.search(raw), f"{route}: inline style=... attribute forbidden by CSP"
+
+        # 100% programmatic 68-page visual component coverage
+        assert any(cls in raw for cls in major_visual_classes), (
+            f"{route} ({html_path}): missing major visual component from {major_visual_classes}"
+        )
+
+        # SVG <text> may only be short <=5-char single-token visual stamps inside aria-hidden SVGs
+        for tm in svg_text_re.finditer(raw):
+            stamp = strip_tags_re.sub("", tm.group(1)).strip()
+            assert len(stamp) <= 5 and " " not in stamp, (
+                f"{route}: multi-word or long SVG <text> forbidden (got {stamp!r}); keep prose in HTML"
+            )
+
+        # Concise <=140-char copy cap on flow cards and timeline notes
+        for fm in flow_body_re.finditer(raw):
+            plain = re.sub(r"\s+", " ", strip_tags_re.sub("", fm.group(1))).strip()
+            assert len(plain) <= 140, f"{route}: .viz-flow-body exceeds 140 chars ({len(plain)}): {plain!r}"
+        for tnm in timeline_note_re.finditer(raw):
+            plain = re.sub(r"\s+", " ", strip_tags_re.sub("", tnm.group(1))).strip()
+            assert len(plain) <= 140, f"{route}: .viz-timeline-note exceeds 140 chars ({len(plain)}): {plain!r}"
 
         for m in svg_open_re.finditer(raw):
             total_svgs += 1
@@ -578,34 +630,48 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
             is_hidden = 'aria-hidden="true"' in attrs
             is_labeled_img = 'role="img"' in attrs and ("aria-label=" in attrs or "aria-labelledby=" in attrs)
             assert is_hidden or is_labeled_img, (
-                f"{html_path}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
+                f"{route}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
             )
 
-    assert total_svgs >= 200
+    assert total_svgs >= 500
 
     expected_markers = {
-        "index.html": ('class="hero-stage"', 'class="horizon-svg"', 'class="desk-emblem"', 'class="viz-flow'),
-        "start/index.html": ('class="choice-icon"', 'class="guide-dir-icon"'),
-        "medicaid/index.html": ('class="viz-timeline',),
-        "medicaid/oregon/index.html": ('class="viz-timeline',),
-        "medicaid/washington/index.html": ('class="viz-timeline',),
-        "medicaid/utah/index.html": ('class="viz-timeline',),
-        "medicaid/oregon/rules/index.html": ('class="viz-hours"', 'class="viz-hours-svg"'),
-        "medicaid/washington/rules/index.html": ('class="viz-hours"', 'class="viz-hours-svg"'),
-        "medicaid/utah/rules/index.html": ('class="viz-hours"', 'class="viz-hours-svg"'),
-        "medicaid/oregon/reasons/index.html": ('class="viz-grid', "data-deeper"),
-        "medicaid/washington/reasons/index.html": ('class="viz-grid', "data-deeper"),
-        "medicaid/utah/reasons/index.html": ('class="viz-grid', "data-deeper"),
+        "index.html": ('class="hero-stage"', 'illo-horizon', 'illo-medicaid', 'illo-id', 'class="viz-flow'),
+        "start/index.html": ('class="viz-stat-strip"', 'choice-map', 'class="guide-dir-icon"'),
+        "404.html": ('class="viz-404-art"', 'illo-404'),
+        "privacy/index.html": ('class="viz-trust-diagram"', 'illo-trust'),
+        "about/index.html": ('class="viz-stat-strip"', 'class="viz-split-board"', 'class="viz-flow'),
+        "accessibility/index.html": ('viz-theme-showcase',),
+        "medicaid/index.html": ('class="hero-stage"', 'illo-medicaid', 'state-silhouette', 'class="viz-timeline'),
+        "medicaid/oregon/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
+        "medicaid/washington/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
+        "medicaid/utah/index.html": ('class="viz-stat-strip"', 'class="viz-timeline'),
+        "medicaid/oregon/rules/index.html": ('toc-pills', 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/washington/rules/index.html": ('toc-pills', 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/utah/rules/index.html": ('toc-pills', 'class="viz-hours"', 'class="viz-calendar"', "data-deeper"),
+        "medicaid/oregon/reasons/index.html": ('class="viz-grid', 'class="viz-split-board"'),
+        "medicaid/washington/reasons/index.html": ('class="viz-grid', 'class="viz-split-board"'),
+        "medicaid/utah/reasons/index.html": ('class="viz-grid', 'class="viz-split-board"'),
+        "medicaid/oregon/letter/index.html": ('doc-mockup-letter', 'class="viz-jargon-grid"'),
+        "medicaid/washington/letter/index.html": ('doc-mockup-letter', 'class="viz-flow'),
+        "medicaid/utah/letter/index.html": ('doc-mockup-letter', 'class="viz-jargon-grid"'),
+        "medicaid/oregon/denied/index.html": ('class="viz-swimlane"',),
+        "medicaid/oregon/log/index.html": ('class="viz-calendar"', 'class="viz-proof-tiles"'),
         "medicaid/oregon/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/washington/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/utah/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
-        "id-records/index.html": ('class="viz-flow',),
-        "id-records/oregon/index.html": ('class="viz-flow',),
-        "id-records/washington/index.html": ('class="viz-flow',),
-        "id-records/utah/index.html": ('class="viz-flow',),
-        "id-records/federal/index.html": ('class="viz-grid',),
-        "id-records/after/index.html": ('class="viz-flow',),
-        "id-records/path/index.html": ('class="choice-icon"', 'class="result-emblem'),
+        "id-records/index.html": ('hero-stage-rose', 'illo-id', 'state-silhouette', 'class="viz-flow'),
+        "id-records/oregon/index.html": ('state-silhouette', 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/washington/index.html": ('state-silhouette', 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/utah/index.html": ('state-silhouette', 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/oregon/court/index.html": ('doc-mockup-court', 'toc-pills'),
+        "id-records/oregon/birth/index.html": ('doc-mockup-birth', 'toc-pills'),
+        "id-records/oregon/id/index.html": ('doc-mockup-id', 'id-card-facsimile'),
+        "id-records/federal/index.html": ('doc-mockup-federal', 'passport-form-matrix'),
+        "id-records/compare/index.html": ('class="viz-compare-board"', 'state-silhouette'),
+        "id-records/glossary/index.html": ('class="viz-jargon-grid"',),
+        "id-records/after/index.html": ('class="viz-flow', 'class="viz-grid'),
+        "id-records/path/index.html": ('class="viz-stat-strip"', 'choice-map', 'class="result-emblem'),
     }
     for rel_file, markers in expected_markers.items():
         html = (built_site / rel_file).read_text(encoding="utf-8")

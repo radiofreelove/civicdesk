@@ -1,44 +1,45 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <h1>Have a health condition?</h1>
-    <p class="purpose">A serious or disabling health condition may mean you do not have to meet the new rules.</p>
+<p class="purpose">A serious or disabling health condition—or substance-use treatment or recovery—may mean you do not have to meet the new OHP rules.</p>
 
-    <h2>The short version</h2>
-    <ul class="short">
-      <li><strong>What to do:</strong> Tell OHP about your condition. {{ src('MED-S03') }}</li>
-      <li><strong>In 2027:</strong> No doctor's note is needed. {{ src('MED-S03') }} {{ src('MED-S07') }}</li>
-      <li><strong>Starting in 2028:</strong> OHP may ask for a statement from a health care provider. {{ src('MED-S03') }} {{ src('MED-S07') }}</li>
-      <li><strong>Records first:</strong> If you had OHP before, OHP may check your OHP health records from the past 12 months. {{ src('MED-S03') }}</li>
-      <li><strong>Next:</strong> <a href="{{ page_url('medicaid-oregon-reasons') }}">See every reason</a>, and how to tell OHP.</li>
-    </ul>
+{{ v.stat_hero_strip([
+  {'num': 'No note', 'label': 'Needed from a doctor in 2027', 'note': 'Just tell OHP about your condition'},
+  {'num': '12 mos', 'label': 'Past OHP records checked first', 'note': 'Automatic check if enrolled before'},
+  {'num': '2028', 'label': 'Provider statement may start', 'note': 'NPs, PAs, therapists & MDs count'}
+]) }}
 
-    <h2>Examples OHA gives</h2>
-    <p>This is not the full list. Many conditions can count. If yours is not here, you can still tell OHP. {{ src('MED-S03') }}</p>
-    <ul>
-      <li>Recovering from major surgery or a serious injury</li>
-      <li>Cancer that needs chemotherapy or radiation, or dialysis</li>
-      <li>Crohn's disease or COPD</li>
-      <li>Major depression that needs ongoing treatment, or a substance use disorder</li>
-      <li>Diabetes with complications, or cystic fibrosis</li>
-      <li>Down syndrome, cerebral palsy, blindness, or another physical, intellectual, or developmental disability</li>
-      <li>Getting SSDI or SSI</li>
-    </ul>
+{{ v.yes_no_split_board(
+  'In 2027: self-attestation + OHP records',
+  [
+    'No doctor’s note is needed in 2027—simply tell OHP about your condition.',
+    'OHP checks your past 12 months of OHP health records first.',
+    'Getting SSI or SSDI, or being in drug/alcohol treatment or 5-year stable recovery, also counts.'
+  ],
+  'Starting in 2028: provider statement if asked',
+  [
+    'OHP may ask for a statement from a licensed health provider or treatment-date record.',
+    'Does not have to be an MD: nurse practitioners, PAs, psychologists, PTs, and clinical social workers can sign.'
+  ],
+  yes_kicker='2027 rule',
+  no_kicker='2028 rule'
+) }}
+<p>Sources: health exemptions &amp; 2027 self-attestation {{ src('MED-S01') }} {{ src('MED-S03') }} {{ src('MED-S07') }}; treatment/recovery {{ src('MED-S42') }}; eligible licensed providers {{ src('MED-S29') }}. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every exemption</a> and how to tell OHP ({{ src('MED-S08') }}).</p>
 
-    <h2>Drug and alcohol treatment and recovery</h2>
-    <p>You may not have to meet the rules if you are in drug or alcohol treatment. People in stable recovery from a substance use disorder (treatment within the last 5 years) may also count. Starting in 2028, OHP may ask for a paper that shows your treatment dates. {{ src('MED-S03') }} {{ src('MED-S42') }}</p>
+{% call m.deeper('Examples OHA gives & federal court updates', 'or-health-examples') %}
+<p>This is not the full list—many conditions can count, and you can tell OHP even if yours is not listed: {{ src('MED-S03') }}</p>
+<ul>
+  <li>Recovering from major surgery or a serious injury; cancer needing chemotherapy/radiation, or dialysis.</li>
+  <li>Crohn's disease, COPD, diabetes with complications, or cystic fibrosis.</li>
+  <li>Major depression needing ongoing treatment, or a substance use disorder.</li>
+  <li>Down syndrome, cerebral palsy, blindness, or another physical, intellectual, or developmental disability.</li>
+</ul>
+<p><strong>Court updates:</strong> On Oct.&nbsp;29, 2026, a federal court threw out part of a narrower federal health rule for Oregon and other plaintiff states; <em>State of Oregon v. Oz</em> (No.&nbsp;6:26-cv-02435; oral argument Jan.&nbsp;12, 2027) is also pending. Tell OHP about your condition either way. {{ src('MED-S28') }} {{ src('MED-S35') }} {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
+{% endcall %}
 
-    <h2>Who can confirm a condition in 2028</h2>
-    <p>It does not have to be a doctor. Many licensed providers can, like nurse practitioners, physician assistants, psychologists, physical therapists, and clinical social workers. {{ src('MED-S29') }}</p>
-
-    <div class="callout more">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
-      <h2>In the news</h2>
-      <p>On Oct.&nbsp;29, 2026, a federal court threw out part of a federal rule that narrowed this reason. Oregon was part of that case. As of Nov.&nbsp;21, 2026, OHA's pages had not said what changes. Tell OHP about your condition either way. {{ src('MED-S28') }} {{ src('MED-S35') }} {{ src('MED-S07') }}</p>
-      <p>On Nov.&nbsp;5, 2026, Oregon, Washington, and two other states also sued over the work or activity rules (State of Oregon v. Oz, No.&nbsp;6:26-cv-02435). Oral argument is set for Jan.&nbsp;12, 2027. As of Nov.&nbsp;21, 2026, no court order has changed these rules. {{ src('MED-S44') }} {{ src('MED-S45') }} {{ src('MED-S46') }}</p>
-    </div>
-
-    <h2>Questions about disability programs?</h2>
-    <p>Call the Aging and Disability Resource Connection at <span class="nowrap">855-673-2372</span>. {{ src('MED-S26') }}</p>
+<h2>Questions about disability programs?</h2>
+<p>Call the Aging and Disability Resource Connection at <span class="nowrap">855-673-2372</span>. {{ src('MED-S26') }}</p>
 {% endblock %}

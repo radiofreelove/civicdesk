@@ -1,31 +1,58 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">About</p>
 <h1>About CivicDesk</h1>
 {{ m.lede("CivicDesk is an independent public-interest project offering plain-language guides to government rules, public benefits, and official records, backed by dated primary sources.") }}
 
-{% call m.callout('watch', 'Important boundaries', 'boundaries') %}
-<ul>
-  <li><strong>Not a government agency:</strong> CivicDesk is not run by, funded by, or connected to any court, state agency, or federal department.</li>
-  <li><strong>Not legal advice:</strong> We state what published statutes, rules, court forms, and agency guides say, and link directly to primary sources. Only the court or agency decides individual cases.</li>
-  <li><strong>Always check the primary link before you file:</strong> Rules, fees, and forms change. Every page shows when its sources were last checked.</li>
-</ul>
-{% endcall %}
+{{ m.onthispage([
+  ('boundaries', 'Boundaries'),
+  ('desks', 'Service desks'),
+  ('how-we-research', 'How we verify'),
+  ('report', 'Report a mistake'),
+  ('license', 'Open license')
+]) }}
+
+{{ v.stat_hero_strip([
+  {'num': '100%', 'label': 'Independent & ad-free', 'note': 'Not run by any court or agency'},
+  {'num': '2', 'label': 'Active service desks', 'note': '2027 Medicaid & ID / Vital Records'},
+  {'num': 'CC BY 4.0', 'label': 'Open guide text', 'note': 'MIT-licensed code & build checks'}
+]) }}
+
+{{ v.yes_no_split_board(
+  'What CivicDesk does',
+  [
+    'Translates statutes, rules, court forms, and agency guides into plain words.',
+    'Links every fee, deadline, and rule directly to its dated primary source.',
+    'Runs interactive checks in your browser memory only—zero tracking.'
+  ],
+  'Important boundaries',
+  [
+    'Not a government agency or court self-help office.',
+    'Not legal advice—only the court or state agency decides your case.',
+    'Always confirm current forms and fees on the linked official page.'
+  ],
+  yes_kicker='Public-interest mission',
+  no_kicker='What we never do',
+  id='boundaries'
+) }}
 
 <h2 id="desks">Active service desks</h2>
-<ul>
-  <li><a href="{{ page_url('medicaid') }}">2027 Medicaid Work &amp; Activity Rules (<code>/medicaid/</code>)</a>: Oregon Health Plan (OHP), Washington Apple Health, and Utah Medicaid.</li>
-  <li><a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records (<code>/id-records/</code>)</a>: Marriage, divorce, court name changes, and sex or gender designation updates across Oregon, Washington, Utah, Social Security, and passports.</li>
-</ul>
+{% set desk_med %}<a href="{{ page_url('medicaid') }}">2027 Medicaid Work &amp; Activity Rules (<code>/medicaid/</code>)</a>: Oregon Health Plan (OHP), Washington Apple Health, and Utah Medicaid.{% endset %}
+{% set desk_id %}<a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records (<code>/id-records/</code>)</a>: Marriage, divorce, court name changes, and sex or gender designation updates across Oregon, Washington, Utah, Social Security, and passports.{% endset %}
+{{ v.icon_feature_grid([
+  {'icon': 'shield', 'title': '2027 Medicaid desk', 'body': desk_med},
+  {'icon': 'dmv', 'title': 'Legal Name, ID & Vital Records desk', 'body': desk_id}
+], cols=2) }}
 
 <h2 id="how-we-research">How we verify sources</h2>
-<ol>
-  <li><strong>Primary sources first:</strong> Published statutes, administrative rules, court orders, official forms, and agency guidance come before anything else.</li>
-  <li><strong>Human-reviewed, machine-assisted provenance:</strong> Machine tools assist with fetching and comparing official records, and a human maintainer reviews and approves every rule and update before publication.</li>
-  <li><strong>Four-tier source honesty labels:</strong> Every cited source carries one of four explicit status labels: <span class="badge badge-official">Official</span>, <span class="badge badge-not-official">Not official</span>, <span class="badge badge-not-confirmed">Not confirmed</span>, or <span class="badge badge-our-reading">Our reading</span>. <a href="{{ page_url('sources#labels') }}">Read what each label means</a>.</li>
-  <li><strong>Public audit trail:</strong> Source registries (<code>data/sources/medicaid.yaml</code> and <code>data/sources/id_records.yaml</code>), build checks, and commit history are open for inspection on <a href="{{ repo_url }}" rel="noreferrer">GitHub</a>.</li>
-</ol>
+{{ v.process_flow([
+  {'icon': 'birth', 'title': 'Primary sources first', 'body': 'Published statutes, court orders, official forms, and agency guidance.'},
+  {'icon': 'shield', 'title': 'Human-reviewed updates', 'body': 'Automated Policy Wire flags changes; a human maintainer verifies every edit.'},
+  {'icon': 'appeal', 'title': 'Open public audit', 'body': 'Every source carries a 4-tier honesty badge and public GitHub history.'}
+], cols=3) }}
+<p>Every cited source carries one of four explicit status labels: <span class="badge badge-official">Official</span>, <span class="badge badge-not-official">Not official</span>, <span class="badge badge-not-confirmed">Not confirmed</span>, or <span class="badge badge-our-reading">Our reading</span>. <a href="{{ page_url('sources#labels') }}">Read what each label means</a> or inspect our registries on <a href="{{ repo_url }}" rel="noreferrer">GitHub</a>.</p>
 
 <h2 id="report">Report a mistake</h2>
 <p>Spot an outdated rule, wrong fee, broken link, or unclear sentence? You can reach us in two ways:</p>

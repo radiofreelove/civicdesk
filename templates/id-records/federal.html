@@ -4,95 +4,65 @@
 {% block main %}
 <p class="kicker">Federal records, every state</p>
 <h1>Passports and Social Security in 2026</h1>
-{{ m.lede("Two federal offices changed course in 2025. New and renewed U.S. passports now show the sex assigned at birth, and the X marker is gone. Social Security stopped changing sex markers. Name changes still go through at both.") }}
+{{ m.lede("Legal name changes continue normally at both Social Security and the State Department. However, since 2025, new and renewed U.S. passports print sex assigned at birth (with X discontinued) and Social Security stopped updating sex fields.") }}
 {{ m.checked_line(page) }}
 
-{% set fed_ssa %}Free replacement card for a legal name change after marriage, divorce, or court order. Social Security cards do not print a sex marker, and POMS RM 10212.200 restricts internal sex-field changes to sex at birth. {{ src('ID-US-SSA-NAME') }} {{ src('ID-US-SSA-POMS-10212-200') }}{% endset %}
-{% set fed_ppt %}Legal name changes continue via Form DS-5504, DS-82, or DS-11, while new or renewed passports show sex assigned at birth (with X discontinued). Existing unexpired passports remain valid for travel. {{ src('ID-US-STATE-CHANGE') }} {{ src('ID-US-STATE-SEX-MARKER') }}{% endset %}
-{{ v.icon_feature_grid([
-  {'icon': 'ssa-card', 'title': 'Social Security card', 'body': fed_ssa},
-  {'icon': 'passport-globe', 'title': 'U.S. passport', 'body': fed_ppt}
-], cols=2) }}
-
-{% call m.callout("good", "Updating Social Security and passports after marriage or divorce", "fed-marriage-divorce") %}
-<ul>
-  <li><strong>Social Security:</strong> Request a free replacement Social Security card using your certified marriage certificate, divorce decree, or court order. {{ src("ID-US-SSA-NAME") }}</li>
-  <li><strong>Passports:</strong> If your passport was issued less than 1 year ago, mail Form DS-5504 with your certified marriage certificate, divorce decree, or court order at no routine fee; otherwise renew with Form DS-82 (if eligible) or apply in person with Form DS-11. {{ src("ID-US-STATE-CHANGE") }}</li>
-</ul>
-{% endcall %}
-
-
-{% call m.callout('why', 'Why it matters', 'fed-why') %}
-<ul>
-  <li>Applying for any new passport, even just to change your name, can replace a marker that matches you with the sex assigned at birth. {{ src('ID-US-ACLU-ORR') }} {{ src('ID-US-HRC-PASSPORT') }}</li>
-  <li>These are federal rules, so they are the same in Oregon, Washington, Utah, and everywhere else.</li>
-</ul>
-{% endcall %}
-
 {{ m.onthispage([
-  ('passports', 'Passports'),
-  ('before-you-apply', 'Before you apply for a passport'),
-  ('letters', 'If the State Department asks for early records'),
-  ('court-case', 'The court case'),
+  ('federal-anatomy', 'SSA & passport forms'),
+  ('passports', 'Passport rules'),
+  ('before-you-apply', 'Before you mail a passport'),
+  ('court-case', 'Orr v. Trump'),
   ('social-security', 'Social Security'),
   ('still-works', 'What still works'),
   ('help', 'Get help')
 ]) }}
 
-<h2 id="passports">Passports</h2>
-<ul>
-  <li>On January 20, 2025, an executive order changed the rules. It said passports, visas, and Global Entry cards must show the holder's sex as the order defines it. {{ src('ID-US-EO-14168') }}</li>
-  <li>New and renewed passports now show the sex assigned at birth, no matter your name change or other documents. The X marker, offered since 2022, was eliminated. {{ src('ID-US-HRC-PASSPORT') }}</li>
-  <li>The ACLU says anyone who applies for a passport is at risk of getting one with the sex assigned at birth. That includes new, corrected, replacement, and renewed passports. {{ src('ID-US-ACLU-ORR') }}</li>
-  <li>The State Department says existing passports stay valid for travel until they expire, you replace them, or the department invalidates them under federal regulations. {{ src('ID-US-STATE-SEX-MARKER') }}</li>
-</ul>
+{% set ssa_1 %}Free replacement card for a legal name change after marriage, divorce, or court order ({{ ext('ID-US-SSA-NAME') }}). {{ src('ID-US-SSA-NAME') }}{% endset %}
+{% set ssa_2 %}Update SSA before your state DMV so electronic name verification matches. {{ src('ID-OR-DMV-GENDER') }}{% endset %}
+{% set ssa_3 %}Cards do not print a sex marker; POMS RM 10212.200 (June 5, 2026) restricts internal sex-field edits to sex at birth. {{ src('ID-US-SSA-POMS-10212-200') }}{% endset %}
+{% set ppt_1 %}Legal name updates continue with certified marriage, divorce, or court proof ({{ ext('ID-US-STATE-CHANGE') }}). {{ src('ID-US-STATE-CHANGE') }}{% endset %}
+{% set ppt_2 %}Under EO 14168, new, renewed, and name-updated passports print sex assigned at birth (X eliminated). {{ src('ID-US-EO-14168') }} {{ src('ID-US-HRC-PASSPORT') }}{% endset %}
+{% set ppt_3 %}Existing unexpired passports remain valid for travel until expiration or replacement. {{ src('ID-US-STATE-SEX-MARKER') }}{% endset %}
+{{ v.doc_mockup_federal_ids(
+  [ssa_1, ssa_2, ssa_3],
+  [ppt_1, ppt_2, ppt_3],
+  [
+    {'code': 'DS-5504', 'when': 'Passport issued under 1 year ago', 'cost': '$0 routine fee by mail'},
+    {'code': 'DS-82', 'when': 'Eligible adult renewal by mail', 'cost': 'Standard renewal fee'},
+    {'code': 'DS-11', 'when': 'First-time or ineligible for DS-82', 'cost': 'In-person acceptance fee'}
+  ]
+) }}
 
-<h2 id="before-you-apply">Before you apply for a passport</h2>
-{% call m.box('watch', 'Watch out') %}
-<p>If your current passport shows the marker you want, be careful. Any new application, even for a name change, may come back with the sex assigned at birth. {{ src('ID-US-HRC-PASSPORT') }} {{ src('ID-US-ACLU-ORR') }} Think about whether you need a new passport now, and talk to a lawyer if you are unsure. {{ m.badge('our_reading') }}</p>
+<div id="fed-marriage-divorce"></div>
+<div id="fed-why"></div>
+
+<h2 id="passports">Passport rules &amp; risk before applying</h2>
+<div id="before-you-apply">
+{% call m.box('watch', 'Read before mailing an existing passport with a matching marker') %}
+<p>ACLU and HRC warn that <strong>any</strong> passport application—even a Form DS-5504 or DS-82 submitted solely for a name change—can return with sex assigned at birth, and federal agencies can check older records. If your current unexpired passport has the marker you want, weigh whether you need a new passport now and consult legal counsel first. {{ src('ID-US-ACLU-ORR') }} {{ src('ID-US-HRC-PASSPORT') }} {{ src('ID-US-STATE-SEX-MARKER') }} {{ m.badge('our_reading') }}</p>
 {% endcall %}
-<p>You can still change your name on a passport with a certified court order. But the Human Rights Campaign warns of a risk. Asking for a name change could lead the State Department to change your passport's sex marker to match your birth sex. That can happen even if you had a different marker before. {{ src('ID-US-HRC-PASSPORT') }}</p>
-<p>The State Department explains which form to use for a name change. {{ ext('ID-US-STATE-CHANGE') }}.</p>
+</div>
 
-<h2 id="letters">If the State Department asks for early records</h2>
-<p>The Human Rights Campaign reports that some applicants got letters asking for "early public records" showing their name and sex at birth. Its advice: do not respond until you talk to an LGBTQ+-affirming attorney or legal organization. Until then, do not send court orders, medical records, or other documents about your transition. {{ src('ID-US-HRC-PASSPORT') }}</p>
-<p>Free help: the {{ ext('ID-US-LAMBDA-HELPDESK') }}.</p>
-
-<h2 id="court-case">The court case</h2>
+<div id="letters">
+{% call m.deeper('If State Dept. requests "early public records" & Orr v. Trump status', 'fed-letters-court') %}
 <ul>
-  <li>The ACLU sued over the passport policy in a case called Orr v. Trump. {{ src('ID-US-ACLU-ORR') }}</li>
-  <li>A federal court blocked the policy in June 2025. In November 2025, the U.S. Supreme Court let the government enforce it during the appeal. {{ src('ID-US-HRC-PASSPORT') }} {{ src('ID-US-ORR-1ST-CIR') }}</li>
-  <li>On June 5, 2026, the First Circuit dismissed the appeal as moot and vacated the preliminary injunctions. The plaintiffs had dropped their request for a preliminary injunction so the main case could resume in trial court. No preliminary injunction is in effect. {{ src('ID-US-ORR-1ST-CIR') }}</li>
-  <li>As of November 9, 2026, Orr v. Trump continues in trial-court "discovery" (where each side gathers information) through at least spring 2027. {{ src('ID-US-ACLU-ORR') }}</li>
+  <li><strong>Letters asking for early records:</strong> HRC advises not replying or mailing transition/medical records before speaking with an affirming legal organization such as the {{ ext('ID-US-LAMBDA-HELPDESK') }}. {{ src('ID-US-HRC-PASSPORT') }}</li>
+  <li id="court-case"><strong><em>Orr v. Trump</em> litigation:</strong> After a June 2025 injunction was stayed by the Supreme Court in Nov.&nbsp;2025, the First Circuit vacated the preliminary injunctions as moot on June&nbsp;5, 2026 so trial-court discovery could proceed (scheduled through at least spring 2027 as of Nov.&nbsp;9, 2026). No injunction is currently in effect—check {{ ext('ID-US-ACLU-ORR') }} for updates. {{ src('ID-US-ORR-1ST-CIR') }} {{ src('ID-US-ACLU-ORR') }}</li>
 </ul>
-<p>With no court injunction in effect, the State Department's birth-sex rule stays in place for new and renewed passports. Existing passports stay valid for travel until they expire, you replace them, or the department invalidates them under federal regulations. {{ src('ID-US-ORR-1ST-CIR') }} {{ src('ID-US-ACLU-ORR') }} {{ src('ID-US-STATE-SEX-MARKER') }}</p>
-<p>Rules can change if the courts rule. We will update this page, but check the {{ ext('ID-US-ACLU-ORR') }} for the latest.</p>
-
-<h2 id="social-security">Social Security</h2>
-<ul>
-  <li><strong>Name:</strong> after you legally change your name, update it by asking for a replacement Social Security card. You may be able to start online. {{ ext('ID-US-SSA-NAME') }}. {{ src('ID-US-SSA-NAME') }}</li>
-  <li><strong>Sex marker:</strong> Oregon's DMV reports that as of January 31, 2025, Social Security was directed to stop processing gender marker updates. The Human Rights Campaign reports the same. {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-US-HRC-PASSPORT') }}</li>
-  <li><strong>Why update your name first:</strong> some DMVs check your name against Social Security before they issue a card. Oregon's does. {{ src('ID-OR-DMV-GENDER') }}</li>
-</ul>
-{% call m.box('watch', 'June 2026 Social Security policy rules') %}
-<p>Social Security's manual (POMS RM 10212.200, revised June 5, 2026) says SSA only changes or corrects the sex field on your record to show sex at birth. To correct the sex field, SSA accepts an amended, corrected, or delayed birth certificate only with an amendment affidavit or other proof showing why it was amended, and even then only to record sex at birth. {{ src('ID-US-SSA-POMS-10212-200') }}</p>
-<p>Legal name changes with SSA still work normally. Social Security cards do not show a sex marker. {{ src('ID-US-SSA-NAME') }} {{ src('ID-US-SSA-POMS-10212-200') }}</p>
 {% endcall %}
-{% call m.box('watch', 'Federal records talk to each other') %}
-<p>The Human Rights Campaign reports that the State Department may look at older federal records to decide sex at birth. That can happen even if your newer documents are updated. {{ src('ID-US-HRC-PASSPORT') }}</p>
-{% endcall %}
+</div>
 
-<h2 id="still-works">What still works</h2>
+<h2 id="social-security">Social Security (NUMIDENT &amp; name updates)</h2>
+<p>Legal name changes work normally ({{ ext('ID-US-SSA-NAME') }}, {{ src('ID-US-SSA-NAME') }}), and Social Security cards never display a sex marker. Under POMS RM 10212.200 (revised June&nbsp;5, 2026, following the Jan.&nbsp;31, 2025 directive), SSA only changes the internal sex field to record sex at birth and requires amendment proof with any amended birth record. {{ src('ID-US-SSA-POMS-10212-200') }} {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-US-HRC-PASSPORT') }}</p>
+
+<h2 id="still-works">What still works at the state level</h2>
 <ul>
-  <li><strong>Oregon and Washington licenses</strong> still offer M, F, or X. Oregon's DMV says it has had no federal direction about markers on REAL ID cards and keeps offering all three. {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-WA-DOL-GENDER') }}</li>
-  <li><strong>Oregon and Washington birth certificates</strong> still offer M, F, or X through a form. <a href="{{ page_url('id-records-oregon-birth') }}">Oregon</a>, <a href="{{ page_url('id-records-washington-birth') }}">Washington</a>.</li>
-  <li><strong>Court orders:</strong> courts in all three states still change names. Oregon and Utah courts still order sex changes. Washington changes the marker with a form. <a href="{{ page_url('id-records-compare') }}">Compare the states</a>.</li>
+  <li><strong>Oregon &amp; Washington licenses and birth records</strong> continue offering M, F, or X (<a href="{{ page_url('id-records-oregon-birth') }}">Oregon</a>, <a href="{{ page_url('id-records-washington-birth') }}">Washington</a>). {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-WA-DOL-GENDER') }}</li>
+  <li><strong>State courts</strong> in Oregon, Washington, and Utah continue granting legal name changes (<a href="{{ page_url('id-records-compare') }}">compare the three states</a>).</li>
 </ul>
 
 <h2 id="help">Get help</h2>
 <ul>
-  <li>{{ ext('ID-US-LAMBDA-HELPDESK') }}: general information and referrals through an online form. Not for emergencies.</li>
-  <li>{{ ext('ID-US-HRC-PASSPORT') }}</li>
-  <li><a href="{{ page_url('id-records-help') }}">Legal help in Oregon, Washington, and Utah</a></li>
+  <li>{{ ext('ID-US-LAMBDA-HELPDESK') }} · {{ ext('ID-US-HRC-PASSPORT') }} · <a href="{{ page_url('id-records-help') }}">Legal help in OR, WA, and UT</a></li>
 </ul>
 {% endblock %}

@@ -11,101 +11,91 @@
     <li><a href="{{ page_url('medicaid-utah') }}" aria-current="page"><span class="guide-state guide-state-row">{{ m.icon('state-ut') }}<span>Utah</span></span> <span class="guide-note">This is the Utah Medicaid guide.</span></a></li>
   </ul>
 </nav>
-    <h1>Applying for Utah Medicaid? New rules start Jan.&nbsp;1, 2027.</h1>
-    <p class="purpose"><strong>Why this site exists:</strong> Utah explains the new Medicaid rules across more than a dozen pages and papers. We have found 19 so far. This guide puts what applicants need in one place, in plain words. Each page lists its official sources.</p>
 
-    {{ v.timeline_strip([
-      {'kind': 'info', 'icon': 'medicaid-shield', 'date': 'Nov. 13, 2026', 'href': '#update-title', 'label': 'Policy update: new state choice', 'note': 'Federal choice through June 30, 2027'},
-      {'kind': 'deadline', 'icon': 'warning-triangle', 'date': 'Jan. 1, 2027', 'href': '#bills-title', 'label': 'Deadline: rules start and bills cutoff', 'note': 'Past medical bills window drops from 3 months to 1', 'note_show_until': '2026-12-31'},
-      {'kind': 'ongoing', 'icon': 'hours-meter', 'date': 'Before & ongoing', 'href': page_url('medicaid-utah-log'), 'label': 'Track your hours', 'note': 'The state looks at the month before you apply'}
-    ], title='Key dates at a glance', heading_id='timeline-title') }}
+<h1>Applying for Utah Medicaid? New rules start Jan.&nbsp;1, 2027.</h1>
+<p class="purpose"><strong>Why this site exists:</strong> Utah explains the new Medicaid rules across 19+ pages and forms. This guide puts what applicants need in one place, in plain words, with every official source linked.</p>
 
-    <section class="warn" aria-labelledby="update-title">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Policy update</span></p>
-      <h2 id="update-title">Update, Nov.&nbsp;13, 2026: A new choice for states</h2>
-      <p><strong>Still starting:</strong> The work or activity rules still start Jan.&nbsp;1, 2027. The checking starts then too.</p>
-      <p><strong>What's new:</strong> The federal government gave each state a choice. Through June&nbsp;30, 2027, a state may choose not to turn anyone down, and not to end anyone's coverage, only for not meeting the work or activity rules. The state must still check whether each person meets the rules or does not have to. {{ src('MED-S41') }}</p>
-      <p><strong>What it does not do:</strong> This choice does not protect anyone from being turned down or losing coverage for other reasons, such as income.</p>
-      <p><strong>Utah:</strong> As of Nov.&nbsp;21, 2026, Utah has not announced a choice. Utah's pages about the new rules do not say what Utah will choose. {{ src('MED-U01') }} {{ src('MED-U02') }}</p>
-      <p><a href="{{ page_url('medicaid-utah-rules#state-choice') }}">More about this choice</a></p>
-    </section>
+{{ v.stat_hero_strip([
+  {'num': '19–64', 'label': 'Adults covered by rules', 'note': 'Adult Expansion & TAM'},
+  {'num': 'Jan. 1', 'label': '2027 start for applicants', 'note': 'March 2027+ for renewals'},
+  {'num': '80 hrs', 'label': 'Or $580/mo or half-time school', 'note': 'Any 1 way meets the rules'},
+  {'num': '30 days', 'label': 'To return a DWS form', 'note': 'State checks records first'}
+]) }}
 
-    <section class="warn" aria-labelledby="bills-title">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Deadline</span></p>
-      <h2 id="bills-title">Have medical bills? <span data-show-until="2026-12-31">Read this before Jan.&nbsp;1, 2027.</span></h2>
-      <p data-show-until="2026-12-31">Through Dec.&nbsp;31, 2026, most Utah Medicaid programs can cover care from up to 3 months before the month you apply. {{ src('MED-U02') }}</p>
-      <p>Starting Jan.&nbsp;1, 2027, Adult Expansion Medicaid can cover care from 1 month before the month you apply. {{ src('MED-U02') }}</p>
-      <p><a href="{{ page_url('medicaid-utah-bills') }}">More about past medical bills</a></p>
-    </section>
+{{ v.timeline_strip([
+  {'kind': 'info', 'icon': 'shield', 'date': 'Nov. 13, 2026', 'href': '#update-title', 'label': 'Federal choice announced', 'note': 'Utah has not announced a choice yet.'},
+  {'kind': 'deadline', 'icon': 'warning', 'date': 'Jan. 1, 2027', 'href': '#bills-title', 'label': 'Rules start & bills cutoff', 'note': 'Past bill window drops from 3 months to 1.', 'note_show_until': '2026-12-31'},
+  {'kind': 'ongoing', 'icon': 'hours', 'date': 'Month before applying', 'href': page_url('medicaid-utah-log'), 'label': 'Lookback month', 'note': 'DWS checks the month before you apply.'}
+], title='Key dates at a glance', heading_id='timeline-title') }}
 
-    <h2>The short version</h2>
-    <ul class="short">
-      <li><strong>What's new:</strong> Starting Jan.&nbsp;1, 2027, some adults ages 19 to 64 must meet new work or activity rules to get Utah Medicaid. {{ src('MED-U01') }}</li>
-      <li class="more"><strong>If you already have Utah Medicaid:</strong> The rules start at your review, for renewals due in March 2027 or later. {{ src('MED-U04') }}</li>
-      <li><strong>Which programs:</strong> Adult Expansion Medicaid and Targeted Adult Medicaid (TAM).</li>
-      <li class="more"><strong>Utah's name for the rules:</strong> the community engagement requirement.</li>
-      <li><strong>When the state looks:</strong> The month before you apply. {{ src('MED-U01') }}</li>
-      <li><strong>Records first:</strong> The state checks records it already has before it asks you for anything.</li>
-    </ul>
+<section class="warn" aria-labelledby="update-title">
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Policy update</span></p>
+  <h2 id="update-title">Update, Nov.&nbsp;13, 2026: A new choice for states</h2>
+  <p><strong>Utah's status:</strong> As of Nov.&nbsp;21, 2026, Utah has not announced whether it will use the federal hold harmless option, and Utah's rule pages still list Jan.&nbsp;1, 2027 for new Adult Expansion and TAM applicants (March 2027+ for renewals). {{ src('MED-U01') }} {{ src('MED-U02') }} {{ src('MED-U04') }}</p>
+  {% call m.deeper('What the federal hold harmless option does—and does not—cover', 'ut-update-details') %}
+  <p>Through June&nbsp;30, 2027, a state may choose not to turn anyone down or end coverage solely for not meeting work or activity rules while still checking each person's status. It does not protect against denials for income or other rules. {{ src('MED-S41') }}</p>
+  {% endcall %}
+  <p><a href="{{ page_url('medicaid-utah-rules#state-choice') }}">More about this choice</a></p>
+</section>
 
-    <h2>Meet the rules any one way</h2>
-    <div class="rule-bridge">
-      <ul class="bridge-lanes">
-        <li>
-          <div class="bridge-lane">
-            <span class="bridge-head"><span class="bridge-icon">{{ m.icon('income') }}</span><strong>Income</strong></span>
-            <span class="bridge-copy">Utah's pages say you earn at least $580 a month. The federal rule counts combined household income. {{ src('MED-U01') }} {{ src('MED-S27') }}</span>
-          </div>
-          <span class="bridge-or">or</span>
-        </li>
-        <li>
-          <div class="bridge-lane">
-            <span class="bridge-head"><span class="bridge-icon">{{ m.icon('school') }}</span><strong>School</strong></span>
-            <span class="bridge-copy">You go to school at least half-time. {{ src('MED-U01') }}</span>
-          </div>
-          <span class="bridge-or">or</span>
-        </li>
-        <li>
-          <div class="bridge-lane">
-            <span class="bridge-head"><span class="bridge-icon">{{ m.icon('clock') }}</span><strong>80 hours</strong></span>
-            <span class="bridge-copy">You spend 80 hours a month on work, job training, volunteering, or school. Add them up. {{ src('MED-U01') }}</span>
-          </div>
-        </li>
-      </ul>
-      <p class="bridge-outcome">{{ m.icon('check') }} <span>Any 1 way meets the rules.</span></p>
-    </div>
-    <p><a href="{{ page_url('medicaid-utah-rules') }}">The rules, in plain words</a></p>
+<section class="warn" aria-labelledby="bills-title">
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('alert') }}</span><span>Deadline</span></p>
+  <h2 id="bills-title">Have medical bills? <span data-show-until="2026-12-31">Read this before Jan.&nbsp;1, 2027.</span></h2>
+  <p data-show-until="2026-12-31">Through Dec.&nbsp;31, 2026, most Utah Medicaid programs can cover care from up to 3 months before the month you apply. {{ src('MED-U02') }}</p>
+  <p>Starting Jan.&nbsp;1, 2027, Adult Expansion Medicaid covers care from 1 month before the month you apply. <a href="{{ page_url('medicaid-utah-bills') }}">More about past medical bills</a> {{ src('MED-U02') }}</p>
+</section>
 
-    <h2>You may not have to if you</h2>
-    <ul>
-      <li>Are pregnant, or get Medicaid for the months after a birth {{ src('MED-U05') }}</li>
-      <li>Care for a child 13 or younger, or for a person with a disability {{ src('MED-U05') }}</li>
-      <li>Have a disability, or a health condition that makes daily tasks hard {{ src('MED-U05') }}</li>
-      <li>Are American Indian or Alaska Native</li>
-      <li>Are in foster care, or were</li>
-    </ul>
-    <p>There are more reasons. <span class="more">Utah calls them exclusions and exceptions.</span> <a href="{{ page_url('medicaid-utah-reasons') }}">See every reason</a></p>
+<h2>Meet the rules any one way</h2>
+<p>Utah calls this the <strong>community engagement requirement</strong>. DWS checks records it already has first for the month before you apply. {{ src('MED-U01') }}</p>
+<div class="rule-bridge">
+  <ul class="bridge-lanes">
+    <li>
+      <div class="bridge-lane">
+        <span class="bridge-head"><span class="bridge-icon">{{ m.icon('income') }}</span><strong>Income</strong></span>
+        <span class="bridge-copy">Utah's pages say earning at least $580 a month (federal rule counts combined household income). {{ src('MED-U01') }} {{ src('MED-S27') }}</span>
+      </div>
+      <span class="bridge-or">or</span>
+    </li>
+    <li>
+      <div class="bridge-lane">
+        <span class="bridge-head"><span class="bridge-icon">{{ m.icon('school') }}</span><strong>School</strong></span>
+        <span class="bridge-copy">You go to school at least half-time. {{ src('MED-U01') }}</span>
+      </div>
+      <span class="bridge-or">or</span>
+    </li>
+    <li>
+      <div class="bridge-lane">
+        <span class="bridge-head"><span class="bridge-icon">{{ m.icon('clock') }}</span><strong>80 hours</strong></span>
+        <span class="bridge-copy">You spend 80 hours a month on work, job training, volunteering, or school. Add them up. {{ src('MED-U01') }}</span>
+      </div>
+    </li>
+  </ul>
+  <p class="bridge-outcome">{{ m.icon('check') }} <span>Any 1 way meets the rules. <a href="{{ page_url('medicaid-utah-rules') }}">The rules, in plain words</a></span></p>
+</div>
 
-    <h2>What to do</h2>
-    <ol class="steps">
-      <li><a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check.</a> Your answers stay on your device.</li>
-      <li><a href="{{ page_url('medicaid-utah-apply') }}">Apply</a> online, on paper, or in person.</li>
-      <li>If the state cannot confirm your activity or your reason from its records, you can report it yourself.</li>
-    </ol>
+<h2>You may not have to if you</h2>
+<ul>
+  <li>Are pregnant, or get Medicaid for the months after a birth {{ src('MED-U05') }}</li>
+  <li>Care for a child 13 or younger, or for a person with a disability {{ src('MED-U05') }}</li>
+  <li>Have a disability, or a health condition that makes daily tasks hard {{ src('MED-U05') }}</li>
+  <li>Are American Indian or Alaska Native, or are/were in foster care</li>
+</ul>
+<p>Utah calls these exclusions and exceptions. <a href="{{ page_url('medicaid-utah-reasons') }}">See every reason</a></p>
 
-    <div class="callout">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Bottom line</span></p>
-      <h2>Apply if you think you qualify</h2>
-      <p>If you think you qualify, apply. If the state says no, you can apply again.</p>
-    </div>
+<h2>What to do</h2>
+<ol class="steps">
+  <li><a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check.</a> Your answers stay on your device.</li>
+  <li><a href="{{ page_url('medicaid-utah-apply') }}">Apply</a> online in myCase, on paper, or in person. If Utah says no, you can apply again.</li>
+  <li>If DWS cannot confirm your activity or reason from records, return its form on time with proof.</li>
+</ol>
 
-    <h2>Go deeper</h2>
-    <ul class="cards">
-      <li><a href="{{ page_url('medicaid-utah-letter') }}"><span class="card-head">{{ m.icon('letter') }}<span>The state sent me a letter</span></span> <span class="card-note">What it means and how to answer on time</span></a></li>
-      <li><a href="{{ page_url('medicaid-utah-denied') }}"><span class="card-head">{{ m.icon('denied') }}<span>I was turned down</span></span> <span class="card-note">Your options, including free legal help</span></a></li>
-      <li><a href="{{ page_url('medicaid-utah-health') }}"><span class="card-head">{{ m.icon('health') }}<span>I have a health condition</span></span> <span class="card-note">You may not have to meet the rules</span></a></li>
-      <li><a href="{{ page_url('medicaid-utah-immigration') }}"><span class="card-head">{{ m.icon('immigration') }}<span>Immigration status</span></span> <span class="card-note">Who can get Utah Medicaid now</span></a></li>
-      <li><a href="{{ page_url('medicaid-utah-words') }}"><span class="card-head">{{ m.icon('words') }}<span>Words on your letters</span></span> <span class="card-note">Plain meanings for Utah Medicaid words</span></a></li>
-      <li><a href="{{ page_url('medicaid-utah-log') }}"><span class="card-head">{{ m.icon('log') }}<span>Hours log</span></span> <span class="card-note">Print it and write down your hours</span></a></li>
-    </ul>
+<h2>Go deeper</h2>
+<ul class="cards">
+  <li><a href="{{ page_url('medicaid-utah-letter') }}"><span class="card-head">{{ m.icon('letter') }}<span>The state sent me a letter</span></span> <span class="card-note">What it means and how to answer on time</span></a></li>
+  <li><a href="{{ page_url('medicaid-utah-denied') }}"><span class="card-head">{{ m.icon('denied') }}<span>I was turned down</span></span> <span class="card-note">Your options, including free legal help</span></a></li>
+  <li><a href="{{ page_url('medicaid-utah-health') }}"><span class="card-head">{{ m.icon('health') }}<span>I have a health condition</span></span> <span class="card-note">You may not have to meet the rules</span></a></li>
+  <li><a href="{{ page_url('medicaid-utah-immigration') }}"><span class="card-head">{{ m.icon('immigration') }}<span>Immigration status</span></span> <span class="card-note">Who can get Utah Medicaid now</span></a></li>
+  <li><a href="{{ page_url('medicaid-utah-words') }}"><span class="card-head">{{ m.icon('words') }}<span>Words on your letters</span></span> <span class="card-note">Plain meanings for Utah Medicaid words</span></a></li>
+  <li><a href="{{ page_url('medicaid-utah-log') }}"><span class="card-head">{{ m.icon('log') }}<span>Hours log</span></span> <span class="card-note">Print it and write down your hours</span></a></li>
+</ul>
 {% endblock %}

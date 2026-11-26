@@ -1,32 +1,31 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Utah / Birth certificate</p>
 <h1>Utah birth certificate: name and sex designation change</h1>
-{{ m.lede("Utah's Vital Records office changes a birth certificate sex designation only with a court order. After you get your signed order, mail it with form 902 and the fee.") }}
+{{ m.lede("Utah Vital Records updates a Utah birth certificate's sex designation only with a signed court order. Once your judge signs, mail a certified order, form 902, and the Vital Records fee.") }}
 {{ m.checked_line(page) }}
 
-{{ m.bring_reminder('Utah birth certificate', 'Certified copy of the signed court order, form 902, and the Vital Records fee.') }}
+{{ v.doc_mockup_birth_cert(
+  'Utah',
+  'Utah Vital Records Birth Certificate',
+  'No administrative-only sex-marker form: Utah law requires a signed court order for Utah-born certificates.',
+  'Mail certified court order + form 902 + fee; Vital Records prints a clean certificate (unless asked otherwise) and keeps a separate amendment history.',
+  fact('ut_vital_amend_fee')
+) }}
+
+{{ m.bring_reminder('Utah Vital Records', 'Certified copy of signed court order, form 902, and ' ~ fact('ut_vital_amend_fee') ~ '.') }}
 
 <h2 id="how-to-send">How to update a Utah birth certificate</h2>
 <ul>
-  <li>For people born in Utah. Utah's law applies only to birth certificates the state issued. {{ src('ID-UT-CODE-26B-8-111') }}</li>
-  <li>Send three things to Utah Vital Records: a certified copy of the signed order, {{ ext('ID-UT-VITAL-902-2026') }}, and the fee. {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
-  <li><strong>Cost:</strong> {{ fact('ut_vital_amend_fee') }}. {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
-  <li>It can take several weeks. Mailing address: {{ m.copyable(fact('ut_vital_mail'), 'mailing address') }}</li>
-  <li>After the court order, Vital Records issues a new birth certificate that does not show which parts were changed, unless you ask it to.</li>
-  <li>Vital Records also issues an amendment history that lists the changed fields and the date, and keeps a record of every amendment.</li>
+  <li>Applies to birth records issued by Utah ({{ src('ID-UT-CODE-26B-8-111') }}). Mail a certified signed order, {{ ext('ID-UT-VITAL-902-2026') }}, and {{ fact('ut_vital_amend_fee') }} to {{ m.copyable(fact('ut_vital_mail'), 'mailing address') }} (allow several weeks). {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+  <li><strong>Clean face + amendment history:</strong> The reissued certificate does not show which fields changed unless you ask, while Vital Records also issues and retains an amendment history—ask {{ ext('ID-UT-VITAL') }} who can view that history before mailing.</li>
 </ul>
-
-{% call m.box('watch', 'Ask before you mail') %}
-<p>Ask Vital Records who can see the amendment history and when it is sent out. {{ ext('ID-UT-VITAL') }}.</p>
-{% endcall %}
 
 <h2 id="next-steps">Next steps</h2>
 <ul>
-  <li><a href="{{ page_url('id-records-utah-court') }}">Utah court order</a></li>
-  <li><a href="{{ page_url('id-records-utah-id') }}">Utah driver license or ID</a></li>
-  <li><a href="{{ page_url('id-records-after') }}">After court: update your records in the right order</a></li>
-  <li><a href="{{ page_url('id-records-utah') }}">Back to the Utah overview</a></li>
+  <li><a href="{{ page_url('id-records-utah-court') }}">Utah court order</a> · <a href="{{ page_url('id-records-utah-id') }}">Utah driver license or ID</a></li>
+  <li><a href="{{ page_url('id-records-after') }}">After-court checklist</a> · <a href="{{ page_url('id-records-utah') }}">Back to Utah overview</a></li>
 </ul>
 {% endblock %}

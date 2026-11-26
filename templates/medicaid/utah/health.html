@@ -1,44 +1,38 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Utah Medicaid</p>
 <h1>Have a health condition?</h1>
-    <p class="purpose">A disability or a health condition may mean you do not have to meet the new Utah rules.</p>
+<p class="purpose">Blindness, a disability, a mental health or substance-use condition, or difficulty with daily tasks (Utah calls this <strong>medically frail or special needs</strong>) can exempt you from the new Utah rules.</p>
 
-    <h2>The short version</h2>
-    <ul class="short">
-      <li><strong>Utah's words:</strong> medically frail or special needs.</li>
-      <li><strong>3 ways:</strong> Utah has 3 ways to confirm it. It tries them in order.</li>
-      <li><strong>Records first:</strong> Utah Medicaid checks its own health records for you.</li>
-      <li><strong>Treatment counts:</strong> Being in a drug or alcohol treatment program is its own reason.</li>
-      <li><strong>Next:</strong> <a href="{{ page_url('medicaid-utah-reasons') }}">See every reason</a>, and how to tell the state.</li>
-    </ul>
+{% set ut_health_note %}Sources: Utah medically frail screener &amp; verification law (Utah Code 26B-3-142.1) {{ src('MED-U03') }} {{ src('MED-U39') }}.{% endset %}
+{{ v.process_flow([
+  {'icon': 'shield', 'title': '1. Automatic claims check', 'body': 'Utah checks Medicaid health codes first; no match is not a denial.'},
+  {'icon': 'birth', 'title': '2. Screener form (provisional)', 'body': 'Your signed screener gives temporary approval while verified.'},
+  {'icon': 'court', 'title': '3. Health provider statement', 'body': 'A clinician confirms your condition if records are not enough.'}
+], id='ut-health-flow', cols=3, note=ut_health_note) }}
 
-    <h2>What Utah lists</h2>
-    <ul>
-      <li>Blindness or a disability</li>
-      <li>A substance use disorder or a mental health condition</li>
-      <li>A condition that makes it hard to do daily tasks</li>
-    </ul>
+{{ v.yes_no_split_board(
+  'Conditions & treatment Utah counts',
+  [
+    'Blindness or a physical, developmental, or cognitive disability',
+    'Mental health conditions or substance use disorders (plus active drug/alcohol treatment as its own exclusion)',
+    'Chronic conditions that make daily tasks hard (Utah posts a PDF diagnosis code list)'
+  ],
+  'Proof & short-term medical hardships',
+  [
+    'Utah Code 26B-3-142.1 (Jan. 1, 2027) requires electronic data or a provider statement after provisional self-attestation',
+    'Hospital, nursing home, or care-facility stays count as short-term hardships—you must request them',
+    'Traveling outside your community for medical care for you or a dependent—you must request this exception'
+  ],
+  yes_kicker='Qualifying health reasons',
+  no_kicker='Verification & hardship rules'
+) }}
 
-    <h2>The 3 ways Utah confirms it</h2>
-    <ol class="steps">
-      <li><strong>A records check.</strong> Utah Medicaid looks for health codes in the care it has paid for. You do nothing. If the check does not find your condition, that is not a denial.</li>
-      <li><strong>Your own answers.</strong> You fill out a short form about your condition. Utah calls it the Medically Frail Exclusion Screener. You sign that your answers are true. Under Utah law, this can give you a temporary (provisional) approval while Utah verifies it. {{ src('MED-U03') }} {{ src('MED-U39') }}</li>
-      <li><strong>A provider form.</strong> A health care professional fills out a form for you if electronic records are not enough to verify your condition. {{ src('MED-U03') }} {{ src('MED-U39') }}</li>
-    </ol>
-    <p><strong>What Utah law says about proof:</strong> Under Utah law taking effect Jan.&nbsp;1, 2027 (Utah Code 26B-3-142.1), Utah cannot rely only on your own word. If electronic records are not enough, Utah may give a provisional approval from your answers, and it must still verify the exemption with electronic data or a statement from a health care professional. {{ src('MED-U39') }}</p>
-    <p class="more">Utah posts <a href="https://obbba-support.medicaid.utah.gov/wp-content/uploads/2026/10/DiagnosesforMedicallyFrail_10.2026-1.pdf" rel="noreferrer">the list of health codes it checks</a> <span class="tag">PDF</span>. We link to it but have not read it.</p>
+<p><a href="{{ page_url('medicaid-utah-reasons') }}">See every Utah exclusion and exception</a> or call DWS at <span class="nowrap">1-866-435-7414</span>. (Utah also posts <a href="https://obbba-support.medicaid.utah.gov/wp-content/uploads/2026/10/DiagnosesforMedicallyFrail_10.2026-1.pdf" rel="noreferrer">its diagnosis code list PDF</a>.)</p>
 
-    <h2>Hospital stays and medical travel</h2>
-    <p>A stay in a hospital or care facility, or travel for medical care, may count as a short-term hardship. You must ask for these. <a href="{{ page_url('medicaid-utah-reasons') }}">See every reason</a></p>
-
-    <div class="callout more">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
-      <h2>In the news</h2>
-      <p>On Oct.&nbsp;29, 2026, a federal court threw out part of a federal rule that narrowed this reason. Utah was not one of the states in that case, though a Nov.&nbsp;13, 2026 federal letter says states that choose the hold harmless period do not have to put in place the part the court threw out. As of Nov.&nbsp;21, 2026, Utah's pages had not said what changes. Tell the state about your condition either way. {{ src('MED-S28') }} {{ src('MED-S40') }} {{ src('MED-S41') }} {{ src('MED-U01') }}</p>
-    </div>
-
-    <h2>Questions?</h2>
-    <p>Call the Department of Workforce Services (DWS) at <span class="nowrap">1-866-435-7414</span>.</p>
+{% call m.deeper('Oct. 29, 2026 federal court ruling on health exemptions', 'ut-health-court-note') %}
+<p>On Oct.&nbsp;29, 2026, a federal court threw out part of a federal rule narrowing this exemption. Utah was not a party in that case, though a Nov.&nbsp;13, 2026 CMS letter says states choosing hold harmless do not have to apply the struck-down part. Tell DWS about your condition either way. {{ src('MED-S28') }} {{ src('MED-S40') }} {{ src('MED-S41') }} {{ src('MED-U01') }}</p>
+{% endcall %}
 {% endblock %}

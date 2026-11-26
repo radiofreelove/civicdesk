@@ -1,51 +1,51 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Washington Apple Health</p>
 <h1>How to apply for Apple Health</h1>
-    <p class="purpose">There are 4 ways to apply. Pick the one that is easiest for you.</p>
+<p class="purpose">Apple Health enrollment is open all year, and local navigator help is always free.</p>
 
-    <h2>The short version</h2>
-    <ul class="short channel-list">
-      <li><span class="channel-icon">{{ m.icon('online') }}</span><span><strong>Online:</strong> at wahealthplanfinder.org. The site is called Washington Healthplanfinder.</span></li>
-      <li><span class="channel-icon">{{ m.icon('paper') }}</span><span><strong>On paper:</strong> the Application for health care coverage, form 18-001P.</span></li>
-      <li><span class="channel-icon">{{ m.icon('inperson') }}</span><span><strong>In person:</strong> A navigator can help you. The help is free.</span></li>
-      <li><span class="channel-icon">{{ m.icon('phone') }}</span><span><strong>By phone:</strong> Call the Healthplanfinder Customer Support Center at <span class="nowrap">1-855-923-4633</span>.</span></li>
-      <li><span class="channel-icon">{{ m.icon('calendar') }}</span><span><strong>Any time:</strong> Apple Health enrollment is open all year.</span></li>
-    </ul>
+{{ m.onthispage([
+  ('apply-online', 'Online'),
+  ('apply-phone', 'By phone'),
+  ('apply-paper', 'On paper'),
+  ('apply-inperson', 'In person'),
+  ('after-apply', 'After you apply')
+]) }}
 
-    <h2>First, pick the right door</h2>
-    <ul>
-      <li><strong>Adults under 65 without Medicare:</strong> Apply through Washington Healthplanfinder. The ways are on this page.</li>
-      <li><strong>Age 65 or older, blind, have a disability, or have Medicare:</strong> That program is called Apple Health Classic. You apply through DSHS. Use Washington Connection online, or call <span class="nowrap">1-877-501-2233</span>.</li>
-    </ul>
+{% set w_online %}Adults under 65 without Medicare apply at <strong>wahealthplanfinder.org</strong> (<a href="https://www.hca.wa.gov/health-care-services-supports/apple-health-medicaid-coverage/apply-or-renew-coverage" rel="noreferrer">HCA apply guide</a>). {{ src('MED-WA06') }}{% endset %}
+{% set w_phone %}Call Healthplanfinder Support at <span class="nowrap">1-855-923-4633</span> (TTY <span class="nowrap">1-855-627-9604</span>). {{ src('MED-WA10') }}{% endset %}
+{% set w_person %}Meet a free local navigator or Community Connector (<a href="{{ page_url('medicaid-washington-help') }}">find free help</a>). {{ src('MED-WA06') }}{% endset %}
+{% set w_paper %}Use <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/i-help-others-apply-and-access-apple-health/filing-application" rel="noreferrer">form 18-001P</a> (fax <span class="nowrap">1-855-867-4467</span>). {{ src('MED-WA11') }} {{ src('MED-WA12') }}{% endset %}
+{{ v.channel_cards([
+  {'kind': 'online', 'title': '1. Online (Healthplanfinder)', 'body': w_online},
+  {'kind': 'phone', 'title': '2. Apply by phone', 'body': w_phone},
+  {'kind': 'navigator', 'title': '3. Free local navigator', 'body': w_person},
+  {'kind': 'paper', 'title': '4. Paper form 18-001P', 'body': w_paper}
+]) }}
 
-    <h2 id="apply-online" class="icon-heading">{{ m.icon('online') }}<span>Apply online</span></h2>
-    <p>Go to wahealthplanfinder.org. You can apply or renew there.</p>
-    <p>The Health Care Authority (HCA) explains each way on its page: <a href="https://www.hca.wa.gov/health-care-services-supports/apple-health-medicaid-coverage/apply-or-renew-coverage" rel="noreferrer">Apply for or renew coverage</a>.</p>
+<div class="callout callout-note">
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Pick the right door</span></p>
+  <h2>Age 65+, blind, disabled, or on Medicare?</h2>
+  <p>Apply for <strong>Apple Health Classic</strong> through DSHS at Washington Connection online or call <span class="nowrap">1-877-501-2233</span> instead of Healthplanfinder. {{ src('MED-WA06') }} {{ src('MED-WA07') }}</p>
+</div>
 
-    <h2 id="apply-phone" class="icon-heading">{{ m.icon('phone') }}<span>Apply by phone</span></h2>
-    <p>Call the Healthplanfinder Customer Support Center at <span class="nowrap">1-855-923-4633</span>. The TTY number is <span class="nowrap">1-855-627-9604</span>.</p>
+<h2 id="apply-online">Channel details &amp; reporting changes</h2>
+<ul>
+  <li><strong>Online:</strong> Apply, renew, or report income/household changes at wahealthplanfinder.org. {{ src('MED-WA06') }}</li>
+  <li id="apply-phone"><strong>Phone &amp; language help:</strong> <span class="nowrap">1-855-923-4633</span> (TTY <span class="nowrap">1-855-627-9604</span>) with <a href="{{ page_url('medicaid-washington-help#languages') }}">free interpreter support</a>. {{ src('MED-WA10') }}</li>
+  <li id="apply-paper"><strong>Paper:</strong> Form 18-001P by mail or fax (<span class="nowrap">1-855-867-4467</span>). {{ src('MED-WA11') }} {{ src('MED-WA12') }}</li>
+  <li id="apply-inperson"><strong>In person:</strong> Certified navigators and Apple Health Community Connectors help free of charge. {{ src('MED-WA06') }}</li>
+</ul>
 
-    <h2 id="apply-paper" class="icon-heading">{{ m.icon('paper') }}<span>Apply on paper</span></h2>
-    <p>The paper form is the Application for health care coverage, form 18-001P. You can fax it to <span class="nowrap">1-855-867-4467</span>.</p>
-    <p>HCA's page has more about the form and where to send it: <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/i-help-others-apply-and-access-apple-health/filing-application" rel="noreferrer">Filing an application</a>.</p>
-
-    <h2 id="apply-inperson" class="icon-heading">{{ m.icon('inperson') }}<span>Apply in person</span></h2>
-    <p>A navigator can help you apply in person. The help is free. <a href="{{ page_url('medicaid-washington-help') }}">More free help</a></p>
-
-    <h2 id="after-apply">What happens after you apply</h2>
-    <ol class="steps steps-flow">
-      <li><span class="flow-head">{{ m.icon('check') }}<strong>State checks data first</strong></span> Washington checks its own data first.</li>
-      <li><span class="flow-head">{{ m.icon('calendar') }}<strong>15 days if proof is needed</strong></span> After you apply, a letter may ask for proof. It gives you 15 days. Coverage may close if the proof does not arrive. <a href="{{ page_url('medicaid-washington-letter') }}">How to answer a letter</a></li>
-      <li><span class="flow-head">{{ m.icon('phone') }}<strong>Questions about your case</strong></span> Have a question about your case? Call HCA's Medical Eligibility Determination Services (MEDS) at <span class="nowrap">1-800-562-3022</span>.</li>
-    </ol>
-
-    <h2>Help in your language</h2>
-    <p>Language help is free. <a href="{{ page_url('medicaid-washington-help#languages') }}">Help in your language</a></p>
-
-    <h2 class="more">If something changes</h2>
-    <p class="more">You can report a change in Washington Healthplanfinder. Look for "Report a Change in Income or Household." You can also report a change by phone, mail, or fax.</p>
+<h2 id="after-apply">What happens after you apply</h2>
+{% set wa_after_note %}Got a verification notice? <a href="{{ page_url('medicaid-washington-letter') }}">See how to answer an Apple Health letter</a>. {{ src('MED-WA04') }} {{ src('MED-WA13') }}{% endset %}
+{{ v.process_flow([
+  {'icon': 'shield', 'title': 'State data checked first', 'body': 'Washington checks state wage and eligibility databases first.'},
+  {'icon': 'calendar', 'title': '15 days if proof needed', 'body': 'Post Eligibility Review letters give 15 days to send proof.'},
+  {'icon': 'letter', 'title': 'Case questions (MEDS)', 'body': 'Call HCA MEDS at 1-800-562-3022 for MAGI case help.'}
+], cols=3, note=wa_after_note) }}
 
 {{ m.id_mismatch_callout('washington-id-mismatch', 'washington') }}
 {% endblock %}

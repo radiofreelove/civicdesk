@@ -4,87 +4,70 @@
 {% block main %}
 <p class="kicker">Utah Medicaid</p>
 <h1>Reasons you may not have to meet the Utah rules</h1>
-    <p class="purpose">Utah calls these <strong>exclusions</strong> and <strong>exceptions</strong>. This page lists them and how the state checks them.</p>
+<p class="purpose">Utah calls these <strong>exclusions</strong> and <strong>exceptions</strong>. DWS checks its own records first in the month you apply or renew; if it cannot confirm your reason, you report it with proof. <a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check</a>.</p>
 
-    <h2>The short version</h2>
-    <ul class="short">
-      <li><strong>2 words:</strong> Utah calls these reasons exclusions and exceptions.</li>
-      <li><strong>When the state checks:</strong> In the month you apply or renew.</li>
-      <li><strong>You must ask:</strong> For 2 hardships, you have to ask for the exception.</li>
-      <li><strong>Tribal members:</strong> Utah's letter says to send proof of your status by Jan.&nbsp;1, 2027.</li>
-      <li><strong>Not sure?</strong> <a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check</a>.</li>
-    </ul>
+{{ m.onthispage([
+  ('exemption-shields', 'Exemption categories'),
+  ('exclusions-vs-hardships', 'Exclusions vs. hardships'),
+  ('tribal', 'Tribal proof'),
+  ('how-to-tell', 'How to tell DWS')
+]) }}
 
-    {% set ut_ex_1 %}Pregnant or on postpartum Medicaid, caring for a child 13 or younger, or caring for a person with a disability. {{ src('MED-U05') }}{% endset %}
-    {% set ut_ex_2 %}Blind or disabled, medically frail or special needs, drug or alcohol treatment, or 100% VA disability. {{ src('MED-U05') }}{% endset %}
-    {% set ut_ex_3 %}Age 18 or younger, age 65 or older, Medicare Part A or B, SSI, or SNAP/TANF work rules. {{ src('MED-U05') }}{% endset %}
-    {% set ut_ex_4 %}American Indian or Alaska Native (send proof by Jan. 1, 2027), foster care, recent release within 90 days, or short-term hardship. {{ src('MED-U05') }} {{ src('MED-U28') }}{% endset %}
-    {{ v.icon_feature_grid([
-      {'icon': 'caregiver-heart', 'title': 'Pregnancy & caregiving', 'body': ut_ex_1},
-      {'icon': 'medical-cross', 'title': 'Disability, frailty & treatment', 'body': ut_ex_2},
-      {'icon': 'medicaid-shield', 'title': 'Age, Medicare, SNAP & TANF', 'body': ut_ex_3},
-      {'icon': 'exemption-check', 'title': 'Tribal proof, foster care & hardships', 'body': ut_ex_4}
-    ], cols=2, extra=true) }}
+<div id="exemption-shields">
+  {% set ut_ex_1 %}Pregnant or postpartum Medicaid, caring for a child 13 or younger, or caring for a person with a disability. {{ src('MED-U05') }}{% endset %}
+  {% set ut_ex_2 %}Blind or disabled, medically frail or special needs (<a href="{{ page_url('medicaid-utah-health') }}">health guide</a>), drug/alcohol treatment, or 100% VA disability. {{ src('MED-U05') }}{% endset %}
+  {% set ut_ex_3 %}Age 18 or younger, age 65 or older, Medicare Part A or B, SSI, low-income parent group, or SNAP/TANF work rules. {{ src('MED-U05') }}{% endset %}
+  {% set ut_ex_4 %}American Indian or Alaska Native (<a href="#tribal">proof rules</a>), foster care, in jail/prison or released in last 90 days, or short-term hardship. {{ src('MED-U05') }} {{ src('MED-U28') }}{% endset %}
+  {{ v.icon_feature_grid([
+    {'icon': 'caregiver-heart', 'title': 'Pregnancy & caregiving', 'body': ut_ex_1},
+    {'icon': 'medical-cross', 'title': 'Disability, frailty & treatment', 'body': ut_ex_2},
+    {'icon': 'medicaid-shield', 'title': 'Age, Medicare, SSI & SNAP/TANF', 'body': ut_ex_3},
+    {'icon': 'exemption-check', 'title': 'Tribal, foster care & hardships', 'body': ut_ex_4}
+  ], cols=2) }}
+</div>
 
-    <h2>The rules do not apply to</h2>
-    <ul>
-      <li>People 18 or younger, or 65 or older.</li>
-      <li>People who have Medicare Part A or Part B.</li>
-      <li>People in some other Medicaid groups, like parents with low income or people who get SSI.</li>
-      <li>People in Medicaid programs other than Adult Expansion Medicaid and TAM.</li>
-    </ul>
+<h2 id="exclusions-vs-hardships">Checked from records vs. exceptions you must request</h2>
+{{ v.yes_no_split_board(
+  'Exclusions & county hardships DWS checks first',
+  [
+    'Age under 19 or 65+, Medicare Part A/B, SSI, or programs outside Adult Expansion and TAM',
+    'Pregnancy, postpartum Medicaid, caregiving (child 13 or younger or disabled person), or SNAP/TANF work rules',
+    'Medically frail / disability, substance-use treatment, 100% disabled veteran, foster care, or recent release (90 days)',
+    'County federal disaster declaration or high county unemployment'
+  ],
+  'Exceptions & verifications where you must act',
+  [
+    'Hospital, nursing home, or care-facility patient stay (you must request this short-term exception)',
+    'Travel outside your community for medical care for you or a dependent (you must request this exception)',
+    'Tribal status not yet verified in DWS records (Utah letter asks for proof by Jan. 1, 2027)',
+    'Any exemption DWS cannot confirm electronically—Utah Code 26B-3-142.1 requires documentary proof'
+  ],
+  yes_kicker='Records checked first',
+  no_kicker='Action or proof needed'
+) }}
 
-    <h2>Reasons Utah lists</h2>
-    <p>Utah calls these exclusions.</p>
-    <ul>
-      <li>You are pregnant, or you get Medicaid for the months after a birth (postpartum Medicaid).</li>
-      <li>You are a parent, guardian, or caregiver for a child 13 or younger, or for a person with a disability.</li>
-      <li>You are blind or have a disability. Or you have a mental health condition, a substance use disorder, or a condition that makes daily tasks hard. Utah calls this medically frail or special needs. <a href="{{ page_url('medicaid-utah-health') }}">More about health conditions</a></li>
-      <li>You are in a drug or alcohol treatment and rehabilitation program.</li>
-      <li>You are American Indian or Alaska Native. <a href="#tribal">See what proof to send</a>.</li>
-      <li>You are in foster care, or you were. <span class="more">Some Utah pages say this means people in the Former Foster Care program. Ask the state which one fits you.</span></li>
-      <li>You are a veteran with a 100% disability.</li>
-      <li>You have to meet work rules for SNAP or TANF.</li>
-      <li>You are in jail or prison now, or you got out in the last 90 days.</li>
-    </ul>
+<h2 id="tribal">American Indian and Alaska Native members</h2>
+<p>Utah's letter asks members to send proof of status by <strong>Jan.&nbsp;1, 2027</strong>. Once verified, your renewal stays once every 12 months; if unverified, you may have to meet the work rules. <a href="{{ page_url('medicaid-utah-letter#send') }}">Ways to send papers to DWS</a></p>
+{% call m.deeper('Accepted Tribal proof documents (send 1 copy per member)', 'ut-tribal-proof-list') %}
+<ul>
+  <li>Tribal ID or enrollment card (or enrollment number)</li>
+  <li>Certificate of Degree of Indian Blood (CDIB) signed by the Bureau of Indian Affairs</li>
+  <li>Indian Health Service (IHS) face sheet with your name and date of birth</li>
+  <li>Tribal court paper with your name and date of birth</li>
+  <li>Any of these for a parent or grandparent, plus a birth certificate or court paper showing how you are related</li>
+</ul>
+{% endcall %}
 
-    <h2>Short-term hardships</h2>
-    <p>Utah says you may qualify for an exception for a month when one of these was true.</p>
-    <ul>
-      <li>You were a patient in a hospital, or you lived in a nursing home or another care facility. You must ask for this one.</li>
-      <li>You had to travel outside your community for medical care for you or a dependent. You must ask for this one.</li>
-      <li>Your county had a federal emergency or disaster declaration, or high unemployment.</li>
-    </ul>
+<h2 id="how-to-tell">How to tell the state</h2>
+<ol class="steps">
+  <li><strong>Electronic check first:</strong> If DWS confirms your reason in its records, you do nothing.</li>
+  <li><strong>Report in myCase or on form 742:</strong> Report on your application/renewal, in myCase, or on form 742 (<em>Community Engagement Declaration</em>—ask DWS at <span class="nowrap"><a href="tel:1-866-435-7414">1-866-435-7414</a></span>).</li>
+  <li><strong>Include proof:</strong> Under Utah Code 26B-3-142.1 (effective Jan.&nbsp;1, 2027), Utah cannot rely only on your own word and requires proof unless electronic records confirm it. {{ src('MED-U39') }}</li>
+</ol>
 
-    <h2 id="tribal">American Indian and Alaska Native members</h2>
-    <ul class="short">
-      <li><strong>Send proof:</strong> The state must verify your status. Utah's letter says to send proof by Jan.&nbsp;1, 2027.</li>
-      <li><strong>Reviews:</strong> Once your status is verified, your review stays once every 12 months.</li>
-      <li><strong>If it is not verified:</strong> You may have to meet the work or activity rules.</li>
-    </ul>
-    <p>Utah's letter lists these kinds of proof. Send one copy for each tribal member in your home.</p>
-    <ul>
-      <li>A tribal ID or enrollment card, or the number</li>
-      <li>A Certificate of Degree of Indian Blood (CDIB) signed by the Bureau of Indian Affairs</li>
-      <li>An Indian Health Service (IHS) face sheet with your name and date of birth</li>
-      <li>A tribal court paper with your name and date of birth</li>
-      <li>Any of these for a parent or grandparent, plus a birth certificate or court paper that shows how you are related</li>
-    </ul>
-    <p><a href="{{ page_url('medicaid-utah-letter#send') }}">Ways to send papers to the state</a></p>
-
-    <h2>How to tell the state</h2>
-    <ol class="steps">
-      <li>The state checks records it already has first. If it can confirm your reason, you do not need to do anything.</li>
-      <li>If it cannot, you can report it online in myCase, on your application or renewal form, or on form 742, the Community Engagement Declaration.</li>
-      <li>Utah's page names form 742 but does not link to it. Ask the Department of Workforce Services (DWS) for it at <span class="nowrap"><a href="tel:1-866-435-7414">1-866-435-7414</a></span>.</li>
-      <li><strong>Proof required by Utah law:</strong> Under Utah Code 26B-3-142.1 (effective Jan.&nbsp;1, 2027), Utah must verify every exemption and cannot rely only on your own word. You must provide proof unless Utah can confirm it from reliable records. {{ src('MED-U39') }}</li>
-    </ol>
-
-    <div class="callout more">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
-      <h2>In the news</h2>
-      <p>On Oct.&nbsp;29, 2026, a federal court threw out part of a federal rule that narrowed the health reason. Utah was not one of the states in that case, though a Nov.&nbsp;13, 2026 federal letter says states that choose the hold harmless period do not have to put in place the part the court threw out. As of Nov.&nbsp;21, 2026, Utah's pages had not said what changes. Tell the state about your health condition either way. {{ src('MED-S28') }} {{ src('MED-S40') }} {{ src('MED-S41') }} {{ src('MED-U01') }}</p>
-    </div>
+{% call m.deeper('Oct. 29, 2026 federal court ruling on health exemptions', 'ut-reasons-court-note') %}
+<p>On Oct.&nbsp;29, 2026, a federal court threw out part of a federal rule narrowing the health exemption. Utah was not a party in that case, though a Nov.&nbsp;13, 2026 CMS letter says states choosing hold harmless do not have to apply the struck-down part. Tell DWS about your health condition either way. {{ src('MED-S28') }} {{ src('MED-S40') }} {{ src('MED-S41') }} {{ src('MED-U01') }}</p>
+{% endcall %}
 
 {{ m.domestic_safety_callout("utah-reasons-safety", "Utah", "If sharing an address or household case puts your safety at risk, tell a Department of Workforce Services (DWS) eligibility worker (1-866-435-7414) so notices go to a safe mailing address and any domestic-safety rules are reviewed privately.") }}
 {% endblock %}

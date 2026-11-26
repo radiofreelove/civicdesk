@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
+{% import "illustrations.html" as il %}
 {% block head %}<script src="{{ asset('js/start.js') }}" defer></script>{% endblock %}
 {% block main %}
 <p class="kicker">Start here</p>
 <h1>Find the right guide in 2 questions</h1>
 {{ m.lede("Pick your state and topic below, or search the full guide directory beneath the questions. Your answers stay in your browser and are never saved or sent anywhere.") }}
+
+{{ v.stat_hero_strip([
+  {'num': '2', 'label': 'Quick questions', 'note': 'State + topic'},
+  {'num': '68', 'label': 'Plain-language guides', 'note': 'Oregon, Washington, Utah & federal'},
+  {'num': '0', 'label': 'Answers saved or sent', 'note': 'Runs in page memory only'}
+]) }}
 
 <div class="callout callout-note no-js-only">
   <p class="callout-title"><strong>JavaScript is off, so browse the full guide directory below.</strong></p>
@@ -16,16 +24,16 @@
 
   <fieldset id="q-state">
     <legend>1. Which state or level do you need?</legend>
-    <label><input type="radio" name="state" value="oregon"> <span class="choice-icon">{{ m.icon('state-or') }}</span><span>Oregon</span></label>
-    <label><input type="radio" name="state" value="washington"> <span class="choice-icon">{{ m.icon('state-wa') }}</span><span>Washington</span></label>
-    <label><input type="radio" name="state" value="utah"> <span class="choice-icon">{{ m.icon('state-ut') }}</span><span>Utah</span></label>
-    <label><input type="radio" name="state" value="federal"> <span class="choice-icon">{{ m.icon('federal-star') }}</span><span>Another U.S. state or federal agency only</span></label>
+    <label><input type="radio" name="state" value="oregon"> {{ il.state_map_badge('oregon', 'choice-map') }}<span>Oregon</span></label>
+    <label><input type="radio" name="state" value="washington"> {{ il.state_map_badge('washington', 'choice-map') }}<span>Washington</span></label>
+    <label><input type="radio" name="state" value="utah"> {{ il.state_map_badge('utah', 'choice-map') }}<span>Utah</span></label>
+    <label><input type="radio" name="state" value="federal"> {{ il.state_map_badge('federal', 'choice-map') }}<span>Another U.S. state or federal agency only</span></label>
   </fieldset>
 
   <fieldset id="q-topic">
     <legend>2. What are you trying to do?</legend>
-    <label><input type="radio" name="topic" value="medicaid"> <span class="choice-icon">{{ m.icon('medicaid-shield') }}</span><span>Understand or check 2027 Medicaid work and activity rules, exemptions, or applications</span></label>
-    <label><input type="radio" name="topic" value="id-records"> <span class="choice-icon">{{ m.icon('id-card') }}</span><span>Update a legal name (marriage, divorce, or court order), driver license or ID, birth certificate, Social Security card, or passport</span></label>
+    <label><input type="radio" name="topic" value="medicaid"> <span class="viz-medallion-wrap">{{ il.medallion('shield') }}</span><span>Understand or check 2027 Medicaid work and activity rules, exemptions, or applications</span></label>
+    <label><input type="radio" name="topic" value="id-records"> <span class="viz-medallion-wrap">{{ il.medallion('dmv') }}</span><span>Update a legal name (marriage, divorce, or court order), driver license or ID, birth certificate, Social Security card, or passport</span></label>
   </fieldset>
 
   <div class="btn-row">

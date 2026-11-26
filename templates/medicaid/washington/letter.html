@@ -1,43 +1,37 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Washington Apple Health</p>
 <h1>Washington sent me a letter. Now what?</h1>
-    <p class="purpose">This page explains Apple Health letters and how to answer them on time.</p>
+<p class="purpose">Check the reply date right away—Apple Health proof letters give <strong>15 days</strong> to respond so your coverage stays open.</p>
 
-    <h2>The short version</h2>
-    <ul class="short">
-      <li><strong>First:</strong> Find the due date on the letter.</li>
-      <li><strong>How notices come:</strong> By mail or email. The Health Care Authority (HCA) uses the choice in your file.</li>
-      <li><strong>Answer it:</strong> If a letter asks for proof, you must answer. That is true even if you just updated your information.</li>
-      <li><strong>How long:</strong> The letter gives you 15 days. Coverage may close if the proof does not arrive.</li>
-      <li><strong>About the work rules:</strong> HCA tells members to keep their contact information up to date and read notices or text messages from HCA, and on Nov.&nbsp;17, 2026 it announced delayed enforcement through June&nbsp;30, 2027. {{ src('MED-WA01') }} {{ src('MED-WA27') }}</li>
-      <li><strong>Missed the due date?</strong> <a href="{{ page_url('medicaid-washington-denied') }}">See your options</a>.</li>
-    </ul>
+{% set wc1 %}HCA sends notices by mail or email based on your preference in Washington Healthplanfinder—keep your contact info current. {{ src('MED-WA01') }}{% endset %}
+{% set wc2 %}If a Post Eligibility Review or proof letter arrives, you have <strong>15 days</strong> to send proof—even if you recently updated your account. {{ src('MED-WA04') }} {{ src('MED-WA13') }}{% endset %}
+{% set wc3 %}HCA posted a <a href="https://www.hca.wa.gov/assets/free-or-low-cost/work-requirements-renewals-notice.pdf" rel="noreferrer">sample work-rules &amp; 6-month renewal notice</a> <span class="tag">PDF</span> (plus 8 translations on <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/i-need-medical-dental-or-vision-care/apple-health-medicaid-work-requirements" rel="noreferrer">HCA's work rules page</a>) before its Nov. 17, 2026 hold harmless delay. {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-WA30') }}{% endset %}
+{% set wc4 %}Follow HCA's <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/submit-my-verification" rel="noreferrer">Submit my verification</a> instructions or call MEDS at <span class="nowrap">1-800-562-3022</span>. {{ src('MED-WA07') }} {{ src('MED-WA13') }}{% endset %}
+{{ v.doc_mockup_letter(
+  'Washington Apple Health',
+  'WA Health Care Authority (HCA)',
+  '15-day proof window',
+  [
+    {'title': 'Mail or email delivery', 'body': wc1},
+    {'title': '15-day due date box', 'body': wc2},
+    {'title': '2027 sample notice & hold harmless', 'body': wc3},
+    {'title': 'Submit proof & keep copies', 'body': wc4}
+  ]
+) }}
 
-    <h2>Sample notice about the new rules</h2>
-    <p>HCA posted a <a href="https://www.hca.wa.gov/assets/free-or-low-cost/work-requirements-renewals-notice.pdf" rel="noreferrer">sample notice about work rules and 6-month renewals</a> <span class="tag">PDF</span>. It says you will get another notice before you need to report. It was written before HCA's Nov.&nbsp;17, 2026 update delaying work-rule denials and coverage loss through June&nbsp;30, 2027. <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/i-need-medical-dental-or-vision-care/apple-health-medicaid-work-requirements" rel="noreferrer">HCA's work rules page</a> also links this notice in 8 other languages. {{ src('MED-WA30') }} {{ src('MED-WA22') }} {{ src('MED-WA27') }}</p>
+<h2>Three quick habits that protect your coverage</h2>
+{{ v.process_flow([
+  {'icon': 'birth', 'title': 'Save dated copies', 'body': 'Keep a copy of every page you send and write down the date.'},
+  {'icon': 'calendar', 'title': 'Reply right away', 'body': 'Do not wait—mail takes time and proof windows are 15 days.'},
+  {'icon': 'letter', 'title': 'Missed the deadline?', 'body': 'You have appeal and 90-day renewal options if coverage closes.'}
+], cols=3) }}
 
-    <h2>Letters that ask for proof</h2>
-    <p>After you apply or renew, a letter may ask for proof.</p>
-    <p>Your letter says what to send and how to send it. Follow your letter. HCA's page has more: <a href="https://www.hca.wa.gov/free-or-low-cost-health-care/submit-my-verification" rel="noreferrer">Submit my verification</a>.</p>
-
-    <h2 class="more">How HCA planned to reach people</h2>
-    <p class="more">HCA planned to reach people through letters, a web page for clients, text messages, videos, and paid ads. Part of that plan depended on extra money in the state budget.</p>
-
-    <h2>Tips</h2>
-    <ul class="short">
-      <li><strong>Keep copies:</strong> Keep a copy of everything you send, and write down the date you sent it.</li>
-      <li><strong>Do not wait:</strong> Answer as soon as you can. Mail takes time.</li>
-      <li><strong>Stay reachable:</strong> Keep your contact information up to date, so notices reach you.</li>
-    </ul>
-
-    <h2>Questions?</h2>
-    <p>Call HCA's Medical Eligibility Determination Services (MEDS) at <span class="nowrap">1-800-562-3022</span>.</p>
-
-    <div class="callout">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
-      <h2>Missed the due date?</h2>
-      <p>If proof does not arrive, coverage may close. <a href="{{ page_url('medicaid-washington-denied') }}">See your options</a></p>
-    </div>
+<div class="callout">
+  <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Key point</span></p>
+  <h2>Coverage closed after a missed deadline?</h2>
+  <p>You can still send a late renewal within 90 days, ask for a hearing, or reapply any time. <a href="{{ page_url('medicaid-washington-denied') }}">See your options</a></p>
+</div>
 {% endblock %}
