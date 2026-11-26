@@ -33,7 +33,7 @@ def contrast_ratio(a: str, b: str) -> float:
 
 
 def extract_tokens(block: str) -> dict[str, str]:
-    return {m.group(1): m.group(2) for m in re.finditer(r"--([a-z-]+):\s*(#[0-9A-Fa-f]{3,6})", block)}
+    return {m.group(1): m.group(2) for m in re.finditer(r"--([a-z0-9-]+):\s*(#[0-9A-Fa-f]{3,6})", block)}
 
 
 def test_horizon_palette_and_aaa_contrast() -> None:
@@ -75,12 +75,19 @@ def test_horizon_palette_and_aaa_contrast() -> None:
         ("text", "cost-bg"), ("link", "cost-bg"), ("heading", "cost-bg"),
         ("btn-text", "btn-bg"), ("exit-text", "exit-bg"), ("focus-text", "focus-bg"),
         ("link", "badge-bg"), ("text", "badge-bg"), ("text", "code-bg"),
+        ("text", "viz-surface"), ("heading", "viz-surface"), ("link", "viz-surface"),
+        ("text", "viz-surface-2"), ("heading", "viz-surface-2"), ("link", "viz-surface-2"),
+        ("viz-node-text", "viz-node-bg"), ("viz-node-text", "good-edge"),
     ]
     ui_pairs = [
         ("border", "bg"), ("border", "surface"),
         ("focus-ring", "bg"), ("focus-ring", "surface"),
         ("nav-current", "header-bg"),
         ("mark-sky", "mark-bg"), ("mark-rose", "mark-bg"), ("mark-paper", "mark-bg"),
+        ("viz-border", "bg"), ("viz-border", "viz-surface"), ("viz-border", "card-bg"),
+        ("viz-accent", "bg"), ("viz-accent", "viz-surface"), ("viz-accent", "viz-track"),
+        ("viz-accent-2", "bg"), ("viz-accent-2", "viz-surface-2"), ("viz-accent-2", "viz-track"),
+        ("viz-accent-3", "bg"), ("viz-accent-3", "viz-surface"), ("viz-accent-3", "viz-track"),
     ]
 
     for theme_name, tokens in [("light", light), ("warm", warm), ("dark", dark), ("contrast", contrast)]:
@@ -90,6 +97,13 @@ def test_horizon_palette_and_aaa_contrast() -> None:
         for fg, bg in ui_pairs:
             r = contrast_ratio(tokens[fg], tokens[bg])
             assert r >= 3.0, f"{theme_name}: UI/mark {fg} ({tokens[fg]}) on {bg} ({tokens[bg]}) = {r:.2f}:1 (< 3.0)"
+
+    print_match = re.search(r"@media print\s*\{(.*)\Z", css, re.S)
+    assert print_match, "Missing @media print block"
+    print_tokens = extract_tokens(print_match.group(1))
+    assert print_tokens["viz-surface"].upper() == "#FFFFFF"
+    assert print_tokens["viz-border"].upper() == "#000000"
+    assert print_tokens["viz-accent"].upper() == "#000000"
 
 
 def test_policy_radar_both_desks_offline() -> None:

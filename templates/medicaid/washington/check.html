@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Washington Apple Health</p>
 <h1>Do the Washington rules fit me?</h1>
@@ -27,6 +28,7 @@
       </div>
     </noscript>
 
+    {{ v.step_progress_track(['Age group', 'Exemptions', 'Ways to meet']) }}
     <p class="progress" id="checker-progress" aria-live="polite" hidden>Step 1 of 3</p>
 
     <form id="checker" class="checker checker-form" novalidate hidden>

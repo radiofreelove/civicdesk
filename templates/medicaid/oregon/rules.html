@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <h1>The new rules, in plain words</h1>
@@ -38,7 +39,7 @@
     </div>
 
     <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('school-cap') }}</span><span>Good to know</span></p>
       <h3>2. School</h3>
       <p>You go to school at least half-time. {{ src('MED-S01') }}</p>
       <div class="more">
@@ -47,11 +48,24 @@
     </div>
 
     <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('hours-meter') }}</span><span>Good to know</span></p>
       <h3>3. 80 hours a month</h3>
       <p>You spend 80 hours a month on work, volunteering, school, or job training. You can add them together. {{ src('MED-S01') }}</p>
       <p>About 20 hours a week gets you there.</p>
     </div>
+
+    {% set or_hours_note %}All hours can come from one activity, or you can combine them to reach 80 hours in the month before you apply. {{ src('MED-S01') }} {{ src('MED-S04') }}{% endset %}
+    {{ v.hours_breakdown(
+      'How 80 monthly hours can add up (~20 hours a week)',
+      'You do not need 80 hours in a single job. OHP lets you combine qualifying activities in the same month:',
+      [
+        {'icon': 'id-card', 'label': 'Paid, self-employed, or in-kind work', 'detail': 'Wages, gig work, internships, or work for housing'},
+        {'icon': 'school-cap', 'label': 'School or job training', 'detail': 'Classes, GED study, or career training hours'},
+        {'icon': 'caregiver-heart', 'label': 'Organized volunteering', 'detail': 'Tracked hours with a nonprofit or public program'}
+      ],
+      note=or_hours_note,
+      id='or-hours-stack'
+    ) }}
 
     <h2>What counts as work</h2>
     <ul>

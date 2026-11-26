@@ -47,7 +47,7 @@ def site_server(built_site: Path) -> str:
 @pytest.fixture(scope="session")
 def browser_instance():
     with sync_playwright() as pw:
-        browser = pw.chromium.launch()
+        browser = pw.chromium.launch(args=["--disable-dev-shm-usage"])
         try:
             yield browser
         finally:

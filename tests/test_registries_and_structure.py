@@ -554,6 +554,65 @@ def test_verify_sources_dynamic_discovery_dedup_retry_and_bot_gated(tmp_path: Pa
     assert any(i.startswith("PR-UNGATED-403 ") and "HTTP 403" in i for i in issues)
 
 
+def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
+    design_doc = (ROOT / "docs" / "DESIGN.md").read_text(encoding="utf-8")
+    for required_term in ("--viz-surface", "--viz-accent", "tabular-nums", "WCAG 2.2 AAA"):
+        assert required_term in design_doc
+
+    svg_open_re = re.compile(r"<svg\b([^>]*)>", re.I | re.S)
+    inline_style_attr_re = re.compile(r"\sstyle\s*=", re.I)
+
+    html_files = sorted(built_site.rglob("*.html"))
+    assert len(html_files) == 68
+    total_svgs = 0
+
+    for html_path in html_files:
+        raw = html_path.read_text(encoding="utf-8")
+        assert "<style" not in raw.lower(), f"{html_path}: inline <style> forbidden by CSP"
+        assert not inline_style_attr_re.search(raw), f"{html_path}: inline style=... attribute forbidden by CSP"
+        assert "<text" not in raw.lower(), f"{html_path}: SVG <text> forbidden (must use Hybrid HTML + SVG)"
+
+        for m in svg_open_re.finditer(raw):
+            total_svgs += 1
+            attrs = m.group(1)
+            is_hidden = 'aria-hidden="true"' in attrs
+            is_labeled_img = 'role="img"' in attrs and ("aria-label=" in attrs or "aria-labelledby=" in attrs)
+            assert is_hidden or is_labeled_img, (
+                f"{html_path}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
+            )
+
+    assert total_svgs >= 200
+
+    expected_markers = {
+        "index.html": ('class="hero-stage"', 'class="horizon-svg"', 'class="desk-emblem"', 'class="viz-flow'),
+        "start/index.html": ('class="choice-icon"', 'class="guide-dir-icon"'),
+        "medicaid/index.html": ('class="viz-timeline',),
+        "medicaid/oregon/index.html": ('class="viz-timeline',),
+        "medicaid/washington/index.html": ('class="viz-timeline',),
+        "medicaid/utah/index.html": ('class="viz-timeline',),
+        "medicaid/oregon/rules/index.html": ('class="viz-hours"', 'class="viz-hours-svg"'),
+        "medicaid/washington/rules/index.html": ('class="viz-hours"', 'class="viz-hours-svg"'),
+        "medicaid/utah/rules/index.html": ('class="viz-hours"', 'class="viz-hours-svg"'),
+        "medicaid/oregon/reasons/index.html": ('class="viz-grid', "data-deeper"),
+        "medicaid/washington/reasons/index.html": ('class="viz-grid', "data-deeper"),
+        "medicaid/utah/reasons/index.html": ('class="viz-grid', "data-deeper"),
+        "medicaid/oregon/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
+        "medicaid/washington/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
+        "medicaid/utah/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
+        "id-records/index.html": ('class="viz-flow',),
+        "id-records/oregon/index.html": ('class="viz-flow',),
+        "id-records/washington/index.html": ('class="viz-flow',),
+        "id-records/utah/index.html": ('class="viz-flow',),
+        "id-records/federal/index.html": ('class="viz-grid',),
+        "id-records/after/index.html": ('class="viz-flow',),
+        "id-records/path/index.html": ('class="choice-icon"', 'class="result-emblem'),
+    }
+    for rel_file, markers in expected_markers.items():
+        html = (built_site / rel_file).read_text(encoding="utf-8")
+        for marker in markers:
+            assert marker in html, f"{rel_file}: missing expected visual marker {marker!r}"
+
+
 
 
 

@@ -390,14 +390,15 @@
   });
 
   /* ---------- Reveal hidden Short-version target on hash navigation ---------- */
-  var HIDDEN_IN_BRIEF = ".deeper, .brief-extra, .more";
+  var HIDDEN_IN_BRIEF = ".deeper, .brief-extra, .more, [data-deeper]";
   function openTarget() {
     if (!window.location.hash) return;
     var id = window.location.hash.slice(1);
     try { id = decodeURIComponent(id); } catch (e) { /* use raw */ }
     var target = document.getElementById(id);
     if (!target) return;
-    var wasHidden = current().brief === "on" && target.closest(HIDDEN_IN_BRIEF);
+    var briefActive = current().brief === "on" || current().brief === "true";
+    var wasHidden = briefActive && target.closest(HIDDEN_IN_BRIEF);
     if (wasHidden) {
       setBrief(false, "Full version. The link goes to a section the short version hides, so all sections are showing again.", false);
     }

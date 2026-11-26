@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Utah</p>
 <h1>Change your name and sex designation in Utah</h1>
@@ -25,12 +26,20 @@
 <p>A 2026 bill called H.B. 183 would have changed Utah's rules, but a Senate committee sent it back to Rules on March 4, 2026, and it failed when the session ended March 6, 2026. {{ src('ID-UT-HB183-NOTICE') }} {{ src('ID-UT-HB183-LEGISCAN') }} The law on this guide is the May 7, 2025 version. {{ src('ID-UT-CODE-26B-8-111') }} {{ m.badge('our_reading') }} <a href="{{ page_url('id-records-utah-court#ut-2026') }}">Read the full 2026 note</a>.</p>
 {% endcall %}
 
+<h2 id="order">Recommended Utah sequence</h2>
+{{ v.process_flow([
+  {'icon': 'court-gavel', 'title': 'Utah district court', 'body': 'File your petition in district court (or use a marriage certificate or divorce decree for marriage/divorce name updates).', 'meta': fact('ut_fee_petition') ~ ' or waiver'},
+  {'icon': 'ssa-card', 'title': 'Social Security', 'body': 'Update your legal name at Social Security first using a certified copy of your signed order.', 'meta': 'Free card'},
+  {'icon': 'dmv-license', 'title': 'Driver License Division', 'body': 'Bring your certified court order to update your Utah license or ID card.', 'meta': 'After SSA updates'},
+  {'icon': 'birth-cert', 'title': 'Vital Records & passport', 'body': 'Mail form 902 and a certified court order to Utah Vital Records, and review federal passport rules.', 'meta': 'Court order required'}
+], cols=4) }}
+
 <h2 id="guides">At a glance: your Utah guides</h2>
 <p>Pick the record you want to update. Each page has plain steps, costs, and official form links.</p>
 {{ m.hub_cards([
   {
     'id': 'steps',
-    'icon': 'gavel',
+    'icon': 'court-gavel',
     'title': 'Court order',
     'href': page_url('id-records-utah-court'),
     'summary': 'Residency rules, the six things a judge looks for in a sex designation change, MyPaperwork online filing, hearings, fee waivers, privacy, and under-18 rules.',
@@ -38,7 +47,7 @@
   },
   {
     'id': 'birth-certificate',
-    'icon': 'document',
+    'icon': 'birth-cert',
     'title': 'Utah birth certificate',
     'href': page_url('id-records-utah-birth'),
     'summary': 'Mail a certified copy of your signed court order and form 902 to Utah Vital Records, plus what to ask about amendment history.',
@@ -46,7 +55,7 @@
   },
   {
     'id': 'license',
-    'icon': 'id_card',
+    'icon': 'dmv-license',
     'title': 'Driver license or ID',
     'href': page_url('id-records-utah-id'),
     'summary': 'What Utah Driver License Division asks for to update your name, and what to check before updating a sex marker.',
@@ -64,19 +73,19 @@
 <h2 id="more-steps">More steps in your path</h2>
 {{ m.hub_cards([
   {
-    'icon': 'federal',
+    'icon': 'passport-globe',
     'title': 'Federal records in 2026',
     'href': page_url('id-records-federal'),
     'summary': 'Passports and Social Security have different rules right now. Check before you apply or mail anything.'
   },
   {
-    'icon': 'checklist',
+    'icon': 'ssa-card',
     'title': 'After court checklist',
     'href': page_url('id-records-after'),
     'summary': 'Update Social Security, your license, your birth certificate, and other accounts in the right order.'
   },
   {
-    'icon': 'info',
+    'icon': 'fee-waiver',
     'title': 'Get free or low-cost help',
     'href': page_url('id-records-help'),
     'summary': 'Legal aid, court self-help centers, and peer support across Oregon, Washington, and Utah.'

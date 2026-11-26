@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Utah Medicaid</p>
 <h1>The new Utah Medicaid rules, in plain words</h1>
@@ -45,7 +46,7 @@
     </div>
 
     <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('school-cap') }}</span><span>Good to know</span></p>
       <h3>2. School</h3>
       <p>You go to school at least half-time. {{ src('MED-U01') }}</p>
       <div class="more">
@@ -54,11 +55,24 @@
     </div>
 
     <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('hours-meter') }}</span><span>Good to know</span></p>
       <h3>3. 80 hours a month</h3>
       <p>You spend 80 hours a month on work, job training, volunteering, or school. You can add them together. {{ src('MED-U01') }}</p>
       <p>About 20 hours a week gets you there.</p>
     </div>
+
+    {% set ut_hours_note %}Keep records of your hours: under Utah Code 26B-3-142.1, Utah must verify activities through records or documents. {{ src('MED-U01') }} {{ src('MED-U39') }}{% endset %}
+    {{ v.hours_breakdown(
+      'How 80 monthly hours can add up (~20 hours a week)',
+      'You can reach 80 hours in one activity or add qualifying hours together in the same month:',
+      [
+        {'icon': 'id-card', 'label': 'Work', 'detail': 'Paid employment or self-employment hours'},
+        {'icon': 'school-cap', 'label': 'School or job training', 'detail': 'Classes or job training program hours'},
+        {'icon': 'caregiver-heart', 'label': 'Volunteering', 'detail': 'Unpaid work with an organized community program'}
+      ],
+      note=ut_hours_note,
+      id='ut-hours-stack'
+    ) }}
 
     <h2>What counts as work or volunteering</h2>
     <p>Utah's pages do not yet say exactly what counts. The federal rule says volunteering means unpaid work with an organized program that helps the community.</p>

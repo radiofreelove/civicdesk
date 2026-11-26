@@ -374,3 +374,78 @@ def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_in
     }""") is True
     tz_ctx.close()
 
+
+def test_visual_system_xl_wide_reflow_brief_and_progress(site_server: str, browser_instance) -> None:
+    visual_routes = [
+        "/",
+        "/start/",
+        "/medicaid/",
+        "/medicaid/oregon/",
+        "/medicaid/oregon/rules/",
+        "/medicaid/oregon/reasons/",
+        "/medicaid/oregon/check/",
+        "/id-records/",
+        "/id-records/path/",
+        "/id-records/oregon/",
+        "/id-records/federal/",
+        "/id-records/after/",
+    ]
+    ctx = browser_instance.new_context(viewport={"width": 390, "height": 844})
+    page = ctx.new_page()
+    errors: list[str] = []
+    page.add_init_script(
+        "window.__csp = []; document.addEventListener('securitypolicyviolation', e => window.__csp.push(e.violatedDirective));"
+    )
+    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+
+    # 1. Verify zero horizontal overflow and zero CSP errors at 320px and 390px with XL + Wide spacing active
+    for route in visual_routes:
+        errors.clear()
+        page.goto(site_server + route, wait_until="load")
+        page.evaluate(
+            "() => { document.documentElement.dataset.size = 'xl'; document.documentElement.dataset.spacing = 'wide'; }"
+        )
+        for width in (320, 390):
+            page.set_viewport_size({"width": width, "height": 844})
+            overflow = page.evaluate("() => document.documentElement.scrollWidth - window.innerWidth")
+            assert overflow <= 1, f"{route}: horizontal overflow of {overflow}px at {width}px with XL + Wide"
+        assert not errors, f"{route}: console/page errors: {errors}"
+        assert page.evaluate("() => window.__csp || []") == []
+
+    # 2. Verify Short version mode (both data-brief="on" and data-brief="true") hides [data-deeper] visual grids cleanly
+    page.set_viewport_size({"width": 1280, "height": 800})
+    page.goto(site_server + "/medicaid/oregon/reasons/", wait_until="load")
+    assert page.locator(".viz-grid[data-deeper]").is_visible()
+    for brief_val in ("true", "on"):
+        page.evaluate(f"() => {{ document.documentElement.dataset.brief = '{brief_val}'; }}")
+        assert page.locator(".viz-grid[data-deeper]").is_hidden()
+        assert page.locator(".safety-exit-link[data-quick-exit]").is_visible()
+    page.evaluate("() => { document.documentElement.dataset.brief = 'off'; }")
+    assert page.locator(".viz-grid[data-deeper]").is_visible()
+
+    # 3. Verify 3-step visual progress track aria-current="step", completion states, and outcome emblem on check wizard
+    page.goto(site_server + "/medicaid/oregon/check/", wait_until="load")
+    assert page.is_visible("#checker-steps-track")
+    assert page.get_attribute('[data-progress-step="1"]', "aria-current") == "step"
+    assert page.get_attribute('[data-progress-step="2"]', "aria-current") is None
+
+    page.check('input[name="age"][value="19to64"]')
+    page.click('[data-step="1"] button[data-next]')
+    assert "is-complete" in (page.get_attribute('[data-progress-step="1"]', "class") or "")
+    assert page.get_attribute('[data-progress-step="2"]', "aria-current") == "step"
+
+    page.check('input[name="reason"][value="none"]')
+    page.click('[data-step="2"] button[data-next]')
+    assert "is-complete" in (page.get_attribute('[data-progress-step="2"]', "class") or "")
+    assert page.get_attribute('[data-progress-step="3"]', "aria-current") == "step"
+
+    page.check('input[name="meet"][value="hours"]')
+    page.click('#checker button[type="submit"]')
+    assert page.is_hidden("#checker-steps-track")
+    assert page.is_visible("#checker-result .result-emblem")
+    assert "Activity check" in page.inner_text("#checker-result .result-emblem")
+
+    ctx.close()
+
+
