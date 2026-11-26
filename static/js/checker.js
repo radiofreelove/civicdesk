@@ -10,6 +10,7 @@
 
   var form;
   var progress;
+  var track;
   var steps;
   var result;
   var current = 1;
@@ -40,6 +41,15 @@
     check: [
       ["circle", { cx: "12", cy: "12", r: "9" }],
       ["path", { d: "M8.5 12.5l2.5 2.5 4.5-5.5" }]
+    ],
+    clock: [
+      ["circle", { cx: "12", cy: "12", r: "9" }],
+      ["path", { d: "M12 7.5V12l3 2" }]
+    ],
+    print: [
+      ["path", { d: "M7 8V4h10v4" }],
+      ["rect", { x: "4", y: "8", width: "16", height: "8", rx: "2" }],
+      ["path", { d: "M7 14h10v6H7v-6z" }]
     ]
   };
 
@@ -128,9 +138,9 @@
 
     addRow("Age", ageLabels.length ? ageLabels.join(", ") : "Not picked yet");
     if (checkedValues("age")[0] === "19to64") {
-      addRow("Reasons that fit you", reasonLabels.length ? reasonLabels.join(" ") : "Not picked yet");
+      addRow("Reasons that fit you", reasonLabels.length ? reasonLabels.join(", ") : "Not picked yet");
       if (includeStep3) {
-        addRow("Ways to meet the rules", meetLabels.length ? meetLabels.join(" ") : "Pick at least one above");
+        addRow("Ways to meet the rules", meetLabels.length ? meetLabels.join(", ") : "Pick at least one above");
       }
     }
     box.appendChild(dl);
@@ -169,16 +179,44 @@
     return wrap;
   }
 
+  function syncProgressTrack(n) {
+    if (!track) { return; }
+    Array.prototype.forEach.call(track.querySelectorAll("[data-progress-step]"), function (item) {
+      var stepNum = Number(item.getAttribute("data-progress-step"));
+      var dot = item.querySelector(".viz-progress-dot");
+      if (stepNum < n) {
+        item.classList.add("is-complete");
+        item.classList.remove("is-active");
+        item.removeAttribute("aria-current");
+        if (dot) { dot.textContent = "\u2713"; }
+      } else if (stepNum === n) {
+        item.classList.add("is-active");
+        item.classList.remove("is-complete");
+        item.setAttribute("aria-current", "step");
+        if (dot) { dot.textContent = String(stepNum); }
+      } else {
+        item.classList.remove("is-active");
+        item.classList.remove("is-complete");
+        item.removeAttribute("aria-current");
+        if (dot) { dot.textContent = String(stepNum); }
+      }
+    });
+  }
+
   function showStep(n, moveFocus) {
     current = n;
     steps.forEach(function (step) {
       step.hidden = Number(step.getAttribute("data-step")) !== n;
     });
     progress.textContent = "Step " + n + " of " + TOTAL;
+    syncProgressTrack(n);
     if (n === 3) { updatePreviewRecap(); }
     if (moveFocus) {
       var target = form.querySelector('[data-step="' + n + '"]');
-      if (target) { target.focus(); }
+      if (target) {
+        if (!target.hasAttribute("tabindex")) { target.setAttribute("tabindex", "-1"); }
+        target.focus();
+      }
     }
   }
 
@@ -187,8 +225,8 @@
     if (!error) { return; }
     error.hidden = !show;
     if (show) {
-      var first = form.querySelector('[data-step="' + n + '"] input');
-      if (first) { first.focus(); }
+      if (!error.hasAttribute("tabindex")) { error.setAttribute("tabindex", "-1"); }
+      error.focus();
     }
   }
 
@@ -246,6 +284,7 @@
     result.hidden = true;
     form.hidden = false;
     progress.hidden = false;
+    if (track) { track.hidden = false; }
     showStep(age === "19to64" ? 3 : 1, true);
   }
 
@@ -264,8 +303,16 @@
     result.hidden = true;
     form.hidden = false;
     progress.hidden = false;
+    if (track) { track.hidden = false; }
     [1, 2, 3].forEach(function (n) { showError(n, false); });
     showStep(1, true);
+  }
+
+  function buildEmblem(iconName, labelText, toneClass) {
+    var p = el("p", null, "result-emblem" + (toneClass ? " " + toneClass : ""));
+    p.appendChild(svgIcon(iconName));
+    p.appendChild(el("span", labelText));
+    return p;
   }
 
   function buildResult() {
@@ -278,10 +325,12 @@
     result.appendChild(buildRecapBox("Your answers", age === "19to64"));
 
     if (age !== "19to64") {
+      result.insertBefore(buildEmblem("shield", "Age group check", "result-emblem-good"), title);
       title.textContent = "The new rules do not apply to your age group.";
       result.appendChild(el("p", CHECK.age.body));
       result.appendChild(para([link(CHECK.age.link.href, CHECK.age.link.text)]));
     } else if (reasons.length > 0) {
+      result.insertBefore(buildEmblem("shield", "Exemption check", "result-emblem-good"), title);
       title.textContent = notApply
         ? "The new rules likely do not apply to you."
         : "You may not have to meet the new rules.";
@@ -294,6 +343,7 @@
       result.appendChild(el("h3", "What to do"));
       result.appendChild(stepsOf(CHECK.reasonTodo));
     } else if (meets.length > 0) {
+      result.insertBefore(buildEmblem("check", "Activity check", "result-emblem-good"), title);
       title.textContent = "You may already meet the new rules.";
       result.appendChild(el("p", "Here is what you picked:"));
       result.appendChild(listOf(meets, MEETS));
@@ -301,6 +351,7 @@
       result.appendChild(stepsOf(CHECK.meetTodo));
       result.appendChild(para([link(CHECK.meetLink.href, CHECK.meetLink.text)]));
     } else {
+      result.insertBefore(buildEmblem("clock", "Next-step plan", "result-emblem-watch"), title);
       title.textContent = "The new rules may apply to you.";
       result.appendChild(el("p", CHECK.mayApply.body));
       result.appendChild(el("h3", "What you can do"));
@@ -336,8 +387,10 @@
     again.type = "button";
     again.addEventListener("click", startOver);
     actions.appendChild(again);
-    var print = el("button", "Print my results", "button-secondary");
+    var print = el("button", null, "button-secondary");
     print.type = "button";
+    print.appendChild(svgIcon("print"));
+    print.appendChild(el("span", "Print my results"));
     print.addEventListener("click", function () { window.print(); });
     actions.appendChild(print);
     result.appendChild(actions);
@@ -345,6 +398,7 @@
     result.hidden = false;
     form.hidden = true;
     progress.hidden = true;
+    if (track) { track.hidden = true; }
     title.setAttribute("tabindex", "-1");
     try {
       title.focus({ preventScroll: false });
@@ -356,6 +410,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     form = document.getElementById("checker");
     progress = document.getElementById("checker-progress");
+    track = document.getElementById("checker-steps-track");
     result = document.getElementById("checker-result");
     if (!form || !progress || !result || !CHECK) { return; }
 
@@ -372,6 +427,7 @@
     form.reset();
     form.hidden = false;
     progress.hidden = false;
+    if (track) { track.hidden = false; }
     showStep(1, false);
 
     wireNoneBoxes("reason");

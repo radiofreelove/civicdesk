@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">After court</p>
 <h1>Update your records in the right order</h1>
@@ -10,8 +11,15 @@
 <p>Offices check each other. Oregon's DMV, for example, checks your name with Social Security, so it asks you to change your name there first. {{ src('ID-OR-DMV-GENDER') }}</p>
 {% endcall %}
 
+{{ v.process_flow([
+  {'icon': 'court-gavel', 'title': 'Certified copies', 'body': 'Order official certified copies of your court order, marriage certificate, or divorce decree.'},
+  {'icon': 'ssa-card', 'title': 'Social Security', 'body': 'Update your legal name at Social Security before visiting the DMV.'},
+  {'icon': 'dmv-license', 'title': 'State license or ID', 'body': 'Update your driver license or state ID card once SSA matches.'},
+  {'icon': 'passport-globe', 'title': 'Birth, passport & accounts', 'body': 'Update your birth record, review passport rules, and notify payroll and Medicaid.'}
+], cols=4) }}
+
 <div class="btn-row js-only">
-  <button type="button" class="btn" data-print>Print this checklist</button>
+  <button type="button" class="btn" data-print>{{ m.icon('print-sheet') }}<span>&nbsp;Print this checklist</span></button>
 </div>
 <p class="no-js-only">To print, use your browser's Print command.</p>
 <p>Your checkmarks stay on this page only while it is open, unless you turn on "Remember my checklist" in Reading settings.</p>

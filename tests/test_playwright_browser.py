@@ -244,3 +244,208 @@ def test_scoped_leave_quickly_and_reading_settings(site_server: str, browser_ins
     assert left == []
 
     ctx.close()
+
+
+def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_instance) -> None:
+    ctx = browser_instance.new_context(viewport={"width": 1280, "height": 800})
+    page = ctx.new_page()
+
+    # 1. Dark slate sets computed color-scheme: dark on native radio controls; light/warm/contrast set light
+    page.goto(site_server + "/medicaid/oregon/check/", wait_until="load")
+    assert page.evaluate("""() => {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        return getComputedStyle(document.querySelector('input[type="radio"]')).colorScheme;
+    }""") == "dark"
+    for light_theme in ("light", "warm", "contrast"):
+        assert page.evaluate(f"""() => {{
+            document.documentElement.setAttribute('data-theme', '{light_theme}');
+            return getComputedStyle(document.querySelector('input[type="radio"]')).colorScheme;
+        }}""") == "light"
+
+    # 2. Checker validation error sits above Step 1 fieldset inside viewport, and multi-select recap uses ', '
+    page.reload(wait_until="load")
+    page.click('[data-step="1"] button[data-next]')
+    assert page.is_visible("#step-1-error")
+    checker_vis = page.evaluate("""() => {
+        const err = document.getElementById('step-1-error').getBoundingClientRect();
+        const fs = document.querySelector('[data-step="1"] fieldset').getBoundingClientRect();
+        return {
+            activeId: document.activeElement && document.activeElement.id,
+            errInView: err.top >= 0 && err.bottom <= window.innerHeight,
+            fsVisibleBelowErr: fs.top >= err.bottom - 2 && fs.top < window.innerHeight
+        };
+    }""")
+    assert checker_vis["activeId"] == "step-1-error"
+    assert checker_vis["errInView"]
+    assert checker_vis["fsVisibleBelowErr"]
+
+    page.check('input[name="age"][value="19to64"]')
+    page.click('[data-step="1"] button[data-next]')
+    page.check('input[name="reason"][value="pregnant"]')
+    page.check('input[name="reason"][value="caregiver"]')
+    page.click('[data-step="2"] button[data-next]')
+    recap_text = page.inner_text("#checker-recap-preview")
+    assert "pregnant, " in recap_text.lower() or ", " in recap_text
+
+    # 3. Path Finder empty submit keeps both #path-error and #q-live visible below sticky .exit-bar (desktop & mobile)
+    for vw in ({"width": 1280, "height": 800}, {"width": 360, "height": 740}):
+        page.set_viewport_size(vw)
+        page.goto(site_server + "/id-records/path/", wait_until="load")
+        page.evaluate("() => window.scrollTo(0, document.body.scrollHeight)")
+        page.click('#path-form button[type="submit"]')
+        assert page.is_visible("#path-error")
+        path_vis = page.evaluate("""() => {
+            const bar = document.querySelector('.exit-bar').getBoundingClientRect();
+            const err = document.getElementById('path-error').getBoundingClientRect();
+            const q1 = document.getElementById('q-live').getBoundingClientRect();
+            return {
+                activeId: document.activeElement && document.activeElement.id,
+                describedBy: document.getElementById('q-live').getAttribute('aria-describedby'),
+                errBelowBar: err.top >= bar.bottom - 1,
+                errInView: err.bottom <= window.innerHeight,
+                q1Visible: q1.top >= err.bottom - 2 && q1.top < window.innerHeight
+            };
+        }""")
+        assert path_vis["activeId"] == "path-error", f"viewport {vw}: {path_vis}"
+        assert path_vis["describedBy"] == "path-error", f"viewport {vw}: {path_vis}"
+        assert path_vis["errBelowBar"], f"viewport {vw}: #path-error tucked behind .exit-bar: {path_vis}"
+        assert path_vis["errInView"], f"viewport {vw}: #path-error outside viewport: {path_vis}"
+        assert path_vis["q1Visible"], f"viewport {vw}: #q-live not visible alongside #path-error: {path_vis}"
+
+    # 4. /start/ searchable guide directory filters client-side with zero storage/network side effects
+    page.set_viewport_size({"width": 1280, "height": 800})
+    page.goto(site_server + "/medicaid/", wait_until="load")
+    card_align = page.evaluate("""() => {
+        const cards = Array.from(document.querySelectorAll('.state-cards > .card'));
+        const rowCards = cards.filter(c => Math.abs(c.getBoundingClientRect().top - cards[0].getBoundingClientRect().top) < 2);
+        const heights = rowCards.map(c => Math.round(c.getBoundingClientRect().height));
+        const btnTops = rowCards.map(c => Math.round(c.querySelector('.btn-row').getBoundingClientRect().top));
+        return { count: rowCards.length, heights, btnTops };
+    }""")
+    assert card_align["count"] >= 2
+    assert len(set(card_align["heights"])) == 1, f"Unequal state card heights on same row: {card_align}"
+    assert max(card_align["btnTops"]) - min(card_align["btnTops"]) <= 2, f"Misaligned .btn-row tops: {card_align}"
+
+    page.goto(site_server + "/start/", wait_until="load")
+    page.fill("#guide-filter", "passport")
+    assert "matching guide" in page.inner_text("#guide-filter-status")
+    assert page.locator('#all-guides a[href="/id-records/federal/"]').is_visible()
+    page.fill("#guide-filter", "")
+    assert page.inner_text("#guide-filter-status") == ""
+
+    # 5. Checklist non-persistence hint + state switcher focusout closing
+    page.goto(site_server + "/id-records/oregon/court/", wait_until="load")
+    first_check = page.locator("input[data-check]").first
+    first_check.check()
+    assert page.is_visible(".checklist-persistence-hint")
+    assert page.evaluate("() => localStorage.getItem('civicdesk:checks')") is None
+
+    switcher_summary = page.locator("[data-state-switcher] > summary").first
+    switcher_summary.click()
+    assert page.evaluate("() => document.querySelector('[data-state-switcher]').open") is True
+    page.focus("#settings-open")
+    page.wait_for_timeout(50)
+    assert page.evaluate("() => document.querySelector('[data-state-switcher]').open") is False
+    ctx.close()
+
+    # 6. Local-timezone [data-show-until] check at 8:30 PM Pacific on Dec 31, 2026 (which is Jan 1, 2027 04:30 UTC!)
+    tz_ctx = browser_instance.new_context(
+        viewport={"width": 1280, "height": 800},
+        timezone_id="America/Los_Angeles",
+    )
+    tz_ctx.add_init_script("""(() => {
+        const fixed = new Date('2026-12-31T20:30:00-08:00').getTime();
+        const OrigDate = Date;
+        class MockDate extends OrigDate {
+            constructor(...args) {
+                super(...(args.length ? args : [fixed]));
+            }
+            static now() { return fixed; }
+        }
+        window.Date = MockDate;
+    })();""")
+    tz_page = tz_ctx.new_page()
+    tz_page.goto(site_server + "/medicaid/oregon/", wait_until="load")
+    # Confirm UTC date is already 2027-01-01 while local date in LA is still 2026-12-31
+    assert tz_page.evaluate("() => new Date().toISOString().slice(0, 10)") == "2027-01-01"
+    assert tz_page.evaluate("""() => {
+        const items = Array.from(document.querySelectorAll('[data-show-until="2026-12-31"]'));
+        return items.length > 0 && items.every(el => !el.hidden);
+    }""") is True
+    tz_ctx.close()
+
+
+def test_visual_system_xl_wide_reflow_brief_and_progress(site_server: str, browser_instance) -> None:
+    visual_routes = [
+        "/",
+        "/start/",
+        "/medicaid/",
+        "/medicaid/oregon/",
+        "/medicaid/oregon/rules/",
+        "/medicaid/oregon/reasons/",
+        "/medicaid/oregon/check/",
+        "/id-records/",
+        "/id-records/path/",
+        "/id-records/oregon/",
+        "/id-records/federal/",
+        "/id-records/after/",
+    ]
+    ctx = browser_instance.new_context(viewport={"width": 390, "height": 844})
+    page = ctx.new_page()
+    errors: list[str] = []
+    page.add_init_script(
+        "window.__csp = []; document.addEventListener('securitypolicyviolation', e => window.__csp.push(e.violatedDirective));"
+    )
+    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+
+    # 1. Verify zero horizontal overflow and zero CSP errors at 320px and 390px with XL + Wide spacing active
+    for route in visual_routes:
+        errors.clear()
+        page.goto(site_server + route, wait_until="load")
+        page.evaluate(
+            "() => { document.documentElement.dataset.size = 'xl'; document.documentElement.dataset.spacing = 'wide'; }"
+        )
+        for width in (320, 390):
+            page.set_viewport_size({"width": width, "height": 844})
+            overflow = page.evaluate("() => document.documentElement.scrollWidth - window.innerWidth")
+            assert overflow <= 1, f"{route}: horizontal overflow of {overflow}px at {width}px with XL + Wide"
+        assert not errors, f"{route}: console/page errors: {errors}"
+        assert page.evaluate("() => window.__csp || []") == []
+
+    # 2. Verify Short version mode (both data-brief="on" and data-brief="true") hides [data-deeper] visual grids cleanly
+    page.set_viewport_size({"width": 1280, "height": 800})
+    page.goto(site_server + "/medicaid/oregon/reasons/", wait_until="load")
+    assert page.locator(".viz-grid[data-deeper]").is_visible()
+    for brief_val in ("true", "on"):
+        page.evaluate(f"() => {{ document.documentElement.dataset.brief = '{brief_val}'; }}")
+        assert page.locator(".viz-grid[data-deeper]").is_hidden()
+        assert page.locator(".safety-exit-link[data-quick-exit]").is_visible()
+    page.evaluate("() => { document.documentElement.dataset.brief = 'off'; }")
+    assert page.locator(".viz-grid[data-deeper]").is_visible()
+
+    # 3. Verify 3-step visual progress track aria-current="step", completion states, and outcome emblem on check wizard
+    page.goto(site_server + "/medicaid/oregon/check/", wait_until="load")
+    assert page.is_visible("#checker-steps-track")
+    assert page.get_attribute('[data-progress-step="1"]', "aria-current") == "step"
+    assert page.get_attribute('[data-progress-step="2"]', "aria-current") is None
+
+    page.check('input[name="age"][value="19to64"]')
+    page.click('[data-step="1"] button[data-next]')
+    assert "is-complete" in (page.get_attribute('[data-progress-step="1"]', "class") or "")
+    assert page.get_attribute('[data-progress-step="2"]', "aria-current") == "step"
+
+    page.check('input[name="reason"][value="none"]')
+    page.click('[data-step="2"] button[data-next]')
+    assert "is-complete" in (page.get_attribute('[data-progress-step="2"]', "class") or "")
+    assert page.get_attribute('[data-progress-step="3"]', "aria-current") == "step"
+
+    page.check('input[name="meet"][value="hours"]')
+    page.click('#checker button[type="submit"]')
+    assert page.is_hidden("#checker-steps-track")
+    assert page.is_visible("#checker-result .result-emblem")
+    assert "Activity check" in page.inner_text("#checker-result .result-emblem")
+
+    ctx.close()
+
+

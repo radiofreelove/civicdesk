@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Oregon</p>
 <h1>Change your name and legal sex in Oregon</h1>
@@ -28,12 +29,20 @@
 <p>Oregon sex change cases filed on or after {{ fact('or_confidential_date') }}, are confidential by law, including cases that change name and sex together. Name-only cases are still public. {{ src('ID-OR-2026-CH52') }} <a href="{{ page_url('id-records-oregon-court#privacy') }}">Read who can see your case</a>.</p>
 {% endcall %}
 
+<h2 id="order">Recommended Oregon sequence</h2>
+{{ v.process_flow([
+  {'icon': 'court-gavel', 'title': 'Court or certificate', 'body': 'File in circuit court for a name or combined change, or skip court for marker-only state updates.', 'meta': fact('or_fee_petition') ~ ' or waiver'},
+  {'icon': 'ssa-card', 'title': 'Social Security', 'body': 'Update your legal name at Social Security before visiting the Oregon DMV.', 'meta': 'Free card'},
+  {'icon': 'dmv-license', 'title': 'Oregon DMV', 'body': 'Update your license or ID (M, F, or X with no medical proof).', 'meta': 'Checks SSA name'},
+  {'icon': 'birth-cert', 'title': 'Birth & passport', 'body': 'Amend an Oregon birth record (form OHA 2673) and check federal passport rules.', 'meta': fact('or_oha_amend_fee') ~ ' + copy fee'}
+], cols=4) }}
+
 <h2 id="guides">At a glance: your Oregon guides</h2>
 <p>Pick the record you want to update. Each page has plain steps, costs, and official form links.</p>
 {{ m.hub_cards([
   {
     'id': 'steps',
-    'icon': 'gavel',
+    'icon': 'court-gavel',
     'title': 'Court order',
     'href': page_url('id-records-oregon-court'),
     'summary': 'One petition changes your legal name, your legal sex (M, F, or nonbinary), or both. Includes fee waivers, 2026 confidentiality rules, and under-18 rules.',
@@ -41,7 +50,7 @@
   },
   {
     'id': 'birth-certificate',
-    'icon': 'document',
+    'icon': 'birth-cert',
     'title': 'Oregon birth certificate',
     'href': page_url('id-records-oregon-birth'),
     'summary': 'Change name, sex (M, F, or X), or both with notarized form OHA 2673 and no court order, or send a certified court judgment.',
@@ -49,7 +58,7 @@
   },
   {
     'id': 'license',
-    'icon': 'id_card',
+    'icon': 'dmv-license',
     'title': 'Driver license or ID',
     'href': page_url('id-records-oregon-id'),
     'summary': 'Choose M, F, or X on a standard or REAL ID card at the Oregon DMV with no medical proof. Update Social Security first if changing your name.',
@@ -67,19 +76,19 @@
 <h2 id="more-steps">More steps in your path</h2>
 {{ m.hub_cards([
   {
-    'icon': 'federal',
+    'icon': 'passport-globe',
     'title': 'Federal records in 2026',
     'href': page_url('id-records-federal'),
     'summary': 'Passports and Social Security have different rules right now. Check before you apply or mail anything.'
   },
   {
-    'icon': 'checklist',
+    'icon': 'ssa-card',
     'title': 'After court checklist',
     'href': page_url('id-records-after'),
     'summary': 'Update Social Security, your license, your birth certificate, and other accounts in the right order.'
   },
   {
-    'icon': 'info',
+    'icon': 'fee-waiver',
     'title': 'Get free or low-cost help',
     'href': page_url('id-records-help'),
     'summary': 'Legal aid, court self-help centers, and peer support across Oregon, Washington, and Utah.'

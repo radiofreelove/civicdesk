@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Washington Apple Health</p>
 <h1>The new Apple Health rules, in plain words</h1>
@@ -56,7 +57,7 @@
     </div>
 
     <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('school-cap') }}</span><span>Good to know</span></p>
       <h3>3. School</h3>
       <p>You are in an educational program at least half-time. {{ src('MED-WA05') }}</p>
       <div class="more">
@@ -78,7 +79,7 @@
     </div>
 
     <div class="good">
-      <p class="box-kicker"><span class="box-icon">{{ m.icon('check') }}</span><span>Good to know</span></p>
+      <p class="box-kicker"><span class="box-icon">{{ m.icon('hours-meter') }}</span><span>Good to know</span></p>
       <h3>6. A mix</h3>
       <p>You do a mix of activities. The total is at least 80 hours a month. {{ src('MED-WA22') }}</p>
       <p>You may add up hours of work, community service, a work program, and school.</p>
@@ -105,6 +106,19 @@
         </div>
       </div>
     </div>
+
+    {% set wa_hours_note %}You can reach 80 hours in one category or combine any of these activities in the same month. {{ src('MED-WA22') }}{% endset %}
+    {{ v.hours_breakdown(
+      'How 80 monthly hours can add up (~20 hours a week)',
+      'HCA lets you combine work, school credits, work programs, and community service to reach 80 hours:',
+      [
+        {'icon': 'id-card', 'label': 'Paid, self-employed, or in-kind work', 'detail': 'Wages, self-employment, or work for housing'},
+        {'icon': 'school-cap', 'label': 'School credits or work program', 'detail': '1 to 6 converted credits (13 to 78 hrs) or training'},
+        {'icon': 'caregiver-heart', 'label': 'Community service', 'detail': 'Qualifying community service hours'}
+      ],
+      note=wa_hours_note,
+      id='wa-hours-stack'
+    ) }}
 
     <h2>How the state checks</h2>
     <ul class="short">

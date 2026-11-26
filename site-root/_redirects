@@ -1,5 +1,8 @@
 # Clean convenience redirects within civicdesk.net
 /check /medicaid/oregon/check/ 301
+/or-check /medicaid/oregon/check/ 301
+/wa-check /medicaid/washington/check/ 301
+/ut-check /medicaid/utah/check/ 301
 /path /id-records/path/ 301
 /id-records/oregon-court /id-records/oregon/court/ 301
 /id-records/oregon-birth /id-records/oregon/birth/ 301

@@ -13,7 +13,9 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
+from collections.abc import Mapping
 from pathlib import Path
 from urllib.parse import quote
 
@@ -66,16 +68,48 @@ CHECKED_P_RE = re.compile(r'(<p class="checked">.*?</p>)', re.S)
 LEDE_P_RE = re.compile(r'(<p class="lede">.*?</p>)', re.S)
 PURPOSE_P_RE = re.compile(r'(<p class="purpose">.*?</p>)', re.S)
 
-_SRC_LINK_RE = r'<a class="src" [^>]+><span class="src-label">Source:</span> [^<]+</a>'
+_SRC_LINK_RE = r'<a class="src" [^>]+><span class="src-label">Source:</span>(?:&nbsp;|\s+)[^<]+</a>'
 _STATUS_BADGE_RE = r'<span class="badge badge-(?:official|not-official|not-confirmed|our-reading)">[^<]+</span>'
 _CITE_UNIT_RE = rf'(?:<span class="src-unit">{_SRC_LINK_RE}\s+{_STATUS_BADGE_RE}</span>|{_SRC_LINK_RE}|{_STATUS_BADGE_RE})'
-CITE_RUN_RE = re.compile(
-    rf'({_CITE_UNIT_RE}(?:\s+{_CITE_UNIT_RE})*)(?=\s*</(?:p|li|td|dd)>|\s*</span>\s*</li>)'
+_CITE_RUN_INNER = rf'{_CITE_UNIT_RE}(?:\s+{_CITE_UNIT_RE})*'
+_BLOCK_END_TAIL = r'\s*</(?:p|li|td|dd)>|\s*</span>\s*</(?:li|p)>'
+PAREN_CITE_RUN_RE = re.compile(
+    rf'(?P<pre>[^\s(>])?\s*\(\s*(?P<run>{_CITE_RUN_INNER})\s*\)\.?(?={_BLOCK_END_TAIL})'
 )
+CITE_RUN_RE = re.compile(rf'({_CITE_RUN_INNER})(?={_BLOCK_END_TAIL})')
+HEX_SHA_RE = re.compile(r'^[0-9a-fA-F]{7,40}$')
 
 
 class BuildError(Exception):
     """Fatal error during site build."""
+
+
+def resolve_commit_sha(
+    env_vars: Mapping[str, str] | None = None,
+    repo_root: Path = ROOT,
+    run_git: bool = True,
+) -> str:
+    env = env_vars if env_vars is not None else os.environ
+    for key in ("WORKERS_CI_COMMIT_SHA", "GITHUB_SHA", "CF_PAGES_COMMIT_SHA"):
+        candidate = str(env.get(key) or "").strip()
+        if HEX_SHA_RE.match(candidate):
+            return candidate.lower()
+    if run_git:
+        try:
+            proc = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=repo_root,
+                capture_output=True,
+                text=True,
+                timeout=5,
+                check=False,
+            )
+            git_sha = (proc.stdout or "").strip()
+            if proc.returncode == 0 and HEX_SHA_RE.match(git_sha):
+                return git_sha.lower()
+        except (OSError, subprocess.SubprocessError):
+            pass
+    return "localdev"
 
 
 def load_yaml(rel_path: str):
@@ -134,6 +168,16 @@ def insert_label_key(html: str, sources_labels_url: str) -> str:
     return html
 
 
+def _strip_paren_cite_run(match: re.Match[str]) -> str:
+    pre = match.group("pre") or ""
+    run = match.group("run")
+    if not pre:
+        return run
+    if pre in ".!?:;":
+        return f"{pre} {run}"
+    return f"{pre}. {run}"
+
+
 def group_citations(html: str) -> str:
     main_idx = html.find("<main")
     if main_idx == -1:
@@ -144,6 +188,7 @@ def group_citations(html: str) -> str:
     sources_idx = html.find('<section class="page-sources"', main_idx, main_end)
     body_end = sources_idx if sources_idx != -1 else main_end
     body = html[main_idx:body_end]
+    body = PAREN_CITE_RUN_RE.sub(_strip_paren_cite_run, body)
     body = CITE_RUN_RE.sub(r'<span class="cite-row">\1</span>', body)
     return html[:main_idx] + body + html[body_end:]
 
@@ -268,7 +313,9 @@ def main() -> int:
         base_prefix = "/"
     repo_url = (env_vars.get("REPO_URL") or site["repo_url"]).rstrip("/")
     issues_url = f"{repo_url}/issues"
-    commit = env_vars.get("GITHUB_SHA") or env_vars.get("CF_PAGES_COMMIT_SHA") or "localdev"
+    commit = resolve_commit_sha(env_vars, ROOT)
+    commit_short = commit[:7] if commit != "localdev" else "localdev"
+    commit_url = f"{repo_url}/commit/{commit}" if commit != "localdev" else ""
     build_time = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
 
     def checked_range(items: list[dict]) -> dict[str, dt.date]:
@@ -298,6 +345,7 @@ def main() -> int:
     env.filters["human_date"] = human_date
 
     state = {"used": [], "facts": [], "page": None}
+    asset_hashes: dict[str, str] = {}
 
     def use(sid: str) -> dict:
         if sid not in sources:
@@ -311,7 +359,7 @@ def main() -> int:
         short = label or s.get("short") or s["title"]
         link = (
             f'<a class="src" href="{escape(s["url"])}" rel="noreferrer">'
-            f'<span class="src-label">Source:</span> {escape(short)}</a>'
+            f'<span class="src-label">Source:</span>&nbsp;{escape(short)}</a>'
         )
         if s["status"] != "official":
             b = status_badge(s["status"])
@@ -356,13 +404,19 @@ def main() -> int:
         return f"{url}{sep}{anchor}" if sep else url
 
     def asset(rel: str) -> str:
-        if not (STATIC / rel).exists():
+        fpath = STATIC / rel
+        if not fpath.is_file():
             raise BuildError(f"page {state['page']}: missing static asset '{rel}'")
-        return f"{base_prefix}static/{rel}"
+        digest = asset_hashes.get(rel)
+        if digest is None:
+            digest = hashlib.sha256(fpath.read_bytes()).hexdigest()[:8]
+            asset_hashes[rel] = digest
+        return f"{base_prefix}static/{rel}?v={digest}"
 
     def correction_mailto(page: dict) -> str:
         route = str(page.get("route") or "/")
-        return f"mailto:{site['corrections_email']}?subject={quote(route, safe='/')}"
+        subject = f"CivicDesk correction: {route}"
+        return f"mailto:{site['corrections_email']}?subject={quote(subject, safe='')}"
 
     def header_tagline(page: dict) -> str:
         desk = page.get("desk", "")
@@ -406,22 +460,29 @@ def main() -> int:
                 {"slug": "medicaid-utah", "name": "Utah", "guide": "Utah Medicaid 2027 rules", "sep": False},
                 {"slug": "medicaid", "name": "Medicaid desk", "guide": "All states & federal overview", "sep": True},
                 {"slug": "id-records", "name": "ID & Vital Records desk", "guide": "Marriage, divorce, court, and ID updates", "sep": False},
-                {"slug": "start", "name": "Start here", "guide": "2-question state and topic router", "sep": False},
+                {"slug": "start", "name": "Start here", "guide": "2-question router & full guide finder", "sep": False},
             ]
         if desk == "id-records":
             return [
                 {"slug": "id-records-oregon", "name": "Oregon", "guide": "Oregon court, birth record, and DMV", "sep": False},
                 {"slug": "id-records-washington", "name": "Washington", "guide": "Washington court, birth record, and DOL", "sep": False},
                 {"slug": "id-records-utah", "name": "Utah", "guide": "Utah court, Vital Records, and DLD", "sep": False},
-                {"slug": "id-records-federal", "name": "Federal records", "guide": "Passports and Social Security", "sep": False},
+                {"slug": "id-records-federal", "name": "Federal records", "guide": "Passports, Social Security & immigration", "sep": False},
                 {"slug": "id-records-path", "name": "Find your path", "guide": "Personalized step-by-step path finder", "sep": True},
                 {"slug": "medicaid", "name": "2027 Medicaid desk", "guide": "OHP, Apple Health, and Utah Medicaid", "sep": False},
-                {"slug": "start", "name": "Start here", "guide": "2-question state and topic router", "sep": False},
+                {"slug": "start", "name": "Start here", "guide": "2-question router & full guide finder", "sep": False},
             ]
         return [
-            {"slug": "start", "name": "Start here", "guide": "2-question state and topic router", "sep": False},
-            {"slug": "medicaid", "name": "2027 Medicaid rules", "guide": "Oregon, Washington, and Utah guides", "sep": True},
-            {"slug": "id-records", "name": "Name, ID & Vital Records", "guide": "Marriage, divorce, court, and ID guides", "sep": False},
+            {"slug": "start", "name": "Start here", "guide": "2-question router & full guide finder", "sep": False},
+            {"slug": "medicaid", "name": "2027 Medicaid overview", "guide": "Federal & 3-state summary", "sep": True},
+            {"slug": "medicaid-oregon", "name": "Oregon Medicaid (OHP)", "guide": "Rules, exemptions & 1-minute check", "sep": False},
+            {"slug": "medicaid-washington", "name": "Washington Apple Health", "guide": "Rules, exemptions & 1-minute check", "sep": False},
+            {"slug": "medicaid-utah", "name": "Utah Medicaid", "guide": "Rules, exclusions & 1-minute check", "sep": False},
+            {"slug": "id-records-path", "name": "ID & records path finder", "guide": "Step-by-step custom checklist", "sep": True},
+            {"slug": "id-records-oregon", "name": "Oregon ID & vital records", "guide": "Marriage, divorce, court, OHA & DMV", "sep": False},
+            {"slug": "id-records-washington", "name": "Washington ID & vital records", "guide": "Marriage, divorce, court, DOH & DOL", "sep": False},
+            {"slug": "id-records-utah", "name": "Utah ID & vital records", "guide": "Marriage, divorce, court, Vital & DLD", "sep": False},
+            {"slug": "id-records-federal", "name": "Federal IDs", "guide": "Passports, Social Security & immigration", "sep": False},
         ]
 
     def nav_items(page: dict) -> list[tuple[str, str]]:
@@ -551,6 +612,8 @@ def main() -> int:
         fonts_available=fonts_available,
         csp_meta=CSP_META,
         build_commit=commit,
+        build_commit_short=commit_short,
+        build_commit_url=commit_url,
         build_time=build_time,
         used_sources=lambda: [sources[i] for i in state["used"]],
     )
@@ -676,6 +739,8 @@ def main() -> int:
         "version": site.get("version"),
         "built_at": build_time,
         "commit": commit,
+        "commit_short": commit_short,
+        "commit_url": commit_url or None,
         "public_url": pages_url or None,
         "repo_url": repo_url,
         "oldest_checked": min(all_public_dates).isoformat(),

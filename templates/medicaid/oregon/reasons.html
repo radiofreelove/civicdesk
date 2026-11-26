@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <h1>Reasons you may not have to meet the rules</h1>
@@ -13,6 +14,17 @@
       <li><strong>What to do:</strong> If a reason fits you, tell OHP.</li>
       <li><strong>Not sure?</strong> <a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check</a>.</li>
     </ul>
+
+    {% set or_ex_1 %}Pregnant or within 12 months after pregnancy, caring for a child 13 or younger, or caring for someone with a disability. {{ src('MED-S03') }}{% endset %}
+    {% set or_ex_2 %}Serious or disabling health condition (no doctor's note needed in 2027), SSI/SSDI, substance-use treatment or recovery, or 100% VA disability. {{ src('MED-S03') }} {{ src('MED-S07') }}{% endset %}
+    {% set or_ex_3 %}Age 18 or younger, age 65 or older, having Medicare, or meeting SNAP or TANF work rules. {{ src('MED-S02') }} {{ src('MED-S03') }}{% endset %}
+    {% set or_ex_4 %}American Indian or Alaska Native, former foster youth under 26, recent release from jail or prison, or hospital/medical travel hardship. {{ src('MED-S03') }}{% endset %}
+    {{ v.icon_feature_grid([
+      {'icon': 'caregiver-heart', 'title': 'Pregnancy & caregiving', 'body': or_ex_1},
+      {'icon': 'medical-cross', 'title': 'Health, disability & recovery', 'body': or_ex_2},
+      {'icon': 'medicaid-shield', 'title': 'Age, Medicare, SNAP & TANF', 'body': or_ex_3},
+      {'icon': 'exemption-check', 'title': 'Tribal, foster youth & hardships', 'body': or_ex_4}
+    ], cols=2, extra=true) }}
 
     <h2>The rules do not apply to</h2>
     <ul>

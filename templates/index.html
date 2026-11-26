@@ -1,12 +1,22 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
-<h1>Government rules and paperwork, explained in plain words.</h1>
-{{ m.lede("CivicDesk maps multi-agency rules, deadlines, fees, and forms across Oregon, Washington, Utah, and federal offices. Every fact links to a dated primary source, and nothing you read or click is tracked.") }}
+<div class="hero-stage">
+  <div class="hero-copy">
+    <h1>Government rules and paperwork, explained in plain words.</h1>
+    {{ m.lede("CivicDesk maps multi-agency rules, deadlines, fees, and forms across Oregon, Washington, Utah, and federal offices. Every fact links to a dated primary source, and nothing you read or click is tracked.") }}
+  </div>
+  {{ v.hero_horizon_art('home') }}
+</div>
 
 <section class="big-start" aria-labelledby="start-router-h">
   <h2 id="start-router-h">Not sure where to start? Answer 2 quick questions</h2>
   <p>Pick your state and what you are trying to do. We will route you straight to the exact guide or 1-minute tool.</p>
+  <ol class="quick-steps">
+    <li><span class="quick-step-num">1</span><span>Choose Oregon, Washington, Utah, or federal</span></li>
+    <li><span class="quick-step-num">2</span><span>Pick 2027 Medicaid rules or ID &amp; vital records</span></li>
+  </ol>
   <p><a class="btn" href="{{ page_url('start') }}">Route me to the right guide</a></p>
 </section>
 
@@ -14,9 +24,15 @@
 <ul class="desk-cards">
   <li class="desk-card">
     <div class="card-head">
-      <span class="card-icon">{{ m.icon('health', 'state-mark') }}</span>
+      <span class="desk-emblem">{{ m.icon('medicaid-shield') }}</span>
       <h2><a href="{{ page_url('medicaid') }}">2027 Medicaid Work &amp; Activity Rules</a></h2>
     </div>
+    <ul class="desk-pills" aria-label="Medicaid coverage areas">
+      <li>{{ m.icon('state-or') }}<span>Oregon</span></li>
+      <li>{{ m.icon('state-wa') }}<span>Washington</span></li>
+      <li>{{ m.icon('state-ut') }}<span>Utah</span></li>
+      <li>{{ m.icon('hours-meter') }}<span>80 hrs / mo</span></li>
+    </ul>
     <p>Plain-language guides to the new federal and state Medicaid community engagement rules starting January 1, 2027, including 2027 enforcement delays, the December 31, 2026 retroactive bills cutoff, exemptions, and how to apply.</p>
     <ul>
       <li><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a> and <a href="{{ page_url('medicaid-oregon-check') }}">1-minute OHP check</a></li>
@@ -30,9 +46,15 @@
 
   <li class="desk-card desk-card-rose">
     <div class="card-head">
-      <span class="card-icon">{{ m.icon('id_card', 'state-mark') }}</span>
+      <span class="desk-emblem">{{ m.icon('id-card') }}</span>
       <h2><a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records</a></h2>
     </div>
+    <ul class="desk-pills" aria-label="ID and vital record stages">
+      <li>{{ m.icon('court-gavel') }}<span>Court &amp; marriage</span></li>
+      <li>{{ m.icon('ssa-card') }}<span>Social Security</span></li>
+      <li>{{ m.icon('dmv-license') }}<span>State ID</span></li>
+      <li>{{ m.icon('passport-globe') }}<span>Passport &amp; birth</span></li>
+    </ul>
     <p>Step-by-step sequences for updating your legal name after marriage, divorce, or a court order, and updating sex or gender designations across courts, Social Security, driver licenses, birth certificates, and passports.</p>
     <ul>
       <li><a href="{{ page_url('id-records-oregon') }}">Oregon</a>, <a href="{{ page_url('id-records-washington') }}">Washington</a>, and <a href="{{ page_url('id-records-utah') }}">Utah</a> state guides</li>
@@ -50,28 +72,12 @@
 {% endcall %}
 
 <h2 id="guarantees">How CivicDesk works</h2>
-<div class="stage-map">
-  <ol class="stage-list">
-    <li class="stage-item">
-      <div class="stage-card">
-        <span class="stage-head"><span class="stage-num">1</span><strong>Dated primary sources</strong></span>
-        <p class="stage-copy">Every fee, deadline, and rule cites the statute, court form, or agency page we read, with explicit 4-tier honesty labels (<span class="badge badge-official">Official</span>, <span class="badge badge-not-official">Not official</span>, <span class="badge badge-not-confirmed">Not confirmed</span>, <span class="badge badge-our-reading">Our reading</span>).</p>
-      </div>
-      <span class="stage-arrow" aria-hidden="true">{{ m.icon('arrow_right') }}</span>
-    </li>
-    <li class="stage-item">
-      <div class="stage-card">
-        <span class="stage-head"><span class="stage-num">2</span><strong>Whole-journey order</strong></span>
-        <p class="stage-copy">Instead of sending you between separate agency org charts, each guide puts court, federal, and state steps in the order offices check them.</p>
-      </div>
-      <span class="stage-arrow" aria-hidden="true">{{ m.icon('arrow_right') }}</span>
-    </li>
-    <li class="stage-item">
-      <div class="stage-card">
-        <span class="stage-head"><span class="stage-num">3</span><strong>Safe on shared computers</strong></span>
-        <p class="stage-copy">Built for public libraries, clinics, and shared phones with zero cookies, zero analytics, and strict browser privacy headers. <a href="{{ page_url('privacy') }}">Read our privacy rules</a>.</p>
-      </div>
-    </li>
-  </ol>
-</div>
+{% set guarantee_1 %}Every fee, deadline, and rule cites the statute, court form, or agency page we read, with explicit 4-tier honesty labels (<span class="badge badge-official">Official</span>, <span class="badge badge-not-official">Not official</span>, <span class="badge badge-not-confirmed">Not confirmed</span>, <span class="badge badge-our-reading">Our reading</span>).{% endset %}
+{% set guarantee_2 %}Instead of sending you between separate agency org charts, each guide puts court, federal, and state steps in the order offices check them.{% endset %}
+{% set guarantee_3 %}Built for public libraries, clinics, and shared phones with zero cookies, zero analytics, and strict browser privacy headers. <a href="{{ page_url('privacy') }}">Read our privacy rules</a>.{% endset %}
+{{ v.process_flow([
+  {'icon': 'birth-cert', 'title': 'Dated primary sources', 'body': guarantee_1},
+  {'icon': 'id-card', 'title': 'Whole-journey order', 'body': guarantee_2},
+  {'icon': 'exemption-check', 'title': 'Safe on shared computers', 'body': guarantee_3}
+], cols=3) }}
 {% endblock %}

@@ -1,41 +1,24 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Oregon Health Plan (OHP)</p>
 <nav class="guide-switch" aria-labelledby="guide-switch-label">
   <p class="guide-switch-label" id="guide-switch-label">Switch Medicaid state guide</p>
   <ul>
-    <li><a href="{{ page_url('medicaid-oregon') }}" aria-current="page"><span class="guide-state">Oregon</span> <span class="guide-note">This is the Oregon Health Plan guide.</span></a></li>
-    <li><a href="{{ page_url('medicaid-washington') }}"><span class="guide-state">Washington</span> <span class="guide-note">Go to the Washington Apple Health guide</span></a></li>
-    <li><a href="{{ page_url('medicaid-utah') }}"><span class="guide-state">Utah</span> <span class="guide-note">Go to the Utah Medicaid guide</span></a></li>
+    <li><a href="{{ page_url('medicaid-oregon') }}" aria-current="page"><span class="guide-state guide-state-row">{{ m.icon('state-or') }}<span>Oregon</span></span> <span class="guide-note">This is the Oregon Health Plan guide.</span></a></li>
+    <li><a href="{{ page_url('medicaid-washington') }}"><span class="guide-state guide-state-row">{{ m.icon('state-wa') }}<span>Washington</span></span> <span class="guide-note">Go to the Washington Apple Health guide</span></a></li>
+    <li><a href="{{ page_url('medicaid-utah') }}"><span class="guide-state guide-state-row">{{ m.icon('state-ut') }}<span>Utah</span></span> <span class="guide-note">Go to the Utah Medicaid guide</span></a></li>
   </ul>
 </nav>
     <h1>Applying for OHP? New rules start Jan.&nbsp;1, 2027.</h1>
     <p class="purpose"><strong>Why this site exists:</strong> The state explains the new OHP rules across more than a dozen documents. This site puts what applicants need in one place, in plain words. Each page lists its official sources.</p>
 
-    <section class="timeline-strip" aria-labelledby="timeline-title">
-      <h2 id="timeline-title">Key dates at a glance</h2>
-      <ol class="timeline-list">
-        <li class="timeline-item timeline-info">
-          <span class="timeline-marker" aria-hidden="true">{{ m.icon('circle') }}</span>
-          <span class="timeline-date">Nov.&nbsp;2026</span>
-          <a class="timeline-label" href="#update-title">Policy update: delayed enforcement</a>
-          <span class="timeline-note">Oregon joins hold harmless through June&nbsp;30, 2027</span>
-        </li>
-        <li class="timeline-item timeline-deadline">
-          <span class="timeline-marker" aria-hidden="true">{{ m.icon('triangle') }}</span>
-          <span class="timeline-date">Jan.&nbsp;1, 2027</span>
-          <a class="timeline-label" href="#bills-title">Deadline: rules start and bills cutoff</a>
-          <span class="timeline-note" data-show-until="2026-12-31">Past medical bills window drops from 3 months to 1</span>
-        </li>
-        <li class="timeline-item timeline-ongoing">
-          <span class="timeline-marker" aria-hidden="true">{{ m.icon('square') }}</span>
-          <span class="timeline-date">Before &amp; ongoing</span>
-          <a class="timeline-label" href="{{ page_url('medicaid-oregon-log') }}">Track your hours</a>
-          <span class="timeline-note">OHP looks at the month before you apply</span>
-        </li>
-      </ol>
-    </section>
+    {{ v.timeline_strip([
+      {'kind': 'info', 'icon': 'medicaid-shield', 'date': 'Nov. 2026', 'href': '#update-title', 'label': 'Policy update: delayed enforcement', 'note': 'Oregon joins hold harmless through June 30, 2027'},
+      {'kind': 'deadline', 'icon': 'warning-triangle', 'date': 'Jan. 1, 2027', 'href': '#bills-title', 'label': 'Deadline: rules start and bills cutoff', 'note': 'Past medical bills window drops from 3 months to 1', 'note_show_until': '2026-12-31'},
+      {'kind': 'ongoing', 'icon': 'hours-meter', 'date': 'Before & ongoing', 'href': page_url('medicaid-oregon-log'), 'label': 'Track your hours', 'note': 'OHP looks at the month before you apply'}
+    ], title='Key dates at a glance', heading_id='timeline-title') }}
 
     <section class="warn" aria-labelledby="update-title">
       <p class="box-kicker"><span class="box-icon">{{ m.icon('info') }}</span><span>Policy update</span></p>

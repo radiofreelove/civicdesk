@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Washington Apple Health</p>
 <h1>Reasons you may not have to meet the Apple Health rules</h1>
@@ -13,6 +14,17 @@
       <li><strong>Who decides:</strong> This guide says "you may." Only Washington decides who is exempt.</li>
       <li><strong>Not sure?</strong> <a href="{{ page_url('medicaid-washington-check') }}">Take the 1-minute check</a>.</li>
     </ul>
+
+    {% set wa_ex_1 %}Pregnant or 12 months postpartum, parent or caretaker of a child under 14, or caregiver for a person with a disability. {{ src('MED-WA05') }} {{ src('MED-WA22') }}{% endset %}
+    {% set wa_ex_2 %}Medically frail (self-attestation through 2027), substance-use treatment, or 100% total VA disability rating. {{ src('MED-WA04') }} {{ src('MED-WA05') }}{% endset %}
+    {% set wa_ex_3 %}Under age 19, entitled to Medicare Part A or B, or meeting SNAP or TANF work rules. {{ src('MED-WA22') }}{% endset %}
+    {% set wa_ex_4 %}American Indian or Alaska Native, foster or former foster youth under 26, recent release within 90 days, or short-term hardship. {{ src('MED-WA22') }}{% endset %}
+    {{ v.icon_feature_grid([
+      {'icon': 'caregiver-heart', 'title': 'Pregnancy & caregiving', 'body': wa_ex_1},
+      {'icon': 'medical-cross', 'title': 'Medical frailty & treatment', 'body': wa_ex_2},
+      {'icon': 'medicaid-shield', 'title': 'Age, Medicare, SNAP & TANF', 'body': wa_ex_3},
+      {'icon': 'exemption-check', 'title': 'Tribal, foster youth & hardships', 'body': wa_ex_4}
+    ], cols=2, extra=true) }}
 
     <h2>Reasons HCA lists</h2>
     <ul>

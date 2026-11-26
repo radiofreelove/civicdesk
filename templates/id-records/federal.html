@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Federal records, every state</p>
 <h1>Passports and Social Security in 2026</h1>
 {{ m.lede("Two federal offices changed course in 2025. New and renewed U.S. passports now show the sex assigned at birth, and the X marker is gone. Social Security stopped changing sex markers. Name changes still go through at both.") }}
 {{ m.checked_line(page) }}
+
+{% set fed_ssa %}Free replacement card for a legal name change after marriage, divorce, or court order. Social Security cards do not print a sex marker, and POMS RM 10212.200 restricts internal sex-field changes to sex at birth. {{ src('ID-US-SSA-NAME') }} {{ src('ID-US-SSA-POMS-10212-200') }}{% endset %}
+{% set fed_ppt %}Legal name changes continue via Form DS-5504, DS-82, or DS-11, while new or renewed passports show sex assigned at birth (with X discontinued). Existing unexpired passports remain valid for travel. {{ src('ID-US-STATE-CHANGE') }} {{ src('ID-US-STATE-SEX-MARKER') }}{% endset %}
+{{ v.icon_feature_grid([
+  {'icon': 'ssa-card', 'title': 'Social Security card', 'body': fed_ssa},
+  {'icon': 'passport-globe', 'title': 'U.S. passport', 'body': fed_ppt}
+], cols=2) }}
 
 {% call m.callout("good", "Updating Social Security and passports after marriage or divorce", "fed-marriage-divorce") %}
 <ul>

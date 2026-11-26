@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
 <p class="kicker">Utah Medicaid</p>
 <h1>Reasons you may not have to meet the Utah rules</h1>
@@ -13,6 +14,17 @@
       <li><strong>Tribal members:</strong> Utah's letter says to send proof of your status by Jan.&nbsp;1, 2027.</li>
       <li><strong>Not sure?</strong> <a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check</a>.</li>
     </ul>
+
+    {% set ut_ex_1 %}Pregnant or on postpartum Medicaid, caring for a child 13 or younger, or caring for a person with a disability. {{ src('MED-U05') }}{% endset %}
+    {% set ut_ex_2 %}Blind or disabled, medically frail or special needs, drug or alcohol treatment, or 100% VA disability. {{ src('MED-U05') }}{% endset %}
+    {% set ut_ex_3 %}Age 18 or younger, age 65 or older, Medicare Part A or B, SSI, or SNAP/TANF work rules. {{ src('MED-U05') }}{% endset %}
+    {% set ut_ex_4 %}American Indian or Alaska Native (send proof by Jan. 1, 2027), foster care, recent release within 90 days, or short-term hardship. {{ src('MED-U05') }} {{ src('MED-U28') }}{% endset %}
+    {{ v.icon_feature_grid([
+      {'icon': 'caregiver-heart', 'title': 'Pregnancy & caregiving', 'body': ut_ex_1},
+      {'icon': 'medical-cross', 'title': 'Disability, frailty & treatment', 'body': ut_ex_2},
+      {'icon': 'medicaid-shield', 'title': 'Age, Medicare, SNAP & TANF', 'body': ut_ex_3},
+      {'icon': 'exemption-check', 'title': 'Tribal proof, foster care & hardships', 'body': ut_ex_4}
+    ], cols=2, extra=true) }}
 
     <h2>The rules do not apply to</h2>
     <ul>

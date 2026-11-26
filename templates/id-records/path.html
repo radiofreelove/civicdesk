@@ -17,42 +17,42 @@
 </div>
 
 <form id="path-form" class="path-form js-only" novalidate autocomplete="off">
+  <div id="path-error" class="callout callout-watch path-error" role="alert" tabindex="-1" hidden></div>
+
   <fieldset id="q-live">
     <legend>1. Where do you live?</legend>
-    <label><input type="radio" name="live" value="or"> Oregon</label>
-    <label><input type="radio" name="live" value="wa"> Washington</label>
-    <label><input type="radio" name="live" value="ut"> Utah</label>
-    <label><input type="radio" name="live" value="other"> Another state</label>
+    <label><input type="radio" name="live" value="or"> <span class="choice-icon">{{ m.icon('state-or') }}</span><span>Oregon</span></label>
+    <label><input type="radio" name="live" value="wa"> <span class="choice-icon">{{ m.icon('state-wa') }}</span><span>Washington</span></label>
+    <label><input type="radio" name="live" value="ut"> <span class="choice-icon">{{ m.icon('state-ut') }}</span><span>Utah</span></label>
+    <label><input type="radio" name="live" value="other"> <span class="choice-icon">{{ m.icon('federal-star') }}</span><span>Another state</span></label>
   </fieldset>
 
   <fieldset id="q-change">
     <legend>2. What do you want to update?</legend>
-    <label><input type="radio" name="change" value="marriage"> Name change after marriage or domestic partnership</label>
-    <label><input type="radio" name="change" value="divorce"> Restore or change a name through divorce</label>
-    <label><input type="radio" name="change" value="name"> Court-ordered name change</label>
-    <label><input type="radio" name="change" value="marker"> Sex or gender designation update</label>
-    <label><input type="radio" name="change" value="both"> Both name and sex or gender designation</label>
+    <label><input type="radio" name="change" value="marriage"> <span class="choice-icon">{{ m.icon('caregiver-heart') }}</span><span>Name change after marriage or domestic partnership</span></label>
+    <label><input type="radio" name="change" value="divorce"> <span class="choice-icon">{{ m.icon('court-gavel') }}</span><span>Restore or change a name through divorce</span></label>
+    <label><input type="radio" name="change" value="name"> <span class="choice-icon">{{ m.icon('court-gavel') }}</span><span>Court-ordered name change</span></label>
+    <label><input type="radio" name="change" value="marker"> <span class="choice-icon">{{ m.icon('id-card') }}</span><span>Sex or gender designation update</span></label>
+    <label><input type="radio" name="change" value="both"> <span class="choice-icon">{{ m.icon('exemption-check') }}</span><span>Both name and sex or gender designation</span></label>
   </fieldset>
 
   <fieldset id="q-who">
     <legend>3. Who is this for?</legend>
-    <label><input type="radio" name="who" value="adult"> Me, and I am 18 or older</label>
-    <label><input type="radio" name="who" value="parent"> My child (I am a parent or legal guardian)</label>
-    <label><input type="radio" name="who" value="minor"> Me, and I am under 18</label>
+    <label><input type="radio" name="who" value="adult"> <span class="choice-icon">{{ m.icon('id-card') }}</span><span>Me, and I am 18 or older</span></label>
+    <label><input type="radio" name="who" value="parent"> <span class="choice-icon">{{ m.icon('caregiver-heart') }}</span><span>My child (I am a parent or legal guardian)</span></label>
+    <label><input type="radio" name="who" value="minor"> <span class="choice-icon">{{ m.icon('school-cap') }}</span><span>Me, and I am under 18</span></label>
   </fieldset>
 
   <fieldset id="q-born">
     <legend>4. Optional: Do you also want to update a birth certificate?</legend>
     <p class="hint">Leave this blank or pick "Skip" if you only need Social Security, a driver license or ID, or a passport—most marriage and divorce name changes do not touch a birth certificate.</p>
-    <label><input type="radio" name="born" value="skip"> Skip — I am not updating a birth certificate</label>
-    <label><input type="radio" name="born" value="or"> Yes — Oregon birth certificate</label>
-    <label><input type="radio" name="born" value="wa"> Yes — Washington birth certificate</label>
-    <label><input type="radio" name="born" value="ut"> Yes — Utah birth certificate</label>
-    <label><input type="radio" name="born" value="other-us"> Yes — another U.S. state or territory</label>
-    <label><input type="radio" name="born" value="outside"> Born outside the United States</label>
+    <label><input type="radio" name="born" value="skip"> <span class="choice-icon">{{ m.icon('exemption-check') }}</span><span>Skip — I am not updating a birth certificate</span></label>
+    <label><input type="radio" name="born" value="or"> <span class="choice-icon">{{ m.icon('state-or') }}</span><span>Yes — Oregon birth certificate</span></label>
+    <label><input type="radio" name="born" value="wa"> <span class="choice-icon">{{ m.icon('state-wa') }}</span><span>Yes — Washington birth certificate</span></label>
+    <label><input type="radio" name="born" value="ut"> <span class="choice-icon">{{ m.icon('state-ut') }}</span><span>Yes — Utah birth certificate</span></label>
+    <label><input type="radio" name="born" value="other-us"> <span class="choice-icon">{{ m.icon('birth-cert') }}</span><span>Yes — another U.S. state or territory</span></label>
+    <label><input type="radio" name="born" value="outside"> <span class="choice-icon">{{ m.icon('passport-globe') }}</span><span>Born outside the United States</span></label>
   </fieldset>
-
-  <div id="path-error" class="callout callout-watch" role="alert" hidden></div>
 
   <div class="btn-row">
     <button type="submit" class="btn">Show my steps</button>
@@ -61,11 +61,12 @@
 </form>
 
 <section id="path-results" class="path-results" aria-labelledby="results-h" hidden>
+  <p class="result-emblem result-emblem-good">{{ m.icon('id-card') }}<span>Personalized record-update order</span></p>
   <h2 id="results-h" tabindex="-1">Your steps</h2>
   <p id="results-summary"></p>
   <div id="results-body"></div>
   <div class="btn-row">
-    <button type="button" class="btn" data-print>Print my steps</button>
+    <button type="button" class="btn" data-print>{{ m.icon('print-sheet') }}<span>Print my steps</span></button>
     <a class="btn-secondary" href="#path-form">Change my answers</a>
   </div>
 </section>
