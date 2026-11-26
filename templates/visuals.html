@@ -37,7 +37,7 @@
     <li class="viz-flow-item">
       <div class="viz-flow-card">
         <div class="viz-flow-head">
-          <span class="viz-flow-num">{{ loop.index }}</span>
+          <span class="viz-flow-num" aria-hidden="true">{{ loop.index }}</span>
           <span class="viz-medallion-wrap">{{ il.medallion(step.icon) }}</span>
         </div>
         <strong class="viz-flow-title">{{ step.title }}</strong>
@@ -143,17 +143,21 @@
         <span class="mockup-stamp">{{ stamp_text }}</span>
       </div>
       <div class="mockup-sheet-body">
-        <div class="mockup-pin-row"><span class="mockup-pin">1</span><span class="mockup-line-label">Notice date &amp; case number</span></div>
+      {% for c in callouts %}
+        <div class="mockup-pin-row{% if c.highlight is defined and c.highlight or (c.highlight is not defined and loop.index == 2) %} mockup-pin-highlight{% endif %}">
+          <span class="mockup-pin">{{ loop.index }}</span>
+          <span class="mockup-line-label">{{ c.pin_label|default(c.title) }}</span>
+        </div>
+        {% if loop.first %}
         <div class="mockup-faux-lines" aria-hidden="true"><span></span><span></span></div>
-        <div class="mockup-pin-row mockup-pin-highlight"><span class="mockup-pin">2</span><span class="mockup-line-label">Reply-by deadline box</span></div>
-        <div class="mockup-pin-row"><span class="mockup-pin">3</span><span class="mockup-line-label">What they could not verify</span></div>
-        <div class="mockup-pin-row"><span class="mockup-pin">4</span><span class="mockup-line-label">Ways to reply or appeal</span></div>
+        {% endif %}
+      {% endfor %}
       </div>
     </div>
     <ol class="mockup-legend">
     {% for c in callouts %}
       <li class="mockup-legend-item">
-        <span class="mockup-pin">{{ loop.index }}</span>
+        <span class="mockup-pin" aria-hidden="true">{{ loop.index }}</span>
         <div class="mockup-legend-copy">
           <strong>{{ c.title }}</strong>
           <span>{{ c.body }}</span>
@@ -422,7 +426,7 @@
   {% for s in steps %}
     <li class="viz-swimlane-card">
       <div class="viz-flow-head">
-        <span class="viz-flow-num">{{ loop.index }}</span>
+        <span class="viz-flow-num" aria-hidden="true">{{ loop.index }}</span>
         <span class="viz-medallion-wrap">{{ il.medallion(s.icon|default('appeal')) }}</span>
       </div>
       <strong class="viz-flow-title">{{ s.title }}</strong>

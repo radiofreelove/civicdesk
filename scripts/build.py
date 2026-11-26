@@ -18,6 +18,7 @@ import sys
 from collections.abc import Mapping
 from pathlib import Path
 from urllib.parse import quote
+import xml.etree.ElementTree as ET
 
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -29,6 +30,18 @@ TEMPLATES = ROOT / "templates"
 STATIC = ROOT / "static"
 SITE_ROOT = ROOT / "site-root"
 DEFAULT_OUT = ROOT / "public"
+
+DEFAULT_BRAND = {
+    "custom_artwork": False,
+    "mode": "mark_and_wordmark",
+    "logo": "",
+    "logo_dark": "",
+    "favicon_svg": "favicon.svg",
+    "apple_touch_icon": "apple-touch-icon.png",
+    "og_image": "og-card.png",
+    "og_image_alt": "CivicDesk five-stripe service-desk mark on dark slate",
+}
+VALID_BRAND_MODES = {"mark_and_wordmark", "lockup_only"}
 
 ALLOWED_STATUS = {"official", "not_official", "not_confirmed", "our_reading"}
 VALID_VERIFIED_BY = {"human_reviewed_machine_assisted"}
@@ -245,16 +258,128 @@ def verify_fonts(errors: list[str]) -> bool:
     return all_present and (fonts_dir / "AtkinsonHyperlegibleNext-Regular.woff2").is_file()
 
 
-def main() -> int:
+def validate_svg_asset(svg_path: Path, label: str, errors: list[str]) -> None:
+    try:
+        raw_svg = svg_path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        errors.append(f"{label} ({svg_path.name}): SVG file is not valid UTF-8")
+        return
+
+    if "<!ENTITY" in raw_svg.upper() or "<!DOCTYPE" in raw_svg.upper():
+        errors.append(f"{label} ({svg_path.name}): DOCTYPE and XML ENTITY declarations are forbidden")
+        return
+
+    try:
+        root = ET.fromstring(raw_svg)
+    except ET.ParseError as exc:
+        errors.append(f"{label} ({svg_path.name}): invalid SVG XML ({exc})")
+        return
+
+    if root.tag.split("}")[-1].lower() != "svg":
+        errors.append(f"{label} ({svg_path.name}): root XML element must be <svg>")
+        return
+
+    if not root.attrib.get("viewBox", "").strip():
+        errors.append(f"{label} ({svg_path.name}): <svg> must define a non-empty viewBox attribute")
+
+    for el in root.iter():
+        local_tag = el.tag.split("}")[-1].lower()
+        if local_tag in {"style", "script", "foreignobject"}:
+            errors.append(f"{label} ({svg_path.name}): <{local_tag}> element forbidden by strict CSP")
+        for attr_name, attr_val in el.attrib.items():
+            local_attr = attr_name.split("}")[-1].lower()
+            if local_attr == "style" or local_attr.startswith("on"):
+                errors.append(f"{label} ({svg_path.name}): '{local_attr}' attribute forbidden by strict CSP")
+            val_lower = attr_val.strip().lower()
+            if (
+                "http://" in val_lower
+                or "https://" in val_lower
+                or val_lower.startswith("//")
+                or "javascript:" in val_lower
+                or "data:text/html" in val_lower
+            ):
+                errors.append(
+                    f"{label} ({svg_path.name}): external or unsafe reference in '{local_attr}' attribute"
+                )
+
+
+def validate_brand_config(
+    site: dict,
+    static_dir: Path = STATIC,
+    errors: list[str] | None = None,
+) -> dict:
+    err_list = errors if errors is not None else []
+    raw_brand = site.get("brand")
+    if raw_brand is None:
+        raw_brand = {}
+    elif not isinstance(raw_brand, Mapping):
+        err_list.append("site.yaml: 'brand' must be a mapping")
+        raw_brand = {}
+
+    unknown = sorted(set(raw_brand) - set(DEFAULT_BRAND))
+    if unknown:
+        err_list.append(f"site.yaml: unknown brand key(s): {unknown}")
+
+    brand = {**DEFAULT_BRAND, **dict(raw_brand)}
+
+    if not isinstance(brand["custom_artwork"], bool):
+        err_list.append("site.yaml: brand.custom_artwork must be a boolean")
+
+    if brand["mode"] not in VALID_BRAND_MODES:
+        err_list.append(
+            f"site.yaml: brand.mode '{brand['mode']}' must be one of {sorted(VALID_BRAND_MODES)}"
+        )
+
+    for key in ("logo", "logo_dark", "favicon_svg", "apple_touch_icon", "og_image", "og_image_alt"):
+        brand[key] = str(brand.get(key) or "").strip()
+
+    if not brand["favicon_svg"]:
+        err_list.append("site.yaml: brand.favicon_svg must not be empty")
+    if not brand["og_image"]:
+        err_list.append("site.yaml: brand.og_image must not be empty")
+    if not brand["og_image_alt"]:
+        err_list.append("site.yaml: brand.og_image_alt must not be empty")
+
+    if brand["mode"] == "lockup_only" and not brand["logo"]:
+        err_list.append("site.yaml: brand.mode 'lockup_only' requires a non-empty brand.logo path")
+    if brand["logo_dark"] and not brand["logo"]:
+        err_list.append("site.yaml: brand.logo_dark requires brand.logo to be set")
+
+    for key in ("logo", "logo_dark", "favicon_svg", "apple_touch_icon", "og_image"):
+        rel = brand[key]
+        if not rel:
+            continue
+        if rel.startswith("/") or "\\" in rel or ".." in Path(rel).parts:
+            err_list.append(f"site.yaml: brand.{key} '{rel}' must be a clean relative path under static/")
+            continue
+        fpath = static_dir / rel
+        if not fpath.is_file() or fpath.stat().st_size == 0:
+            err_list.append(f"site.yaml: brand.{key} '{rel}' not found or empty under static/")
+            continue
+        if rel.lower().endswith(".svg"):
+            validate_svg_asset(fpath, f"brand.{key}", err_list)
+
+    site["brand"] = brand
+    return brand
+
+
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT, help="Output directory (default: public/)")
-    args = parser.parse_args()
+    parser.add_argument("--site-yaml", type=Path, default=None, help="Optional override path to site.yaml")
+    parser.add_argument("--static-dir", type=Path, default=STATIC, help="Static assets directory (default: static/)")
+    args = parser.parse_args(argv)
     out_dir = args.out if args.out.is_absolute() else (ROOT / args.out)
+    static_dir = args.static_dir if args.static_dir.is_absolute() else (ROOT / args.static_dir)
 
     errors: list[str] = []
     warnings: list[str] = []
 
-    site = load_yaml("site.yaml")
+    if args.site_yaml is not None:
+        site_yaml_path = args.site_yaml if args.site_yaml.is_absolute() else (ROOT / args.site_yaml)
+        site = yaml.safe_load(site_yaml_path.read_text(encoding="utf-8"))
+    else:
+        site = load_yaml("site.yaml")
     pages = load_yaml("pages.yaml")
     medicaid_list = load_yaml("sources/medicaid.yaml")
     id_records_list = load_yaml("sources/id_records.yaml")
@@ -274,6 +399,7 @@ def main() -> int:
                 errors.append(f"fact {fid}: unknown source {sid}")
 
     fonts_available = verify_fonts(errors)
+    validate_brand_config(site, static_dir, errors)
 
     pages_by_slug: dict[str, dict] = {}
     seen_routes: set[str] = set()
@@ -404,7 +530,7 @@ def main() -> int:
         return f"{url}{sep}{anchor}" if sep else url
 
     def asset(rel: str) -> str:
-        fpath = STATIC / rel
+        fpath = static_dir / rel
         if not fpath.is_file():
             raise BuildError(f"page {state['page']}: missing static asset '{rel}'")
         digest = asset_hashes.get(rel)
@@ -699,7 +825,12 @@ def main() -> int:
             print("  error:", e, file=sys.stderr)
         return 1
 
-    shutil.copytree(STATIC, out_dir / "static", dirs_exist_ok=True)
+    shutil.copytree(
+        static_dir,
+        out_dir / "static",
+        dirs_exist_ok=True,
+        ignore=shutil.ignore_patterns(".gitkeep", "*.md"),
+    )
     if SITE_ROOT.exists():
         shutil.copytree(SITE_ROOT, out_dir, dirs_exist_ok=True)
 

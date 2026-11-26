@@ -2,12 +2,16 @@ from __future__ import annotations
 
 import functools
 import http.server
-import resource
 import socketserver
 import subprocess
 import sys
 import threading
 from pathlib import Path
+
+try:
+    import resource
+except ImportError:  # pragma: no cover - Windows lacks POSIX resource module
+    resource = None  # type: ignore[assignment]
 
 import pytest
 from playwright.sync_api import sync_playwright
@@ -48,13 +52,14 @@ def site_server(built_site: Path) -> str:
 
 @pytest.fixture(scope="session")
 def playwright_session():
-    try:
-        soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
-        target = min(hard, 65536) if hard != resource.RLIM_INFINITY else 65536
-        if soft < target:
-            resource.setrlimit(resource.RLIMIT_NOFILE, (target, hard))
-    except (ValueError, OSError):
-        pass
+    if resource is not None:
+        try:
+            soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+            target = min(hard, 65536) if hard != resource.RLIM_INFINITY else 65536
+            if soft < target:
+                resource.setrlimit(resource.RLIMIT_NOFILE, (target, hard))
+        except (ValueError, OSError):
+            pass
 
     with sync_playwright() as pw:
         yield pw

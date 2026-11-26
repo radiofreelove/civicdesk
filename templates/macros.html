@@ -112,7 +112,7 @@
   <ol class="after-list">
   {% for item in steps %}
     <li class="after-item">
-      <span class="after-head"><span class="after-num">{{ loop.index }}</span><strong>{{ item.title }}</strong></span>
+      <span class="after-head"><span class="after-num" aria-hidden="true">{{ loop.index }}</span><strong>{{ item.title }}</strong></span>
       <span class="after-copy">{{ item.text }}</span>
     </li>
   {% endfor %}

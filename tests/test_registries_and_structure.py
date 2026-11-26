@@ -679,6 +679,229 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
             assert marker in html, f"{rel_file}: missing expected visual marker {marker!r}"
 
 
+def test_drop_in_artist_logo_system_and_make_mark_custom_mode(tmp_path: Path, built_site: Path) -> None:
+    import shutil
+
+    build_mod = _load_script("civicdesk_build_brand", "scripts/build.py")
+    make_mark = _load_script("civicdesk_make_mark_brand", "scripts/make_mark.py")
+
+    # 1. Default built site keeps inline 5-stripe mark, visible wordmark, and generated apple-touch-icon.png
+    assert (built_site / "static" / "apple-touch-icon.png").is_file()
+    assert (built_site / "static" / "apple-touch-icon.png").stat().st_size > 0
+    assert not (built_site / "static" / "brand" / ".gitkeep").exists()
+
+    default_index = (built_site / "index.html").read_text(encoding="utf-8")
+    assert 'class="brand-mark"' in default_index
+    assert "apple-touch-icon.png?v=" in default_index
+    assert '<span class="brand-name">CivicDesk</span>' in default_index
+
+    # 2. Custom artist SVGs in both mark_and_wordmark and lockup_only modes build cleanly and pass PageAuditor
+    custom_static = tmp_path / "static"
+    shutil.copytree(ROOT / "static", custom_static)
+    (custom_static / "brand").mkdir(parents=True, exist_ok=True)
+    (custom_static / "brand" / "artist-light.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 44">'
+        '<rect x="2" y="2" width="40" height="40" rx="8" fill="#1D70B8"/>'
+        '<path d="M56 30h120" stroke="#111827" stroke-width="4"/></svg>\n',
+        encoding="utf-8",
+    )
+    (custom_static / "brand" / "artist-dark.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 44">'
+        '<rect x="2" y="2" width="40" height="40" rx="8" fill="#60A5FA"/>'
+        '<path d="M56 30h120" stroke="#FFFFFF" stroke-width="4"/></svg>\n',
+        encoding="utf-8",
+    )
+
+    base_site = yaml.safe_load((ROOT / "data" / "site.yaml").read_text(encoding="utf-8"))
+
+    site_wordmark = tmp_path / "site-wordmark.yaml"
+    site_wordmark.write_text(
+        yaml.safe_dump(
+            {
+                **base_site,
+                "brand": {
+                    **base_site["brand"],
+                    "custom_artwork": True,
+                    "mode": "mark_and_wordmark",
+                    "logo": "brand/artist-light.svg",
+                    "logo_dark": "brand/artist-dark.svg",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    out_wordmark = tmp_path / "public-wordmark"
+    assert (
+        build_mod.main(
+            [
+                "--out",
+                str(out_wordmark),
+                "--site-yaml",
+                str(site_wordmark),
+                "--static-dir",
+                str(custom_static),
+            ]
+        )
+        == 0
+    )
+    wordmark_html = (out_wordmark / "index.html").read_text(encoding="utf-8")
+    auditor_w = PageAuditor()
+    auditor_w.feed(wordmark_html)
+    assert not auditor_w.errors, f"mark_and_wordmark PageAuditor errors: {auditor_w.errors}"
+    assert 'class="brand-mark"' not in wordmark_html
+    assert 'class="brand-logo brand-logo-light" src="/static/brand/artist-light.svg?v=' in wordmark_html
+    assert 'class="brand-logo brand-logo-dark" src="/static/brand/artist-dark.svg?v=' in wordmark_html
+    assert '<span class="brand-name">CivicDesk</span>' in wordmark_html
+
+    site_lockup = tmp_path / "site-lockup.yaml"
+    site_lockup.write_text(
+        yaml.safe_dump(
+            {
+                **base_site,
+                "brand": {
+                    **base_site["brand"],
+                    "custom_artwork": True,
+                    "mode": "lockup_only",
+                    "logo": "brand/artist-light.svg",
+                    "logo_dark": "brand/artist-dark.svg",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    out_lockup = tmp_path / "public-lockup"
+    assert (
+        build_mod.main(
+            [
+                "--out",
+                str(out_lockup),
+                "--site-yaml",
+                str(site_lockup),
+                "--static-dir",
+                str(custom_static),
+            ]
+        )
+        == 0
+    )
+    lockup_html = (out_lockup / "index.html").read_text(encoding="utf-8")
+    auditor_l = PageAuditor()
+    auditor_l.feed(lockup_html)
+    assert not auditor_l.errors, f"lockup_only PageAuditor errors: {auditor_l.errors}"
+    assert 'class="brand brand-lockup"' in lockup_html
+    assert '<span class="brand-name vh sr-only">CivicDesk</span>' in lockup_html
+
+    # 3. Invalid custom SVG / brand config cases are rejected cleanly
+    (custom_static / "brand" / "no-viewbox.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10"/></svg>',
+        encoding="utf-8",
+    )
+    (custom_static / "brand" / "ext-ref.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+        '<image href="https://cdn.example.com/font.png" width="10" height="10"/></svg>',
+        encoding="utf-8",
+    )
+    (custom_static / "brand" / "inline-style.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+        '<style>.a{fill:red}</style><rect class="a" width="10" height="10"/></svg>',
+        encoding="utf-8",
+    )
+
+    for bad_logo, expected_substr in (
+        ("brand/no-viewbox.svg", "viewBox"),
+        ("brand/ext-ref.svg", "external or unsafe reference"),
+        ("brand/inline-style.svg", "<style>"),
+        ("../outside.svg", "clean relative path"),
+    ):
+        errs: list[str] = []
+        build_mod.validate_brand_config(
+            {"brand": {"custom_artwork": True, "mode": "mark_and_wordmark", "logo": bad_logo}},
+            custom_static,
+            errs,
+        )
+        assert any(expected_substr in e for e in errs), f"Expected {expected_substr!r} for {bad_logo}, got {errs}"
+
+    lockup_no_logo_errs: list[str] = []
+    build_mod.validate_brand_config(
+        {"brand": {"custom_artwork": True, "mode": "lockup_only", "logo": ""}},
+        custom_static,
+        lockup_no_logo_errs,
+    )
+    assert any("requires a non-empty brand.logo" in e for e in lockup_no_logo_errs)
+
+    # 4. make_mark.py --check honors custom_artwork: true and protects custom files
+    mark_ws = tmp_path / "mark-ws"
+    (mark_ws / "data").mkdir(parents=True)
+    (mark_ws / "static" / "brand").mkdir(parents=True)
+    (mark_ws / "data" / "site.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "brand": {
+                    "custom_artwork": True,
+                    "mode": "lockup_only",
+                    "logo": "brand/custom-logo.svg",
+                    "favicon_svg": "brand/custom-fav.svg",
+                    "apple_touch_icon": "brand/custom-touch.png",
+                    "og_image": "brand/custom-og.png",
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert make_mark.run_cli(["--check"], root=mark_ws) == 1  # missing files
+
+    for fname in ("custom-logo.svg", "custom-fav.svg", "custom-touch.png", "custom-og.png"):
+        (mark_ws / "static" / "brand" / fname).write_bytes(b"custom-artist-bytes")
+    assert make_mark.run_cli(["--check"], root=mark_ws) == 0
+    assert make_mark.run_cli([], root=mark_ws) == 1  # refuses to clobber custom files without --force-default
+
+
+def test_ordered_list_badges_aria_hidden_and_dynamic_letter_pins(built_site: Path) -> None:
+    badge_classes = {"mockup-pin", "viz-flow-num", "viz-progress-dot", "after-num"}
+
+    class OrderedListBadgeParser(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__(convert_charrefs=True)
+            self.list_stack: list[str] = []
+            self.unhidden_badges: list[str] = []
+
+        def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+            a = {k: (v or "") for k, v in attrs}
+            if tag in {"ol", "ul"}:
+                self.list_stack.append(tag)
+            if self.list_stack and self.list_stack[-1] == "ol" and tag == "span":
+                classes = set(a.get("class", "").split())
+                hit = classes & badge_classes
+                if hit and a.get("aria-hidden") != "true":
+                    self.unhidden_badges.append(f"{sorted(hit)}: {a}")
+
+        def handle_endtag(self, tag: str) -> None:
+            if tag in {"ol", "ul"} and self.list_stack:
+                self.list_stack.pop()
+
+    for html_path in sorted(built_site.rglob("*.html")):
+        parser = OrderedListBadgeParser()
+        parser.feed(html_path.read_text(encoding="utf-8"))
+        assert not parser.unhidden_badges, (
+            f"{html_path.relative_to(built_site)}: ordered-list number badge missing aria-hidden=\"true\": "
+            f"{parser.unhidden_badges}"
+        )
+
+    pin_label_re = re.compile(r'<span class="mockup-line-label">(.*?)</span>', re.S)
+    legend_title_re = re.compile(
+        r'<li class="mockup-legend-item">\s*<span class="mockup-pin" aria-hidden="true">\d+</span>\s*'
+        r'<div class="mockup-legend-copy">\s*<strong>(.*?)</strong>',
+        re.S,
+    )
+    for st in ("oregon", "washington", "utah"):
+        letter_html = (built_site / "medicaid" / st / "letter" / "index.html").read_text(encoding="utf-8")
+        sheet_labels = [m.strip() for m in pin_label_re.findall(letter_html)]
+        legend_titles = [m.strip() for m in legend_title_re.findall(letter_html)]
+        assert len(sheet_labels) == 4, f"{st} letter: expected 4 sheet pins, got {sheet_labels}"
+        assert sheet_labels == legend_titles, (
+            f"{st} letter: sheet pins {sheet_labels} drifted from legend titles {legend_titles}"
+        )
+
+
 
 
 

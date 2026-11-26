@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Generate CivicDesk's 5-stripe service-desk mark and 1200x630 Open Graph card.
+"""Generate CivicDesk's 5-stripe service-desk mark, icons, and 1200x630 Open Graph card.
 
-    python3 scripts/make_mark.py          # write templates/brand-mark.svg, static/favicon.svg, static/og-card.png
-    python3 scripts/make_mark.py --check  # exit 1 if generated files are out of date
+    python3 scripts/make_mark.py          # write templates/brand-mark.svg, static/favicon.svg, static/apple-touch-icon.png, static/og-card.png
+    python3 scripts/make_mark.py --check  # exit 1 if generated files are out of date (or validate custom files when brand.custom_artwork is true)
 
 Palette (on #111827 slate ink):
   Stripe 1 & 5: #1D70B8 (sky)        3.43:1 non-text contrast on #111827
@@ -15,6 +15,8 @@ import struct
 import sys
 import zlib
 from pathlib import Path
+
+import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -132,13 +134,119 @@ def og_card_png(width: int = 1200, height: int = 630) -> bytes:
     )
 
 
-def main() -> int:
+def apple_touch_png(size: int = 180) -> bytes:
+    """Render a zero-text 180x180 PNG touch icon with the 5-stripe Horizon mark."""
+    emblem = int(round(size * 0.8888889))  # 160x160 centered inside 180x180
+    scale = emblem / 40.0
+    ox = (size - emblem) // 2
+    oy = (size - emblem) // 2
+
+    scaled_bars = [
+        (
+            ox + int(round(x * scale)),
+            ox + int(round((x + w) * scale)),
+            oy + int(round(y * scale)),
+            oy + int(round((y + h) * scale)),
+            RGB[role],
+        )
+        for x, y, w, h, role, _ in STRIPES
+    ]
+
+    bg_px = bytes(RGB["slate"])
+    panel_px = bytes(RGB["panel"])
+
+    rows: list[bytes] = []
+    for py in range(size):
+        if oy <= py < oy + emblem:
+            bar_hit = None
+            for bx0, bx1, by0, by1, color in scaled_bars:
+                if by0 <= py < by1:
+                    bar_hit = (bx0, bx1, bytes(color))
+                    break
+            left_pad = ox
+            right_pad = size - (ox + emblem)
+            if bar_hit is None:
+                row = (bg_px * left_pad) + (panel_px * emblem) + (bg_px * right_pad)
+            else:
+                bx0, bx1, c_px = bar_hit
+                inner_left = bx0 - ox
+                inner_mid = bx1 - bx0
+                inner_right = (ox + emblem) - bx1
+                row = (
+                    (bg_px * left_pad)
+                    + (panel_px * inner_left)
+                    + (c_px * inner_mid)
+                    + (panel_px * inner_right)
+                    + (bg_px * right_pad)
+                )
+        else:
+            row = bg_px * size
+        rows.append(b"\x00" + row)
+
+    raw_stream = b"".join(rows)
+    compressed = zlib.compress(raw_stream, level=9)
+    ihdr = struct.pack(">IIBBBBB", size, size, 8, 2, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + _png_chunk(b"IHDR", ihdr)
+        + _png_chunk(b"IDAT", compressed)
+        + _png_chunk(b"IEND", b"")
+    )
+
+
+def _load_brand_config(root: Path) -> dict:
+    site_path = root / "data" / "site.yaml"
+    if not site_path.is_file():
+        return {}
+    data = yaml.safe_load(site_path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        return {}
+    brand = data.get("brand")
+    return dict(brand) if isinstance(brand, dict) else {}
+
+
+def run_cli(argv: list[str] | None = None, root: Path = ROOT) -> int:
+    args = list(sys.argv[1:] if argv is None else argv)
+    brand = _load_brand_config(root)
+    custom_artwork = brand.get("custom_artwork") is True
+
+    if custom_artwork and "--force-default" not in args:
+        if "--check" in args:
+            issues: list[str] = []
+            checked = 0
+            for key in ("logo", "logo_dark", "favicon_svg", "apple_touch_icon", "og_image"):
+                rel = str(brand.get(key) or "").strip()
+                if not rel:
+                    continue
+                checked += 1
+                if rel.startswith("/") or "\\" in rel or ".." in Path(rel).parts:
+                    issues.append(f"Invalid relative path for brand.{key}: {rel}")
+                    continue
+                target = root / "static" / rel
+                if not target.is_file() or target.stat().st_size == 0:
+                    issues.append(f"Missing or empty custom brand asset for brand.{key}: static/{rel}")
+            if brand.get("mode") == "lockup_only" and not str(brand.get("logo") or "").strip():
+                issues.append("brand.mode 'lockup_only' requires brand.logo to be set")
+            if checked == 0:
+                issues.append("brand.custom_artwork is true, but no brand asset paths are configured")
+            for msg in issues:
+                print(msg, file=sys.stderr)
+            return 1 if issues else 0
+
+        print(
+            "Refusing to overwrite custom artwork while brand.custom_artwork is true in data/site.yaml "
+            "(pass --force-default to regenerate default mark).",
+            file=sys.stderr,
+        )
+        return 1
+
     text_targets = {
-        ROOT / "templates" / "brand-mark.svg": header_svg(),
-        ROOT / "static" / "favicon.svg": icon_svg(),
+        root / "templates" / "brand-mark.svg": header_svg(),
+        root / "static" / "favicon.svg": icon_svg(),
     }
     binary_targets = {
-        ROOT / "static" / "og-card.png": og_card_png(),
+        root / "static" / "apple-touch-icon.png": apple_touch_png(),
+        root / "static" / "og-card.png": og_card_png(),
     }
 
     stale: list[Path] = []
@@ -149,21 +257,26 @@ def main() -> int:
         if not p.exists() or p.read_bytes() != data:
             stale.append(p)
 
-    if "--check" in sys.argv:
+    if "--check" in args:
         for p in stale:
-            print(f"Out of date: {p.relative_to(ROOT)}. Run python3 scripts/make_mark.py", file=sys.stderr)
+            print(f"Out of date: {p.relative_to(root)}. Run python3 scripts/make_mark.py", file=sys.stderr)
         return 1 if stale else 0
 
     for p, text in text_targets.items():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text, encoding="utf-8")
-        print(f"Wrote {p.relative_to(ROOT)} ({len(text)} bytes)")
+        print(f"Wrote {p.relative_to(root)} ({len(text)} bytes)")
     for p, data in binary_targets.items():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_bytes(data)
-        print(f"Wrote {p.relative_to(ROOT)} ({len(data)} bytes)")
+        print(f"Wrote {p.relative_to(root)} ({len(data)} bytes)")
     return 0
+
+
+def main() -> int:
+    return run_cli()
 
 
 if __name__ == "__main__":
     sys.exit(main())
+

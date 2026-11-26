@@ -8,3 +8,15 @@ repo_url: "https://github.com/radiofreelove/civicdesk"
 max_source_age_days: 120
 quick_exit_url: "https://www.weather.gov/"
 corrections_email: "corrections@civicdesk.net"
+
+# Zero-code drop-in artist logo configuration (see docs/DESIGN.md Section 6).
+# Defaults keep CivicDesk's programmatic 5-stripe mark and HTML wordmark unchanged.
+brand:
+  custom_artwork: false
+  mode: "mark_and_wordmark"
+  logo: ""
+  logo_dark: ""
+  favicon_svg: "favicon.svg"
+  apple_touch_icon: "apple-touch-icon.png"
+  og_image: "og-card.png"
+  og_image_alt: "CivicDesk five-stripe service-desk mark on dark slate"

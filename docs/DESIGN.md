@@ -52,3 +52,32 @@ Inside `@media print`, all `--viz-*` tokens reset to crisp `#000000` ink on `#FF
 
 - **Restrained Transitions:** Interactive cards, pills, and choice rows use `160ms cubic-bezier(0.22, 1, 0.36, 1)` scoped to `border-color`, `background-color`, `color`, and `box-shadow`, disabled under `@media (prefers-reduced-motion: reduce)`.
 - **Progressive Disclosure (`<details class="deeper">` & `data-brief`):** Dense edge cases fold into accessible `<details class="deeper">` panels while preserving all heading/section `id`s and primary citations; `@media print` expands `<details>` automatically and keeps visual mockups intact (`break-inside: avoid`).
+
+---
+
+## 6. Custom Artist Logo Spec & 3-Step Swap Guide
+
+CivicDesk includes a declarative `brand:` block in `data/site.yaml` so a custom artist-designed mark or full wordmark lockup can be dropped into `static/brand/` with zero HTML template or CSS edits.
+
+### Artist Technical Deliverable Spec
+
+1. **Clean Self-Contained Vector `.svg` Files (Strict CSP Safe):**
+   - Export clean `.svg` artwork with an explicit `viewBox` attribute (for example `viewBox="0 0 40 40"` for an emblem mark or `viewBox="0 0 220 44"` for a horizontal lockup).
+   - Convert all custom lettering to outlined vector `<path>` shapes so rendering never depends on external web fonts.
+   - Color shapes using standard SVG presentation attributes (`fill="#..."`, `stroke="#..."`, `stroke-width="..."`)—**never** inline `<style>` tags, `style="..."` attributes, `<script>`, or external `http://` / `https://` image or font URLs (`scripts/build.py` validates every configured `.svg` at build time under CivicDesk's `default-src 'none'; style-src 'self'; img-src 'self'` policy).
+2. **Light & Dark Theme Variants (`>= 3.0:1` Non-Text / `>= 7.0:1` Lettering Contrast):**
+   - **Primary light-paper logo (`static/brand/logo-light.svg`):** Designed for Plain white paper (`#FFFFFF`), Warm paper (`#F7F5F0`), High contrast (`#FFFFFF`), and print.
+   - **Optional dark-slate logo (`static/brand/logo-dark.svg`):** Designed for Dark slate (`#111827`) and automatic OS dark mode (`prefers-color-scheme: dark`). CivicDesk toggles between `.brand-logo-light` and `.brand-logo-dark` purely via CSS rules in `static/css/site.css`.
+3. **Favicon, Touch Icon & Social Share Card:**
+   - `favicon.svg` (clean square vector icon, `viewBox="0 0 32 32"` or `0 0 40 40`, legible at `16x16` and `32x32`).
+   - `apple-touch-icon.png` (`180x180` opaque PNG on dark slate or solid brand background).
+   - `og-card.png` (`1200x630` PNG social preview card).
+
+### 3-Step Zero-Code Swap Checklist
+
+1. **Drop artwork files into `static/brand/`:** Place the artist's files under `static/brand/` (for example `static/brand/logo-light.svg`, `static/brand/logo-dark.svg`, `static/brand/favicon.svg`, `static/brand/apple-touch-icon.png`, and `static/brand/og-card.png`).
+2. **Update `brand:` in `data/site.yaml`:**
+   - Set `custom_artwork: true` (tells `scripts/make_mark.py --check` to validate your custom files rather than enforcing checksums on the default 5-stripe mark).
+   - Choose `mode: "mark_and_wordmark"` (if the artwork is a standalone emblem beside HTML `"CivicDesk"` text) or `mode: "lockup_only"` (if the artwork already includes `"CivicDesk"` lettering; HTML `"CivicDesk"` moves automatically into `.sr-only` so screen readers still announce the home link cleanly without visual duplication).
+   - Point `logo`, `logo_dark`, `favicon_svg`, `apple_touch_icon`, `og_image`, and `og_image_alt` to your paths relative to `static/` (for example `"brand/logo-light.svg"`).
+3. **Verify locally and open a PR:** Run `python3 scripts/make_mark.py --check && python3 scripts/build.py && pytest` to verify XML/CSP safety, cache-busted asset URLs, and 4-theme accessibility before opening a pull request.

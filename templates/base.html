@@ -15,13 +15,14 @@
 <meta property="og:description" content="{{ page.description }}">
 {% if public_base_url and page.slug != '404' %}<link rel="canonical" href="{{ public_base_url }}{{ page.route.lstrip('/') }}">
 <meta property="og:url" content="{{ public_base_url }}{{ page.route.lstrip('/') }}">
-{% endif %}<meta property="og:image" content="{% if public_base_url %}{{ public_base_url.rstrip('/') }}{{ asset('og-card.png') }}{% else %}{{ asset('og-card.png') }}{% endif %}">
+{% endif %}<meta property="og:image" content="{% if public_base_url %}{{ public_base_url.rstrip('/') }}{{ asset(site.brand.og_image) }}{% else %}{{ asset(site.brand.og_image) }}{% endif %}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="CivicDesk five-stripe service-desk mark on dark slate">
+<meta property="og:image:alt" content="{{ site.brand.og_image_alt }}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-<link rel="stylesheet" href="{{ asset('css/site.css') }}">
+<link rel="icon" href="{{ asset(site.brand.favicon_svg) }}" type="image/svg+xml">
+{% if site.brand.apple_touch_icon %}<link rel="apple-touch-icon" href="{{ asset(site.brand.apple_touch_icon) }}">
+{% endif %}<link rel="stylesheet" href="{{ asset('css/site.css') }}">
 {% if fonts_available %}<link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
 {% endif %}<script src="{{ asset('js/prefs.js') }}"></script>
 <script src="{{ asset('js/site.js') }}" defer></script>
@@ -48,10 +49,17 @@
     <p class="wrap"><strong>Independent public-interest guide.</strong> Not run by any court or government agency. Does not give legal advice. <a href="{% if page.slug == 'about' %}#report{% else %}#report-mistake{% endif %}">Report a mistake</a>.</p>
   </div>
   <div class="wrap header-row">
-    <a class="brand" href="{{ page_url('index') }}">
+    <a class="brand{% if site.brand.logo and site.brand.mode == 'lockup_only' %} brand-lockup{% endif %}" href="{{ page_url('index') }}">
+      {% if site.brand.logo %}
+      <img class="brand-logo{% if site.brand.logo_dark %} brand-logo-light{% endif %}" src="{{ asset(site.brand.logo) }}" alt="">
+      {% if site.brand.logo_dark %}
+      <img class="brand-logo brand-logo-dark" src="{{ asset(site.brand.logo_dark) }}" alt="">
+      {% endif %}
+      {% else %}
       {% include "brand-mark.svg" %}
+      {% endif %}
       <span class="brand-text">
-        <span class="brand-name">{{ site.name }}</span>
+        <span class="brand-name{% if site.brand.logo and site.brand.mode == 'lockup_only' %} vh sr-only{% endif %}">{{ site.name }}</span>
         <span class="brand-tag">{{ header_tagline(page) }}</span>
       </span>
     </a>
