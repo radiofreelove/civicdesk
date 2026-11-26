@@ -72,19 +72,21 @@ LEGISCAN_URGENT_ACTION_RE = re.compile(
     re.IGNORECASE,
 )
 
-GEMINI_TRIAGE_MODELS = (
-    "gemini-3.5-flash-lite",
-    "gemini-3.1-flash-lite",
-    "gemini-2.5-flash-lite",
-    "gemini-3.8-flash",
-    "gemini-3.6-flash",
-    "gemini-2.5-flash",
+GEMINI_TRIAGE_MODELS = tuple(
+    m.strip()
+    for m in os.environ.get(
+        "GEMINI_TRIAGE_MODELS",
+        "gemini-2.5-flash-lite,gemini-2.5-flash",
+    ).split(",")
+    if m.strip()
 )
-GEMINI_GROUNDING_MODELS = (
-    "gemini-3.8-flash",
-    "gemini-3.6-flash",
-    "gemini-3.5-flash-lite",
-    "gemini-2.5-flash",
+GEMINI_GROUNDING_MODELS = tuple(
+    m.strip()
+    for m in os.environ.get(
+        "GEMINI_GROUNDING_MODELS",
+        "gemini-2.5-flash,gemini-2.5-flash-lite",
+    ).split(",")
+    if m.strip()
 )
 
 PREFERRED_DESK_ORDER = ("medicaid", "id-records", "public-records")

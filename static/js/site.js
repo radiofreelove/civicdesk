@@ -31,7 +31,16 @@
   }
 
   /* ---------- Dated notices (e.g. Dec 31, 2026 retroactive bills cutoff) ---------- */
-  var todayIso = new Date().toISOString().slice(0, 10);
+  function localTodayIso() {
+    var override = root.getAttribute("data-today");
+    if (override && /^\d{4}-\d{2}-\d{2}$/.test(override)) return override;
+    var now = new Date();
+    var y = String(now.getFullYear());
+    var m = String(now.getMonth() + 1).padStart(2, "0");
+    var d = String(now.getDate()).padStart(2, "0");
+    return y + "-" + m + "-" + d;
+  }
+  var todayIso = localTodayIso();
   document.querySelectorAll("[data-show-until]").forEach(function (el) {
     var until = el.getAttribute("data-show-until");
     if (until && todayIso > until) {
@@ -49,10 +58,19 @@
     });
     return out;
   }
+  function isDefaultPrefs(prefs) {
+    return Object.keys(DEFAULTS).every(function (k) { return (prefs[k] || DEFAULTS[k]) === DEFAULTS[k]; });
+  }
   function apply(prefs) {
     Object.keys(prefs).forEach(function (k) { root.setAttribute("data-" + k, prefs[k]); });
   }
-  function savePrefs(prefs) { store("set", KEYS.prefs, JSON.stringify(prefs)); }
+  function savePrefs(prefs) {
+    if (isDefaultPrefs(prefs)) {
+      store("remove", KEYS.prefs);
+    } else {
+      store("set", KEYS.prefs, JSON.stringify(prefs));
+    }
+  }
 
   var dialog = document.getElementById("settings");
   var opener = document.getElementById("settings-open");
@@ -76,11 +94,13 @@
 
   /* ---------- Short version toggle strip ---------- */
   var briefToggle = document.getElementById("brief-toggle");
-  function setBrief(on, message) {
+  function setBrief(on, message, persist) {
     var p = current();
     p.brief = on ? "on" : "off";
     apply(p);
-    savePrefs(p);
+    if (persist !== false || store("get", KEYS.prefs) !== null) {
+      savePrefs(p);
+    }
     syncForm();
     announce(message || (on
       ? "Short version. Extra sections on this page are now hidden."
@@ -89,12 +109,72 @@
   if (briefToggle) {
     briefToggle.addEventListener("click", function () {
       var before = briefToggle.getBoundingClientRect().top;
-      setBrief(current().brief !== "on");
+      setBrief(current().brief !== "on", null, true);
       var moved = briefToggle.getBoundingClientRect().top - before;
       if (moved) window.scrollBy(0, moved);
     });
   }
   syncForm();
+
+  /* ---------- Checklists ---------- */
+  var checks = {};
+  if (remembering()) {
+    try { checks = JSON.parse(store("get", KEYS.checks) || "{}") || {}; } catch (e) { checks = {}; }
+  }
+  function saveChecks() {
+    if (!remembering()) return;
+    if (Object.keys(checks).length > 0) {
+      store("set", KEYS.checks, JSON.stringify(checks));
+    } else {
+      store("remove", KEYS.checks);
+    }
+  }
+  function markStep(box) {
+    if (!box.closest(".step-head")) return;
+    var step = box.closest(".step");
+    if (step) step.classList.toggle("is-done", box.checked);
+  }
+  var checkBoxes = Array.prototype.slice.call(document.querySelectorAll("input[data-check]"));
+  var checklistHintEl = null;
+  function ensureChecklistHint() {
+    if (checklistHintEl || !checkBoxes.length) return checklistHintEl;
+    var firstContainer = checkBoxes[0].closest(".steps, .checklist");
+    if (!firstContainer || !firstContainer.parentNode) return null;
+    checklistHintEl = document.createElement("p");
+    checklistHintEl.className = "checklist-persistence-hint js-only";
+    checklistHintEl.setAttribute("role", "status");
+    checklistHintEl.hidden = true;
+    firstContainer.parentNode.insertBefore(checklistHintEl, firstContainer);
+    return checklistHintEl;
+  }
+  function syncChecklistHint(interacted) {
+    var anyChecked = checkBoxes.some(function (b) { return b.checked; });
+    if (!anyChecked || remembering()) {
+      if (checklistHintEl) {
+        checklistHintEl.hidden = true;
+        checklistHintEl.textContent = "";
+      }
+      return;
+    }
+    if (!interacted && !checklistHintEl) return;
+    var hint = ensureChecklistHint();
+    if (hint) {
+      hint.textContent = "Checkmarks stay on this page only while it is open. Turn on \"Remember my checklist on this device\" in Reading settings to save them here.";
+      hint.hidden = false;
+    }
+  }
+  checkBoxes.forEach(function (box) {
+    var key = box.getAttribute("data-check");
+    if (!key) return;
+    if (checks[key]) box.checked = true;
+    markStep(box);
+    box.addEventListener("change", function () {
+      if (box.checked) { checks[key] = true; } else { delete checks[key]; }
+      markStep(box);
+      saveChecks();
+      syncChecklistHint(true);
+    });
+  });
 
   if (dialog && opener && typeof dialog.showModal === "function") {
     opener.addEventListener("click", function () {
@@ -128,10 +208,12 @@
         if (el.checked) {
           store("set", KEYS.remember, "on");
           saveChecks();
+          syncChecklistHint(false);
           announce("Your checklist will be remembered on this device.");
         } else {
           store("remove", KEYS.remember);
           store("remove", KEYS.checks);
+          syncChecklistHint(true);
           announce("Your checklist will not be saved on this device.");
         }
         return;
@@ -162,10 +244,11 @@
         [KEYS.remember, KEYS.prefs, KEYS.checks].forEach(function (k) { store("remove", k); });
         apply(DEFAULTS);
         checks = {};
-        document.querySelectorAll("input[data-check]").forEach(function (box) {
+        checkBoxes.forEach(function (box) {
           box.checked = false;
           markStep(box);
         });
+        syncChecklistHint(false);
         syncForm();
         var resetStatus = document.getElementById("reset-status");
         if (resetStatus) resetStatus.textContent = "";
@@ -198,7 +281,7 @@
       if (!el) return false;
       if (el.isContentEditable) return true;
       var tag = el.tagName;
-      if (tag === "TEXTAREA") return true;
+      if (tag === "TEXTAREA" || tag === "SELECT") return true;
       if (tag === "INPUT") {
         var t = (el.type || "text").toLowerCase();
         return ["checkbox", "radio", "button", "submit", "reset"].indexOf(t) === -1;
@@ -206,6 +289,10 @@
       return false;
     }
     document.addEventListener("keydown", function (event) {
+      if (event.ctrlKey || event.altKey || event.metaKey) {
+        shiftPresses = [];
+        return;
+      }
       if (isTypingField(event.target)) {
         shiftPresses = [];
         return;
@@ -222,38 +309,20 @@
     });
   }
 
-  /* ---------- Checklists ---------- */
-  var checks = {};
-  if (remembering()) {
-    try { checks = JSON.parse(store("get", KEYS.checks) || "{}") || {}; } catch (e) { checks = {}; }
-  }
-  function saveChecks() {
-    if (remembering()) store("set", KEYS.checks, JSON.stringify(checks));
-  }
-  function markStep(box) {
-    if (!box.closest(".step-head")) return;
-    var step = box.closest(".step");
-    if (step) step.classList.toggle("is-done", box.checked);
-  }
-  document.querySelectorAll("input[data-check]").forEach(function (box) {
-    var key = box.getAttribute("data-check");
-    if (checks[key]) box.checked = true;
-    markStep(box);
-    box.addEventListener("change", function () {
-      if (box.checked) { checks[key] = true; } else { delete checks[key]; }
-      markStep(box);
-      saveChecks();
-    });
-  });
-
   /* ---------- Copy buttons ---------- */
   document.querySelectorAll("button[data-copy]").forEach(function (btn) {
+    var originalText = btn.textContent;
+    var copyTimer = null;
     btn.addEventListener("click", function () {
       var text = btn.getAttribute("data-copy");
       var done = function () {
         btn.textContent = "Copied";
         announce("Copied: " + text);
-        window.setTimeout(function () { btn.textContent = "Copy"; }, 2500);
+        if (copyTimer) window.clearTimeout(copyTimer);
+        copyTimer = window.setTimeout(function () {
+          btn.textContent = originalText;
+          copyTimer = null;
+        }, 2500);
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(done, function () {
@@ -265,21 +334,41 @@
     });
   });
 
-  /* ---------- Switcher menu ---------- */
-  var switcher = document.querySelector("[data-state-switcher]");
-  if (switcher) {
-    var switcherSummary = switcher.querySelector("summary");
+  /* ---------- Switcher menus ---------- */
+  var switchers = Array.prototype.slice.call(document.querySelectorAll("[data-state-switcher]"));
+  if (switchers.length) {
     document.addEventListener("click", function (event) {
-      if (switcher.open && !switcher.contains(event.target)) {
-        switcher.open = false;
-      }
+      switchers.forEach(function (switcher) {
+        if (switcher.open && !switcher.contains(event.target)) {
+          switcher.open = false;
+        }
+      });
     });
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && switcher.open) {
-        event.preventDefault();
-        switcher.open = false;
-        if (switcherSummary) switcherSummary.focus();
-      }
+      if (event.key !== "Escape") return;
+      switchers.forEach(function (switcher) {
+        if (switcher.open) {
+          event.preventDefault();
+          switcher.open = false;
+          var switcherSummary = switcher.querySelector("summary");
+          if (switcherSummary) switcherSummary.focus();
+        }
+      });
+    });
+    switchers.forEach(function (switcher) {
+      switcher.addEventListener("focusout", function (event) {
+        if (!switcher.open) return;
+        var next = event.relatedTarget;
+        if (next && !switcher.contains(next)) {
+          switcher.open = false;
+        } else if (!next) {
+          window.setTimeout(function () {
+            if (switcher.open && document.activeElement && !switcher.contains(document.activeElement)) {
+              switcher.open = false;
+            }
+          }, 0);
+        }
+      });
     });
   }
 
@@ -310,7 +399,7 @@
     if (!target) return;
     var wasHidden = current().brief === "on" && target.closest(HIDDEN_IN_BRIEF);
     if (wasHidden) {
-      setBrief(false, "Full version. The link goes to a section the short version hides, so all sections are showing again.");
+      setBrief(false, "Full version. The link goes to a section the short version hides, so all sections are showing again.", false);
     }
     var d = target.closest("details");
     if (d) d.open = true;

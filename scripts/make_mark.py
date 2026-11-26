@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Generate CivicDesk's 5-stripe service-desk mark in the AAA Civic Horizon palette.
+"""Generate CivicDesk's 5-stripe service-desk mark and 1200x630 Open Graph card.
 
-    python3 scripts/make_mark.py          # write templates/brand-mark.svg and static/favicon.svg
+    python3 scripts/make_mark.py          # write templates/brand-mark.svg, static/favicon.svg, static/og-card.png
     python3 scripts/make_mark.py --check  # exit 1 if generated files are out of date
 
 Palette (on #111827 slate ink):
@@ -11,7 +11,9 @@ Palette (on #111827 slate ink):
 """
 from __future__ import annotations
 
+import struct
 import sys
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,6 +26,14 @@ STRIPES = [
     (7, 23.8, 26, 3.6, "rose", "#C85A70"),
     (7, 29.4, 26, 3.6, "sky", "#1D70B8"),
 ]
+
+RGB = {
+    "slate": (17, 24, 39),      # #111827
+    "panel": (24, 34, 52),      # #182234
+    "sky": (29, 112, 184),      # #1D70B8
+    "rose": (200, 90, 112),     # #C85A70
+    "paper": (255, 255, 255),   # #FFFFFF
+}
 
 
 def header_svg() -> str:
@@ -52,20 +62,106 @@ def icon_svg() -> str:
     )
 
 
+def _png_chunk(chunk_type: bytes, data: bytes) -> bytes:
+    crc = zlib.crc32(chunk_type + data) & 0xFFFFFFFF
+    return struct.pack(">I", len(data)) + chunk_type + data + struct.pack(">I", crc)
+
+
+def og_card_png(width: int = 1200, height: int = 630) -> bytes:
+    """Render a zero-text 1200x630 PNG social card with the 5-stripe Horizon mark."""
+    scale = 8  # 40 * 8 = 320x320 emblem centered in 1200x630
+    ox = (width - 40 * scale) // 2
+    oy = (height - 40 * scale) // 2
+
+    scaled_bars = [
+        (
+            ox + int(round(x * scale)),
+            ox + int(round((x + w) * scale)),
+            oy + int(round(y * scale)),
+            oy + int(round((y + h) * scale)),
+            RGB[role],
+        )
+        for x, y, w, h, role, _ in STRIPES
+    ]
+
+    bg_px = bytes(RGB["slate"])
+    panel_px = bytes(RGB["panel"])
+    sky_px = bytes(RGB["sky"])
+    rose_px = bytes(RGB["rose"])
+
+    rows: list[bytes] = []
+    for py in range(height):
+        if py >= height - 8:
+            row = sky_px * width
+        elif py >= height - 14:
+            row = rose_px * width
+        elif oy <= py < oy + 40 * scale:
+            bar_hit = None
+            for bx0, bx1, by0, by1, color in scaled_bars:
+                if by0 <= py < by1:
+                    bar_hit = (bx0, bx1, bytes(color))
+                    break
+            left_pad = ox
+            right_pad = width - (ox + 40 * scale)
+            if bar_hit is None:
+                row = (bg_px * left_pad) + (panel_px * (40 * scale)) + (bg_px * right_pad)
+            else:
+                bx0, bx1, c_px = bar_hit
+                inner_left = bx0 - ox
+                inner_mid = bx1 - bx0
+                inner_right = (ox + 40 * scale) - bx1
+                row = (
+                    (bg_px * left_pad)
+                    + (panel_px * inner_left)
+                    + (c_px * inner_mid)
+                    + (panel_px * inner_right)
+                    + (bg_px * right_pad)
+                )
+        else:
+            row = bg_px * width
+        rows.append(b"\x00" + row)
+
+    raw_stream = b"".join(rows)
+    compressed = zlib.compress(raw_stream, level=9)
+    ihdr = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + _png_chunk(b"IHDR", ihdr)
+        + _png_chunk(b"IDAT", compressed)
+        + _png_chunk(b"IEND", b"")
+    )
+
+
 def main() -> int:
-    targets = {
+    text_targets = {
         ROOT / "templates" / "brand-mark.svg": header_svg(),
         ROOT / "static" / "favicon.svg": icon_svg(),
     }
-    stale = [p for p, text in targets.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
+    binary_targets = {
+        ROOT / "static" / "og-card.png": og_card_png(),
+    }
+
+    stale: list[Path] = []
+    for p, text in text_targets.items():
+        if not p.exists() or p.read_text(encoding="utf-8") != text:
+            stale.append(p)
+    for p, data in binary_targets.items():
+        if not p.exists() or p.read_bytes() != data:
+            stale.append(p)
+
     if "--check" in sys.argv:
         for p in stale:
             print(f"Out of date: {p.relative_to(ROOT)}. Run python3 scripts/make_mark.py", file=sys.stderr)
         return 1 if stale else 0
-    for p, text in targets.items():
+
+    for p, text in text_targets.items():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text, encoding="utf-8")
         print(f"Wrote {p.relative_to(ROOT)} ({len(text)} bytes)")
+    for p, data in binary_targets.items():
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(data)
+        print(f"Wrote {p.relative_to(ROOT)} ({len(data)} bytes)")
     return 0
 
 

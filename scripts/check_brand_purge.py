@@ -32,6 +32,9 @@ ALLOWED_PATTERN = re.compile(
 )
 
 
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
 def strip_allowed(text: str) -> str:
     return ALLOWED_PATTERN.sub("", text)
 
@@ -39,6 +42,7 @@ def strip_allowed(text: str) -> str:
 def main() -> int:
     result = subprocess.run(
         ["git", "ls-files"],
+        cwd=REPO_ROOT,
         capture_output=True,
         text=True,
         check=True,
@@ -51,7 +55,7 @@ def main() -> int:
             continue
         if FORBIDDEN_PATTERN.search(strip_allowed(rel_path)):
             violations.append(f"Path violation: {rel_path}")
-        path = Path(rel_path)
+        path = REPO_ROOT / rel_path
         if path.suffix.lower() in BINARY_EXTENSIONS or not path.is_file():
             continue
         try:

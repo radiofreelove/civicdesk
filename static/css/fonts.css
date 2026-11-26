@@ -1,4 +1,8 @@
-/* Atkinson Hyperlegible Next: SIL Open Font License 1.1, Braille Institute. */
+/* Atkinson Hyperlegible Next: SIL Open Font License 1.1, Braille Institute.
+   CivicDesk self-hosts upright Regular (400) and Bold (700) WOFF2 subsets locked by SHA-256 in
+   scripts/build.py. Per UK Home Office / W3C COGA accessibility guidance, italic text is avoided
+   and site.css sets font-synthesis: none with upright em/i styling so browsers never synthesize
+   faux obliques. */
 @font-face {
   font-family: "Atkinson Hyperlegible Next";
   src: url("../fonts/AtkinsonHyperlegibleNext-Regular.woff2") format("woff2");

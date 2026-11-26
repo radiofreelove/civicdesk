@@ -1,7 +1,6 @@
 name: Weekly Source Verification
 
 # Runs Mondays for source link, freshness, registry, and build verification.
-# Live-domain checks against civicdesk.net are intentionally omitted until custom-domain cutover.
 
 on:
   schedule:
@@ -38,24 +37,37 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          python3 scripts/verify_sources.py | tee verify-report.txt
+          python3 scripts/verify_sources.py 2>&1 | tee verify-report.txt
 
-      - name: Open issue if verification needs human review
+      - name: Open or update issue if verification needs human review
         if: steps.verify.outcome == 'failure'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          {
-            echo "The Monday weekly source verification flagged items for human review."
-            echo
-            echo '```'
-            head -c 55000 verify-report.txt
-            echo '```'
-          } > body.md
+          python3 - <<'PY'
+          from pathlib import Path
+
+          raw = Path("verify-report.txt").read_text(encoding="utf-8", errors="replace")
+          limit = 50000
+          clipped = raw[:limit]
+          suffix = "\n... [truncated]" if len(raw) > limit else ""
+          body = (
+              "The Monday weekly source verification flagged items for human review.\n\n"
+              f"```\n{clipped}{suffix}\n```\n"
+          )
+          Path("body.md").write_text(body, encoding="utf-8")
+          PY
           gh label create "automated-source-check" \
             --description "Opened by the weekly source verification workflow" \
             --color "1D70B8" 2>/dev/null || true
-          gh issue create \
-            --title "Weekly source check needs attention ($(date -u +%Y-%m-%d))" \
-            --label "automated-source-check" \
-            --body-file body.md
+          today_utc="$(date -u +%Y-%m-%d)"
+          existing="$(gh issue list --state open --label "automated-source-check" --limit 1 --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --title "Weekly source check needs attention ($today_utc)"
+            gh issue comment "$existing" --body-file body.md
+          else
+            gh issue create \
+              --title "Weekly source check needs attention ($today_utc)" \
+              --label "automated-source-check" \
+              --body-file body.md
+          fi

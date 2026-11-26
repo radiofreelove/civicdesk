@@ -128,9 +128,9 @@
 
     addRow("Age", ageLabels.length ? ageLabels.join(", ") : "Not picked yet");
     if (checkedValues("age")[0] === "19to64") {
-      addRow("Reasons that fit you", reasonLabels.length ? reasonLabels.join(" ") : "Not picked yet");
+      addRow("Reasons that fit you", reasonLabels.length ? reasonLabels.join(", ") : "Not picked yet");
       if (includeStep3) {
-        addRow("Ways to meet the rules", meetLabels.length ? meetLabels.join(" ") : "Pick at least one above");
+        addRow("Ways to meet the rules", meetLabels.length ? meetLabels.join(", ") : "Pick at least one above");
       }
     }
     box.appendChild(dl);
@@ -178,7 +178,10 @@
     if (n === 3) { updatePreviewRecap(); }
     if (moveFocus) {
       var target = form.querySelector('[data-step="' + n + '"]');
-      if (target) { target.focus(); }
+      if (target) {
+        if (!target.hasAttribute("tabindex")) { target.setAttribute("tabindex", "-1"); }
+        target.focus();
+      }
     }
   }
 
@@ -187,8 +190,8 @@
     if (!error) { return; }
     error.hidden = !show;
     if (show) {
-      var first = form.querySelector('[data-step="' + n + '"] input');
-      if (first) { first.focus(); }
+      if (!error.hasAttribute("tabindex")) { error.setAttribute("tabindex", "-1"); }
+      error.focus();
     }
   }
 

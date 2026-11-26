@@ -4,27 +4,16 @@
 {% block main %}
 <p class="kicker">Start here</p>
 <h1>Find the right guide in 2 questions</h1>
-{{ m.lede("Pick your state and topic below. Your answers stay in your browser and are never saved or sent anywhere.") }}
+{{ m.lede("Pick your state and topic below, or search the full guide directory beneath the questions. Your answers stay in your browser and are never saved or sent anywhere.") }}
 
 <div class="callout callout-note no-js-only">
-  <p class="callout-title"><strong>JavaScript is off, so use the direct guide links below.</strong></p>
-  <h2>2027 Medicaid Work &amp; Activity Rules</h2>
-  <ul>
-    <li><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a></li>
-    <li><a href="{{ page_url('medicaid-washington') }}">Washington Apple Health</a></li>
-    <li><a href="{{ page_url('medicaid-utah') }}">Utah Medicaid</a></li>
-    <li><a href="{{ page_url('medicaid') }}">Medicaid desk overview</a></li>
-  </ul>
-  <h2>Legal Name, ID &amp; Vital Records</h2>
-  <ul>
-    <li><a href="{{ page_url('id-records-oregon') }}">Oregon name, ID, and vital records</a></li>
-    <li><a href="{{ page_url('id-records-washington') }}">Washington name, ID, and vital records</a></li>
-    <li><a href="{{ page_url('id-records-utah') }}">Utah name, ID, and vital records</a></li>
-    <li><a href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></li>
-  </ul>
+  <p class="callout-title"><strong>JavaScript is off, so browse the full guide directory below.</strong></p>
+  <p><a href="#all-guides">Jump straight to all CivicDesk guides</a>.</p>
 </div>
 
 <form id="start-form" class="start-form js-only" data-root="{{ root_prefix(page) }}" novalidate autocomplete="off">
+  <div id="start-error" class="callout callout-watch" role="alert" tabindex="-1" hidden></div>
+
   <fieldset id="q-state">
     <legend>1. Which state or level do you need?</legend>
     <label><input type="radio" name="state" value="oregon"> Oregon</label>
@@ -39,8 +28,6 @@
     <label><input type="radio" name="topic" value="id-records"> Update a legal name (marriage, divorce, or court order), driver license or ID, birth certificate, Social Security card, or passport</label>
   </fieldset>
 
-  <div id="start-error" class="callout callout-watch" role="alert" hidden></div>
-
   <div class="btn-row">
     <button type="submit" class="btn">Show my guide</button>
     <button type="reset" class="btn-secondary">Start over</button>
@@ -53,9 +40,50 @@
   <div id="start-result-body"></div>
 </section>
 
-<h2>Or browse all active desks directly</h2>
-<ul>
-  <li><strong>2027 Medicaid Work &amp; Activity Rules:</strong> <a href="{{ page_url('medicaid') }}">Desk overview</a>, <a href="{{ page_url('medicaid-oregon') }}">Oregon</a>, <a href="{{ page_url('medicaid-washington') }}">Washington</a>, <a href="{{ page_url('medicaid-utah') }}">Utah</a></li>
-  <li><strong>Legal Name, ID &amp; Vital Records:</strong> <a href="{{ page_url('id-records') }}">Desk overview</a>, <a href="{{ page_url('id-records-path') }}">Path finder</a>, <a href="{{ page_url('id-records-oregon') }}">Oregon</a>, <a href="{{ page_url('id-records-washington') }}">Washington</a>, <a href="{{ page_url('id-records-utah') }}">Utah</a>, <a href="{{ page_url('id-records-federal') }}">Passports and Social Security</a></li>
-</ul>
+<section id="all-guides" class="guide-directory" aria-labelledby="all-guides-h">
+  <h2 id="all-guides-h">Or browse and filter every guide</h2>
+  <div class="guide-filter-box js-only">
+    <label class="guide-filter-label" for="guide-filter">Filter guides by keyword, state, form, or topic</label>
+    <input type="search" id="guide-filter" class="guide-filter-input" placeholder="Try passport, divorce, appeal, past bills, tribal, Utah..." autocomplete="off" aria-controls="guide-directory-groups" aria-describedby="guide-filter-status">
+    <p id="guide-filter-status" class="hint" role="status" aria-live="polite"></p>
+  </div>
+
+  <div id="guide-directory-groups">
+    <div class="guide-dir-group" data-guide-group>
+      <h3>2027 Medicaid work and activity rules</h3>
+      <ul class="guide-dir-list">
+      {% for p in pages if p.get('desk') == 'medicaid' %}
+        <li data-guide-item data-search="{{ (p.title ~ ' ' ~ p.description ~ ' ' ~ p.get('state', '') ~ ' ' ~ p.route)|lower }}">
+          <a href="{{ page_url(p.slug) }}">{% if p.get('state') %}{{ p.get('state')|capitalize }}: {% endif %}{{ p.title }}</a>
+          <span class="guide-dir-desc">{{ p.description }}</span>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+
+    <div class="guide-dir-group" data-guide-group>
+      <h3>Legal name, ID, and vital records</h3>
+      <ul class="guide-dir-list">
+      {% for p in pages if p.get('desk') == 'id-records' %}
+        <li data-guide-item data-search="{{ (p.title ~ ' ' ~ p.description ~ ' ' ~ p.get('state', '') ~ ' ' ~ p.route)|lower }}">
+          <a href="{{ page_url(p.slug) }}">{% if p.get('state') and p.get('state')|lower not in p.title|lower %}{{ p.get('state')|capitalize }}: {% endif %}{{ p.title }}</a>
+          <span class="guide-dir-desc">{{ p.description }}</span>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+
+    <div class="guide-dir-group" data-guide-group>
+      <h3>Sources, accessibility &amp; privacy</h3>
+      <ul class="guide-dir-list">
+      {% for p in pages if not p.get('desk') and p.slug not in ['index', 'start', '404'] %}
+        <li data-guide-item data-search="{{ (p.title ~ ' ' ~ p.description ~ ' ' ~ p.route)|lower }}">
+          <a href="{{ page_url(p.slug) }}">{{ p.title }}</a>
+          <span class="guide-dir-desc">{{ p.description }}</span>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
 {% endblock %}

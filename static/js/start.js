@@ -66,6 +66,9 @@
     resultBox.hidden = true;
     errorBox.hidden = true;
     resultBody.textContent = "";
+    form.querySelectorAll('fieldset[aria-describedby="start-error"]').forEach(function (fs) {
+      fs.removeAttribute("aria-describedby");
+    });
   }
 
   form.reset();
@@ -88,6 +91,9 @@
     if (!topic) missing.push({ name: "topic", label: "2. What are you trying to do?" });
 
     if (missing.length) {
+      form.querySelectorAll('fieldset[aria-describedby="start-error"]').forEach(function (fs) {
+        fs.removeAttribute("aria-describedby");
+      });
       errorBox.textContent = "";
       var p = document.createElement("p");
       p.className = "callout-title";
@@ -97,6 +103,8 @@
       errorBox.appendChild(p);
       var ul = document.createElement("ul");
       missing.forEach(function (m) {
+        var fs = document.getElementById("q-" + m.name);
+        if (fs) fs.setAttribute("aria-describedby", "start-error");
         var li = document.createElement("li");
         var a = document.createElement("a");
         a.href = "#q-" + m.name;
@@ -110,9 +118,12 @@
         ul.appendChild(li);
       });
       errorBox.appendChild(ul);
+      var firstFs = document.getElementById("q-" + missing[0].name);
+      if (firstFs && firstFs.parentNode) {
+        firstFs.parentNode.insertBefore(errorBox, firstFs);
+      }
       errorBox.hidden = false;
-      var firstInput = form.querySelector('input[name="' + missing[0].name + '"]');
-      if (firstInput) firstInput.focus();
+      errorBox.focus();
       return;
     }
 
@@ -143,4 +154,43 @@
     resultBox.hidden = false;
     resultHeading.focus();
   });
+
+  var filterInput = document.getElementById("guide-filter");
+  var filterStatus = document.getElementById("guide-filter-status");
+  if (filterInput) {
+    var groups = Array.prototype.slice.call(document.querySelectorAll("[data-guide-group]"));
+    var items = Array.prototype.slice.call(document.querySelectorAll("[data-guide-item]"));
+    var runFilter = function () {
+      var raw = (filterInput.value || "").trim();
+      var tokens = raw.toLowerCase().split(/\s+/).filter(Boolean);
+      var shown = 0;
+      items.forEach(function (item) {
+        var hay = (item.getAttribute("data-search") || item.textContent || "").toLowerCase();
+        var ok = tokens.every(function (t) { return hay.indexOf(t) !== -1; });
+        item.hidden = !ok;
+        if (ok) shown += 1;
+      });
+      groups.forEach(function (group) {
+        var anyVisible = Array.prototype.some.call(
+          group.querySelectorAll("[data-guide-item]"),
+          function (li) { return !li.hidden; }
+        );
+        group.hidden = !anyVisible;
+      });
+      if (filterStatus) {
+        if (!tokens.length) {
+          filterStatus.textContent = "";
+        } else if (shown === 0) {
+          filterStatus.textContent = "No guides match \"" + raw + "\". Clear the filter to see every guide.";
+        } else {
+          filterStatus.textContent = "Showing " + shown + (shown === 1 ? " matching guide." : " matching guides.");
+        }
+      }
+    };
+    filterInput.addEventListener("input", runFilter);
+    window.addEventListener("pageshow", function () {
+      filterInput.value = "";
+      runFilter();
+    });
+  }
 })();

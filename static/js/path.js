@@ -81,9 +81,15 @@
     results.hidden = true;
     errorBox.hidden = true;
     body.textContent = "";
+    form.querySelectorAll('fieldset[aria-describedby="path-error"]').forEach(function (fs) {
+      fs.removeAttribute("aria-describedby");
+    });
   }
 
   function showErrors(missing) {
+    form.querySelectorAll('fieldset[aria-describedby="path-error"]').forEach(function (fs) {
+      fs.removeAttribute("aria-describedby");
+    });
     errorBox.textContent = "";
     var title = document.createElement("p");
     title.className = "callout-title";
@@ -93,6 +99,8 @@
     errorBox.appendChild(title);
     var list = document.createElement("ul");
     missing.forEach(function (q) {
+      var fs = document.getElementById("q-" + q.name);
+      if (fs) fs.setAttribute("aria-describedby", "path-error");
       var li = document.createElement("li");
       var a = document.createElement("a");
       a.href = "#q-" + q.name;
@@ -106,9 +114,12 @@
       list.appendChild(li);
     });
     errorBox.appendChild(list);
+    var firstFs = document.getElementById("q-" + missing[0].name);
+    if (firstFs && firstFs.parentNode) {
+      firstFs.parentNode.insertBefore(errorBox, firstFs);
+    }
     errorBox.hidden = false;
-    var firstMissing = form.querySelector('input[name="' + missing[0].name + '"]');
-    if (firstMissing) firstMissing.focus();
+    errorBox.focus();
   }
 
   form.reset();

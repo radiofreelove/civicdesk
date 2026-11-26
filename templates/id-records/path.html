@@ -17,6 +17,8 @@
 </div>
 
 <form id="path-form" class="path-form js-only" novalidate autocomplete="off">
+  <div id="path-error" class="callout callout-watch path-error" role="alert" tabindex="-1" hidden></div>
+
   <fieldset id="q-live">
     <legend>1. Where do you live?</legend>
     <label><input type="radio" name="live" value="or"> Oregon</label>
@@ -51,8 +53,6 @@
     <label><input type="radio" name="born" value="other-us"> Yes — another U.S. state or territory</label>
     <label><input type="radio" name="born" value="outside"> Born outside the United States</label>
   </fieldset>
-
-  <div id="path-error" class="callout callout-watch" role="alert" hidden></div>
 
   <div class="btn-row">
     <button type="submit" class="btn">Show my steps</button>
