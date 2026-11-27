@@ -1,12 +1,41 @@
 /* CivicDesk 1-minute Medicaid rules check (/medicaid/{state}/check/).
    Answers live only in page memory and are never saved or sent.
-   Never says "you are exempt" or "you qualify": only the state decides. */
+   Results are rule-indexed: they say what the state's published rules list and what its agency
+   asks, never that a reader is exempt or qualifies (only the state decides). Each state file sets
+   CHECK.state and CHECK.agency, and can override any wording below through CHECK.text. */
 (function () {
   "use strict";
 
   var CHECK = window.CivicDeskCheck || null;
   var REASONS = CHECK ? CHECK.reasons : {};
   var MEETS = CHECK ? CHECK.meets : {};
+  var STATE = (CHECK && CHECK.state) || "This state";
+  var AGENCY = (CHECK && CHECK.agency) || "the state";
+
+  // Default result wording. A state file overrides a key with a string or a function of the
+  // number of items picked (CHECK.text.reasonTitleExcluded, for example).
+  var DEFAULT_TEXT = {
+    ageTitle: function () { return "The new rules do not apply to your age group."; },
+    reasonTitle: function (n) {
+      return n === 1 ? "This reason is on " + STATE + "'s published list." : "These reasons are on " + STATE + "'s published list.";
+    },
+    meetsTitle: function (n) {
+      return STATE + "'s rules list " + (n === 1 ? "this as a way" : "these as ways") + " to meet the requirement.";
+    },
+    alsoMeetsHeading: function () { return STATE + "'s rules also list these ways to meet the requirement"; },
+    noneTitle: function () { return "Nothing picked here is on " + STATE + "'s published lists of reasons or ways to meet the rules."; },
+    todoHeading: function () { return "What " + AGENCY + " asks people in this group to do"; },
+    waysHeading: function () { return "Published ways to meet the requirement or get help"; }
+  };
+
+  function resultText(key, count) {
+    var custom = CHECK && CHECK.text ? CHECK.text : {};
+    // An excluded-reason title falls back to the general reason title.
+    if (key === "reasonTitleExcluded" && !custom.reasonTitleExcluded) { key = "reasonTitle"; }
+    var value = custom[key] || DEFAULT_TEXT[key];
+    if (typeof value === "function") { return value(count); }
+    return typeof value === "string" ? value : "";
+  }
 
   var form;
   var progress;
@@ -326,35 +355,33 @@
 
     if (age !== "19to64") {
       result.insertBefore(buildEmblem("shield", "Age group check", "result-emblem-good"), title);
-      title.textContent = "The new rules do not apply to your age group.";
+      title.textContent = resultText("ageTitle", 1);
       result.appendChild(el("p", CHECK.age.body));
       result.appendChild(para([link(CHECK.age.link.href, CHECK.age.link.text)]));
     } else if (reasons.length > 0) {
-      result.insertBefore(buildEmblem("shield", "Exemption check", "result-emblem-good"), title);
-      title.textContent = notApply
-        ? "The new rules likely do not apply to you."
-        : "You may not have to meet the new rules.";
+      result.insertBefore(buildEmblem("shield", "Reason check", "result-emblem-good"), title);
+      title.textContent = resultText(notApply ? "reasonTitleExcluded" : "reasonTitle", reasons.length);
       result.appendChild(el("p", CHECK.reasonIntro));
       result.appendChild(listOf(reasons, REASONS));
       if (meets.length > 0) {
-        result.appendChild(el("h3", "You may also already meet the rules"));
+        result.appendChild(el("h3", resultText("alsoMeetsHeading", meets.length)));
         result.appendChild(listOf(meets, MEETS));
       }
-      result.appendChild(el("h3", "What to do"));
+      result.appendChild(el("h3", resultText("todoHeading", 1)));
       result.appendChild(stepsOf(CHECK.reasonTodo));
     } else if (meets.length > 0) {
       result.insertBefore(buildEmblem("check", "Activity check", "result-emblem-good"), title);
-      title.textContent = "You may already meet the new rules.";
+      title.textContent = resultText("meetsTitle", meets.length);
       result.appendChild(el("p", "Here is what you picked:"));
       result.appendChild(listOf(meets, MEETS));
-      result.appendChild(el("h3", "What to do"));
+      result.appendChild(el("h3", resultText("todoHeading", 1)));
       result.appendChild(stepsOf(CHECK.meetTodo));
       result.appendChild(para([link(CHECK.meetLink.href, CHECK.meetLink.text)]));
     } else {
       result.insertBefore(buildEmblem("clock", "Next-step plan", "result-emblem-watch"), title);
-      title.textContent = "The new rules may apply to you.";
+      title.textContent = resultText("noneTitle", 0);
       result.appendChild(el("p", CHECK.mayApply.body));
-      result.appendChild(el("h3", "What you can do"));
+      result.appendChild(el("h3", resultText("waysHeading", 0)));
       var ways = el("ul", null, "short");
       CHECK.mayApply.ways.forEach(function (way) {
         var li = el("li");
@@ -390,7 +417,7 @@
     var print = el("button", null, "button-secondary");
     print.type = "button";
     print.appendChild(svgIcon("print"));
-    print.appendChild(el("span", "Print my results"));
+    print.appendChild(el("span", "Print these results"));
     print.addEventListener("click", function () { window.print(); });
     actions.appendChild(print);
     result.appendChild(actions);

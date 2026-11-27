@@ -1,11 +1,11 @@
 name: Weekly Source Verification
 
-# Runs Mondays for source link, fingerprint, `kind`-based freshness, `review_by`,
+# Runs Monday evenings Pacific (02:17 UTC Tuesday) for source link, fingerprint, `kind`-based freshness, `review_by`,
 # build, and live Policy Wire API contract verification.
 
 on:
   schedule:
-    - cron: "17 16 * * 1" # Mondays, 16:17 UTC
+    - cron: "17 2 * * 2" # 02:17 UTC Tue = Mon 6:17 p.m. PST / 7:17 p.m. PDT
   workflow_dispatch:
 
 permissions:

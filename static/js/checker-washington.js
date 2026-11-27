@@ -2,6 +2,8 @@
 window.CivicDeskCheck = (function () {
   "use strict";
   return {
+    state: "Washington",
+    agency: "HCA",
     reasons: {
       pregnant: {
         label: "You are pregnant, or you are in the 12 months after a pregnancy."

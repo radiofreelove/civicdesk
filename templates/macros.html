@@ -54,6 +54,58 @@
 </section>
 {%- endmacro %}
 
+{#- Pre-tool notice for the interactive tools (ID path finder and the 1-minute Medicaid checks).
+    tests/test_registries_and_structure.py requires it on every page that loads path.js or checker.js. -#}
+{% macro tool_notice(cls='') -%}
+<p class="tool-notice{% if cls %} {{ cls }}{% endif %}" role="note"><span class="tool-notice-icon">{{ icon('shield') }}</span><span>No person sees your answers. Your answers stay in this browser and are never sent anywhere. Using this tool does not create a lawyer-client relationship.</span></p>
+{%- endmacro %}
+
+{#- ===== Four-beat page fields from data/pages.yaml (docs/CONTENT-STYLE.md section 6) ===== -#}
+
+{#- Beat 1: the one-breath answer and why it matters. Replaces m.lede once a page has `answer`. -#}
+{% macro answer(page) -%}
+<p class="lede"><span class="label">The big picture:</span> {{ page.answer }}</p>
+{%- if page.get('why') %}
+<p class="why-it-matters"><strong>Why it matters:</strong> {{ page.why }}</p>
+{%- endif %}
+{%- endmacro %}
+
+{#- Beat 3: cost, clock, paperwork, and the catch. Only filled rows render, and with none filled
+    nothing renders, so explainers without forms or fees show no filler. -#}
+{% macro spec_strip(page) -%}
+{%- set s = page.get('spec') or {} -%}
+{%- if s.get('cost') or s.get('clock') or s.get('paperwork') or s.get('catch') %}
+<dl class="spec-strip">
+  {%- if s.get('cost') %}
+  <div class="spec-row"><dt>Cost</dt><dd>{{ fact(s.cost) }}</dd></div>
+  {%- endif %}
+  {%- if s.get('clock') %}
+  <div class="spec-row"><dt>Time</dt><dd>{{ fact(s.clock) }}</dd></div>
+  {%- endif %}
+  {%- if s.get('paperwork') %}
+  <div class="spec-row"><dt>Official forms</dt><dd>{{ ext(s.paperwork) }}</dd></div>
+  {%- endif %}
+  {%- if s.get('catch') %}
+  <div class="spec-row"><dt>The catch</dt><dd>{{ s.catch.text }}{% for sid in s.catch.basis %} {{ src(sid) }}{% endfor %}</dd></div>
+  {%- endif %}
+</dl>
+{%- endif %}
+{%- endmacro %}
+
+{#- Everyday analogy: how an agency system works, where the comparison stops, and its sources.
+    m.analogy(page) renders the lead analogy; m.analogy(page, 'id') renders an inline one.
+    Never inside m.deeper, and no .deeper/.brief-extra/.more classes, so the Short version shows it. -#}
+{% macro analogy(page, aid=none) -%}
+{%- set a = analogy_for(page, aid) -%}
+{%- if a %}
+<aside class="analogy{% if a.placement == 'inline' %} analogy-inline{% endif %}" id="analogy-{{ a.id }}" aria-labelledby="analogy-{{ a.id }}-t">
+  <p class="analogy-kicker" id="analogy-{{ a.id }}-t">In everyday terms</p>
+  <p class="analogy-compare">{{ a.compare }}</p>
+  <p class="analogy-boundary"><strong>Where the comparison stops:</strong> {{ a.boundary }} {{ badge('our_reading') }}{% for sid in a.basis %} {{ src(sid) }}{% endfor %}</p>
+</aside>
+{%- endif %}
+{%- endmacro %}
+
 {% macro id_mismatch_callout(id, state_slug='') -%}
 {% set id_href = page_url('id-records-' ~ state_slug) if state_slug else page_url('id-records') %}
 <section class="callout callout-why" id="{{ id }}" aria-labelledby="{{ id }}-t">

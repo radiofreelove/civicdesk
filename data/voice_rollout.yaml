@@ -1,0 +1,115 @@
+# Four-beat rollout ledger for data/pages.yaml (docs/CONTENT-STYLE.md section 6).
+#
+# tests/test_page_fields.py requires, on every page except 404:
+#   - answer and why (Beat 1), and
+#   - a lead analogy, unless the page is listed under analogy_exempt.
+# Pages listed under pending have not had their content pass yet. Remove a slug from pending in
+# the same change that adds its fields; the test fails if a pending page is already complete, so
+# this list only shrinks.
+
+# 27 pages exempt from the analogy requirement; 41 pages require one.
+analogy_exempt:
+  # Front door, router, and site utility pages
+  - index
+  - start
+  - sources
+  - about
+  - accessibility
+  - privacy
+  - '404'
+  # Desk source registries
+  - medicaid-sources
+  - id-records-sources
+  # Interactive tools (they carry the tool notice instead)
+  - medicaid-oregon-check
+  - medicaid-washington-check
+  - medicaid-utah-check
+  - id-records-path
+  # Glossaries
+  - medicaid-oregon-words
+  - medicaid-washington-words
+  - medicaid-utah-words
+  - id-records-glossary
+  # Printable hours logs
+  - medicaid-oregon-log
+  - medicaid-washington-log
+  - medicaid-utah-log
+  # Help directories
+  - medicaid-oregon-help
+  - medicaid-washington-help
+  - medicaid-utah-help
+  - id-records-help
+  # Immigration pages: an analogy there can read as advice about someone's status
+  - medicaid-oregon-immigration
+  - medicaid-washington-immigration
+  - medicaid-utah-immigration
+
+# 67 pages (every page except 404), in data/pages.yaml order.
+pending:
+  - index
+  - start
+  - medicaid
+  - medicaid-oregon
+  - medicaid-oregon-check
+  - medicaid-oregon-rules
+  - medicaid-oregon-reasons
+  - medicaid-oregon-apply
+  - medicaid-oregon-letter
+  - medicaid-oregon-denied
+  - medicaid-oregon-bills
+  - medicaid-oregon-health
+  - medicaid-oregon-immigration
+  - medicaid-oregon-help
+  - medicaid-oregon-words
+  - medicaid-oregon-log
+  - medicaid-washington
+  - medicaid-washington-check
+  - medicaid-washington-rules
+  - medicaid-washington-reasons
+  - medicaid-washington-apply
+  - medicaid-washington-letter
+  - medicaid-washington-denied
+  - medicaid-washington-bills
+  - medicaid-washington-health
+  - medicaid-washington-immigration
+  - medicaid-washington-help
+  - medicaid-washington-words
+  - medicaid-washington-log
+  - medicaid-utah
+  - medicaid-utah-check
+  - medicaid-utah-rules
+  - medicaid-utah-reasons
+  - medicaid-utah-apply
+  - medicaid-utah-letter
+  - medicaid-utah-denied
+  - medicaid-utah-bills
+  - medicaid-utah-health
+  - medicaid-utah-immigration
+  - medicaid-utah-help
+  - medicaid-utah-words
+  - medicaid-utah-log
+  - medicaid-sources
+  - id-records
+  - id-records-path
+  - id-records-oregon
+  - id-records-oregon-court
+  - id-records-oregon-birth
+  - id-records-oregon-id
+  - id-records-washington
+  - id-records-washington-court
+  - id-records-washington-birth
+  - id-records-washington-id
+  - id-records-utah
+  - id-records-utah-court
+  - id-records-utah-birth
+  - id-records-utah-id
+  - id-records-federal
+  - id-records-after
+  - id-records-help
+  - id-records-compare
+  - id-records-glossary
+  - id-records-sources
+  - sources
+  - about
+  - accessibility
+  - privacy

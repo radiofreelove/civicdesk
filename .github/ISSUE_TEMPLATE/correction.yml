@@ -1,0 +1,36 @@
+name: Report a correction
+description: Report an outdated rule, wrong fee, broken link, or unclear sentence on civicdesk.net.
+title: "Correction: "
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issues here are public. Please describe the page problem only. Do not include names, case numbers, health details, immigration status, or other personal information. CivicDesk cannot answer questions about individual situations.
+  - type: input
+    id: page
+    attributes:
+      label: Page address
+      description: The civicdesk.net page with the problem.
+      placeholder: https://civicdesk.net/
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or unclear?
+      description: Quote the sentence, fee, date, or link if you can.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source (optional)
+      description: A link to the court, agency, or legislature page that shows the correct information.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: This report contains no names, case numbers, health details, or other personal information.
+          required: true

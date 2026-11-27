@@ -6,7 +6,7 @@
   <div class="intro-copy">
     <p class="kicker">Oregon Health Plan (OHP)</p>
     <h1>Do the rules fit me?</h1>
-    <p class="purpose">Answer 3 quick questions. See what may apply to you, and what to do next.</p>
+    <p class="purpose">Answer 3 quick questions. See which published rules match your answers, and what OHP asks next.</p>
   </div>
   {{ v.page_art(page) }}
 </div>
@@ -16,10 +16,10 @@
       <h2>Before you start</h2>
       <ul>
         <li>It takes about 1 minute.</li>
-        <li>Nothing you pick is saved or sent. It stays on this device.</li>
         <li>It never asks about immigration status.</li>
         <li>This is not a decision. Only OHP decides.</li>
       </ul>
+      {{ m.tool_notice() }}
     </div>
 
     <noscript>
@@ -111,7 +111,7 @@
         </fieldset>
         <div class="actions">
           <button type="button" class="button-secondary" data-back>Back</button>
-          <button type="submit" class="button">See my results</button>
+          <button type="submit" class="button">See results</button>
         </div>
       </div>
     </form>

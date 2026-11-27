@@ -66,8 +66,7 @@
   template: medicaid/oregon/check.html
   title: Do the rules fit me? A 1-minute check
   nav_label: Do the rules fit me?
-  description: Answer 3 quick questions to see whether the new OHP work or activity rules may apply to you. Your
-    answers never leave your device.
+  description: Answer 3 quick questions to see which published OHP work or activity rules and exemptions match your answers. Your answers never leave your device.
   checked: '2026-11-24'
   sources:
   - MED-S02
@@ -118,8 +117,7 @@
   template: medicaid/oregon/reasons.html
   title: Reasons you may not have to meet the rules
   nav_label: Reasons you may not have to
-  description: Every reason the new OHP work or activity rules may not apply to you, and how OHP checks each one.
-    OHP calls these exemptions.
+  description: Every reason OHP lists for not having to meet the new work or activity rules, and how OHP checks each one. OHP calls these exemptions.
   checked: '2026-11-24'
   sources:
   - MED-S02
@@ -375,8 +373,7 @@
   template: medicaid/washington/check.html
   title: Do the Washington rules fit me? A 1-minute check
   nav_label: Do the rules fit me?
-  description: Answer 3 quick questions to see whether the new Apple Health work rules in Washington may apply to
-    you. Your answers never leave your device.
+  description: Answer 3 quick questions to see which published Apple Health work rules and exemptions in Washington match your answers. Your answers never leave your device.
   checked: '2026-11-24'
   sources:
   - MED-WA04
@@ -427,8 +424,7 @@
   template: medicaid/washington/reasons.html
   title: Reasons you may not have to meet the Apple Health rules
   nav_label: Reasons you may not have to
-  description: Every reason the new Apple Health work rules in Washington may not apply to you. The Health Care
-    Authority's fact sheet calls these exemptions.
+  description: "Every reason Washington lists for not having to meet the new Apple Health work rules. The Health Care Authority's fact sheet calls these exemptions."
   checked: '2026-11-24'
   sources:
   - MED-WA04
@@ -670,8 +666,7 @@
   template: medicaid/utah/check.html
   title: Do the Utah rules fit me? A 1-minute check
   nav_label: Do the rules fit me?
-  description: Answer 3 quick questions to see whether the new Utah Medicaid work or activity rules may apply to
-    you. Your answers never leave your device.
+  description: Answer 3 quick questions to see which published Utah Medicaid work or activity rules, exclusions, and exceptions match your answers. Your answers never leave your device.
   checked: '2026-11-24'
   sources:
   - MED-U01
@@ -719,8 +714,7 @@
   template: medicaid/utah/reasons.html
   title: Reasons you may not have to meet the Utah rules
   nav_label: Reasons you may not have to
-  description: Every reason the new Utah Medicaid work or activity rules may not apply to you, and how the state
-    checks them. Utah calls these exclusions and exceptions.
+  description: Every reason Utah lists for not having to meet the new Medicaid work or activity rules, and how the state checks them. Utah calls these exclusions and exceptions.
   checked: '2026-11-24'
   sources:
   - MED-U01

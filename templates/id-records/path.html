@@ -7,7 +7,7 @@
   <div class="intro-copy">
     <p class="kicker">Legal Name, ID &amp; Vital Records</p>
     <h1>Find your record-update path</h1>
-    {{ m.lede("Answer a few quick questions to see only the steps that fit your situation—whether you are updating your name after marriage or divorce, filing a court petition, or updating a sex or gender designation. Birth-certificate questions are optional, and your answers never leave this page.") }}
+    {{ m.lede("Answer a few quick questions to see the published steps for your kind of update first, with every other published pathway listed below. It covers name changes after marriage or divorce, court petitions, and sex or gender designation updates. Birth-certificate questions are optional.") }}
   </div>
   {{ v.page_art(page) }}
 </div>
@@ -21,6 +21,8 @@
     <li><a href="{{ page_url('id-records-compare') }}">Compare Oregon, Washington, and Utah</a></li>
   </ul>
 </div>
+
+{{ m.tool_notice('js-only') }}
 
 <form id="path-form" class="path-form js-only" novalidate autocomplete="off">
   <div id="path-error" class="callout callout-watch path-error" role="alert" tabindex="-1" hidden></div>
@@ -61,18 +63,22 @@
   </fieldset>
 
   <div class="btn-row">
-    <button type="submit" class="btn">Show my steps</button>
+    <button type="submit" class="btn">Show published steps</button>
     <button type="reset" class="btn-secondary">Start over</button>
   </div>
 </form>
 
 <section id="path-results" class="path-results" aria-labelledby="results-h" hidden>
-  <p class="result-emblem result-emblem-good">{{ m.icon('id-card') }}<span>Personalized record-update order</span></p>
-  <h2 id="results-h" tabindex="-1">Your steps</h2>
+  <p class="result-emblem result-emblem-good">{{ m.icon('id-card') }}<span>Published record-update order</span></p>
+  <h2 id="results-h" tabindex="-1">Published steps for this kind of update</h2>
   <p id="results-summary"></p>
-  <ol id="results-body" class="step-timeline path-steps" aria-label="Your steps, in order"></ol>
+  <ol id="results-body" class="step-timeline path-steps" aria-label="Published steps, in order"></ol>
+  <details id="other-pathways" class="other-pathways" hidden>
+    <summary><span id="other-pathways-title">Other published pathways</span></summary>
+    <div id="other-pathways-body" class="other-pathways-body"></div>
+  </details>
   <div class="btn-row">
-    <button type="button" class="btn" data-print>{{ m.icon('print-sheet') }}<span>Print my steps</span></button>
+    <button type="button" class="btn" data-print>{{ m.icon('print-sheet') }}<span>Print these steps</span></button>
     <a class="btn-secondary" href="#path-form">Change my answers</a>
   </div>
 </section>
@@ -81,7 +87,7 @@
 <div hidden>
 
 <template id="t-marriage-or">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-OR-ORS-106') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Marriage or domestic partnership certificate in Oregon</h3>
@@ -95,7 +101,7 @@
 </template>
 
 <template id="t-marriage-wa">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-WA-DOL-NAME', 'ID-US-SSA-NAME') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Certified marriage certificate in Washington</h3>
@@ -108,7 +114,7 @@
 </template>
 
 <template id="t-marriage-ut">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-UT-DLD-NAME', 'ID-US-SSA-NAME') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Certified marriage certificate in Utah</h3>
@@ -121,7 +127,7 @@
 </template>
 
 <template id="t-marriage-other">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-US-SSA-NAME') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Certified marriage certificate</h3>
@@ -131,7 +137,7 @@
 </template>
 
 <template id="t-divorce-or">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-OR-ORS-107') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Divorce or dissolution judgment in Oregon</h3>
@@ -145,7 +151,7 @@
 </template>
 
 <template id="t-divorce-wa">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-WA-RCW-26-09-150') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Divorce or dissolution decree in Washington</h3>
@@ -159,7 +165,7 @@
 </template>
 
 <template id="t-divorce-ut">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-UT-DLD-NAME', 'ID-UT-CODE-42-1') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Divorce decree in Utah</h3>
@@ -172,7 +178,7 @@
 </template>
 
 <template id="t-divorce-other">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-US-SSA-NAME') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Divorce decree where you live</h3>
@@ -182,7 +188,7 @@
 </template>
 
 <template id="t-court-or">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-OR-ORS-33') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Court in Oregon</h3>
@@ -199,15 +205,15 @@
 </template>
 
 <template id="t-court-wa">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-WA-RCW-4-24-130') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Court in Washington</h3>
       <ul>
-        <li data-change="name both">For a court name change, choose a public case at any district court, or a sealed case at any superior court when sealing applies (including domestic violence, stalking, harassment, or gender expression or identity). Every name change has a hearing. {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-WLH-NAME') }}</li>
-        <li data-change="marker both">No court is needed to change the gender marker on a Washington license or a Washington birth certificate. A court order that confirms your gender is optional and can help with other states or agencies. {{ src('ID-WA-WLH-GENDER-ORDER') }}</li>
-        <li data-who="parent" data-change="name both">A parent or guardian can file a child's name change, sealed in superior court when statutory sealing grounds apply. Parents get notice, and some courts ask for the child's consent at 13 or older. {{ src('ID-WA-WLH-NAME') }}</li>
-        <li data-who="minor" data-change="name both">Because you are under 18, a parent or guardian usually files a name change for you. Talk with a parent, guardian, or legal aid about your options. {{ src('ID-WA-WLH-NAME') }}</li>
+        <li data-change="name both"{{ basis('ID-WA-RCW-4-24-130') }}>For a court name change, choose a public case at any district court, or a sealed case at any superior court when sealing applies (including domestic violence, stalking, harassment, or gender expression or identity). Every name change has a hearing. {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-WLH-NAME') }}</li>
+        <li data-change="marker both"{{ basis('ID-WA-DOL-GENDER', 'ID-WA-DOH-SEX') }}>No court is needed to change the gender marker on a Washington license or a Washington birth certificate. A court order that confirms your gender is optional and can help with other states or agencies. {{ src('ID-WA-WLH-GENDER-ORDER') }}</li>
+        <li data-who="parent" data-change="name both"{{ basis('ID-WA-RCW-4-24-130') }}>A parent or guardian can file a child's name change, sealed in superior court when statutory sealing grounds apply. Parents get notice, and some courts ask for the child's consent at 13 or older. {{ src('ID-WA-WLH-NAME') }}</li>
+        <li data-who="minor" data-change="name both"{{ basis('ID-WA-RCW-4-24-130') }}>Because you are under 18, a parent or guardian usually files a name change for you. Talk with a parent, guardian, or legal aid about your options. {{ src('ID-WA-WLH-NAME') }}</li>
       </ul>
       <p><a href="{{ page_url('id-records-washington-court') }}">Washington court steps</a></p>
     </div>
@@ -215,17 +221,17 @@
 </template>
 
 <template id="t-court-ut">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-UT-CODE-42-1', 'ID-UT-CODE-26B-8-111') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Court in Utah</h3>
       <ul>
-        <li data-who="adult" data-change="name both">File in the district court for the county where you have lived for at least one year. There is a hearing. {{ src('ID-UT-CODE-42-1') }}</li>
-        <li data-who="adult" data-change="marker both">For a sex designation change, the judge must find clear and convincing evidence of six things, including six months of living in the requested sex designation. Filed papers are private; case history and public hearings are not. {{ src('ID-UT-CODE-26B-8-111') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
-        <li data-who="parent" data-change="marker both">Utah does not allow a sex designation change for a child younger than 15 years and 6 months, or without permission from the parent or guardian with legal custody. The order does not take effect until 16. {{ src('ID-UT-CODE-26B-8-111') }}</li>
-        <li data-who="parent" data-change="name both">For a child's name change, file in the district court in the county where your child has lived for the past year. The other parent signs a consent form, or must be formally served if they do not agree. There is a hearing. {{ src('ID-UT-COURTS-MINOR-CHANGE') }}</li>
-        <li data-who="minor" data-change="marker both">Because you are under 18, Utah does not allow a sex designation change until you are at least 15 years and 6 months old, and a parent or guardian with legal custody must give permission and file for you. The order does not take effect until you turn 16. {{ src('ID-UT-CODE-26B-8-111') }}</li>
-        <li data-who="minor" data-change="name both">For a name change, a parent or guardian must file for you in the district court for the county where you have lived for the past year. If a second parent is listed, that parent signs a consent form or must be formally served if they do not agree. There is a hearing. {{ src('ID-UT-COURTS-MINOR-CHANGE') }}</li>
+        <li data-who="adult" data-change="name both"{{ basis('ID-UT-CODE-42-1') }}>File in the district court for the county where you have lived for at least one year. There is a hearing. {{ src('ID-UT-CODE-42-1') }}</li>
+        <li data-who="adult" data-change="marker both"{{ basis('ID-UT-CODE-26B-8-111') }}>For a sex designation change, the judge must find clear and convincing evidence of six things, including six months of living in the requested sex designation. Filed papers are private; case history and public hearings are not. {{ src('ID-UT-CODE-26B-8-111') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+        <li data-who="parent" data-change="marker both"{{ basis('ID-UT-CODE-26B-8-111') }}>Utah does not allow a sex designation change for a child younger than 15 years and 6 months, or without permission from the parent or guardian with legal custody. The order does not take effect until 16. {{ src('ID-UT-CODE-26B-8-111') }}</li>
+        <li data-who="parent" data-change="name both"{{ basis('ID-UT-CODE-42-1') }}>For a child's name change, file in the district court in the county where your child has lived for the past year. The other parent signs a consent form, or must be formally served if they do not agree. There is a hearing. {{ src('ID-UT-COURTS-MINOR-CHANGE') }}</li>
+        <li data-who="minor" data-change="marker both"{{ basis('ID-UT-CODE-26B-8-111') }}>Because you are under 18, Utah does not allow a sex designation change until you are at least 15 years and 6 months old, and a parent or guardian with legal custody must give permission and file for you. The order does not take effect until you turn 16. {{ src('ID-UT-CODE-26B-8-111') }}</li>
+        <li data-who="minor" data-change="name both"{{ basis('ID-UT-CODE-42-1') }}>For a name change, a parent or guardian must file for you in the district court for the county where you have lived for the past year. If a second parent is listed, that parent signs a consent form or must be formally served if they do not agree. There is a hearing. {{ src('ID-UT-COURTS-MINOR-CHANGE') }}</li>
         <li data-who="adult parent">The general civil court filing fee is {{ fact('ut_fee_petition') }} (confirm with the clerk), or ask to waive it. {{ src('ID-UT-COURTS-FEES') }}</li>
         <li data-who="minor">The general civil court filing fee is {{ fact('ut_fee_petition') }} (confirm with the clerk), or your parent or guardian can ask to waive it. {{ src('ID-UT-COURTS-FEES') }}</li>
       </ul>
@@ -245,14 +251,14 @@
 </template>
 
 <template id="t-birth-or">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-OR-OHA-GENDER', 'ID-OR-OHA-COURT-ORDER') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Birth certificate: Oregon</h3>
       <ul>
-        <li data-change="name marker both">Use form OHA 2673, notarized, to change name, sex (M, F, or X), or both with no court order, or send a certified court judgment instead. Oregon accepts court orders from other states too. {{ src('ID-OR-OHA-GENDER') }} {{ src('ID-OR-OHA-COURT-ORDER') }}</li>
-        <li data-change="marriage divorce">A marriage certificate or divorce decree normally updates Social Security, your ID, and your passport without changing your birth certificate. Amending an Oregon birth record's name requires either a court judgment or the one-time OHA 2673 administrative process. {{ src('ID-OR-OHA-COURT-ORDER') }}</li>
-        <li data-who="parent minor" data-change="name marker both">For someone under 18, a parent or legal guardian applies.</li>
+        <li data-change="name marker both"{{ basis('ID-OR-OHA-GENDER') }}>Use form OHA 2673, notarized, to change name, sex (M, F, or X), or both with no court order, or send a certified court judgment instead. Oregon accepts court orders from other states too. {{ src('ID-OR-OHA-GENDER') }} {{ src('ID-OR-OHA-COURT-ORDER') }}</li>
+        <li data-change="marriage divorce"{{ basis('ID-OR-OHA-COURT-ORDER') }}>A marriage certificate or divorce decree normally updates Social Security, your ID, and your passport without changing your birth certificate. Amending an Oregon birth record's name requires either a court judgment or the one-time OHA 2673 administrative process. {{ src('ID-OR-OHA-COURT-ORDER') }}</li>
+        <li data-who="parent minor" data-change="name marker both"{{ basis('ID-OR-OHA-GENDER') }}>For someone under 18, a parent or legal guardian applies.</li>
         <li>Cost when amending an Oregon birth record: {{ fact('or_oha_amend_fee') }} plus {{ fact('or_oha_cert_fee') }}. {{ src('ID-OR-OHA-GENDER') }}</li>
       </ul>
       <p><a href="{{ page_url('id-records-oregon-birth') }}">Oregon birth certificate details</a></p>
@@ -261,16 +267,16 @@
 </template>
 
 <template id="t-birth-wa">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-WA-DOH-SEX', 'ID-WA-DOH-AMEND-BIRTH') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Birth certificate: Washington</h3>
       <ul>
-        <li data-change="marker both">Sex designation: use the Department of Health form, not a court order. M, F, or X. No fee to amend; {{ fact('wa_doh_cert_fee') }}. {{ src('ID-WA-DOH-SEX') }}</li>
-        <li data-change="marker both" data-who="adult">Adults use DOH 422-143, signed in front of a notary. {{ src('ID-WA-DOH-422-143') }}</li>
-        <li data-change="marker both" data-who="parent minor">Minors use DOH 422-144, signed by a parent or guardian and a licensed provider. {{ src('ID-WA-DOH-422-144') }}</li>
-        <li data-change="name both">Legal name on birth certificate: send a certified court order with form DOH 422-126. {{ src('ID-WA-DOH-422-126') }}</li>
-        <li data-change="marriage divorce">Marriage and divorce name changes update Social Security and your driver license rather than your birth certificate unless you separately obtain a court-ordered birth-record name amendment. {{ src('ID-WA-DOH-AMEND-BIRTH') }}</li>
+        <li data-change="marker both"{{ basis('ID-WA-DOH-SEX') }}>Sex designation: use the Department of Health form, not a court order. M, F, or X. No fee to amend; {{ fact('wa_doh_cert_fee') }}. {{ src('ID-WA-DOH-SEX') }}</li>
+        <li data-change="marker both" data-who="adult"{{ basis('ID-WA-DOH-SEX') }}>Adults use DOH 422-143, signed in front of a notary. {{ src('ID-WA-DOH-422-143') }}</li>
+        <li data-change="marker both" data-who="parent minor"{{ basis('ID-WA-DOH-SEX') }}>Minors use DOH 422-144, signed by a parent or guardian and a licensed provider. {{ src('ID-WA-DOH-422-144') }}</li>
+        <li data-change="name both"{{ basis('ID-WA-DOH-AMEND-BIRTH') }}>Legal name on birth certificate: send a certified court order with form DOH 422-126. {{ src('ID-WA-DOH-422-126') }}</li>
+        <li data-change="marriage divorce"{{ basis('ID-WA-DOH-AMEND-BIRTH') }}>Marriage and divorce name changes update Social Security and your driver license rather than your birth certificate unless you separately obtain a court-ordered birth-record name amendment. {{ src('ID-WA-DOH-AMEND-BIRTH') }}</li>
       </ul>
       <p><a href="{{ page_url('id-records-washington-birth') }}">Washington birth certificate details</a></p>
     </div>
@@ -278,14 +284,14 @@
 </template>
 
 <template id="t-birth-ut">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-UT-VITAL-902-2026', 'ID-UT-CODE-26B-8-111') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Birth certificate: Utah</h3>
       <ul>
-        <li data-change="name marker both">Utah amends a birth certificate with a certified court order, form 902, and {{ fact('ut_vital_amend_fee') }}. {{ src('ID-UT-VITAL-902-2026') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
-        <li data-change="marker both">The new certificate does not show what changed unless you ask, and Vital Records also issues and keeps an amendment history. {{ src('ID-UT-CODE-26B-8-111') }}</li>
-        <li data-change="marriage divorce">Marriage and divorce name changes normally update Social Security and your driver license without amending your birth certificate. {{ src('ID-UT-DLD-NAME') }}</li>
+        <li data-change="name marker both"{{ basis('ID-UT-VITAL-902-2026') }}>Utah amends a birth certificate with a certified court order, form 902, and {{ fact('ut_vital_amend_fee') }}. {{ src('ID-UT-VITAL-902-2026') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}</li>
+        <li data-change="marker both"{{ basis('ID-UT-CODE-26B-8-111') }}>The new certificate does not show what changed unless you ask, and Vital Records also issues and keeps an amendment history. {{ src('ID-UT-CODE-26B-8-111') }}</li>
+        <li data-change="marriage divorce"{{ basis('ID-UT-DLD-NAME') }}>Marriage and divorce name changes normally update Social Security and your driver license without amending your birth certificate. {{ src('ID-UT-DLD-NAME') }}</li>
       </ul>
       <p><a href="{{ page_url('id-records-utah-birth') }}">Utah birth certificate details</a></p>
     </div>
@@ -293,7 +299,7 @@
 </template>
 
 <template id="t-birth-other-us">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-US-CDC-W2W') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Birth certificate: your birth state</h3>
@@ -313,13 +319,13 @@
 </template>
 
 <template id="t-id-or">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-OR-DMV-NAME', 'ID-OR-DMV-GENDER') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Driver license or ID: Oregon</h3>
       <ul>
-        <li data-change="marriage divorce name both">Update your name with Social Security first. Then visit an Oregon DMV office in person with an original or certified marriage certificate, domestic partnership certificate, divorce judgment, or court order, plus identity and address proof, and pay {{ fact('or_dmv_fee') }}. {{ src('ID-OR-DMV-NAME') }} {{ src('ID-OR-DMV-PROOF') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}</li>
-        <li data-change="marker both">Choose M, F, or X at the Oregon DMV with no medical proof needed, in person, and pay the replacement or renewal fee. {{ src('ID-OR-DMV-GENDER') }}</li>
+        <li data-change="marriage divorce name both"{{ basis('ID-OR-DMV-NAME') }}>Update your name with Social Security first. Then visit an Oregon DMV office in person with an original or certified marriage certificate, domestic partnership certificate, divorce judgment, or court order, plus identity and address proof, and pay {{ fact('or_dmv_fee') }}. {{ src('ID-OR-DMV-NAME') }} {{ src('ID-OR-DMV-PROOF') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}</li>
+        <li data-change="marker both"{{ basis('ID-OR-DMV-GENDER') }}>Choose M, F, or X at the Oregon DMV with no medical proof needed, in person, and pay the replacement or renewal fee. {{ src('ID-OR-DMV-GENDER') }}</li>
       </ul>
       <p><a href="{{ page_url('id-records-oregon-id') }}">Oregon license and ID details</a></p>
     </div>
@@ -327,13 +333,13 @@
 </template>
 
 <template id="t-id-wa">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-WA-DOL-NAME', 'ID-WA-DOL-GENDER') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Driver license or ID: Washington</h3>
       <ul>
-        <li data-change="marriage divorce name both">Update your name with Social Security first, then make an in-person Department of Licensing appointment and bring identity proof plus a certified marriage certificate, certified divorce decree, or certified court order (for sealed Superior Court orders, DOL's Identity Management Team can assist at <code>dol-psdidentitymanagement@dol.wa.gov</code>). {{ src('ID-WA-DOL-NAME') }}</li>
-        <li data-change="marker both">Choose M, F, or X in person or by mail with form 520043. Free if you only change the gender designation. {{ src('ID-WA-DOL-GENDER') }}</li>
+        <li data-change="marriage divorce name both"{{ basis('ID-WA-DOL-NAME') }}>Update your name with Social Security first, then make an in-person Department of Licensing appointment and bring identity proof plus a certified marriage certificate, certified divorce decree, or certified court order (for sealed Superior Court orders, DOL's Identity Management Team can assist at <code>dol-psdidentitymanagement@dol.wa.gov</code>). {{ src('ID-WA-DOL-NAME') }}</li>
+        <li data-change="marker both"{{ basis('ID-WA-DOL-GENDER') }}>Choose M, F, or X in person or by mail with form 520043. Free if you only change the gender designation. {{ src('ID-WA-DOL-GENDER') }}</li>
       </ul>
       <p><a href="{{ page_url('id-records-washington-id') }}">Washington license and ID details</a></p>
     </div>
@@ -341,13 +347,13 @@
 </template>
 
 <template id="t-id-ut">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-UT-DLD-NAME', 'ID-UT-CODE-53-3-205') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Driver license or ID: Utah</h3>
       <ul>
-        <li data-change="marriage divorce name both">Bring official legal name-change proof—such as a certified marriage certificate, divorce decree, or court-sealed name-change order—to an in-person Utah Driver License Division appointment ($23 replacement fee). Update Social Security first so records match. {{ src('ID-UT-DLD-NAME') }} {{ src('ID-UT-DLD-REPLACEMENT') }}</li>
-        <li data-change="marker both">Utah's Driver License Division does not publish written sex-marker update instructions online. {{ m.badge('not_confirmed') }} Contact DLD before your appointment. {{ src('ID-UT-CODE-53-3-205') }}</li>
+        <li data-change="marriage divorce name both"{{ basis('ID-UT-DLD-NAME') }}>Bring official legal name-change proof—such as a certified marriage certificate, divorce decree, or court-sealed name-change order—to an in-person Utah Driver License Division appointment ($23 replacement fee). Update Social Security first so records match. {{ src('ID-UT-DLD-NAME') }} {{ src('ID-UT-DLD-REPLACEMENT') }}</li>
+        <li data-change="marker both"{{ basis('ID-UT-CODE-53-3-205') }}>Utah's Driver License Division does not publish written sex-marker update instructions online. {{ m.badge('not_confirmed') }} Contact DLD before your appointment. {{ src('ID-UT-CODE-53-3-205') }}</li>
       </ul>
       <p><a href="{{ page_url('id-records-utah-id') }}">Utah license and ID details</a></p>
     </div>
@@ -355,7 +361,7 @@
 </template>
 
 <template id="t-id-other">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-US-SSA-NAME') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Driver license or ID</h3>
@@ -365,15 +371,15 @@
 </template>
 
 <template id="t-federal">
-  <li class="result-block">
+  <li class="result-block"{{ basis('ID-US-SSA-NAME', 'ID-US-STATE-CHANGE', 'ID-US-SSA-POMS-10212-200', 'ID-US-STATE-SEX-MARKER') }}>
     <span class="step-rail" aria-hidden="true"><span class="step-node"></span><span class="step-line"></span></span>
     <div class="step-body">
       <h3>Social Security and passports</h3>
       <ul>
-        <li data-change="marriage divorce name both">Social Security: after your name legally changes by marriage, divorce, or court order, request a free replacement Social Security card showing your new name. You can often start online. {{ src('ID-US-SSA-NAME') }}</li>
-        <li data-change="marriage divorce">Passports: update your passport name with Form DS-5504 (no fee within 1 year of passport issue), DS-82 renewal, or DS-11 in person, attaching your certified marriage certificate or divorce decree. {{ src('ID-US-STATE-CHANGE') }}</li>
-        <li data-change="marker both">Social Security stopped processing sex-marker changes and restricts NUMIDENT sex fields to sex at birth. {{ src('ID-US-SSA-POMS-10212-200') }}</li>
-        <li data-change="name marker both">Passports: new, renewed, and name-updated U.S. passports currently print sex assigned at birth, and the X marker is no longer issued. Read the federal guide carefully before mailing an existing passport. {{ src('ID-US-STATE-SEX-MARKER') }} {{ src('ID-US-HRC-PASSPORT') }}</li>
+        <li data-change="marriage divorce name both"{{ basis('ID-US-SSA-NAME') }}>Social Security: after your name legally changes by marriage, divorce, or court order, request a free replacement Social Security card showing your new name. You can often start online. {{ src('ID-US-SSA-NAME') }}</li>
+        <li data-change="marriage divorce"{{ basis('ID-US-STATE-CHANGE') }}>Passports: update your passport name with Form DS-5504 (no fee within 1 year of passport issue), DS-82 renewal, or DS-11 in person, attaching your certified marriage certificate or divorce decree. {{ src('ID-US-STATE-CHANGE') }}</li>
+        <li data-change="marker both"{{ basis('ID-US-SSA-POMS-10212-200') }}>Social Security stopped processing sex-marker changes and restricts NUMIDENT sex fields to sex at birth. {{ src('ID-US-SSA-POMS-10212-200') }}</li>
+        <li data-change="name marker both"{{ basis('ID-US-STATE-SEX-MARKER') }}>Passports: new, renewed, and name-updated U.S. passports currently print sex assigned at birth, and the X marker is no longer issued. Read the federal guide carefully before mailing an existing passport. {{ src('ID-US-STATE-SEX-MARKER') }} {{ src('ID-US-HRC-PASSPORT') }}</li>
       </ul>
       <p><a href="{{ page_url('id-records-federal') }}">Passports and Social Security details</a></p>
     </div>

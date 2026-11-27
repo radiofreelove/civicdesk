@@ -215,6 +215,202 @@ HEAD_P_CLASSES = {"kicker", "lede", "purpose", "checked"}
 HEAD_BLOCK_CLASSES = {"hero-split", "page-head", "fp-hero", "guide-switch", "brief-strip", "label-key"}
 
 
+# ---------- Four-beat page fields (data/pages.yaml) ----------
+# answer and why: Beat 1. spec: Beat 3, each row optional. analogies: everyday comparisons that
+# explain how an agency system works; each needs a one-sentence boundary and MED-* or ID-* basis.
+# Which pages must have them is enforced by tests/test_page_fields.py and data/voice_rollout.yaml.
+SPEC_KEYS = ("cost", "clock", "paperwork", "catch")
+ANALOGY_PLACEMENTS = {"lead", "inline"}
+ANALOGY_ID_RE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+# Abbreviations whose periods do not end a sentence (U.S., D.C., a.m., No., Sept.).
+_ABBREV_RE = re.compile(
+    r"\b(?:[A-Za-z]\.){2,}|\b(?:No|Nos|Mr|Ms|Mrs|Dr|St|Inc|Co|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept|Sep|Oct|Nov|Dec|Ch|Sec|Stat|Or|Wn|App|Rev|Ann|vs|etc|approx|p|pp|para|ed)\."
+)
+_SENTENCE_BREAK_RE = re.compile(r"[.!?][\"')\]]*\s+(?=[\"'(\[]?[A-Z0-9])")
+
+
+def is_one_sentence(text: str) -> bool:
+    masked = _ABBREV_RE.sub(lambda m: m.group(0).replace(".", "_"), text.strip())
+    return bool(re.search(r"[.!?][\"')\]]*$", masked)) and not _SENTENCE_BREAK_RE.search(masked)
+
+
+def validate_page_voice(p: dict, sources: Mapping, facts: Mapping, errors: list[str]) -> None:
+    slug = p.get("slug")
+    for key in ("answer", "why"):
+        if key in p and (not isinstance(p[key], str) or not p[key].strip()):
+            errors.append(f"page {slug}: '{key}' must be a non-empty string")
+
+    spec = p.get("spec")
+    if spec is not None:
+        if not isinstance(spec, dict):
+            errors.append(f"page {slug}: 'spec' must be a mapping of {', '.join(SPEC_KEYS)}")
+        else:
+            for key in spec:
+                if key not in SPEC_KEYS:
+                    errors.append(f"page {slug}: unknown spec key '{key}' (allowed: {', '.join(SPEC_KEYS)})")
+            for key in ("cost", "clock"):
+                if spec.get(key) is not None and spec[key] not in facts:
+                    errors.append(f"page {slug}: spec.{key} '{spec[key]}' is not a data/facts.yaml key")
+            if spec.get("paperwork") is not None and spec["paperwork"] not in sources:
+                errors.append(f"page {slug}: spec.paperwork '{spec['paperwork']}' is not a source id")
+            catch = spec.get("catch")
+            if catch is not None:
+                if not isinstance(catch, dict) or not str(catch.get("text") or "").strip():
+                    errors.append(f"page {slug}: spec.catch needs 'text' and 'basis'")
+                else:
+                    basis = catch.get("basis") or []
+                    if not basis:
+                        errors.append(f"page {slug}: spec.catch needs at least one basis source id")
+                    for sid in basis:
+                        if sid not in sources:
+                            errors.append(f"page {slug}: spec.catch basis '{sid}' is not a source id")
+
+    analogies = p.get("analogies")
+    if analogies is None:
+        return
+    if not isinstance(analogies, list):
+        errors.append(f"page {slug}: 'analogies' must be a list")
+        return
+    seen: set[str] = set()
+    leads = 0
+    for a in analogies:
+        if not isinstance(a, dict):
+            errors.append(f"page {slug}: each analogy must be a mapping")
+            continue
+        aid = str(a.get("id") or "")
+        label = f"page {slug}: analogy '{aid}'"
+        if not ANALOGY_ID_RE.fullmatch(aid):
+            errors.append(f"page {slug}: analogy id '{aid}' must be lowercase-kebab-case")
+        if aid in seen:
+            errors.append(f"{label} is duplicated")
+        seen.add(aid)
+        if a.get("placement") not in ANALOGY_PLACEMENTS:
+            errors.append(f"{label}: placement must be one of {sorted(ANALOGY_PLACEMENTS)}")
+        leads += a.get("placement") == "lead"
+        if not str(a.get("compare") or "").strip():
+            errors.append(f"{label}: 'compare' (how the system works) is required")
+        boundary = str(a.get("boundary") or "").strip()
+        if not boundary:
+            errors.append(f"{label}: 'boundary' (where the comparison stops) is required")
+        elif not is_one_sentence(boundary):
+            errors.append(f"{label}: 'boundary' must be exactly one sentence")
+        basis = a.get("basis") or []
+        if not isinstance(basis, list) or not basis:
+            errors.append(f"{label}: 'basis' needs at least one MED-* or ID-* source id")
+        else:
+            for sid in basis:
+                if sid not in sources:
+                    errors.append(f"{label}: basis '{sid}' is not in data/sources/*.yaml")
+        unknown = set(a) - {"id", "placement", "compare", "boundary", "basis"}
+        if unknown:
+            errors.append(f"{label}: unknown keys {sorted(unknown)}")
+    if leads > 1:
+        errors.append(f"page {slug}: at most one analogy can have placement 'lead'")
+
+
+def analogy_for(page: Mapping, aid: str | None = None) -> dict | None:
+    """The page's lead analogy, or the inline one named by id (templates/macros.html analogy)."""
+    items = page.get("analogies") or []
+    if aid is None:
+        return next((a for a in items if a.get("placement") == "lead"), None)
+    found = next((a for a in items if a.get("id") == aid), None)
+    if found is None:
+        raise BuildError(f"page {page.get('slug')}: no analogy with id '{aid}' in data/pages.yaml")
+    return found
+
+
+# ---------- Sitemap lastmod (data/lastmod.json) ----------
+# lastmod follows page content, not source check dates. The hash covers <main> text, image alt
+# text, and absolute links, minus "Sources checked" lines, the print masthead, the Sources panel,
+# per-section source links, and page tabs, so re-checking a source never moves lastmod.
+LASTMOD_PATH = DATA / "lastmod.json"
+_HASH_SKIP_CLASSES = {"checked", "print-masthead", "page-sources", "section-sources-row", "page-tabs"}
+_HASH_VOID = {"br", "hr", "img", "input", "meta", "link", "source", "wbr", "col", "area", "base", "embed", "track"}
+CI_ENV_KEYS = ("CI", "GITHUB_ACTIONS", "WORKERS_CI", "WORKERS_CI_COMMIT_SHA", "WORKERS_CI_BRANCH", "CF_PAGES")
+
+
+class _ContentText(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self._in_main = False
+        self._skip = 0
+        self._raw = 0
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "main":
+            self._in_main = True
+            return
+        if not self._in_main:
+            return
+        if tag in ("script", "style"):
+            self._raw += 1
+            return
+        if self._skip:
+            if tag not in _HASH_VOID:
+                self._skip += 1
+            return
+        a = dict(attrs)
+        if set((a.get("class") or "").split()) & _HASH_SKIP_CLASSES:
+            if tag not in _HASH_VOID:
+                self._skip = 1
+            return
+        if a.get("alt"):
+            self.parts.append(f"[alt:{a['alt']}]")
+        href = a.get("href") or ""
+        if href.startswith(("http://", "https://")):
+            self.parts.append(f"[href:{href}]")
+
+    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        self.handle_starttag(tag, attrs)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "main":
+            self._in_main = False
+            return
+        if not self._in_main:
+            return
+        if tag in ("script", "style"):
+            self._raw = max(0, self._raw - 1)
+        elif self._skip:
+            self._skip -= 1
+
+    def handle_data(self, data: str) -> None:
+        if self._in_main and not self._skip and not self._raw:
+            self.parts.append(data)
+
+
+def content_hash(html_text: str) -> str:
+    parser = _ContentText()
+    parser.feed(html_text)
+    parser.close()
+    text = " ".join(parser.parts).replace("\u2060", "").replace("\u00ad", "")
+    text = re.sub(r"\s+", " ", text).strip()
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
+
+
+def load_lastmod(path: Path = LASTMOD_PATH) -> dict[str, dict]:
+    if not path.is_file():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {k: v for k, v in data.items() if isinstance(v, dict) and v.get("hash") and v.get("date")}
+
+
+def dump_lastmod(entries: Mapping[str, dict]) -> str:
+    # One page per line keeps merge conflicts to the pages two branches both changed.
+    rows = [f"  {json.dumps(slug)}: {json.dumps({'date': e['date'], 'hash': e['hash']})}" for slug, e in sorted(entries.items())]
+    return "{\n" + ",\n".join(rows) + "\n}\n"
+
+
+def head_commit_date(root: Path = ROOT) -> str | None:
+    try:
+        proc = subprocess.run(["git", "log", "-1", "--format=%cs"], cwd=root, capture_output=True, text=True, timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    out = proc.stdout.strip()
+    return out if proc.returncode == 0 and re.fullmatch(r"\d{4}-\d{2}-\d{2}", out) else None
+
+
 def strip_inline_citations(body: str) -> str:
     """Remove inline source links, their wrappers and markers, then tidy the punctuation they leave."""
     body = INLINE_CITE_RE.sub("", body)
@@ -711,6 +907,7 @@ def main(argv: list[str] | None = None) -> int:
         for sid in p.get("sources", []):
             if sid not in sources:
                 errors.append(f"page {slug}: unknown declared source '{sid}'")
+        validate_page_voice(p, sources, facts, errors)
         # Every page carries one press print (scripts/make_art.py) beside its heading.
         art = str(p.get("art") or "")
         if not art:
@@ -799,6 +996,22 @@ def main(argv: list[str] | None = None) -> int:
             return Markup(f'{mark(sid)}<span class="src-unit">{link} {b}</span>')
         return Markup(mark(sid) + link)
 
+    def basis(*sids: str) -> Markup:
+        # Rule citation for an ID path finder result block (templates/id-records/path.html).
+        # data-basis lists the ID-* sources whose published rule sorts a reader onto this pathway;
+        # data-basis-label carries their short names for the visible "Sorted by" line in path.js.
+        if not sids:
+            raise BuildError(f"page {state['page']}: basis() needs at least one source id")
+        labels = []
+        for sid in sids:
+            if not sid.startswith("ID-"):
+                raise BuildError(f"page {state['page']}: basis() takes ID-* sources only, got '{sid}'")
+            s = use(sid)
+            labels.append(str(s.get("short") or s["title"]))
+        return Markup(
+            f' data-basis="{escape(" ".join(sids))}" data-basis-label="{escape("; ".join(labels))}"'
+        )
+
     def fact(fid: str) -> Markup:
         if fid not in facts:
             raise BuildError(f"page {state['page']}: unknown fact id '{fid}'")
@@ -851,7 +1064,11 @@ def main(argv: list[str] | None = None) -> int:
     def correction_mailto(page: dict) -> str:
         route = str(page.get("route") or "/")
         subject = f"CivicDesk correction: {route}"
-        return f"mailto:{site['corrections_email']}?subject={quote(subject, safe='')}"
+        href = f"mailto:{site['corrections_email']}?subject={quote(subject, safe='')}"
+        body = str(site.get("corrections_mailto_body") or "").strip()
+        if body:
+            href += f"&body={quote(body, safe='')}"
+        return href
 
     def header_tagline(page: dict) -> str:
         desk = page.get("desk", "")
@@ -1032,6 +1249,8 @@ def main(argv: list[str] | None = None) -> int:
         read_note=read_note,
         status_badge=status_badge,
         src=src,
+        basis=basis,
+        analogy_for=analogy_for,
         fact=fact,
         fact_src=fact_src,
         ext=ext,
@@ -1070,7 +1289,23 @@ def main(argv: list[str] | None = None) -> int:
     id_public_dates = [as_date(s["checked"]) for s in id_records_list if not s.get("docs_only")]
 
     page_reports: list[dict] = []
-    newest_checked_by_slug: dict[str, dt.date] = {}
+
+    # data/lastmod.json is rewritten only by a local default build (the required pre-PR
+    # `python3 scripts/build.py`, which local pytest also runs). CI and Cloudflare builds read it:
+    # a stale entry keeps its previous date rather than jumping forward, and is reported.
+    in_ci = any(env_vars.get(k) for k in CI_ENV_KEYS)
+    lastmod_writable = (
+        not in_ci
+        and out_dir.resolve() == DEFAULT_OUT.resolve()
+        and args.site_yaml is None
+        and static_dir.resolve() == STATIC.resolve()
+    )
+    lastmod_old = load_lastmod()
+    lastmod_new: dict[str, dict] = {}
+    lastmod_by_slug: dict[str, str] = {}
+    lastmod_status: dict[str, str] = {}
+    local_today = dt.date.today().isoformat()
+    commit_date: str | None = None
 
     for p in pages:
         slug = p["slug"]
@@ -1107,7 +1342,6 @@ def main(argv: list[str] | None = None) -> int:
             errors.append(str(exc))
             continue
 
-        newest_checked_by_slug[slug] = newest_date
         html = apply_sources_layer(
             html,
             list(state["used"]),
@@ -1130,6 +1364,34 @@ def main(argv: list[str] | None = None) -> int:
         else:
             dest_file = out_dir / route.strip("/") / "index.html"
         html = bind_trailing_punctuation(html)
+
+        digest = content_hash(html)
+        prior = lastmod_old.get(slug)
+        if prior and prior["hash"] == digest:
+            lastmod_new[slug] = prior
+            lastmod_status[slug] = "current"
+        elif lastmod_writable:
+            lastmod_new[slug] = {"date": local_today, "hash": digest}
+            lastmod_status[slug] = "updated"
+        else:
+            if prior:
+                kept = prior["date"]
+            else:
+                commit_date = commit_date or head_commit_date() or local_today
+                kept = commit_date
+            lastmod_new[slug] = {"date": kept, "hash": prior["hash"] if prior else digest}
+            lastmod_status[slug] = "stale" if prior else "new"
+            note = (
+                f"page {slug}: content changed but data/lastmod.json was not updated; keeping lastmod {kept}. "
+                "Run python3 scripts/build.py locally and commit data/lastmod.json."
+                if prior else
+                f"page {slug}: not in data/lastmod.json; using the latest commit date {kept}."
+            )
+            warnings.append(note)
+            if env_vars.get("GITHUB_ACTIONS"):
+                print(f"::warning file=data/lastmod.json::{note}")
+        lastmod_by_slug[slug] = lastmod_new[slug]["date"]
+
         dest_file.parent.mkdir(parents=True, exist_ok=True)
         dest_file.write_text(html, encoding="utf-8")
 
@@ -1143,6 +1405,8 @@ def main(argv: list[str] | None = None) -> int:
             "checked": oldest_date.isoformat(),
             "oldest_checked": oldest_date.isoformat(),
             "newest_checked": newest_date.isoformat(),
+            "lastmod": lastmod_by_slug[slug],
+            "lastmod_status": lastmod_status[slug],
         })
 
     if errors:
@@ -1175,12 +1439,19 @@ def main(argv: list[str] | None = None) -> int:
     (out_dir / "sources.json").write_text(json.dumps(public_sources, indent=2), encoding="utf-8")
     (out_dir / "facts.json").write_text(json.dumps(facts, indent=2), encoding="utf-8")
 
+    if lastmod_writable:
+        text = dump_lastmod(lastmod_new)
+        if not LASTMOD_PATH.is_file() or LASTMOD_PATH.read_text(encoding="utf-8") != text:
+            LASTMOD_PATH.write_text(text, encoding="utf-8")
+            changed = sorted(s for s, v in lastmod_status.items() if v == "updated")
+            print(f"  lastmod: updated data/lastmod.json ({len(changed)} page(s) changed content)")
+
     robots_txt = "User-agent: *\nAllow: /\n"
     if pages_url:
         base = pages_url.rstrip("/") + "/"
         robots_txt += f"\nSitemap: {base}sitemap.xml\n"
         urls = "\n".join(
-            f"  <url><loc>{base}{p['route'].lstrip('/')}</loc><lastmod>{newest_checked_by_slug[p['slug']].isoformat()}</lastmod></url>"
+            f"  <url><loc>{base}{p['route'].lstrip('/')}</loc><lastmod>{lastmod_by_slug[p['slug']]}</lastmod></url>"
             for p in pages
             if p["slug"] != "404"
         )
@@ -1210,6 +1481,7 @@ def main(argv: list[str] | None = None) -> int:
         "fact_count": len(facts),
         "page_count": len(page_reports),
         "fonts_bundled": fonts_available,
+        "lastmod_manifest": "updated locally" if lastmod_writable else "read-only",
         "warnings": warnings,
         "pages": page_reports,
     }

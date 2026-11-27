@@ -30,6 +30,6 @@ Rules for browser-based Google Antigravity and automated contributors working on
   - `data/sources/id_records.yaml` using `ID-*` IDs
   - Allowed status labels: `official`, `not_official`, `not_confirmed`, `our_reading`
 - **Required full-repo checks before any PR:**
-  - `python3 scripts/build.py`
+  - `python3 scripts/build.py` (commit `data/lastmod.json` if the build updates it)
   - `python3 scripts/check_brand_purge.py`
-  - `pytest`
+  - `pytest` (includes the tool voice check, `scripts/check_voice.py`)

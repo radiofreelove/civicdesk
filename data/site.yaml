@@ -8,6 +8,8 @@ repo_url: "https://github.com/radiofreelove/civicdesk"
 max_source_age_days: 120
 quick_exit_url: "https://www.weather.gov/"
 corrections_email: "corrections@civicdesk.net"
+# Pre-filled body for every corrections mailto: link (scripts/build.py correction_mailto).
+corrections_mailto_body: "Please describe the page problem only. Do not include names, case numbers, health details, or other personal information. CivicDesk cannot answer questions about individual situations."
 
 # Desk registry: one entry per service desk. It drives the front-page desk tiles, the
 # "upcoming desks" brief, the site-level "Jump to a guide" menu, and the per-desk counts on

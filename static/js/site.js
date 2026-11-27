@@ -407,8 +407,10 @@
     btn.addEventListener("click", function () { window.print(); });
   });
   var reopened = [];
+  // The path finder's closed "Other published pathways" drawer stays closed so printouts
+  // stay a clean checklist; a drawer the reader opened prints as shown.
   window.addEventListener("beforeprint", function () {
-    document.querySelectorAll("details:not([open]):not(.state-switcher)").forEach(function (d) {
+    document.querySelectorAll("details:not([open]):not(.state-switcher):not(.other-pathways)").forEach(function (d) {
       d.open = true;
       reopened.push(d);
     });

@@ -134,7 +134,8 @@ def test_start_router_and_medicaid_checks(site_server: str, browser_instance) ->
     page.check('input[name="meet"][value="work"]')
     page.click('#checker button[type="submit"]')
     assert page.is_visible("#checker-result")
-    assert "You may already meet the new rules." in page.inner_text("#checker-result")
+    assert "Washington's rules list this as a way to meet the requirement." in page.inner_text("#checker-result")
+    assert "What HCA asks people in this group to do" in page.inner_text("#checker-result")
     assert "You work at least 80 hours a month." in page.inner_text("#checker-result")
 
     # 3. Test Oregon 1-minute check under-19 short circuit
@@ -153,7 +154,11 @@ def test_start_router_and_medicaid_checks(site_server: str, browser_instance) ->
     page.check('input[name="meet"][value="none"]')
     page.click('#checker button[type="submit"]')
     assert page.is_visible("#checker-result")
-    assert "You may not have to meet the new rules." in page.inner_text("#checker-result")
+    utah_result = page.inner_text("#checker-result")
+    # Rule-indexed wording: what Utah's published list says, and what DWS asks, never "applies to you".
+    assert "This reason is on Utah's published list." in utah_result
+    assert "What DWS asks people in this group to do" in utah_result
+    assert "apply to you" not in utah_result and "What to do" not in utah_result
 
     ctx.close()
 
@@ -194,6 +199,33 @@ def test_broadened_id_records_path_finder(site_server: str, browser_instance) ->
     marker_text = page.inner_text("#results-body")
     assert "Court in Washington" not in marker_text
     assert "You do not need a court order for this path." in page.inner_text("#results-summary")
+    # Sort, not hide: each sorted step names its rule, and the court route the answers did not
+    # select stays on the page in the closed Other published pathways drawer.
+    basis_lines = page.locator("#results-body .basis-line").all_inner_texts()
+    assert basis_lines and all(line.startswith("Sorted by: ") for line in basis_lines), basis_lines
+    assert page.is_visible("#other-pathways")
+    assert page.inner_text("#other-pathways > summary") == "Other published pathways in Washington"
+    drawer = page.evaluate("""() => {
+        const d = document.getElementById('other-pathways');
+        return { open: d.open, text: document.getElementById('other-pathways-body').textContent };
+    }""")
+    assert drawer["open"] is False
+    assert "Court in Washington" in drawer["text"] and "RCW 4.24.130" in drawer["text"]
+    # Sorted-by names the rule behind the lines shown: a marker-only update cites SSA's sex-field
+    # rule for the Social Security step, not the name-change page.
+    assert "POMS RM 10212.200" in basis_lines[0] and "change your name" not in basis_lines[0], basis_lines[0]
+    # Printing keeps a closed drawer closed and out of the printout; site.js must not reopen it.
+    page.evaluate("() => window.dispatchEvent(new Event('beforeprint'))")
+    assert page.evaluate("() => document.getElementById('other-pathways').open") is False
+    page.emulate_media(media="print")
+    assert page.evaluate("() => getComputedStyle(document.getElementById('other-pathways')).display") == "none"
+    page.emulate_media(media="screen")
+    page.evaluate("() => window.dispatchEvent(new Event('afterprint'))")
+    # A drawer the reader opened prints as shown.
+    page.click("#other-pathways > summary")
+    page.emulate_media(media="print")
+    assert page.evaluate("() => getComputedStyle(document.getElementById('other-pathways')).display") != "none"
+    page.emulate_media(media="screen")
 
     # 4. Both court name + sex change in Oregon with Washington birth certificate
     page.click('#path-form button[type="reset"]')
@@ -205,6 +237,11 @@ def test_broadened_id_records_path_finder(site_server: str, browser_instance) ->
     both_text = page.inner_text("#results-body")
     assert "any Oregon circuit court" in both_text
     assert "DOH 422-143" in both_text
+    # Lines for other situations (a parent or a minor filing) move to the drawer, not away.
+    other_text = page.evaluate("() => document.getElementById('other-pathways-body').textContent")
+    assert "Marriage or domestic partnership certificate in Oregon" in other_text
+    assert "As a parent or guardian, you file the minor forms." in other_text
+    assert "As a parent or guardian, you file the minor forms." not in both_text
 
     ctx.close()
 

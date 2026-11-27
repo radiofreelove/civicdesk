@@ -1,6 +1,6 @@
 name: Policy Radar
 
-# Twice-weekly CivicDesk Policy Wire (Tuesdays and Fridays, 16:23 UTC) plus
+# Twice-weekly CivicDesk Policy Wire (Tuesday and Friday evenings Pacific: 02:23 UTC Wednesday and Saturday) plus
 # on-demand manual runs. Dynamically discovers enabled desks from `data/wire/*.yaml`
 # so new desks added to CivicDesk enter rotation without workflow edits.
 # Read-only against repository contents: maintains per-desk `wire:state` ledger,
@@ -8,7 +8,7 @@ name: Policy Radar
 
 on:
   schedule:
-    - cron: "23 16 * * 2,5" # Tuesdays and Fridays, 16:23 UTC
+    - cron: "23 2 * * 3,6" # 02:23 UTC Wed and Sat = Tue and Fri 6:23 p.m. PST / 7:23 p.m. PDT
   workflow_dispatch:
     inputs:
       desk:
