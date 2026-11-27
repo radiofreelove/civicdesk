@@ -62,7 +62,7 @@
     <p>{{ t.summary }}</p>
     {% if t.get('meta') %}<p class="card-meta">{{ t.meta }}</p>{% endif %}
     <div class="state-tile-actions btn-row">
-      {% for a in t.actions %}<a href="{{ a.href }}">{{ a.label }}{{ svg_icon('arrow-right') }}</a>{% endfor %}
+      {% for a in t.actions %}<a href="{{ a.href }}"><span class="state-tile-action-label">{{ a.label }}</span>{{ svg_icon('arrow-right') }}</a>{% endfor %}
     </div>
   </li>
   {% endfor %}

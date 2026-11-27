@@ -24,7 +24,8 @@
   <ul class="viz-stat-list viz-stat-cols-{{ stats|length }}">
   {% for s in stats %}
     <li class="viz-stat-card viz-stat-tone-{{ loop.index }}">
-      <span class="viz-stat-num">{{ s.num }}</span>
+      {%- set num_text = (s.num ~ '')|striptags|trim %}
+      <span class="viz-stat-num{% if num_text|length > 9 %} viz-stat-num-long{% endif %}">{{ s.num }}</span>
       <strong class="viz-stat-label">{{ s.label }}</strong>
       {% if s.note is defined and s.note %}<span class="viz-stat-note">{{ s.note }}</span>{% endif %}
     </li>

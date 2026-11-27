@@ -178,6 +178,9 @@ def test_all_built_pages_html_links_and_scoping(built_site: Path) -> None:
         assert auditor.meta_referrer == "no-referrer", f"{route}: missing no-referrer"
         assert auditor.meta_csp and "connect-src 'none'" in auditor.meta_csp, f"{route}: weak CSP"
         assert "&lt;span" not in raw and "&lt;a " not in raw, f"{route}: escaped HTML markup"
+        visible = re.sub(r"<(script|style|template)\b.*?</\1>", "", raw, flags=re.S)
+        visible = re.sub(r"<[^>]+>", "", visible)
+        assert "`" not in visible, f"{route}: literal Markdown backtick in visible text (use <code> or plain words)"
 
         h1s = [text for level, text in auditor.headings if level == 1]
         assert len(h1s) == 1, f"{route}: expected 1 <h1>, found {h1s}"
