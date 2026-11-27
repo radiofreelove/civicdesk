@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Utah Medicaid</p>
     <h1>Have a health condition?</h1>
-    <p class="purpose">Blindness, a disability, a mental health or substance-use condition, or difficulty with daily tasks (Utah calls this <strong>medically frail or special needs</strong>) can exempt you from the new Utah rules.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set ut_health_note %}{{ src('MED-U03') }} {{ src('MED-U39') }}{% endset %}
 {{ v.process_flow([

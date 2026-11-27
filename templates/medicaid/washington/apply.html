@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Washington Apple Health</p>
     <h1>How to apply for Apple Health</h1>
-    <p class="purpose">Apple Health enrollment is open all year, and local navigator help is always free.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {{ m.onthispage([
   ('apply-online', 'Online'),

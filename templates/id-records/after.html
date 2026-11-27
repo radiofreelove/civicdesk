@@ -6,11 +6,14 @@
   <div class="intro-copy">
     <p class="kicker">After court</p>
     <h1>Update your records in the right order</h1>
-    {{ m.lede("Courts do not notify other agencies for you. Start with certified copies, then Social Security, then your state license or ID, then your birth certificate, passport, and everyday accounts.") }}
+    {{ m.answer(page) }}
     {{ m.checked_line(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set after_seq_note %}Why order matters: state DMVs verify your new legal name electronically against Social Security first. {{ src('ID-OR-DMV-GENDER') }}{% endset %}
 <div id="after-why">

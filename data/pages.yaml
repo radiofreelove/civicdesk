@@ -10,6 +10,10 @@
     across Oregon, Washington, Utah, and federal agencies.
   checked: '2026-11-25'
   show_short_toggle: false
+  answer: CivicDesk maps multi-agency rules, deadlines, fees, and forms across Oregon, Washington, Utah, and federal
+    offices—every fact linked to a dated primary source.
+  why: Government websites split one real-world task across a dozen offices; seeing the exact agency order and
+    deadlines in one ad-free place prevents rejected filings and missed cutoffs.
 - slug: start
   art: print-front.webp
   route: /start/
@@ -20,6 +24,10 @@
     or interactive tool.
   checked: '2026-11-25'
   show_short_toggle: false
+  answer: Pick your state and topic below to jump straight to the exact state guide, 1-minute Medicaid rule check,
+    or record-update path finder.
+  why: Rules, deadlines, and fees change sharply at state lines, so starting with the right state avoids following
+    another state's forms.
 - slug: medicaid
   art: print-homes.webp
   route: /medicaid/
@@ -31,6 +39,25 @@
     (OHP), Washington (Apple Health), and Utah Medicaid.
   checked: '2026-11-24'
   show_short_toggle: false
+  answer: Starting Jan. 1, 2027, federal law adds work or activity rules, shorter past-bill coverage, and 6-month
+    renewals for many Medicaid expansion adults ages 19 to 64, though states control how strict enforcement is.
+  why: Oregon and Washington paused work-rule denials through June 30, 2027, while Utah has not announced a pause,
+    so the same federal law produces very different deadlines depending on your state.
+  analogies:
+  - id: federal-floor-state-gates
+    placement: lead
+    compare: Think of federal Medicaid law like a building code written in Washington, D.C., and each state agency
+      as the local contractor building the actual doors. Congress set the same 80-hour or $580 baseline for expansion
+      adults, but Oregon, Washington, and Utah each built different verification desks, reply clocks, and enforcement
+      pauses on top of it.
+    boundary: The 1-month retroactive medical-bill cutoff on Jan. 1, 2027 and 6-month renewal cycles begin across
+      states even where a state uses the federal hold-harmless pause on work-rule denials.
+    basis:
+    - MED-S27
+    - MED-S41
+    - MED-S53
+    - MED-WA27
+    - MED-U02
 - slug: medicaid-oregon
   art: print-oregon.webp
   route: /medicaid/oregon/
@@ -58,6 +85,34 @@
   - MED-S45
   - MED-S46
   show_short_toggle: true
+  answer: Oregon Health Plan (OHP) starts checking 2027 work or activity rules for adults ages 19 to 64 on Jan.
+    1, 2027, while pausing denials solely for work rules through June 30, 2027.
+  why: OHP still runs automatic record checks starting Jan. 1, 2027, standard income rules still apply, and past-medical-bill
+    coverage shrinks from 3 months to 1 month for most adults on Jan. 1, 2027.
+  spec:
+    clock: or_hold_harmless_clock
+    catch:
+      text: Oregon's hold-harmless pause blocks work-rule denials through June 30, 2027, but does not pause income
+        rules or the shorter 1-month past-bill window.
+      basis:
+      - MED-S01
+      - MED-S07
+      - MED-S53
+      - MED-S41
+  analogies:
+  - id: soft-launch-inspection-period
+    placement: lead
+    compare: Oregon's hold-harmless period works like a city testing new parking meters for six months with warning
+      tickets instead of towing. Starting Jan. 1, 2027, OHP's computers still check payroll and school databases
+      and mail status letters, but Oregon directed the agency not to deny or close coverage solely over work rules
+      through June 30, 2027.
+    boundary: The hold-harmless delay is subject to federal approval and never protects an application that misses
+      standard OHP income, residency, or renewal rules.
+    basis:
+    - MED-S07
+    - MED-S53
+    - MED-S41
+    - MED-S04
 - slug: medicaid-oregon-check
   art: print-calendar.webp
   route: /medicaid/oregon/check/
@@ -66,7 +121,8 @@
   template: medicaid/oregon/check.html
   title: Do the rules fit me? A 1-minute check
   nav_label: Do the rules fit me?
-  description: Answer 3 quick questions to see which published OHP work or activity rules and exemptions match your answers. Your answers never leave your device.
+  description: Answer 3 quick questions to see which published OHP work or activity rules and exemptions match
+    your answers. Your answers never leave your device.
   checked: '2026-11-24'
   sources:
   - MED-S02
@@ -80,6 +136,10 @@
   - checker-oregon
   - checker
   tool: true
+  answer: Answer 3 quick questions to see which published Oregon Health Plan (OHP) work rules and exemptions match
+    those answers, plus what OHP asks next.
+  why: Your answers stay strictly in this browser, and seeing the matching OHP rule group upfront clarifies whether
+    electronic checks cover a category or an exemption needs reporting.
 - slug: medicaid-oregon-rules
   art: print-calendar.webp
   route: /medicaid/oregon/rules/
@@ -109,6 +169,33 @@
   - MED-S46
   - MED-S47
   show_short_toggle: true
+  answer: Starting Jan. 1, 2027, covered OHP adults ages 19 to 64 meet the rule in any one of 3 ways—$580+ monthly
+    household income, half-time school, or 80 combined activity hours—checked automatically first for the prior
+    month.
+  why: There are no monthly reports to file and no requirement to earn all 80 hours in a single job, because OHP
+    checks databases first and lets work, school, training, and nonprofit volunteering add up.
+  spec:
+    clock: or_hold_harmless_clock
+    catch:
+      text: Oregon checks the month before applying and renewals due March 31, 2027 or later, with zero monthly
+        reporting in between.
+      basis:
+      - MED-S01
+      - MED-S04
+      - MED-S47
+  analogies:
+  - id: three-pass-turnstile-bucket
+    placement: lead
+    compare: Think of OHP's activity test like a subway station with three turnstiles—household income of $580+,
+      half-time school, or an 80-hour bucket—and only one gate needs to click open. The 80-hour bucket lets paid
+      shifts, gig work, classes, job training, and tracked nonprofit volunteering pour in together until the bucket
+      reaches 80 hours for that prior month.
+    boundary: OHP counts combined Medicaid household income toward the $580 bar (so two adults do not each need
+      $580), whereas the 80-hour bar is checked separately for each covered adult.
+    basis:
+    - MED-S01
+    - MED-S27
+    - MED-S04
 - slug: medicaid-oregon-reasons
   art: print-window.webp
   route: /medicaid/oregon/reasons/
@@ -117,7 +204,8 @@
   template: medicaid/oregon/reasons.html
   title: Reasons you may not have to meet the rules
   nav_label: Reasons you may not have to
-  description: Every reason OHP lists for not having to meet the new work or activity rules, and how OHP checks each one. OHP calls these exemptions.
+  description: Every reason OHP lists for not having to meet the new work or activity rules, and how OHP checks
+    each one. OHP calls these exemptions.
   checked: '2026-11-24'
   sources:
   - MED-S02
@@ -134,6 +222,32 @@
   - MED-S45
   - MED-S46
   show_short_toggle: true
+  answer: Oregon lists broad exemptions—including age, pregnancy, caregiving, Tribal status, serious health conditions,
+    and recovery—checking its own records first and accepting self-reported health exemptions with no doctor's
+    note in 2027.
+  why: Reporting an exemption right on an application or in ONE stops unnecessary proof letters, even for conditions
+    OHP's databases cannot see.
+  spec:
+    catch:
+      text: No doctor's note is required for Oregon health exemptions in 2027, though OHP may ask for a provider
+        statement or schedules starting in 2028.
+      basis:
+      - MED-S03
+      - MED-S07
+      - MED-S42
+  analogies:
+  - id: automatic-pass-vs-hand-raise
+    placement: lead
+    compare: 'OHP sorts exemptions into two lanes like airport security: an automatic lane where the agency''s
+      own files already flag age, Medicare, SNAP or TANF work compliance, or disaster counties, and a raise-your-hand
+      lane for caregiving, Tribal status, hospital stays, or health conditions that no state wage database knows
+      about.'
+    boundary: Being excused from SNAP work rules does not carry over automatically to OHP—only actively meeting
+      SNAP or TANF work requirements counts in the automatic lane.
+    basis:
+    - MED-S02
+    - MED-S03
+    - MED-S07
 - slug: medicaid-oregon-apply
   art: print-homes.webp
   route: /medicaid/oregon/apply/
@@ -142,8 +256,8 @@
   template: medicaid/oregon/apply.html
   title: How to apply for OHP
   nav_label: How to apply
-  description: 'Four ways to apply for the Oregon Health Plan (OHP): online, by phone, in person, or on paper. What
-    to have ready, and what happens next.'
+  description: 'Four ways to apply for the Oregon Health Plan (OHP): online, by phone, in person, or on paper.
+    What to have ready, and what happens next.'
   checked: '2026-11-24'
   sources:
   - MED-S09
@@ -161,6 +275,31 @@
   - MED-S20
   - MED-SSA-NAME
   show_short_toggle: true
+  answer: People can apply for OHP year-round online in ONE, by phone, in person with a free certified community
+    partner, or on paper form OHP 7210, and OHP checks electronic wage and school databases first.
+  why: Having a legal name match Social Security and picking the fastest channel avoids a 35-day follow-up proof
+    letter.
+  spec:
+    clock: or_rfi_reply_clock
+    paperwork: MED-S10
+    catch:
+      text: If a legal name differs across Social Security, payroll, or school records, automated verification
+        can miss hours and trigger a proof letter.
+      basis:
+      - MED-S04
+      - MED-SSA-NAME
+  analogies:
+  - id: auto-lookup-before-receipt-request
+    placement: lead
+    compare: 'Applying for OHP works like a tax return that prefills W-2s before asking for receipts: once an
+      application is submitted, OHP''s system queries state payroll, school, and benefit databases behind the
+      scenes. It sends a proof letter only for the specific blanks those electronic feeds could not confirm.'
+    boundary: OHP Bridge covers adults slightly above standard OHP income limits with $0 premiums, so being over
+      standard OHP income does not automatically close public coverage options.
+    basis:
+    - MED-S04
+    - MED-S09
+    - MED-S13
 - slug: medicaid-oregon-letter
   art: print-mail.webp
   route: /medicaid/oregon/letter/
@@ -181,6 +320,31 @@
   - MED-S06
   - MED-S42
   show_short_toggle: true
+  answer: An OHP Request for Information gives 35 calendar days to send only the missing proof or report an exemption,
+    while informational and status notices do not end coverage today.
+  why: Spotting the exact letter type and answering before the 35-day cutoff—online, by phone, in person, by fax,
+    or by mail—prevents an avoidable closure.
+  spec:
+    clock: or_rfi_reply_clock
+    paperwork: MED-S19
+    catch:
+      text: A Notice of Status alerts members that work-rule status changed without ending current benefits, whereas
+        a Request for Information starts a 35-day reply clock.
+      basis:
+      - MED-S04
+  analogies:
+  - id: four-different-envelopes-one-clock
+    placement: lead
+    compare: 'Treat OHP mail like sorting four different utility notices on a kitchen table: a December newsletter,
+      an eligibility statement, a heads-up status alert, and a 35-day shutoff-prevention request. Only the Request
+      for Information is asking to fill a specific missing blank from OHP''s database check, and it accepts replies
+      across five channels.'
+    boundary: Even after a missed 35-day reply date leads to a denial or closure, Oregon imposes no waiting period
+      to reapply in any month or request a hearing.
+    basis:
+    - MED-S04
+    - MED-S06
+    - MED-S08
 - slug: medicaid-oregon-denied
   art: print-mail.webp
   route: /medicaid/oregon/denied/
@@ -208,6 +372,32 @@
   - MED-S45
   - MED-S46
   show_short_toggle: true
+  answer: If OHP denies or ends coverage, people can request a free hearing (asking before the notice cutoff can
+    keep existing benefits open during appeal) or submit a fresh application in any month with no waiting period.
+  why: Missing the pre-cutoff window on a coverage termination stops benefits while a hearing is pending, even
+    if the appeal later succeeds.
+  spec:
+    paperwork: MED-S14
+    catch:
+      text: Reapplying in a new month has zero waiting period, and Oregon's hold-harmless delay blocks work-rule-only
+        denials through June 30, 2027.
+      basis:
+      - MED-S04
+      - MED-S06
+      - MED-S53
+  analogies:
+  - id: freeze-button-vs-fresh-application
+    placement: lead
+    compare: When an OHP termination notice arrives, asking for a hearing before the effective cutoff works like
+      hitting a freeze button—current coverage stays active while an independent reviewer checks the decision.
+      Submitting a new application works like opening a clean tab whenever hours, income, or an exemption changes
+      next month.
+    boundary: Aid paid pending keeps existing OHP benefits running during an appeal of a closure or reduction,
+      not on an initial application that was never approved.
+    basis:
+    - MED-S04
+    - MED-S14
+    - MED-S06
 - slug: medicaid-oregon-bills
   art: print-mail.webp
   route: /medicaid/oregon/bills/
@@ -216,12 +406,35 @@
   template: medicaid/oregon/bills.html
   title: Medical bills from before you apply
   nav_label: Past medical bills
-  description: OHP can help with some medical bills from before you apply. Starting Jan. 1, 2027, that window gets
-    shorter for most adults.
+  description: OHP can help with some medical bills from before you apply. Starting Jan. 1, 2027, that window
+    gets shorter for most adults.
   checked: '2026-11-24'
   sources:
   - MED-S01
   show_short_toggle: true
+  answer: OHP retroactive coverage pays eligible unpaid bills from up to 3 months before applying through Dec.
+    31, 2026, then shrinks on Jan. 1, 2027 to 1 month for most adults ages 19 to 64 (2 months for children, seniors,
+    pregnancy, and disability).
+  why: Waiting past Dec. 31, 2026—or delaying an application after an ER visit in 2027—can leave 2 months of past
+    hospital bills outside OHP's reach.
+  spec:
+    clock: or_retro_2027_clock
+    catch:
+      text: The 1-month retroactive limit starts Jan. 1, 2027 even during Oregon's hold-harmless pause on work-rule
+        denials.
+      basis:
+      - MED-S01
+  analogies:
+  - id: shrinking-rearview-mirror
+    placement: lead
+    compare: 'Retroactive OHP coverage works like an insurance policy with a rearview mirror: once approved, it
+      looks backward from the application month and picks up unpaid bills from months when the person already
+      met eligibility rules. On Jan. 1, 2027, federal law shortens that mirror from three months back to just
+      one month for most expansion adults.'
+    boundary: Children 18 or younger, adults 65+, pregnant members, and disability-based OHP groups keep a 2-month
+      lookback window starting Jan. 1, 2027 instead of dropping to 1 month.
+    basis:
+    - MED-S01
 - slug: medicaid-oregon-health
   art: print-window.webp
   route: /medicaid/oregon/health/
@@ -230,8 +443,8 @@
   template: medicaid/oregon/health.html
   title: Have a health condition?
   nav_label: Health conditions
-  description: A serious or disabling health condition may mean you do not have to meet the new OHP rules. In 2027,
-    no doctor's note is needed.
+  description: A serious or disabling health condition may mean you do not have to meet the new OHP rules. In
+    2027, no doctor's note is needed.
   checked: '2026-11-24'
   sources:
   - MED-S01
@@ -247,6 +460,31 @@
   - MED-S45
   - MED-S46
   show_short_toggle: true
+  answer: Serious physical, mental, developmental, or substance-use conditions—and recovery—can exempt an adult
+    from OHP work rules, and in 2027 Oregon requires no doctor's note to claim this exemption.
+  why: Applicants do not need a formal Social Security disability ruling or a specialist visit before telling
+    OHP a health condition affects them.
+  spec:
+    catch:
+      text: No doctor's note is required in 2027, though starting in 2028 OHP may ask for a provider statement
+        if a condition is not permanent.
+      basis:
+      - MED-S03
+      - MED-S07
+  analogies:
+  - id: open-list-self-attest-lane
+    placement: lead
+    compare: Oregon's 2027 health exemption works like a clinic accommodation form where the printed examples
+      are starters rather than a locked roster—people report their condition directly without paying for a doctor's
+      signature first. Meanwhile, a federal court threw out an extra federal test for Oregon that tried to tie
+      medical frailty to whether someone could still comply with work rules.
+    boundary: In 2028, Oregon may begin requesting provider verification for non-permanent health exemptions that
+      electronic records cannot confirm.
+    basis:
+    - MED-S03
+    - MED-S07
+    - MED-S28
+    - MED-S29
 - slug: medicaid-oregon-immigration
   art: print-window.webp
   route: /medicaid/oregon/immigration/
@@ -273,6 +511,10 @@
   - MED-S49
   - MED-S51
   show_short_toggle: true
+  answer: Immigration status alone does not stop Oregon residents from getting full OHP benefits through state-funded
+    Healthier Oregon, and CivicDesk never asks about immigration status.
+  why: Federal law narrowed federally funded Medicaid for some noncitizens in late 2026, so knowing how Oregon's
+    state-funded Healthier Oregon Open Card and free immigration legal help work protects access to care.
 - slug: medicaid-oregon-help
   art: print-homes.webp
   route: /medicaid/oregon/help/
@@ -295,6 +537,10 @@
   - MED-S20
   - MED-S10
   show_short_toggle: true
+  answer: Free OHP-certified community partners, ONE interpreter lines, accessible formats, legal aid hotlines,
+    and the OHP paper application (form 7210) in 17 languages.
+  why: Certified Oregon helpers and interpreters are always free and can submit applications, upload proofs, or
+    help request hearings alongside applicants.
 - slug: medicaid-oregon-words
   art: print-letters.webp
   route: /medicaid/oregon/words/
@@ -318,6 +564,10 @@
   - MED-S27
   - MED-S29
   show_short_toggle: false
+  answer: Plain-English definitions for official terms OHP uses in letters and forms—from exemption and Request
+    for Information to hold harmless and retroactive coverage.
+  why: Understanding the exact agency term on an envelope shows immediately whether a notice requires action before
+    a deadline.
 - slug: medicaid-oregon-log
   art: print-calendar.webp
   route: /medicaid/oregon/log/
@@ -337,6 +587,10 @@
   - MED-S03
   - MED-S01
   show_short_toggle: false
+  answer: A printable sheet to track monthly paid work, school, job training, and nonprofit volunteer hours for
+    Oregon Health Plan (OHP) records.
+  why: Keeping dated hours and supervisor sign-offs on hand makes answering a 35-day OHP Request for Information
+    fast if electronic payroll data misses shifts.
 - slug: medicaid-washington
   art: print-washington.webp
   route: /medicaid/washington/
@@ -365,6 +619,35 @@
   - MED-WA22
   - MED-WA27
   show_short_toggle: true
+  answer: Washington Apple Health for Adults (ages 19 to 64) starts 6-month renewals, shorter 1-month past-bill
+    limits, and work-rule checks on Jan. 1, 2027, while pursuing a hold-harmless pause on work-rule denials through
+    June 30, 2027.
+  why: Even with work-rule denials paused through June 30, 2027, missing a 6-month renewal or a 15-day verification
+    letter can still close Apple Health coverage.
+  spec:
+    clock: wa_hold_harmless_clock
+    catch:
+      text: Washington's enforcement delay pauses work-rule denials through June 30, 2027, but 6-month renewals
+        and the 1-month past-bill window still start Jan. 1, 2027.
+      basis:
+      - MED-WA01
+      - MED-WA22
+      - MED-WA27
+      - MED-S41
+  analogies:
+  - id: two-clocks-one-pause
+    placement: lead
+    compare: 'Washington''s 2027 rollout runs two separate timers on the same dashboard: the work-rule penalty
+      clock is on hold through June 30, 2027 while HCA tests its system, but the 6-month renewal clock and shorter
+      past-bill clock both start ticking on Jan. 1, 2027. Answering renewal mail on time still matters even while
+      the work-rule penalty is paused.'
+    boundary: Washington's hold-harmless pause is pending federal approval and covers only work-rule denials—not
+      income changes, missed renewals, or non-expansion Apple Health rules.
+    basis:
+    - MED-WA01
+    - MED-WA22
+    - MED-WA27
+    - MED-S41
 - slug: medicaid-washington-check
   art: print-calendar.webp
   route: /medicaid/washington/check/
@@ -373,7 +656,8 @@
   template: medicaid/washington/check.html
   title: Do the Washington rules fit me? A 1-minute check
   nav_label: Do the rules fit me?
-  description: Answer 3 quick questions to see which published Apple Health work rules and exemptions in Washington match your answers. Your answers never leave your device.
+  description: Answer 3 quick questions to see which published Apple Health work rules and exemptions in Washington
+    match your answers. Your answers never leave your device.
   checked: '2026-11-24'
   sources:
   - MED-WA04
@@ -389,6 +673,10 @@
   - checker-washington
   - checker
   tool: true
+  answer: Answer 3 quick questions to see which published Washington Apple Health work rules, exemptions, and
+    hardships match those answers, plus what HCA asks next.
+  why: Your answers stay strictly in this browser, and checking Washington's published categories upfront saves
+    time digging through multiple HCA fact sheets.
 - slug: medicaid-washington-rules
   art: print-calendar.webp
   route: /medicaid/washington/rules/
@@ -416,6 +704,32 @@
   - MED-WA22
   - MED-WA27
   show_short_toggle: true
+  answer: Apple Health for Adults lists 6 ways to meet the 2027 rules—including $580+ income (with 6-month seasonal
+    averaging), 80 work, service, or training hours, half-time school, or an 80-hour mix using HCA's credit conversion—with
+    state data checked first (~64% automatic).
+  why: Clearing just one of the 6 lanes for the prior month when applying (or 1 of the 6 months before renewing)
+    satisfies the rule, and Washington allows self-attestation in Healthplanfinder.
+  spec:
+    clock: wa_hold_harmless_clock
+    catch:
+      text: College students taking 1 to 6 credits convert each credit into 13 to 78 monthly hours so part-time
+        classes can combine with work or community service.
+      basis:
+      - MED-WA05
+      - MED-WA22
+  analogies:
+  - id: six-lanes-with-credit-converter
+    placement: lead
+    compare: 'Washington built a six-lane highway with a built-in currency converter for part-time students: 1
+      to 6 college credits convert into 13 to 78 monthly hours that combine with work or community service, and
+      seasonal workers can average income over six months. Behind the scenes, HCA checks state wage and eligibility
+      feeds first—clearing roughly two-thirds of covered adults without mailing a proof letter.'
+    boundary: Washington's 1-to-6 credit conversion table is for part-time enrollment combined with other hours,
+      whereas students enrolled at least half-time already clear the rule on school alone.
+    basis:
+    - MED-WA04
+    - MED-WA05
+    - MED-WA22
 - slug: medicaid-washington-reasons
   art: print-window.webp
   route: /medicaid/washington/reasons/
@@ -424,7 +738,8 @@
   template: medicaid/washington/reasons.html
   title: Reasons you may not have to meet the Apple Health rules
   nav_label: Reasons you may not have to
-  description: "Every reason Washington lists for not having to meet the new Apple Health work rules. The Health Care Authority's fact sheet calls these exemptions."
+  description: Every reason Washington lists for not having to meet the new Apple Health work rules. The Health
+    Care Authority's fact sheet calls these exemptions.
   checked: '2026-11-24'
   sources:
   - MED-WA04
@@ -440,6 +755,30 @@
   - MED-S45
   - MED-S46
   show_short_toggle: true
+  answer: Washington lists broad exemptions—pregnancy, caregiving for a child under 14, medical frailty, Tribal
+    status, and recent incarceration—plus 4 short-term hardships (2 automatic by county, 2 requested from HCA).
+  why: Through 2027, Washington lets applicants self-attest medical frailty in Healthplanfinder, and verified
+    Tribal members keep 12-month renewals instead of switching to 6-month cycles.
+  spec:
+    catch:
+      text: Disaster and high-unemployment county hardships apply automatically, whereas hospital stays and out-of-community
+        medical travel must be requested from HCA.
+      basis:
+      - MED-WA22
+  analogies:
+  - id: zip-code-switch-vs-request-form
+    placement: lead
+    compare: Washington's hardship system splits into an automatic ZIP-code switch and a manual request desk.
+      When a county hits a federal disaster declaration or high unemployment, HCA flips the hardship switch on
+      for everyone living there; for an inpatient stay or travel outside the community for serious care, the person
+      must tell HCA so a caseworker can apply it.
+    boundary: Washington allows self-attestation for medical frailty through 2027, though HCA notes it may begin
+      requesting proof in 2028 when electronic records cannot confirm an exemption.
+    basis:
+    - MED-WA04
+    - MED-WA05
+    - MED-WA22
+    - MED-WA24
 - slug: medicaid-washington-apply
   art: print-homes.webp
   route: /medicaid/washington/apply/
@@ -461,6 +800,34 @@
   - MED-WA13
   - MED-SSA-NAME
   show_short_toggle: true
+  answer: Adults ages 19 to 64 without Medicare apply for Apple Health year-round through Washington Healthplanfinder
+    (online, phone, paper form 18-001P, or free navigator), while adults 65+, blind, disabled, or on Medicare
+    apply through DSHS Washington Connection.
+  why: Using the wrong portal sends an application to the wrong agency queue—and once submitted, HCA checks state
+    databases first before issuing any 15-day verification letter.
+  spec:
+    clock: wa_per_reply_clock
+    paperwork: MED-WA06
+    catch:
+      text: Adults 65+, blind, disabled, or on Medicare must apply for Apple Health Classic through DSHS Washington
+        Connection, not Washington Healthplanfinder.
+      basis:
+      - MED-WA06
+      - MED-WA07
+  analogies:
+  - id: two-front-doors-one-program
+    placement: lead
+    compare: 'Washington splits Apple Health into two separate front doors based on age and disability: adults
+      under 65 without Medicare walk into Healthplanfinder (run with HCA), while people who are 65+, blind, disabled,
+      or on Medicare walk into DSHS''s Washington Connection. Picking the right door upfront keeps a file out
+      of agency transfer limbo.'
+    boundary: Both doors stay open every month of the year with no open-enrollment blackout window, and certified
+      local navigators help with applications at zero cost.
+    basis:
+    - MED-WA06
+    - MED-WA07
+    - MED-WA11
+    - MED-WA13
 - slug: medicaid-washington-letter
   art: print-mail.webp
   route: /medicaid/washington/letter/
@@ -481,6 +848,33 @@
   - MED-WA27
   - MED-WA30
   show_short_toggle: true
+  answer: Apple Health Post Eligibility Review and proof letters give 15 calendar days to send verification—even
+    if an account in Healthplanfinder was recently updated.
+  why: Fifteen days passes fast in the mail, so checking Healthplanfinder notices and replying right away keeps
+    coverage from closing.
+  spec:
+    clock: wa_per_reply_clock
+    paperwork: MED-WA13
+    catch:
+      text: Updating a Healthplanfinder account earlier does not cancel a Post Eligibility Review letter; HCA
+        still expects verification within 15 days.
+      basis:
+      - MED-WA04
+      - MED-WA13
+  analogies:
+  - id: fifteen-day-auditor-ticket
+    placement: lead
+    compare: A Washington Post Eligibility Review letter works like an automated bank security alert that stays
+      open until confirmed—even after calling customer service the week before. HCA checks state wage feeds first,
+      and when a field still looks unverified, the letter starts a 15-day countdown clock before coverage can
+      close.
+    boundary: If a missed renewal closes Apple Health, Washington gives a 90-day late-renewal window to reopen
+      coverage without starting a brand-new application.
+    basis:
+    - MED-WA01
+    - MED-WA04
+    - MED-WA13
+    - MED-WA22
 - slug: medicaid-washington-denied
   art: print-mail.webp
   route: /medicaid/washington/denied/
@@ -511,6 +905,34 @@
   - MED-S46
   - MED-WA27
   show_short_toggle: true
+  answer: If Washington denies or ends Apple Health, members have 10 days (or before month-end) to ask for a hearing
+    and keep current benefits open during appeal, 90 days to appeal an HCA decision, and 90 days to return a late
+    renewal.
+  why: Missing the 10-day continued-coverage window cuts off benefits while a hearing plays out, and managed-care
+    health plan denials require finishing the plan's own appeal first.
+  spec:
+    clock: wa_appeal_clock
+    paperwork: MED-WA08
+    catch:
+      text: Managed-care health plan denials require finishing the health plan's internal appeal before requesting
+        a state hearing (within 120 calendar days).
+      basis:
+      - MED-WA18
+      - MED-WA29
+  analogies:
+  - id: three-safety-nets-different-timers
+    placement: lead
+    compare: 'Washington''s appeal rules work like three stacked safety nets with different expiration timers:
+      a 10-day net that keeps existing coverage active while an administrative judge reviews the case, a 90-day
+      net to contest HCA''s eligibility letter, and a 90-day late-renewal net that revives closed coverage without
+      a new application.'
+    boundary: Continued coverage during an appeal protects existing coverage that is ending or shrinking, not
+      an initial application that was denied.
+    basis:
+    - MED-WA16
+    - MED-WA17
+    - MED-WA18
+    - MED-WA29
 - slug: medicaid-washington-bills
   art: print-mail.webp
   route: /medicaid/washington/bills/
@@ -527,6 +949,30 @@
   - MED-WA03
   - MED-WA07
   show_short_toggle: true
+  answer: Apple Health can pay eligible unpaid bills from up to 3 months before applying through Dec. 31, 2026,
+    dropping on Jan. 1, 2027 to 1 month for Apple Health for Adults (and 2 months for other programs).
+  why: Applying in January 2027 instead of December 2026 immediately cuts two months of retroactive bill protection
+    for adults ages 19 to 64.
+  spec:
+    clock: wa_retro_2027_clock
+    catch:
+      text: Washington's 1-month retroactive limit for Apple Health for Adults takes effect Jan. 1, 2027 regardless
+        of the work-rule enforcement pause.
+      basis:
+      - MED-WA01
+      - MED-WA03
+  analogies:
+  - id: calendar-cutoff-backdate-window
+    placement: lead
+    compare: 'Apple Health retroactive coverage works like a warranty backdate stamped from the month an application
+      is submitted: if the applicant qualified during those earlier months, the state can reach back and pay unpaid
+      medical bills. On Jan. 1, 2027, that reach-back drops from 3 months to 1 month for Apple Health for Adults.'
+    boundary: Other Apple Health programs outside Apple Health for Adults keep up to a 2-month retroactive window
+      starting Jan. 1, 2027.
+    basis:
+    - MED-WA01
+    - MED-WA03
+    - MED-WA07
 - slug: medicaid-washington-health
   art: print-window.webp
   route: /medicaid/washington/health/
@@ -551,6 +997,32 @@
   - MED-S45
   - MED-S46
   show_short_toggle: true
+  answer: People who are medically frail—or in alcohol or substance-use treatment—are exempt from Apple Health
+    work rules, and Washington allows self-attestation in Healthplanfinder through 2027.
+  why: A federal court struck down an extra federal rule tying medical frailty to ability to comply in Washington,
+    so a serious health condition counts without proving an inability to work.
+  spec:
+    catch:
+      text: Self-attestation for medical frailty runs through 2027 in Washington; HCA may request clinical verification
+        starting in 2028 if state records cannot confirm it.
+      basis:
+      - MED-WA05
+      - MED-WA21
+      - MED-WA22
+  analogies:
+  - id: honor-system-medical-lane
+    placement: lead
+    compare: 'Through 2027, Washington treats the medical-frailty exemption like an honor-system check-in box:
+      HCA checks state records first, and if a condition is not in their system, the applicant declares it directly
+      in Healthplanfinder without chasing a doctor''s letter. The federal court in Massachusetts v. Oz also stripped
+      out the extra hurdle asking whether the condition stopped someone from working.'
+    boundary: Starting in 2028, HCA may ask for supporting medical verification if electronic health or disability
+      records do not confirm the exemption.
+    basis:
+    - MED-WA05
+    - MED-WA21
+    - MED-WA22
+    - MED-S29
 - slug: medicaid-washington-immigration
   art: print-window.webp
   route: /medicaid/washington/immigration/
@@ -559,8 +1031,8 @@
   template: medicaid/washington/immigration.html
   title: Immigration status and Apple Health
   nav_label: Immigration status
-  description: A federal law changed who can get federally funded Apple Health in Washington on Oct. 1, 2026. What
-    the Health Care Authority has said.
+  description: A federal law changed who can get federally funded Apple Health in Washington on Oct. 1, 2026.
+    What the Health Care Authority has said.
   checked: '2026-11-24'
   sources:
   - MED-WA01
@@ -572,6 +1044,11 @@
   - MED-WA28
   - MED-S54
   show_short_toggle: true
+  answer: Federal law narrowed federally funded Medicaid for many noncitizen adults starting Oct. 1, 2026, while
+    a Seattle federal court injunction kept SSI-linked coverage open in Washington—and CivicDesk never asks about
+    immigration status.
+  why: Separating federally funded Apple Health, state-funded Apple Health Expansion, and active court injunctions—alongside
+    free immigration legal help—prevents relying on outdated eligibility rules.
 - slug: medicaid-washington-help
   art: print-homes.webp
   route: /medicaid/washington/help/
@@ -580,8 +1057,8 @@
   template: medicaid/washington/help.html
   title: Free help with Apple Health, and other languages
   nav_label: Free help and languages
-  description: Phone numbers, free local helpers, interpreters, and Apple Health booklets in 15 languages, for people
-    applying in Washington.
+  description: Phone numbers, free local helpers, interpreters, and Apple Health booklets in 15 languages, for
+    people applying in Washington.
   checked: '2026-11-24'
   sources:
   - MED-WA02
@@ -591,6 +1068,10 @@
   - MED-WA09
   - MED-WA10
   show_short_toggle: true
+  answer: Free local Apple Health navigators and Community Connectors, HCA MEDS and Healthplanfinder phone lines,
+    interpreter help, and client booklets in 15 languages.
+  why: Calling the right Washington desk—Healthplanfinder for MAGI adults or DSHS for Apple Health Classic—saves
+    hours of transfers.
 - slug: medicaid-washington-words
   art: print-letters.webp
   route: /medicaid/washington/words/
@@ -616,6 +1097,10 @@
   - MED-WA22
   - MED-WA27
   show_short_toggle: false
+  answer: Plain-English definitions for official terms Washington uses in Apple Health notices—including Apple
+    Health for Adults, MEDS, Post Eligibility Review, and medical frailty.
+  why: Agency jargon hides real deadlines, so translating each notice phrase helps spot whether a 15-day proof
+    clock or 90-day renewal rule is running.
 - slug: medicaid-washington-log
   art: print-calendar.webp
   route: /medicaid/washington/log/
@@ -632,6 +1117,10 @@
   - MED-WA13
   - MED-WA22
   show_short_toggle: false
+  answer: A printable sheet to track monthly work, school credits, work program, and community service hours—plus
+    a 6-month view for seasonal workers—for Apple Health records.
+  why: Having hours written down ahead of time makes answering a 15-day Post Eligibility Review letter straightforward
+    if state databases cannot confirm them.
 - slug: medicaid-utah
   art: print-utah.webp
   route: /medicaid/utah/
@@ -657,7 +1146,36 @@
   - MED-U28
   - MED-S27
   - MED-S41
+  - MED-U13
   show_short_toggle: true
+  answer: Utah Medicaid starts 2027 community-engagement checks for Adult Expansion and Targeted Adult Medicaid
+    adults ages 19 to 64 on Jan. 1, 2027, with 6-month renewals—and has not announced a hold-harmless pause.
+  why: Unlike Oregon and Washington, Utah has not announced an enforcement delay as of our latest check and asks
+    for documentary proof when DWS databases cannot confirm activity or status.
+  spec:
+    clock: ut_six_month_clock
+    catch:
+      text: Utah has not announced whether it will use the federal hold-harmless delay through June 30, 2027,
+        and unverified Tribal status proof is requested by Jan. 1, 2027.
+      basis:
+      - MED-U01
+      - MED-U02
+      - MED-U28
+      - MED-S41
+  analogies:
+  - id: show-your-receipts-enforcement
+    placement: lead
+    compare: While Oregon and Washington put a six-month warning period on work-rule denials, Utah's system is
+      built like a full audit desk from day one. Utah's Department of Workforce Services (DWS) runs electronic
+      checks first, then mails a proof request—and under Utah rules, written documents matter whenever the database
+      comes up blank.
+    boundary: Utah Medicaid programs outside Adult Expansion and Targeted Adult Medicaid are not subject to the
+      2027 community-engagement rules.
+    basis:
+    - MED-U01
+    - MED-U02
+    - MED-U04
+    - MED-S41
 - slug: medicaid-utah-check
   art: print-calendar.webp
   route: /medicaid/utah/check/
@@ -666,7 +1184,8 @@
   template: medicaid/utah/check.html
   title: Do the Utah rules fit me? A 1-minute check
   nav_label: Do the rules fit me?
-  description: Answer 3 quick questions to see which published Utah Medicaid work or activity rules, exclusions, mandatory exceptions, and short-term hardships match your answers. Your answers never leave your device.
+  description: Answer 3 quick questions to see which published Utah Medicaid work or activity rules, exclusions,
+    mandatory exceptions, and short-term hardships match your answers. Your answers never leave your device.
   checked: '2026-11-24'
   sources:
   - MED-U01
@@ -684,6 +1203,10 @@
   - checker-utah
   - checker
   tool: true
+  answer: Answer 3 quick questions to see which published Utah Medicaid community-engagement rules, exclusions,
+    mandatory exceptions, and short-term hardships match those answers.
+  why: Your answers stay strictly in this browser, and matching Utah's exact rule category shows whether DWS relies
+    on records first or asks for documentary proof.
 - slug: medicaid-utah-rules
   art: print-calendar.webp
   route: /medicaid/utah/rules/
@@ -692,8 +1215,8 @@
   template: medicaid/utah/rules.html
   title: The new Utah Medicaid rules, in plain words
   nav_label: The new rules
-  description: Who the new Utah Medicaid work or activity rules are for, the 3 ways to meet them, and when the state
-    looks.
+  description: Who the new Utah Medicaid work or activity rules are for, the 3 ways to meet them, and when the
+    state looks.
   checked: '2026-11-24'
   sources:
   - MED-U01
@@ -710,6 +1233,32 @@
   - MED-S27
   - MED-S41
   show_short_toggle: true
+  answer: Covered Utah adults ages 19 to 64 meet the 2027 rule in any one of 3 ways—$580+ monthly income, half-time
+    school, or 80 combined activity hours—verified first by DWS databases and then by documentary proof.
+  why: Under Utah Code 26B-3-142.1, DWS cannot rely on self-attestation alone when records miss shifts or classes,
+    so keeping pay stubs, schedules, or volunteer logs protects coverage.
+  spec:
+    clock: ut_six_month_clock
+    catch:
+      text: Utah Code 26B-3-142.1 requires documentary verification when DWS databases do not show activity, rather
+        than self-attestation alone.
+      basis:
+      - MED-U04
+      - MED-U39
+  analogies:
+  - id: database-first-receipts-backup
+    placement: lead
+    compare: Utah's 80-hour check works like an expense-report audit where a corporate card auto-clears most charges,
+      but any cash purchase needs a paper receipt. DWS queries wage, school, and benefit databases first for the
+      prior month (or any 1 month since the last review at renewal); if gig work, classes, or volunteering are
+      not in those feeds, Utah law requires written proof.
+    boundary: Utah's own pages describe the income path as earning at least $580 a month while the federal rule
+      counts combined Medicaid household income, so multi-adult households need to confirm how DWS counts theirs.
+    basis:
+    - MED-U01
+    - MED-U04
+    - MED-U39
+    - MED-S27
 - slug: medicaid-utah-reasons
   art: print-window.webp
   route: /medicaid/utah/reasons/
@@ -718,7 +1267,8 @@
   template: medicaid/utah/reasons.html
   title: Reasons you may not have to meet the Utah rules
   nav_label: Reasons you may not have to
-  description: Every reason Utah lists for not having to meet the new Medicaid work or activity rules, and how the state checks them. Utah calls these exclusions and exceptions.
+  description: Every reason Utah lists for not having to meet the new Medicaid work or activity rules, and how
+    the state checks them. Utah calls these exclusions and exceptions.
   checked: '2026-11-24'
   sources:
   - MED-U01
@@ -735,6 +1285,33 @@
   - MED-S40
   - MED-S41
   show_short_toggle: true
+  answer: Utah divides reasons people may not have to meet work rules into exclusions, mandatory exceptions, and
+    short-term hardships—checking DWS records first and requiring proof in myCase or on form 742 when unconfirmed.
+  why: American Indian and Alaska Native members whose Tribal status is not yet verified are asked to send proof
+    by Jan. 1, 2027 to keep 12-month renewals and stay excluded.
+  spec:
+    catch:
+      text: Unlike Oregon and Washington, Utah Code 26B-3-142.1 prohibits relying on self-attestation alone unless
+        DWS already has matching records on file.
+      basis:
+      - MED-U05
+      - MED-U39
+      - MED-U40
+  analogies:
+  - id: three-buckets-paper-gate
+    placement: lead
+    compare: 'Think of Utah''s exemption list like three labeled folders on a caseworker''s desk: permanent exclusions
+      (like age, Medicare, or verified Tribal status), mandatory exceptions (like pregnancy, caregiving, or medical
+      frailty), and short-term hardships (like hospital stays or disaster counties). If DWS''s computer already
+      sees the status, the folder closes automatically; otherwise, form 742 plus proof documents are what open
+      it.'
+    boundary: Utah was not a plaintiff in Massachusetts v. Oz, so Utah residents cannot assume that federal court
+      ruling changed Utah's clinical-proof rules without checking current DWS guidance.
+    basis:
+    - MED-U05
+    - MED-U28
+    - MED-U39
+    - MED-S40
 - slug: medicaid-utah-apply
   art: print-homes.webp
   route: /medicaid/utah/apply/
@@ -743,8 +1320,8 @@
   template: medicaid/utah/apply.html
   title: How to apply for Utah Medicaid
   nav_label: How to apply
-  description: 'Three ways to apply for Utah Medicaid: online, on paper, or in person. What to have ready, and what
-    happens next.'
+  description: 'Three ways to apply for Utah Medicaid: online, on paper, or in person. What to have ready, and
+    what happens next.'
   checked: '2026-11-24'
   sources:
   - MED-U01
@@ -764,6 +1341,33 @@
   - MED-U31
   - MED-SSA-NAME
   show_short_toggle: true
+  answer: People can apply for Utah Medicaid online through DWS myCase, on paper form 61MED (English or Spanish),
+    or in person at a DWS employment center, with written decisions typically due in 30 days.
+  why: The April 1, 2026 paper form 61MED does not yet include 2027 work-rule questions, so paper applicants need
+    to watch for a follow-up DWS letter with a 10- to 30-day proof clock.
+  spec:
+    clock: ut_apply_decision_clock
+    paperwork: MED-U15
+    catch:
+      text: Because Utah's April 1, 2026 paper form 61MED omits 2027 work-rule questions, DWS may mail a follow-up
+        proof request after submission.
+      basis:
+      - MED-U15
+      - MED-U04
+  analogies:
+  - id: old-paper-form-triggers-callback
+    placement: lead
+    compare: Applying online in myCase puts an application and phone-uploaded proof into the same digital inbox
+      DWS caseworkers review, whereas paper form 61MED works like an older intake clipboard that is still missing
+      the 2027 work-rule checklist. Either way, DWS checks state wage and school feeds first and mails a proof
+      notice for anything missing.
+    boundary: If an employer offers health insurance, Utah Medicaid may require enrolling in that job plan and
+      reimburse the monthly premium share instead of providing standard Medicaid alone.
+    basis:
+    - MED-U04
+    - MED-U14
+    - MED-U15
+    - MED-U16
 - slug: medicaid-utah-letter
   art: print-mail.webp
   route: /medicaid/utah/letter/
@@ -772,8 +1376,8 @@
   template: medicaid/utah/letter.html
   title: Utah sent me a letter. Now what?
   nav_label: The state sent me a letter
-  description: What Utah Medicaid letters about the new rules mean, how long you have to answer, and every way to
-    send your answer.
+  description: What Utah Medicaid letters about the new rules mean, how long you have to answer, and every way
+    to send your answer.
   checked: '2026-11-24'
   sources:
   - MED-U02
@@ -786,7 +1390,36 @@
   - MED-U29
   - MED-U40
   - MED-S27
+  - MED-U16
   show_short_toggle: true
+  answer: Utah DWS letters explain what electronic records could not confirm and can give 30 days to return community-engagement
+    forms—while Utah's 2026 informational mailings used four paper colors (blue, yellow, pink, and green).
+  why: Writing a name and DWS case number on every sheet and sending proof before the printed due date prevents
+    an automatic closure.
+  spec:
+    clock: ut_rfi_reply_clock
+    paperwork: MED-U29
+    catch:
+      text: A yellow 2026 letter means DWS does not yet have Tribal status verified on file; a green letter is
+        informational and asks for no action yet.
+      basis:
+      - MED-U28
+      - MED-U29
+      - MED-U40
+  analogies:
+  - id: color-coded-mail-vs-live-deadline
+    placement: lead
+    compare: 'Utah sorted its 2026 heads-up letters like color-coded school flyers—blue for immigration rules,
+      yellow when Tribal proof is still missing, pink when Tribal status is confirmed, and green for general 2027
+      work-rule news. Once a live verification request arrives with a due date, it switches from a flyer to a
+      timed exam: label every page with the DWS case number and send it before the clock runs out.'
+    boundary: Always use any specific return address or fax number printed on an actual notice if it differs from
+      DWS Imaging Operations' standard PO Box.
+    basis:
+    - MED-U03
+    - MED-U04
+    - MED-U28
+    - MED-U29
 - slug: medicaid-utah-denied
   art: print-mail.webp
   route: /medicaid/utah/denied/
@@ -817,6 +1450,32 @@
   - MED-S27
   - MED-S41
   show_short_toggle: true
+  answer: If Utah DWS denies or closes Medicaid, members have 15 days to request a hearing and keep existing benefits
+    during appeal, 90 days to file Form 490 for a fair hearing, or they can reapply any month with no waiting
+    period.
+  why: Uploading an appeal inside myCase does not file a fair hearing—Form 490 must go directly to DWS Fair Hearings
+    by mail, fax, phone, or the appeals portal.
+  spec:
+    clock: ut_appeal_clock
+    paperwork: MED-U19
+    catch:
+      text: Do not submit a fair hearing request through myCase; send Form 490 directly to DWS Fair Hearings within
+        90 days (15 days to keep current benefits).
+      basis:
+      - MED-U18
+      - MED-U19
+  analogies:
+  - id: wrong-mailbox-for-appeals
+    placement: lead
+    compare: DWS keeps eligibility processing and fair-hearing appeals in two completely separate mailboxes. Uploading
+      pay stubs goes into myCase, but challenging a denial has to go straight to DWS Fair Hearings on Form 490—drop
+      an appeal in the myCase inbox and the appeals judge never gets it.
+    boundary: Requesting a hearing within 15 days keeps existing medical coverage active during an appeal of a
+      closure or reduction, not on an initial application that was turned down.
+    basis:
+    - MED-U17
+    - MED-U18
+    - MED-U19
 - slug: medicaid-utah-bills
   art: print-mail.webp
   route: /medicaid/utah/bills/
@@ -834,6 +1493,32 @@
   - MED-U08
   - MED-U09
   show_short_toggle: true
+  answer: Utah Medicaid can pay eligible unpaid bills from up to 3 months before applying through Dec. 31, 2026
+    if requested on the application, shrinking on Jan. 1, 2027 to 1 month for Adult Expansion (2 months for most
+    other programs).
+  why: Retroactive coverage in Utah is not automatic—applicants must ask for it when applying—and delaying past
+    Dec. 31, 2026 cuts two full months off the window.
+  spec:
+    clock: ut_retro_2027_clock
+    catch:
+      text: Utah Medicaid does not grant retroactive coverage automatically; applicants must request it on the
+        application, and Adult Expansion drops to 1 month on Jan. 1, 2027.
+      basis:
+      - MED-U02
+      - MED-U08
+  analogies:
+  - id: opt-in-backdate-window
+    placement: lead
+    compare: 'Utah''s retroactive coverage works like an opt-in rebate window on recent medical bills: the applicant
+      has to check the box asking DWS to look backward, and it covers only months when the person already qualified.
+      On Jan. 1, 2027, that lookback shrinks from three months to one month for Adult Expansion adults.'
+    boundary: Most Utah Medicaid groups outside Adult Expansion keep up to a 2-month retroactive lookback starting
+      Jan. 1, 2027.
+    basis:
+    - MED-U01
+    - MED-U02
+    - MED-U08
+    - MED-U09
 - slug: medicaid-utah-health
   art: print-window.webp
   route: /medicaid/utah/health/
@@ -855,6 +1540,31 @@
   - MED-S40
   - MED-S41
   show_short_toggle: true
+  answer: 'Blindness, disability, mental health or substance-use conditions, or difficulty with daily tasks can
+    exempt an adult from Utah''s work rules, confirmed in 3 escalating steps: claims codes first, then a provisional
+    screener, then clinical proof.'
+  why: Because Utah law does not allow permanent self-attestation, turning in the signed screener buys temporary
+    protection while gathering a provider statement if claims records do not match.
+  spec:
+    catch:
+      text: A signed screener gives provisional protection, but Utah Code 26B-3-142.1 requires clinical proof
+        if Utah's Medicaid diagnosis-code check does not match.
+      basis:
+      - MED-U03
+      - MED-U39
+  analogies:
+  - id: three-step-medical-verification-ladder
+    placement: lead
+    compare: 'Utah checks medical frailty like a three-rung ladder: first, DWS scans existing Medicaid billing
+      diagnosis codes automatically; second, if nothing matches, a signed screener acts as a temporary pass so
+      coverage is not held up; third, under Utah law, a provider statement locks in the exemption.'
+    boundary: A blank automatic diagnosis-code scan is never a denial by itself—it simply moves the file to the
+      screener and provider-statement rungs.
+    basis:
+    - MED-U03
+    - MED-U04
+    - MED-U05
+    - MED-U39
 - slug: medicaid-utah-immigration
   art: print-window.webp
   route: /medicaid/utah/immigration/
@@ -863,8 +1573,8 @@
   template: medicaid/utah/immigration.html
   title: Immigration status and Utah Medicaid
   nav_label: Immigration status
-  description: A federal law changed who can get Utah Medicaid on Oct. 1, 2026. What Utah has said, Emergency Medicaid,
-    and where to get trusted help.
+  description: A federal law changed who can get Utah Medicaid on Oct. 1, 2026. What Utah has said, Emergency
+    Medicaid, and where to get trusted help.
   checked: '2026-11-24'
   sources:
   - MED-U02
@@ -875,6 +1585,11 @@
   - MED-U27
   - MED-S54
   show_short_toggle: true
+  answer: Federal law narrowed noncitizen eligibility for federally funded Utah Medicaid starting Oct. 1, 2026,
+    while Emergency Medicaid remains available for qualifying emergencies—and CivicDesk never asks about immigration
+    status.
+  why: Checking Utah's published notice rules, Emergency Medicaid scope, and free immigration legal directories
+    ensures accurate next steps without sharing personal status online.
 - slug: medicaid-utah-help
   art: print-homes.webp
   route: /medicaid/utah/help/
@@ -904,6 +1619,10 @@
   - MED-U37
   - MED-U40
   show_short_toggle: true
+  answer: Free Take Care Utah navigators, DWS employment centers, disability accommodations, Utah Legal Services
+    contacts, and Spanish Utah Medicaid forms.
+  why: Free navigators and legal aid staff can check which proofs DWS accepts and help file Form 490 before a
+    15-day or 90-day appeal cutoff.
 - slug: medicaid-utah-words
   art: print-letters.webp
   route: /medicaid/utah/words/
@@ -931,6 +1650,10 @@
   - MED-U28
   - MED-S27
   show_short_toggle: false
+  answer: Plain-English definitions for official terms DWS and Utah Medicaid use in letters and forms—including
+    community engagement, exclusion, mandatory exception, lookback, and retroactive coverage.
+  why: Utah uses distinct legal terms for automatic exclusions versus proof-required exceptions, and knowing which
+    word is on a letter shows what DWS expects.
 - slug: medicaid-utah-log
   art: print-calendar.webp
   route: /medicaid/utah/log/
@@ -951,6 +1674,10 @@
   - MED-U08
   - MED-S27
   show_short_toggle: false
+  answer: A printable sheet to track monthly work, job training, school, and organized volunteer hours for Utah
+    Medicaid, paired with a volunteer sign-off table.
+  why: Because Utah law requires documentary proof when DWS databases miss activity, pairing this log with pay
+    stubs or schedules protects a case.
 - slug: medicaid-sources
   art: print-archive.webp
   route: /medicaid/sources/
@@ -961,6 +1688,10 @@
     2027 Medicaid desk (MED-*).
   checked: '2026-11-24'
   show_short_toggle: false
+  answer: This registry lists every federal statute, CMS letter, court docket, and Oregon, Washington, and Utah
+    agency document (MED-*) cited on the 2027 Medicaid desk.
+  why: Checking the printed document date and last-checked date shows which rules are final, pending approval,
+    or under active court review.
 - slug: id-records
   art: print-cards.webp
   route: /id-records/
@@ -972,6 +1703,24 @@
     updates across Oregon, Washington, Utah, Social Security, and passports.
   checked: '2026-11-25'
   show_short_toggle: true
+  answer: Courts, Social Security, state DMVs, vital-records offices, and the State Department keep separate databases
+    that do not update each other automatically.
+  why: Updating offices out of sequence triggers electronic mismatches, rejected DMV appointments, and duplicate
+    fees.
+  analogies:
+  - id: separate-ledgers-chain
+    placement: lead
+    compare: Updating legal records works like changing your address across five separate banks that never share
+      a mailing list, except one bank's ledger gates the next. A judge's order or marriage certificate unlocks
+      Social Security, Social Security's database is what state DMVs ping at the counter, and your birth state
+      holds its own archive that no other state can edit.
+    boundary: Oregon and Washington let residents update a driver license or state birth-record gender marker
+      by agency form without going to court or updating Social Security first.
+    basis:
+    - ID-US-SSA-NAME
+    - ID-OR-DMV-GENDER
+    - ID-WA-DOL-GENDER
+    - ID-WA-DOH-AMEND-BIRTH
 - slug: id-records-path
   art: print-cards.webp
   route: /id-records/path/
@@ -984,30 +1733,76 @@
     designation updates, with optional birth-certificate steps.
   checked: '2026-11-25'
   show_short_toggle: false
+  answer: Answer a few quick questions to sort the published record-update steps for marriage, divorce, court
+    name changes, or sex-marker updates across Oregon, Washington, Utah, and federal offices.
+  why: Every other published pathway stays available on the same page, and your selections never leave this browser.
 - slug: id-records-oregon
   art: print-oregon.webp
   route: /id-records/oregon/
   desk: id-records
   template: id-records/oregon.html
   title: 'Oregon: change your name and legal sex'
-  description: 'Overview of Oregon name and legal sex changes in 2026: quick facts, 2026 confidentiality law, and
-    links to court, birth certificate, and DMV steps.'
+  description: 'Overview of Oregon name and legal sex changes in 2026: quick facts, 2026 confidentiality law,
+    and links to court, birth certificate, and DMV steps.'
   checked: '2026-11-03'
   show_short_toggle: true
   nav_label: Oregon
   state: oregon
+  answer: Oregon lets one circuit court filing change a legal name, legal sex, or both, while Oregon DMV and Oregon
+    Vital Records update gender markers without a court order.
+  why: Knowing which agencies accept a state form saves a $124 court filing fee when a court judgment is not needed,
+    and post-July 1, 2026 sex-change court files are confidential by law.
+  analogies:
+  - id: two-doors-same-building
+    placement: lead
+    compare: 'Oregon runs two doors into the same records system: an express agency window for state IDs and Oregon
+      birth certificates, and a courthouse desk for a statewide legal name or sex judgment. You only need the
+      courthouse ticket when changing a legal name outside marriage or divorce or when an outside agency demands
+      a judge''s signature.'
+    boundary: A state form at Oregon DMV or Oregon Vital Records updates only that state record and cannot change
+      a legal name at Social Security or on an out-of-state birth certificate.
+    basis:
+    - ID-OR-ORS-33
+    - ID-OR-2026-CH52
+    - ID-OR-OHA-GENDER
+    - ID-OR-DMV-GENDER
 - slug: id-records-oregon-court
   art: print-courthouse.webp
   route: /id-records/oregon/court/
   desk: id-records
   template: id-records/oregon-court.html
   title: 'Oregon court order: name and legal sex change'
-  description: Step-by-step Oregon circuit court process for changing your legal name, sex, or both, including forms,
-    $124 fee, confidentiality, and under-18 rules.
+  description: Step-by-step Oregon circuit court process for changing your legal name, sex, or both, including
+    forms, $124 fee, confidentiality, and under-18 rules.
   checked: '2026-11-03'
   show_short_toggle: true
   nav_label: Court order
   state: oregon
+  answer: One Oregon circuit court petition covers a legal name change, a legal sex change, or both for one $124
+    filing fee, usually decided on paperwork without a courtroom hearing.
+  why: Filing a combined petition saves a second filing fee and, starting July 1, 2026, makes the entire court
+    file confidential by law.
+  spec:
+    cost: or_fee_petition
+    paperwork: ID-OR-OJD-ADULT-PACKET
+    catch:
+      text: Name-only petitions remain public records unless sealed through Oregon's Address Confidentiality Program.
+      basis:
+      - ID-OR-ORS-33
+      - ID-OR-2026-CH52
+  analogies:
+  - id: sealed-permission-slip
+    placement: lead
+    compare: An Oregon circuit court judgment works like a stamped permission slip that a judge signs on paper
+      and hands back to you—the court does not fax it to Social Security, the DMV, or your bank. When a petition
+      includes a sex change on or after July 1, 2026, the clerk also locks the courthouse folder itself inside
+      a confidential file cabinet.
+    boundary: Federal passport and Social Security sex-marker policies currently do not follow state court sex-change
+      judgments, even when the Oregon order is certified.
+    basis:
+    - ID-OR-OJD-ADULT-PACKET
+    - ID-OR-2026-CH52
+    - ID-US-SSA-NAME
 - slug: id-records-oregon-birth
   art: print-certificate.webp
   route: /id-records/oregon/birth/
@@ -1020,42 +1815,135 @@
   show_short_toggle: true
   nav_label: Birth certificate
   state: oregon
+  answer: People born in Oregon can amend their name, sex (M, F, or X), or both on an Oregon birth certificate
+    once using notarized form OHA 2673 without going to court, or by sending a certified court judgment.
+  why: Using form OHA 2673 avoids court filing costs and leaves zero change footnotes when updating sex or name
+    and sex together, whereas later changes require a court order.
+  spec:
+    cost: or_oha_amend_fee
+    paperwork: ID-OR-OHA-2673
+    catch:
+      text: Form OHA 2673 can be used only once; any second birth-record change requires a court judgment.
+      basis:
+      - ID-OR-OHA-GENDER
+  analogies:
+  - id: one-time-registrar-stamp
+    placement: lead
+    compare: 'Oregon Vital Records'' form OHA 2673 works like a one-time self-service correction token at the
+      state archive: sign it in front of a notary, pay the amendment fee, and the registrar reissues the certificate
+      directly without waiting for a judge. A court judgment is the permanent master key used if that one-time
+      token has already been spent or an outside agency asks for a court order.'
+    boundary: Oregon Vital Records can amend only Oregon birth certificates, and a court-ordered name-only change
+      prints an old-name footnote unless the court sealed the order.
+    basis:
+    - ID-OR-OHA-GENDER
+    - ID-OR-OHA-2673
+    - ID-OR-OHA-COURT-ORDER
 - slug: id-records-oregon-id
   art: print-cards.webp
   route: /id-records/oregon/id/
   desk: id-records
   template: id-records/oregon-id.html
   title: 'Oregon driver license or ID: name and gender marker'
-  description: How to choose M, F, or X on an Oregon driver license or ID at the DMV, what to bring, and what to
-    know about Social Security and records.
+  description: How to choose M, F, or X on an Oregon driver license or ID at the DMV, what to bring, and what
+    to know about Social Security and records.
   checked: '2026-11-03'
   show_short_toggle: true
   nav_label: License & ID
   state: oregon
+  answer: Oregon DMV lets cardholders select M, F, or X on a standard or REAL ID driver license or ID card in
+    person with no court order or doctor's letter.
+  why: For a name change, Oregon DMV verifies your new legal name electronically against Social Security first,
+    so visiting the DMV before SSA updates your file causes a wasted trip.
+  spec:
+    cost: or_dmv_fee
+    paperwork: ID-OR-DMV-GENDER
+    catch:
+      text: Updating your driver license does not update Oregon vehicle titles or registrations; those require
+        a separate filing.
+      basis:
+      - ID-OR-DMV-NAME
+  analogies:
+  - id: counter-check-against-ssa
+    placement: lead
+    compare: At an Oregon DMV counter, the gender box works like a customer preference selected on the spot, while
+      the legal name field works like a cashier verifying your card against a national ledger. If Social Security's
+      database has not posted the new legal name yet, the DMV screen flags a mismatch even when a fresh court
+      order is sitting on the counter.
+    boundary: Oregon DMV retains prior card history internally and shares licensing records with Selective Service
+      and law-enforcement systems even after printing a new card.
+    basis:
+    - ID-OR-DMV-GENDER
+    - ID-OR-DMV-NAME
+    - ID-OR-DMV-PROOF
 - slug: id-records-washington
   art: print-washington.webp
   route: /id-records/washington/
   desk: id-records
   template: id-records/washington.html
   title: 'Washington: change your name and gender marker'
-  description: 'Overview of Washington name and gender marker changes: quick facts, Nov. 2026 DOH form change, and
-    links to court, birth certificate, and license steps.'
+  description: 'Overview of Washington name and gender marker changes: quick facts, Nov. 2026 DOH form change,
+    and links to court, birth certificate, and license steps.'
   checked: '2026-11-03'
   show_short_toggle: true
   nav_label: Washington
   state: washington
+  answer: 'Washington splits legal updates into two tracks: legal names change in court (public district court
+    or sealed superior court), while gender markers on Washington IDs and birth certificates update by agency
+    form.'
+  why: Filing in the wrong court makes a name change a public county auditor record, whereas Washington superior
+    court can seal gender-identity or safety petitions statewide.
+  analogies:
+  - id: split-tracks-two-windows
+    placement: lead
+    compare: 'Think of Washington''s system as two separate ticket counters in different buildings: courts hold
+      the monopoly on legal name changes outside marriage or divorce, while the Departments of Licensing and Health
+      control gender markers on state cards and birth records. Neither counter does the other''s job, so updating
+      both takes one courthouse visit and two state forms.'
+    boundary: A Washington superior court sealed order hides the court file from the public, but DOL still requires
+      routing sealed orders through its Identity Management Team after updating Social Security.
+    basis:
+    - ID-WA-RCW-4-24-130
+    - ID-WA-DOL-GENDER
+    - ID-WA-DOH-SEX
 - slug: id-records-washington-court
   art: print-courthouse.webp
   route: /id-records/washington/court/
   desk: id-records
   template: id-records/washington-court.html
   title: 'Washington court order: public or sealed name change'
-  description: 'Step-by-step Washington name change process: choosing public district court or sealed superior court,
-    costs, hearings, optional gender order, and under-18 rules.'
+  description: 'Step-by-step Washington name change process: choosing public district court or sealed superior
+    court, costs, hearings, optional gender order, and under-18 rules.'
   checked: '2026-11-03'
   show_short_toggle: true
   nav_label: Court order
   state: washington
+  answer: Washington residents can file a public name change in any district court statewide or a sealed name
+    change in any superior court when the change relates to gender identity, gender expression, or qualifying
+    safety grounds.
+  why: District court records are public and recorded with the county auditor, while superior court sealed files
+    stay closed to the public—and district courts must waive fees on a financial-hardship statement.
+  spec:
+    cost: wa_fee_sealed
+    paperwork: ID-WA-COURTS-FORMS
+    catch:
+      text: Sealed superior court filing is unavailable while under Department of Corrections jurisdiction or
+        sex-offender registration.
+      basis:
+      - ID-WA-RCW-4-24-130
+  analogies:
+  - id: public-bulletin-vs-locked-vault
+    placement: lead
+    compare: 'Washington gives name-change filers a choice between two rooms: district court is like a public
+      town bulletin board where the order gets filed with the county auditor, while superior court is like a locked
+      bank vault where the petition, hearing, and order stay sealed from public search. Unlike most states, Washington
+      law lets residents file in any county''s court, not just their home county.'
+    boundary: Even a sealed superior court order requires a brief appearance before a judge and separate follow-up
+      at Social Security and DOL.
+    basis:
+    - ID-WA-RCW-4-24-130
+    - ID-WA-RCW-36-18-020
+    - ID-WA-WLH-NAME
 - slug: id-records-washington-birth
   art: print-certificate.webp
   route: /id-records/washington/birth/
@@ -1068,30 +1956,100 @@
   show_short_toggle: true
   nav_label: Birth certificate
   state: washington
+  answer: People born in Washington change their birth-record sex designation (M, F, or X) for $0 amendment fee
+    using notarized form DOH 422-143, and change their legal name with a certified court order plus form DOH 422-126.
+  why: Mailing a court order alone will not change a Washington birth-record sex designation, and Washington DOH
+    retired its old correction form (DOH 422-034) on Nov. 4, 2026.
+  spec:
+    cost: wa_doh_amend_fee
+    clock: wa_doh_mail_clock
+    paperwork: ID-WA-DOH-422-143
+    catch:
+      text: Washington DOH rejects court orders and doctor letters for the sex designation; only notarized form
+        DOH 422-143 (or 422-144 for minors) works.
+      basis:
+      - ID-WA-DOH-SEX
+  analogies:
+  - id: two-locks-one-envelope
+    placement: lead
+    compare: 'Washington''s birth-record archive puts two different locks on the same certificate: the sex-designation
+      lock opens only with notarized state form DOH 422-143 (a judge''s order does not fit that keyhole), while
+      the legal-name lock opens only with a certified court order plus form DOH 422-126. Both forms can travel
+      in one envelope so the archive updates both fields in a single 4-to-6-week pass.'
+    boundary: Minors under 18 cannot self-attest alone and must submit form DOH 422-144 signed by both a parent
+      or guardian and a licensed health care provider.
+    basis:
+    - ID-WA-DOH-SEX
+    - ID-WA-DOH-422-143
+    - ID-WA-DOH-422-126
+    - ID-WA-DOH-AMEND-BIRTH
 - slug: id-records-washington-id
   art: print-cards.webp
   route: /id-records/washington/id/
   desk: id-records
   template: id-records/washington-id.html
   title: 'Washington driver license or ID: gender designation and name'
-  description: How to choose M, F, or X on a Washington standard or enhanced driver license or ID in person or by
-    mail with form 520043.
+  description: How to choose M, F, or X on a Washington standard or enhanced driver license or ID in person or
+    by mail with form 520043.
   checked: '2026-11-03'
   show_short_toggle: true
   nav_label: License & ID
   state: washington
+  answer: Washington Department of Licensing (DOL) lets cardholders choose M, F, or X on a standard or Enhanced
+    (EDL/EID) card with no court order, free if updating only the gender designation.
+  why: Updating a legal name requires Social Security to process the change first plus an in-person appointment—and
+    Enhanced cards cannot be updated by mail.
+  spec:
+    cost: wa_dol_fee
+    paperwork: ID-WA-DOL-GENDER
+    catch:
+      text: Enhanced (EDL/EID) cards require an in-person appointment plus form 520043, and vehicle titles update
+        separately from your license.
+      basis:
+      - ID-WA-DOL-GENDER
+      - ID-WA-DOL-NAME
+  analogies:
+  - id: standard-mail-vs-border-badge
+    placement: lead
+    compare: Washington DOL treats a standard license gender update like updating a club membership profile—free,
+      self-selected, and even doable by mail with form 520043. An Enhanced license or a legal name change works
+      like a border-crossing credential, requiring an in-person check against Social Security and certified proof
+      before the printer issues a new card.
+    boundary: DOL's online portal has no gender-marker option, and sealed superior court name orders route through
+      DOL's Identity Management Team rather than a routine walk-in check.
+    basis:
+    - ID-WA-DOL-GENDER
+    - ID-WA-DOL-NAME
+    - ID-WA-WLH-NAME
 - slug: id-records-utah
   art: print-utah.webp
   route: /id-records/utah/
   desk: id-records
   template: id-records/utah.html
   title: 'Utah: change your name and sex designation'
-  description: 'Overview of Utah name and sex designation changes in 2026: quick facts, 2026 H.B. 183 update, and
-    links to court, birth certificate, and license steps.'
+  description: 'Overview of Utah name and sex designation changes in 2026: quick facts, 2026 H.B. 183 update,
+    and links to court, birth certificate, and license steps.'
   checked: '2026-11-03'
   show_short_toggle: true
   nav_label: Utah
   state: utah
+  answer: Utah requires a district court order for both a non-marriage legal name change and a birth-certificate
+    sex-designation change, and the 2026 bill (H.B. 183) that would have altered those rules failed.
+  why: Planning for the 1-year county residency rule, $375 filing fee, and six-item statutory proof upfront prevents
+    a dismissed petition and wasted fees.
+  analogies:
+  - id: single-courthouse-gatekeeper
+    placement: lead
+    compare: Unlike Oregon and Washington, where state agencies run express counters for markers, Utah places
+      the district courthouse in front of every door like a single security checkpoint. A judge must sign off
+      on both a legal name change and a sex-designation change before Vital Records will touch a Utah birth certificate.
+    boundary: A certified marriage certificate or Utah divorce decree restoring a former name still bypasses the
+      Title 42 name-change petition at Social Security and Utah DLD.
+    basis:
+    - ID-UT-CODE-42-1
+    - ID-UT-CODE-26B-8-111
+    - ID-UT-COURTS-SEX-CHANGE
+    - ID-UT-HB183-NOTICE
 - slug: id-records-utah-court
   art: print-courthouse.webp
   route: /id-records/utah/court/
@@ -1104,6 +2062,33 @@
   show_short_toggle: true
   nav_label: Court order
   state: utah
+  answer: Utah district courts require 1 year of county residency and a hearing for a legal name change, and clear
+    and convincing proof of six statutory items—including a licensed provider letter—for a sex-designation order.
+  why: Walking into a Utah district court without all six statutory findings documented, or while a party to any
+    lawsuit, can result in a denial of the $375 petition.
+  spec:
+    cost: ut_fee_petition
+    clock: ut_court_residency_clock
+    paperwork: ID-UT-MYPAPERWORK
+    catch:
+      text: Sex-designation filings keep attached papers private, but the case history and courtroom hearing remain
+        public.
+      basis:
+      - ID-UT-COURTS-SEX-CHANGE
+      - ID-UT-COURTS-NONPUBLIC
+  analogies:
+  - id: six-box-underwriting-checklist
+    placement: lead
+    compare: A Utah sex-designation petition works less like a routine name form and more like a strict loan underwriting
+      packet with six mandatory checkboxes. Even if five boxes are spotless—residency, six months of living consistently,
+      and a licensed provider's letter—an unresolved lawsuit or missing clinical proof stops the judge from approving
+      the order.
+    boundary: Utah's statutory bar against anyone under age 15 years and 6 months, plus its guardian ad litem
+      requirement for older minors, creates a much stricter courtroom process for youth.
+    basis:
+    - ID-UT-CODE-26B-8-111
+    - ID-UT-CODE-42-1
+    - ID-UT-COURTS-SEX-CHANGE
 - slug: id-records-utah-birth
   art: print-certificate.webp
   route: /id-records/utah/birth/
@@ -1116,6 +2101,32 @@
   show_short_toggle: true
   nav_label: Birth certificate
   state: utah
+  answer: Utah Vital Records amends a Utah birth certificate's name or sex designation only after receiving a
+    certified signed court order, form 902, and the $50 amendment-and-copy fee.
+  why: Mailing a doctor's letter or self-attestation without a judge's signed order results in a rejection because
+    Utah has no administrative birth-certificate sex-marker form.
+  spec:
+    cost: ut_vital_amend_fee
+    paperwork: ID-UT-VITAL-902-2026
+    catch:
+      text: The reissued certificate shows a clean face unless requested otherwise, while Utah Vital Records retains
+        a separate amendment history.
+      basis:
+      - ID-UT-CODE-26B-8-111
+      - ID-UT-VITAL
+  analogies:
+  - id: clean-reprint-with-archive-log
+    placement: lead
+    compare: Utah Vital Records treats a birth certificate like a clean replacement page printed for the front
+      of a binder while keeping a change log in the back office. The new certificate does not advertise which
+      lines changed unless asked, yet Vital Records retains a separate amendment history—and will not open the
+      binder without a judge's certified order plus form 902.
+    boundary: Utah Vital Records amends only certificates for births recorded in Utah, and fees rise by $40 extra
+      if a record is being sealed.
+    basis:
+    - ID-UT-CODE-26B-8-111
+    - ID-UT-VITAL-902-2026
+    - ID-UT-VITAL-FEES
 - slug: id-records-utah-id
   art: print-cards.webp
   route: /id-records/utah/id/
@@ -1128,6 +2139,33 @@
   show_short_toggle: true
   nav_label: License & ID
   state: utah
+  answer: Utah Driver License Division (DLD) updates a legal name in person once Social Security matches and you
+    bring certified court, marriage, or divorce proof, while its sex-marker procedure is not published online.
+  why: Calling Utah DLD before booking an appointment prevents arriving with documents the counter will not accept
+    for a sex-marker request.
+  spec:
+    paperwork: ID-UT-DLD-NAME
+    catch:
+      text: Utah DLD has not published its sex-marker update procedure online; call DLD to confirm current counter
+        requirements before applying.
+      basis:
+      - ID-UT-CODE-53-3-205
+      - ID-UT-CODE-68-3-12-5
+      - ID-UT-COURTS-SEX-CHANGE
+  analogies:
+  - id: published-menu-vs-unlisted-item
+    placement: lead
+    compare: At Utah DLD, a legal name update is on the published menu—update Social Security first, show a certified
+      court order or marriage certificate, and pay for a replacement card. A sex-marker update sits off the published
+      online menu, where statutes define sex strictly and Utah Courts tells applicants to call DLD ahead of time
+      to learn what the counter actually accepts.
+    boundary: Calling DLD clarifies current counter practice on the day of an appointment, but phone answers do
+      not override Utah Code 53-3-205 or 68-3-12.5.
+    basis:
+    - ID-UT-DLD-NAME
+    - ID-UT-CODE-53-3-205
+    - ID-UT-CODE-68-3-12-5
+    - ID-UT-COURTS-SEX-CHANGE
 - slug: id-records-federal
   art: print-cards.webp
   route: /id-records/federal/
@@ -1139,6 +2177,34 @@
   checked: '2026-11-21'
   show_short_toggle: true
   nav_label: Federal
+  answer: Legal name changes still process normally at Social Security and the State Department, but since 2025
+    new or renewed U.S. passports print sex assigned at birth (with X discontinued) and SSA stopped updating sex
+    markers.
+  why: Submitting any passport application—even Form DS-5504 solely for a name change—can replace an existing
+    M, F, or X passport marker with sex assigned at birth.
+  spec:
+    cost: ssa_name_cost
+    paperwork: ID-US-SSA-NAME
+    catch:
+      text: Even a routine passport name-change filing can revert an unexpired passport's sex marker to sex assigned
+        at birth.
+      basis:
+      - ID-US-STATE-SEX-MARKER
+      - ID-US-HRC-PASSPORT
+  analogies:
+  - id: passport-counter-reprint-trigger
+    placement: lead
+    compare: Think of the 2026 U.S. passport system like an old building permit that stays valid on the wall as
+      long as nobody reopens it, but triggers the newest code the instant any renovation is filed. Unexpired passports
+      stay valid for travel as printed, yet turning one in for a renewal or even a name change puts it back through
+      the federal printer under Executive Order 14168.
+    boundary: Social Security cards do not print a sex field at all, so updating a legal name for free at SSA
+      does not alter a visible card marker even though SSA froze internal NUMIDENT sex updates.
+    basis:
+    - ID-US-EO-14168
+    - ID-US-STATE-SEX-MARKER
+    - ID-US-SSA-NAME
+    - ID-US-SSA-POMS-10212-200
 - slug: id-records-after
   art: print-certificate.webp
   route: /id-records/after/
@@ -1150,17 +2216,47 @@
   checked: '2026-11-03'
   show_short_toggle: true
   nav_label: After court
+  answer: 'Courts never notify other agencies for you, so records must be updated in sequence: certified copies
+    first, then Social Security, then your state license or ID, then birth certificate, passport, and accounts.'
+  why: Starting at the DMV or a benefits portal before Social Security updates its database causes automatic name-verification
+    failures and extra trips.
+  spec:
+    cost: ssa_name_cost
+    paperwork: ID-US-SSA-NAME
+    catch:
+      text: Vehicle titles, voter records, payroll, and Medicaid portals do not update automatically when a driver
+        license changes.
+      basis:
+      - ID-OR-DMV-NAME
+      - ID-UT-COURTS-SEX-CHANGE
+  analogies:
+  - id: upstream-domino-row
+    placement: lead
+    compare: Post-court paperwork is a row of dominoes where Social Security is the first tile that knocks over
+      the rest. State DMVs, employers' payroll tax feeds, and Medicaid eligibility systems all verify legal names
+      upstream against SSA's database, so pushing the middle dominoes first just leaves them standing.
+    boundary: Birth-record amendments in Oregon, Washington, and Utah depend on the birth state's vital-records
+      rules rather than Social Security, so a birth-certificate packet does not have to wait for SSA.
+    basis:
+    - ID-US-SSA-NAME
+    - ID-OR-DMV-GENDER
+    - ID-OR-DMV-NAME
+    - ID-WA-DOL-GENDER
 - slug: id-records-help
   art: print-homes.webp
   route: /id-records/help/
   desk: id-records
   template: id-records/help.html
   title: Get free or low-cost help
-  description: Free and low-cost legal help, court self-help centers, and peer support in Oregon, Washington, and
-    Utah.
+  description: Free and low-cost legal help, court self-help centers, and peer support in Oregon, Washington,
+    and Utah.
   checked: '2026-11-03'
   show_short_toggle: true
   nav_label: Get help
+  answer: Free and low-cost legal aid, court self-help centers, online form interviews, and peer support lines
+    across Oregon, Washington, Utah, and nationwide.
+  why: Most straightforward updates need no lawyer, while legal aid is essential when custody, criminal records,
+    fee waivers, or federal passport risks arise.
 - slug: id-records-compare
   art: print-courthouse.webp
   route: /id-records/compare/
@@ -1171,6 +2267,24 @@
     and Utah.'
   checked: '2026-11-03'
   show_short_toggle: true
+  answer: Oregon ($124) and Washington ($290 base sealed) let residents update state IDs and birth certificates
+    by agency form, while Utah ($375) requires a district court order with clear and convincing proof of six findings.
+  why: Comparing filing fees, hearings, residency rules, and privacy side by side shows why the same update takes
+    one notarized form in one state and a six-item court packet in another.
+  analogies:
+  - id: three-different-toll-roads
+    placement: lead
+    compare: 'Crossing state lines changes the entire road network for identity records: Oregon runs one $124
+      courthouse lane with no routine hearing plus form-only DMV and birth counters, Washington splits public
+      and sealed name courts while keeping state markers form-only, and Utah puts a $375 courtroom tollbooth with
+      a 1-year county residency rule in front of both.'
+    boundary: State borders decide which court or DMV rules govern a person's residence, but only the birth state's
+      law governs a birth certificate and federal policy governs passports everywhere.
+    basis:
+    - ID-OR-OJD-FEES
+    - ID-WA-RCW-36-18-020
+    - ID-UT-COURTS-FEES
+    - ID-UT-CODE-26B-8-111
 - slug: id-records-glossary
   art: print-letters.webp
   route: /id-records/glossary/
@@ -1180,6 +2294,10 @@
   description: Plain definitions of the legal words you will see on court forms.
   checked: '2026-11-03'
   show_short_toggle: false
+  answer: Plain-English definitions of the court, DMV, and vital-records terms printed on name and gender-marker
+    forms, ordered the way they appear in real paperwork.
+  why: Confusing a certified copy with a photocopy—or a confidential file with a sealed order—can stall an appointment
+    at Social Security or the DMV.
 - slug: id-records-sources
   art: print-archive.webp
   route: /id-records/sources/
@@ -1190,16 +2308,24 @@
     Records desk (ID-*).
   checked: '2026-11-25'
   show_short_toggle: false
+  answer: This registry lists every state statute, court fee schedule, vital-records form, federal directive,
+    and legal-aid reference (ID-*) cited on the Legal Name, ID, and Vital Records desk.
+  why: Court fees, form editions, and federal passport rules shift often, so every page links directly back to
+    the dated source behind each step.
 - slug: sources
   art: print-archive.webp
   route: /sources/
   template: sources.html
   title: Every source we cite
   nav_label: Sources
-  description: Complete desk-partitioned primary source registries (MED-* and ID-*) and 4-tier source honesty labels
-    for CivicDesk.
+  description: Complete desk-partitioned primary source registries (MED-* and ID-*) and 4-tier source honesty
+    labels for CivicDesk.
   checked: '2026-11-25'
   show_short_toggle: false
+  answer: CivicDesk tracks every statute, court fee schedule, agency form, and explainer in two separate registries—MED-*
+    for 2027 Medicaid rules and ID-* for name and identity records.
+  why: Every claim shows its exact publication date, last verification date, and 4-tier honesty label so you can
+    verify every rule at the primary source.
 - slug: about
   art: print-front.webp
   route: /about/
@@ -1210,6 +2336,10 @@
     our open-licensed guides.
   checked: '2026-11-25'
   show_short_toggle: false
+  answer: CivicDesk is an independent, ad-free public-interest project that translates primary government rules
+    into plain-language guides without offering legal advice.
+  why: Knowing how every claim is checked—and how to report an error without sending personal details—keeps the
+    guides accurate and independent.
 - slug: accessibility
   art: print-letters.webp
   route: /accessibility/
@@ -1219,16 +2349,24 @@
   description: How CivicDesk implements UK Home Office, GOV.UK, W3C COGA, and WCAG 2.2 AAA accessibility standards.
   checked: '2026-11-25'
   show_short_toggle: false
+  answer: Every CivicDesk page follows UK Home Office and GOV.UK plain-language rules, W3C cognitive accessibility
+    guidance, and WCAG 2.2 AAA reading contrast.
+  why: People reading agency notices under stress need clear text, high contrast, 44-pixel tap targets, and reading
+    controls that work without logins or tracking.
 - slug: privacy
   art: print-window.webp
   route: /privacy/
   template: privacy.html
   title: Privacy and shared-computer safety
   nav_label: Privacy
-  description: 'Zero cookies, zero analytics, Referrer-Policy: no-referrer, Cloudflare Workers Static Assets sole hosting,
-    and scoped Leave quickly safety rules.'
+  description: 'Zero cookies, zero analytics, Referrer-Policy: no-referrer, Cloudflare Workers Static Assets sole
+    hosting, and scoped Leave quickly safety rules.'
   checked: '2026-11-25'
   show_short_toggle: false
+  answer: CivicDesk runs with zero cookies, zero analytics, strict no-referrer headers, and tools that keep every
+    answer strictly inside your browser.
+  why: Whether you are reading on a library terminal, clinic kiosk, or shared household device, nothing you select
+    or check is transmitted anywhere.
 - slug: '404'
   art: print-fog.webp
   route: /404.html

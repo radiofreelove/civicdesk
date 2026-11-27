@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Oregon Health Plan (OHP)</p>
     <h1>Medical bills from before you apply</h1>
-    <p class="purpose">OHP calls this <strong>retroactive coverage</strong>. Starting Jan.&nbsp;1, 2027, the window for unpaid past medical bills gets shorter for most adults.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set or_bills_cite %}{{ src('MED-S01') }}{% endset %}
 {{ v.swimlane_timeline(

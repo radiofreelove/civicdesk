@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Utah Medicaid</p>
     <h1>Turned down for Utah Medicaid? You have options.</h1>
-    <p class="purpose">If DWS turns you down or ends your coverage, you can keep benefits during an appeal, request a phone fair hearing, get free legal help, or reapply with no waiting period.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set ut_denied_cites %}{{ src('MED-U19') }} {{ src('MED-U01') }} {{ src('MED-U02') }}{% endset %}
 {{ v.swimlane_timeline(

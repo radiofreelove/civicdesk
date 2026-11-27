@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Washington Apple Health</p>
     <h1>Turned down for Apple Health? You have options.</h1>
-    <p class="purpose">Always check the exact deadlines printed on your letter—you have strong appeal, continued-coverage, and 90-day renewal protections.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set wa_den_cites %}{{ src('MED-WA17') }} {{ src('MED-WA18') }} {{ src('MED-WA19') }} {{ src('MED-WA29') }} {{ src('MED-WA16') }} {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-S41') }}{% endset %}
 {{ v.swimlane_timeline(

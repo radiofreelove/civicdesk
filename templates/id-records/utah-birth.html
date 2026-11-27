@@ -6,11 +6,14 @@
   <div class="intro-copy">
     <p class="kicker">Utah / Birth certificate</p>
     <h1>Utah birth certificate: name and sex designation change</h1>
-    {{ m.lede("Utah Vital Records updates a Utah birth certificate's sex designation only with a signed court order. Once your judge signs, mail a certified order, form 902, and the Vital Records fee.") }}
+    {{ m.answer(page) }}
     {{ m.checked_line(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set ut_birth_note %}Fee breakdown: {{ fact('ut_vital_amend_fee') }}. {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}{% endset %}
 {{ v.stat_hero_strip([

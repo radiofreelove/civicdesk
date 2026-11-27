@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Washington Apple Health</p>
     <h1>Washington sent me a letter. Now what?</h1>
-    <p class="purpose">Check the reply date right away—Apple Health proof letters give <strong>15 days</strong> to respond so your coverage stays open.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set wc1 %}HCA sends notices by mail or email based on your preference in Washington Healthplanfinder—keep your contact info current and save dated copies of everything you send. {{ src('MED-WA01') }}{% endset %}
 {% set wc2 %}If a Post Eligibility Review or proof letter arrives, you have <strong>15 days</strong> to send proof—even if you recently updated your account. {{ src('MED-WA04') }} {{ src('MED-WA13') }}{% endset %}
