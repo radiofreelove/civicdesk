@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "broadsheet.html" as bs %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
 <nav class="guide-switch" aria-labelledby="guide-switch-label">
   <p class="guide-switch-label" id="guide-switch-label">Switch Medicaid state guide</p>
   <ul>
@@ -12,13 +12,8 @@
   </ul>
 </nav>
 
-<div class="hero-split">
-  <div class="hero-copy">
-    <h1>Applying for OHP? New rules start Jan.&nbsp;1, 2027.</h1>
-    <p class="purpose"><strong>Why this site exists:</strong> The state explains the new OHP rules across more than a dozen documents. This guide puts what applicants need in one place, in plain words, with every official source linked.</p>
-  </div>
-  {{ v.editorial_art('medicaid-calendar.webp', variant='hero') }}
-</div>
+{% set guide_purpose %}<p class="purpose"><strong>Why this site exists:</strong> The state explains the new OHP rules across more than a dozen documents. This guide puts what applicants need in one place, in plain words, with every official source linked.</p>{% endset %}
+{{ bs.page_head('Applying for OHP? New rules start Jan. 1, 2027.', page=page, kicker='Oregon Health Plan (OHP)', purpose=guide_purpose) }}
 
 {{ v.stat_hero_strip([
   {'num': '19–64', 'label': 'Adults covered by rules', 'note': 'OHP Plus & Healthier Oregon'},
@@ -86,11 +81,14 @@
 <p>There are more exemptions. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every reason</a></p>
 
 <h2>What to do</h2>
-<ol class="steps">
-  <li><a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check.</a> Your answers stay on your device.</li>
-  <li><a href="{{ page_url('medicaid-oregon-apply') }}">Apply</a> online, by phone, in person, or on paper. If OHP says no, you can apply again any time. {{ src('MED-S06') }}</li>
-  <li>Answer every question about work, school, and volunteering. If a reason fits you, tell OHP. {{ src('MED-S05') }} {{ src('MED-S08') }}</li>
-</ol>
+{% set step_1 %}Your answers stay on your device.{% endset %}
+{% set step_2 %}Online, by phone, in person, or on paper. If OHP says no, you can apply again any time. {{ src('MED-S06') }}{% endset %}
+{% set step_3 %}Answer every question about work, school, and volunteering. If a reason fits you, tell OHP. {{ src('MED-S05') }} {{ src('MED-S08') }}{% endset %}
+{{ bs.step_timeline([
+  {'title': 'Take the 1-minute check', 'body': step_1, 'href': page_url('medicaid-oregon-check'), 'link_label': 'Start the 1-minute OHP check'},
+  {'title': 'Apply', 'body': step_2, 'href': page_url('medicaid-oregon-apply'), 'link_label': 'Ways to apply for OHP'},
+  {'title': 'Answer every activity question', 'body': step_3}
+], label='What to do') }}
 
 <h2>Go deeper</h2>
 <ul class="cards">

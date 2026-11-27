@@ -117,9 +117,9 @@ def test_five_stripe_mark_up_to_date() -> None:
     res = subprocess.run([sys.executable, str(ROOT / "scripts" / "make_mark.py"), "--check"], cwd=ROOT)
     assert res.returncode == 0
     fav = (ROOT / "static" / "favicon.svg").read_text(encoding="utf-8")
-    for color in ("#111827", "#1D70B8", "#C85A70", "#FFFFFF"):
+    for color in ("#201E1D", "#0088B0", "#D6006C", "#F3F2F2"):
         assert color in fav
-    assert fav.count("<rect") == 6  # 1 slate background + 5 Horizon stripes
+    assert fav.count("<rect") == 6  # 1 press-ink background + 5 Broadsheet stripes
 
 
 def test_desk_partitioned_source_registries() -> None:
@@ -178,6 +178,9 @@ def test_all_built_pages_html_links_and_scoping(built_site: Path) -> None:
         assert auditor.meta_referrer == "no-referrer", f"{route}: missing no-referrer"
         assert auditor.meta_csp and "connect-src 'none'" in auditor.meta_csp, f"{route}: weak CSP"
         assert "&lt;span" not in raw and "&lt;a " not in raw, f"{route}: escaped HTML markup"
+        visible = re.sub(r"<(script|style|template)\b.*?</\1>", "", raw, flags=re.S)
+        visible = re.sub(r"<[^>]+>", "", visible)
+        assert "`" not in visible, f"{route}: literal Markdown backtick in visible text (use <code> or plain words)"
 
         h1s = [text for level, text in auditor.headings if level == 1]
         assert len(h1s) == 1, f"{route}: expected 1 <h1>, found {h1s}"
@@ -227,7 +230,8 @@ def test_all_built_pages_html_links_and_scoping(built_site: Path) -> None:
 
     # Verify front door exact H1, equal-footing desk cards, and NO Leave quickly on /
     front_html = route_to_file["/"].read_text(encoding="utf-8")
-    assert "<h1>Government rules and paperwork, explained in plain words.</h1>" in front_html
+    assert "<h1>Government paperwork, in plain words.</h1>" in front_html
+    assert 'class="desk-tiles"' in front_html
     assert 'href="/medicaid/"' in front_html
     assert 'href="/id-records/"' in front_html
     assert "data-quick-exit" not in front_html
@@ -282,6 +286,8 @@ def test_path_finder_template_rules() -> None:
     assert "t-federal" in blocks and "t-after" in blocks
 
     for bid, body in blocks.items():
+        assert '<li class="result-block">' in body and 'class="step-node"' in body, f"{bid}: not a step-timeline step"
+        body = body.replace('<li class="result-block">', "", 1)
         rows = []
         for attrs, text in re.findall(r"<li([^>]*)>(.*?)</li>", body, re.S):
             ch_m = re.search(r'data-change="([^"]+)"', attrs)
@@ -429,29 +435,69 @@ def test_commit_sha_resolution_and_build_report(built_site: Path) -> None:
 def test_no_stranded_parentheses_around_citations_and_social_meta(built_site: Path) -> None:
     build_mod = _load_script("civicdesk_build_cite", "scripts/build.py")
 
+    # Inline citations are stripped from the reading flow without leaving "( )" or " ." behind.
     sample = (
-        '<main><p>Deadline rule (<span class="src-unit"><a class="src" href="#src-a">'
+        '<p>Deadline rule (<!--cd-src:A--><span class="src-unit"><a class="src" href="#src-a">'
         '<span class="src-label">Source:</span>&nbsp;A</a> '
-        '<span class="badge badge-official">Official</span></span> '
-        '<span class="src-unit"><a class="src" href="#src-b">'
-        '<span class="src-label">Source:</span>&nbsp;B</a> '
-        '<span class="badge badge-official">Official</span></span>)</p></main>'
+        '<span class="badge badge-not-official">Not official</span></span> '
+        '<!--cd-src:B--><a class="src" href="#src-b">'
+        '<span class="src-label">Source:</span>&nbsp;B</a>).</p>'
+        '<p>Claim. <!--cd-src:C--><a class="src" href="#src-c"><span class="src-label">Source:</span>&nbsp;C</a>.</p>'
+        '<p>Our take <span class="badge badge-our-reading">Our reading</span> '
+        '<!--cd-src:D--><a class="src" href="#src-d"><span class="src-label">Source:</span>&nbsp;D</a></p>'
+        '<p class="viz-strip-citations"><!--cd-src:E--><a class="src" href="#src-e"><span class="src-label">Source:</span>&nbsp;E</a></p>'
     )
-    grouped = build_mod.group_citations(sample)
-    assert "(<span class=\"cite-row\"" not in grouped
-    assert "</span>)</p>" not in grouped
-    assert 'class="cite-row"' in grouped
+    stripped = build_mod.strip_inline_citations(sample)
+    assert 'class="src"' not in stripped and "Source:" not in stripped and "cd-src" not in stripped
+    assert "badge-not-official" not in stripped, "a source's own Not official badge moves to the Sources panel"
+    assert "<p>Deadline rule.</p>" in stripped
+    assert "<p>Claim.</p>" in stripped
+    assert 'badge-our-reading">Our reading</span></p>' in stripped, "claim-qualifying badges stay inline"
+    assert "viz-strip-citations" not in stripped, "a note that held only citations is dropped"
+
+    # Sections split at each <h2>; each gets one link to its group in the single Sources panel.
+    page = (
+        '<main><div class="wrap content">'
+        '<h1>Title</h1><p class="lede">Lede <!--cd-src:A--><a class="src" href="#a"><span class="src-label">Source:</span>&nbsp;A</a></p>'
+        '<p>Body</p>'
+        '<h2 id="one">One</h2><p>Fact <!--cd-src:B--><a class="src" href="#b"><span class="src-label">Source:</span>&nbsp;B</a></p>'
+        '<section class="callout"><h2 id="two-t">Two</h2><p>More <!--cd-src:B-->x <!--cd-src:C-->y</p></section>'
+        '<h2>Three</h2><p>No sources here.</p>'
+        '<!--cd-source-panel--></div></main>'
+    )
+    out = build_mod.apply_sources_layer(
+        page, ["A", "B", "C", "Z"],
+        render_tabs=lambda n: f'<nav data-page-tabs>{n}</nav>',
+        render_section_link=lambda sid, n: f'<a class="section-sources" href="#src-group-{sid}">({n})</a>',
+        render_panel=lambda groups, n: '<section class="page-sources">' + "|".join(
+            f'{g["id"]}:{",".join(g["sources"])}' for g in groups) + "</section>",
+        tabs=True,
+    )
+    assert 'class="src"' not in out and "cd-src" not in out
+    assert out.index("<nav data-page-tabs>4</nav>") > out.index("</p>", out.index('class="lede"'))
+    assert '<div id="guide" class="page-guide">' in out
+    assert 'href="#src-group-top">(1)' in out
+    assert 'href="#src-group-one">(1)' in out and 'href="#src-group-two-t">(2)' in out
+    assert out.index('href="#src-group-one"') < out.index('<section class="callout">'), "link closes its section"
+    assert '<h2 id="sec-three">Three</h2>' in out and "src-group-sec-three" not in out
+    assert "top:A|one:B|two-t:B,C|more:Z" in out
 
     assert (built_site / "static" / "og-card.png").is_file()
 
-    orphan_open = re.compile(r"\(\s*<span class=\"cite-row\"")
-    orphan_close = re.compile(r"</span>\s*\)\s*</(?:p|li|td|dd|span)>")
+    inline_src_re = re.compile(r'<a class="src"|class="src-unit"|<!--cd-src:')
+    empty_parens_re = re.compile(r"\(\s*\)")
     asset_hash_re = re.compile(r'/static/css/site\.css\?v=[0-9a-f]{8}"')
 
     for html_path in sorted(built_site.rglob("*.html")):
         raw = html_path.read_text(encoding="utf-8")
-        assert not orphan_open.search(raw), f"{html_path}: stranded '(' before .cite-row"
-        assert not orphan_close.search(raw), f"{html_path}: stranded ')' after .cite-row"
+        assert not inline_src_re.search(raw), f"{html_path}: inline Source: link left in the reading flow"
+        main_text = re.sub(r"<[^>]+>", "", raw.split("<main", 1)[-1].split("</main>", 1)[0])
+        assert not empty_parens_re.search(main_text), f"{html_path}: stranded '( )' where citations were removed"
+        if '<section class="page-sources"' in raw:
+            assert raw.count('<section class="page-sources"') == 1, f"{html_path}: more than one Sources panel"
+            assert 'class="page-sources-group" id="src-group-' in raw, f"{html_path}: Sources panel is not grouped"
+            if html_path != built_site / "index.html":
+                assert "data-page-tabs" in raw and '<div id="guide" class="page-guide">' in raw, f"{html_path}: missing Guide/Sources tabs"
         assert asset_hash_re.search(raw), f"{html_path}: missing content-hash cache buster on site.css"
         assert '<meta property="og:title"' in raw, f"{html_path}: missing og:title"
         assert '<meta property="og:image"' in raw, f"{html_path}: missing og:image"
@@ -554,7 +600,7 @@ def test_verify_sources_dynamic_discovery_dedup_retry_and_bot_gated(tmp_path: Pa
     assert any(i.startswith("PR-UNGATED-403 ") and "HTTP 403" in i for i in issues)
 
 
-def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
+def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
     assert not (ROOT / "templates" / "illustrations.html").exists(), (
         "templates/illustrations.html clip-art macro file must remain deleted"
     )
@@ -686,7 +732,7 @@ def test_civic_horizon_visual_system_invariants(built_site: Path) -> None:
     # Core purposeful structural diagrams & editorial art render on routes where they belong
     expected_markers = {
         "index.html": ("desk-overview.webp", "medicaid-calendar.webp", "id-sequence.webp"),
-        "start/index.html": ("desk-overview.webp",),
+        "start/index.html": ('id="start-form"', 'class="page-head page-head-dispatch"'),
         "sources/index.html": ('class="viz-stat-strip"',),
         "medicaid/index.html": ("medicaid-calendar.webp", 'class="viz-timeline', 'class="viz-rail-node"'),
         "medicaid/oregon/index.html": ("medicaid-calendar.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),

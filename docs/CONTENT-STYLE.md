@@ -15,7 +15,7 @@
 ## 3. Neurodivergent Layout Guardrails
 
 - Left-aligned text only; use sentence case for headings and labels.
-- Maintain >=7:1 contrast ratio (AAA Civic Horizon palette: `#1D70B8` sky, `#FFFFFF` paper, `#C85A70` muted rose on `#111827` slate ink).
+- Maintain >=7:1 contrast ratio (Broadsheet visual system: `#0088B0` process cyan, `#D6006C` process magenta, `#F3F2F2` newsprint on `#201E1D` press ink).
 - Use semantic SVG lists and responsive containers that reflow cleanly at 200% zoom.
 - Ensure all interactive controls have >=44x44 px touch targets.
 

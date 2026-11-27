@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "broadsheet.html" as bs %}
 {% block main %}
-<p class="kicker">Washington Apple Health</p>
 <nav class="guide-switch" aria-labelledby="guide-switch-label">
   <p class="guide-switch-label" id="guide-switch-label">Switch Medicaid state guide</p>
   <ul>
@@ -12,13 +12,8 @@
   </ul>
 </nav>
 
-<div class="hero-split">
-  <div class="hero-copy">
-    <h1>Applying for Apple Health? New rules start Jan.&nbsp;1, 2027.</h1>
-    <p class="purpose"><strong>Why this site exists:</strong> Facts about the new Apple Health rules are spread across many official pages and notices. This guide puts what applicants need in one place, in plain words, with every official source linked.</p>
-  </div>
-  {{ v.editorial_art('medicaid-calendar.webp', variant='hero') }}
-</div>
+{% set guide_purpose %}<p class="purpose"><strong>Why this site exists:</strong> Facts about the new Apple Health rules are spread across many official pages and notices. This guide puts what applicants need in one place, in plain words, with every official source linked.</p>{% endset %}
+{{ bs.page_head('Applying for Apple Health? New rules start Jan. 1, 2027.', page=page, kicker='Washington Apple Health', purpose=guide_purpose) }}
 
 {{ v.stat_hero_strip([
   {'num': '19–64', 'label': 'Apple Health for Adults', 'note': 'Under 138% FPL, no Medicare'},
@@ -85,11 +80,14 @@
 <p><a href="{{ page_url('medicaid-washington-reasons') }}">See every exemption</a></p>
 
 <h2>What to do</h2>
-<ol class="steps">
-  <li><a href="{{ page_url('medicaid-washington-check') }}">Take the 1-minute check.</a> Your answers stay on your device.</li>
-  <li><a href="{{ page_url('medicaid-washington-apply') }}">Apply</a> online, by phone, on paper, or in person (open all year). {{ src('MED-WA06') }}</li>
-  <li>Self-attest your income, hours, or exemption; if state data cannot confirm eligibility, reply within 15 days if HCA sends a letter. Only Washington decides. {{ src('MED-WA04') }} {{ src('MED-WA22') }}</li>
-</ol>
+{% set step_1 %}Your answers stay on your device.{% endset %}
+{% set step_2 %}Online, by phone, on paper, or in person (open all year). {{ src('MED-WA06') }}{% endset %}
+{% set step_3 %}Self-attest your income, hours, or exemption. If state data cannot confirm eligibility, reply within 15 days if HCA sends a letter. Only Washington decides. {{ src('MED-WA04') }} {{ src('MED-WA22') }}{% endset %}
+{{ bs.step_timeline([
+  {'title': 'Take the 1-minute check', 'body': step_1, 'href': page_url('medicaid-washington-check'), 'link_label': 'Start the 1-minute Apple Health check'},
+  {'title': 'Apply', 'body': step_2, 'href': page_url('medicaid-washington-apply'), 'link_label': 'Ways to apply for Apple Health'},
+  {'title': 'Self-attest and answer letters', 'body': step_3}
+], label='What to do') }}
 
 <h2>Go deeper</h2>
 <ul class="cards">

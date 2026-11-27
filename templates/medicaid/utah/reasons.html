@@ -19,7 +19,7 @@
 
 <div id="exemption-shields">
   <h2 id="exclusions-vs-hardships">Checked from records vs. exceptions you must request</h2>
-  {% set ut_reasons_note %}Sources: Utah exclusions &amp; short-term exceptions (<a href="{{ page_url('medicaid-utah-health') }}">health condition guide</a>; <a href="#tribal">Tribal proof list</a>) {{ src('MED-U05') }} {{ src('MED-U28') }}.{% endset %}
+  {% set ut_reasons_note %}See the <a href="{{ page_url('medicaid-utah-health') }}">health condition guide</a> and the <a href="#tribal">Tribal proof list</a>. {{ src('MED-U05') }} {{ src('MED-U28') }}{% endset %}
   {{ v.yes_no_split_board(
     'Exclusions & county hardships DWS checks first',
     [

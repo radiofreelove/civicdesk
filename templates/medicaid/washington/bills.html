@@ -11,7 +11,7 @@
   {{ v.editorial_art('official-notice.webp', variant='spot') }}
 </div>
 
-{% set wa_bills_cite %}Sources: HCA past-bills window changes {{ src('MED-WA01') }} {{ src('MED-WA03') }} {{ src('MED-WA07') }}.{% endset %}
+{% set wa_bills_cite %}{{ src('MED-WA01') }} {{ src('MED-WA03') }} {{ src('MED-WA07') }}{% endset %}
 {{ v.swimlane_timeline(
   'How far back Apple Health can help pay medical bills',
   [

@@ -11,7 +11,7 @@
   {{ v.editorial_art('official-notice.webp', variant='spot') }}
 </div>
 
-{% set ut_bills_note %}Source: Utah Medicaid retroactive coverage rules {{ src('MED-U02') }}.{% endset %}
+{% set ut_bills_note %}{{ src('MED-U02') }}{% endset %}
 {{ v.swimlane_timeline(
   'How far back Utah Medicaid can cover unpaid bills',
   [

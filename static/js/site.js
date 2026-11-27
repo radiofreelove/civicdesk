@@ -435,6 +435,97 @@
     if (d) d.open = true;
     if (wasHidden) target.scrollIntoView();
   }
+  // Guide / Sources tabs (progressive enhancement). Without JS the two links in
+  // [data-page-tabs] are plain jump links and both panels show in reading order.
+  var tabNav = document.querySelector("[data-page-tabs]");
+  var guidePanel = document.getElementById("guide");
+  var sourcesPanel = document.querySelector(".page-sources");
+  var tabs = null;
+  function selectTab(which, moveFocus) {
+    if (!tabs) return;
+    tabs.forEach(function (tab) {
+      var on = tab.getAttribute("data-tab") === which;
+      tab.setAttribute("aria-selected", on ? "true" : "false");
+      tab.setAttribute("tabindex", on ? "0" : "-1");
+      if (on && moveFocus) tab.focus();
+    });
+    guidePanel.hidden = which !== "guide";
+    sourcesPanel.hidden = which !== "sources";
+  }
+  function setHash(hash) {
+    if (window.history && typeof window.history.replaceState === "function") {
+      window.history.replaceState(null, "", hash || window.location.pathname + window.location.search);
+    }
+  }
+  function showSourceTarget(target) {
+    selectTab("sources", false);
+    if (target.getAttribute("tabindex") === null) target.setAttribute("tabindex", "-1");
+    target.scrollIntoView();
+    target.focus({ preventScroll: true });
+  }
+  function syncTabToHash() {
+    if (!tabs) return;
+    var id = window.location.hash.slice(1);
+    try { id = decodeURIComponent(id); } catch (e) { /* use raw */ }
+    if (id === "sources" || id.slice(-8) === "/sources") {
+      selectTab("sources", false);
+      return;
+    }
+    var target = id ? document.getElementById(id) : null;
+    if (!target) return;
+    if (sourcesPanel.contains(target)) showSourceTarget(target);
+    else if (guidePanel.contains(target) && target !== guidePanel) selectTab("guide", false);
+  }
+  if (tabNav && guidePanel && sourcesPanel) {
+    var guideTab = document.getElementById("tab-guide");
+    var sourcesTab = document.getElementById("tab-sources");
+    if (!sourcesPanel.id) sourcesPanel.id = "page-sources";
+    tabs = [guideTab, sourcesTab];
+    guideTab.setAttribute("data-tab", "guide");
+    sourcesTab.setAttribute("data-tab", "sources");
+    tabNav.setAttribute("role", "tablist");
+    guideTab.setAttribute("aria-controls", "guide");
+    sourcesTab.setAttribute("aria-controls", sourcesPanel.id);
+    guidePanel.setAttribute("role", "tabpanel");
+    guidePanel.setAttribute("aria-labelledby", "tab-guide");
+    sourcesPanel.setAttribute("role", "tabpanel");
+    sourcesPanel.setAttribute("aria-labelledby", "tab-sources");
+    tabs.forEach(function (tab) {
+      tab.setAttribute("role", "tab");
+      tab.addEventListener("click", function (event) {
+        event.preventDefault();
+        var which = tab.getAttribute("data-tab");
+        selectTab(which, true);
+        setHash(which === "sources" ? "#sources" : "");
+      });
+      tab.addEventListener("keydown", function (event) {
+        var i = tabs.indexOf(tab);
+        var next = null;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") next = tabs[(i + 1) % tabs.length];
+        else if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = tabs[(i + tabs.length - 1) % tabs.length];
+        else if (event.key === "Home") next = tabs[0];
+        else if (event.key === "End") next = tabs[tabs.length - 1];
+        if (!next) return;
+        event.preventDefault();
+        var which = next.getAttribute("data-tab");
+        selectTab(which, true);
+        setHash(which === "sources" ? "#sources" : "");
+      });
+    });
+    document.querySelectorAll(".section-sources").forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        var target = document.getElementById(link.getAttribute("href").slice(1));
+        if (!target) return;
+        event.preventDefault();
+        setHash(link.getAttribute("href"));
+        showSourceTarget(target);
+      });
+    });
+    selectTab("guide", false);
+    syncTabToHash();
+    window.addEventListener("hashchange", syncTabToHash);
+  }
+
   window.addEventListener("hashchange", openTarget);
   document.addEventListener("click", function (event) {
     var link = event.target.closest ? event.target.closest('a[href^="#"]') : null;

@@ -59,7 +59,7 @@ jobs:
           PY
           gh label create "automated-source-check" \
             --description "Opened by the weekly source verification workflow" \
-            --color "1D70B8" 2>/dev/null || true
+            --color "0088B0" 2>/dev/null || true
           today_utc="$(date -u +%Y-%m-%d)"
           existing="$(gh issue list --state open --label "automated-source-check" --limit 1 --json number --jq '.[0].number // empty')"
           if [ -n "$existing" ]; then

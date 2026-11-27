@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "broadsheet.html" as bs %}
 {% block main %}
-<p class="kicker">Utah</p>
-<h1>Change your name and sex designation in Utah</h1>
-{{ m.lede("Utah uses district court for both. A name change requires 1 year in your county and a hearing; a sex designation change requires clear and convincing proof of six statutory findings. MyPaperwork walks you through filing online.") }}
-{{ m.checked_line(page) }}
+{% set guide_lede %}{{ m.lede("Utah uses district court for both. A name change requires 1 year in your county and a hearing; a sex designation change requires clear and convincing proof of six statutory findings. MyPaperwork walks you through filing online.") }}{% endset %}
+{{ bs.page_head('Change your name and sex designation in Utah', page=page, kicker='Utah', purpose=guide_lede, checked=m.checked_line(page)) }}
 
-{% set ut_facts_note %}Sources: court requirements &amp; fees {{ src('ID-UT-CODE-42-1') }} {{ src('ID-UT-CODE-26B-8-111') }} {{ src('ID-UT-CODE-78A-2-301') }} {{ src('ID-UT-COURTS-FEES') }}; Vital Records {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}.{% endset %}
+{% set ut_facts_note %}{{ src('ID-UT-CODE-42-1') }} {{ src('ID-UT-CODE-26B-8-111') }} {{ src('ID-UT-CODE-78A-2-301') }} {{ src('ID-UT-COURTS-FEES') }} {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}{% endset %}
 {{ v.stat_hero_strip([
   {'num': fact('ut_fee_petition'), 'label': 'District court filing fee', 'note': 'Waiver available; copies ' ~ fact('ut_fee_cert_copy')},
   {'num': '1 year', 'label': 'County residency rule', 'note': 'Required for court name changes'},
@@ -16,7 +15,6 @@
 ], id='quick-facts', note=ut_facts_note) }}
 
 <h2 id="order">Why order matters in Utah</h2>
-{{ v.editorial_art('id-sequence.webp', variant='wide') }}
 {{ v.process_flow([
   {'title': 'Utah district court', 'body': 'File petition (or use marriage/divorce record for name).'},
   {'title': 'Social Security', 'body': 'Update your legal name with SSA before visiting DLD.'},
@@ -29,26 +27,29 @@
 {% endcall %}
 
 <h2 id="guides">Your Utah record guides</h2>
-{{ m.hub_cards([
+{{ bs.step_timeline([
   {
     'id': 'steps',
     'title': 'Court order',
     'href': page_url('id-records-utah-court'),
-    'summary': 'Residency rules, the six statutory findings for a sex designation change, MyPaperwork online filing, hearings, fee waivers, privacy, and under-18 rules.'
+    'body': 'Residency rules, the six statutory findings for a sex designation change, MyPaperwork online filing, hearings, fee waivers, privacy, and under-18 rules.',
+    'link_label': 'Open the court order guide'
   },
   {
     'id': 'birth-certificate',
     'title': 'Utah birth certificate',
     'href': page_url('id-records-utah-birth'),
-    'summary': 'How to mail a certified signed court order and form 902 to Utah Vital Records, plus what to ask about separate amendment history records.'
+    'body': 'How to mail a certified signed court order and form 902 to Utah Vital Records, plus what to ask about separate amendment history records.',
+    'link_label': 'Open the Utah birth certificate guide'
   },
   {
     'id': 'license',
     'title': 'Driver license or ID',
     'href': page_url('id-records-utah-id'),
-    'summary': 'What Utah Driver License Division asks for to update your legal name, and why to call ahead before updating a sex marker.'
+    'body': 'What Utah Driver License Division asks for to update your legal name, and why to call ahead before updating a sex marker.',
+    'link_label': 'Open the driver license or ID guide'
   }
-]) }}
+], label='Your Utah record guides, in order') }}
 
 {% call m.deeper('Why preparing proof early matters & more tools', 'ut-why') %}
 <ul>

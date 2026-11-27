@@ -1,0 +1,155 @@
+{#- Broadsheet layer macros (2026-11 redesign).
+    Import with: {% import "broadsheet.html" as bs %}
+    CSP-safe: no inline styles, no inline scripts. Icons come from templates/icons.html. -#}
+{% from "icons.html" import svg_icon %}
+{% import "visuals.html" as vis %}
+
+{#- Thick-thin front-page rule pair. Place directly under .header-row in base.html. -#}
+{% macro press_rule() -%}
+<div class="press-rule" aria-hidden="true"></div>
+{%- endmacro %}
+
+{#- Dateline strip between the masthead rules on the front page and desk fronts.
+    places: the jurisdictions the page covers; latest: the newest source check date. -#}
+{% macro dateline(places, latest) -%}
+<div class="dateline">
+  <p class="wrap dateline-row"><span class="dateline-motto">Plain-language public benefits and records guides</span><span class="dateline-meta"><span>{{ places }}</span> <span aria-hidden="true">·</span> <span>Sources checked through <time datetime="{{ latest }}">{{ latest|human_date }}</time></span></span></p>
+</div>
+{%- endmacro %}
+
+{#- Page head: kicker, h1, standfirst, checked line, and the page's editorial art plate.
+    Pass page=page so the art comes from page.art in data/pages.yaml. art=false gives the
+    clean dispatch head with no plate; a filename overrides pages.yaml.
+    purpose and checked: Markup or ''. -#}
+{% macro page_head(title, page=none, kicker='', purpose='', art=none, checked='') -%}
+{%- set art_file = (page.get('art') if page else none) if art is none else art -%}
+<div class="page-head{% if not art_file %} page-head-dispatch{% endif %}">
+  <div>
+    {% if kicker %}<p class="kicker">{{ kicker }}</p>{% endif %}
+    <h1>{{ title }}</h1>
+    {% if purpose %}<div class="standfirst">{{ purpose }}</div>{% endif %}
+    {{ checked }}
+  </div>
+  {% if art_file %}<div class="page-head-art">{{ vis.editorial_art(art_file, variant='hero') }}</div>{% endif %}
+</div>
+{%- endmacro %}
+
+{#- Big desk tiles on the front page.
+    desks: list of {id, href, kicker, name, blurb, places, art, art_w, art_h, soon} -#}
+{% macro desk_tiles(desks) -%}
+<ul class="desk-tiles">
+  {% for d in desks %}
+  <li>
+    {% if d.soon %}
+    <div class="desk-tile desk-tile-soon">
+      <span class="desk-tile-art">{{ svg_icon('document', size=64) }}</span>
+      <span class="desk-tile-kicker">{{ d.kicker }}</span>
+      <span class="desk-tile-name">{{ d.name }}</span>
+      <span>{{ d.blurb }}</span>
+    </div>
+    {% else %}
+    <a class="desk-tile desk-tile-{{ d.id }}" href="{{ d.href }}" aria-describedby="desk-{{ d.id }}-desc">
+      <span class="desk-tile-art"><img src="{{ d.art }}" alt="" width="{{ d.art_w }}" height="{{ d.art_h }}" decoding="async"></span>
+      <span class="desk-tile-kicker">{{ d.kicker }}</span>
+      <span class="desk-tile-name">{{ d.name }}<span class="desk-tile-go">{{ svg_icon('arrow-right') }}</span></span>
+      <span id="desk-{{ d.id }}-desc">{{ d.blurb }}</span>
+      <span class="desk-tile-places">{{ d.places }}</span>
+    </a>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- Slim "On the drawing board" brief for desks that are not live yet (site.desks, status: upcoming). -#}
+{% macro upcoming_desks(desks) -%}
+{% if desks %}
+<section class="upcoming-desks" aria-labelledby="upcoming-desks-h">
+  <h2 id="upcoming-desks-h">On the drawing board</h2>
+  <ul>
+    {% for d in desks %}<li class="upcoming-desk desk-flag-{{ d.slug }}"><strong>{{ d.name }}</strong>{% if d.get('launch_note') %} <span class="upcoming-note">{{ d.launch_note }}</span>{% endif %}. {{ d.blurb }}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+{%- endmacro %}
+
+{#- Big state tiles on desk hubs.
+    items: list of {state, program, href, summary, meta (Markup, optional), actions: [{label, href}]}
+    .state-cards, .card and .btn-row are kept for the layout tests that predate the tiles. -#}
+{% macro state_tiles(items) -%}
+<ul class="state-tiles state-cards">
+  {% for t in items %}
+  <li class="state-tile card">
+    {{ svg_icon('federal' if t.state == 'Federal' else 'inperson', size=40) }}
+    <h3><a href="{{ t.href }}">{{ t.state }}</a></h3>
+    <p class="state-tile-program">{{ t.program }}</p>
+    <p>{{ t.summary }}</p>
+    {% if t.get('meta') %}<p class="card-meta">{{ t.meta }}</p>{% endif %}
+    <div class="state-tile-actions btn-row">
+      {% for a in t.actions %}<a href="{{ a.href }}"><span class="state-tile-action-label">{{ a.label }}</span>{{ svg_icon('arrow-right') }}</a>{% endfor %}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- Guided-path step timeline. Use for any ordered sequence (state guide "What to do",
+    hub_cards on ID state guides, after.html checklist, path finder results).
+    items: list of {title, body (Markup), href, link_label, id} -#}
+{% macro step_timeline(items, label='Steps') -%}
+<ol class="step-timeline" aria-label="{{ label }}">
+  {% for s in items %}
+  <li{% if s.get('id') %} id="{{ s.id }}"{% endif %}>
+    <span class="step-rail" aria-hidden="true"><span class="step-node">{{ loop.index }}</span><span class="step-line"></span></span>
+    <div class="step-body">
+      {% if s.get('title') %}<h3><span class="vh">Step {{ loop.index }}: </span>{{ s.title }}</h3>{% endif %}
+      {% if s.get('body') %}<p>{{ s.body }}</p>{% endif %}
+      {% if s.get('href') %}<p class="step-link"><a href="{{ s.href }}">{{ s.get('link_label') or s.title }}</a></p>{% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ol>
+{%- endmacro %}
+
+{#- Guide / Sources tabs. Without JS these are plain jump links; site.js upgrades them to
+    an ARIA tablist (see README "Sources tab"). -#}
+{% macro page_tabs(n_sources, guide_label='Guide') -%}
+<nav class="page-tabs" aria-label="Page view" data-page-tabs>
+  <a class="page-tab" href="#guide" id="tab-guide">{{ guide_label }}</a>
+  <a class="page-tab" href="#page-sources-h" id="tab-sources">{{ svg_icon('check') }}Sources <span class="page-tab-count">{{ n_sources }}<span class="vh"> documents</span></span></a>
+</nav>
+{%- endmacro %}
+
+{#- Per-section jump to that section's group in the Sources panel. -#}
+{% macro section_sources(section_id, n) -%}
+<a class="section-sources" href="#src-group-{{ section_id }}">Sources for this section ({{ n }})</a>
+{%- endmacro %}
+
+
+{#- The one Sources panel per page, grouped by the section that used each source.
+    groups: list of {id, title, sources: [source dicts]}. A source used in more than one section is
+    listed in each, and only its first entry carries the #src-* anchor. -#}
+{% macro sources_panel(groups, n_sources) -%}
+{% set seen = namespace(ids=[]) %}
+<section class="page-sources" aria-labelledby="page-sources-h">
+  <h2 id="page-sources-h">Sources for this page</h2>
+  <p>{{ n_sources }} {{ 'source' if n_sources == 1 else 'sources' }}, grouped by the part of the page that uses them. Each one shows its 4-tier honesty label, the date printed on it, and when we last checked it. <a href="{{ page_url('sources#labels') }}">See every source and what each label means</a>.</p>
+  {% for g in groups %}
+  <section class="page-sources-group" id="src-group-{{ g.id }}" aria-labelledby="src-group-{{ g.id }}-h" tabindex="-1">
+    <h3 id="src-group-{{ g.id }}-h">{{ g.title }} <span class="page-sources-count">({{ g.sources|length }})</span></h3>
+    <ol>
+    {% for s in g.sources %}
+      <li{% if s.id not in seen.ids %} id="src-{{ s.id|lower }}"{% endif %}>
+        <a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a>{% if s.get('format') == 'PDF' %} <span class="tag">PDF</span>{% endif %}, {{ s.publisher }}.
+        {{ status_badge(s.status) }}
+        Date on it: {{ s.document_date }}.
+        Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time>.
+        {{ read_note(s) }}.
+      </li>
+      {% set seen.ids = seen.ids + [s.id] %}
+    {% endfor %}
+    </ol>
+  </section>
+  {% endfor %}
+</section>
+{%- endmacro %}

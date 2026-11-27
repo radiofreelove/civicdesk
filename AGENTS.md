@@ -17,7 +17,7 @@ Rules for browser-based Google Antigravity and automated contributors working on
 ## 3. Universal Civic Mission & Quiet Inclusion
 
 - `/` is the neutral CivicDesk front door, and `/start/` is a 2-question state-and-topic router.
-- Use the AAA Civic Horizon palette (`#1D70B8` sky, `#FFFFFF` paper, `#C85A70` muted rose on `#111827` slate ink) and the 5-stripe service-desk mark.
+- Use the Broadsheet palette (`#0088B0` process cyan, `#D6006C` process magenta, `#F3F2F2` newsprint on `#201E1D` press ink) and the 5-stripe service-desk mark.
 - Frame `/id-records/` broadly around marriage, divorce, court name changes, and sex/gender designation updates.
 - Scope the calm **Leave quickly** control (replacing `location` with `weather.gov` + triple-Shift) strictly to `/id-records/*` and domestic-safety exemption callouts — **never** display it as a red banner on `/` or `/medicaid/`.
 

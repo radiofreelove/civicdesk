@@ -11,7 +11,7 @@
   {{ v.editorial_art('official-notice.webp', variant='spot') }}
 </div>
 
-{% set wa_den_cites %}Sources: 90-day hearing deadline &amp; 10-day continued coverage {{ src('MED-WA17') }} {{ src('MED-WA18') }} {{ src('MED-WA19') }} {{ src('MED-WA29') }}; 90-day late renewal window {{ src('MED-WA16') }}; hold harmless delay {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-S41') }}.{% endset %}
+{% set wa_den_cites %}{{ src('MED-WA17') }} {{ src('MED-WA18') }} {{ src('MED-WA19') }} {{ src('MED-WA29') }} {{ src('MED-WA16') }} {{ src('MED-WA22') }} {{ src('MED-WA27') }} {{ src('MED-S41') }}{% endset %}
 {{ v.swimlane_timeline(
   'Key Apple Health appeal & coverage-restoration deadlines',
   [

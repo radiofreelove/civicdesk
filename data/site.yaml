@@ -9,6 +9,48 @@ max_source_age_days: 120
 quick_exit_url: "https://www.weather.gov/"
 corrections_email: "corrections@civicdesk.net"
 
+# Desk registry: one entry per service desk. It drives the front-page desk tiles, the
+# "upcoming desks" brief, the site-level "Jump to a guide" menu, and the per-desk counts on
+# /sources/. Page fields name page slugs in data/pages.yaml. A new desk also needs a
+# body.desk-<slug> block and per-theme tokens in static/css/site.css (docs/DESIGN.md section 7).
+desks:
+  - slug: medicaid
+    status: active
+    name: "Health coverage"
+    kicker: "Medicaid"
+    blurb: "New work and activity rules start Jan. 1, 2027. Exemptions, deadlines, and a 1-minute check."
+    source_prefix: "MED-"
+    source_label: "Medicaid sources (MED-*)"
+    source_note: "OHP, Apple Health, Utah & federal"
+    hub: medicaid
+    art: medicaid-calendar.webp
+    states:
+      - {name: Oregon, page: medicaid-oregon}
+      - {name: Washington, page: medicaid-washington}
+      - {name: Utah, page: medicaid-utah}
+  - slug: id-records
+    status: active
+    name: "Name, ID & records"
+    kicker: "Legal name and vital records"
+    blurb: "Update your name or sex designation after marriage, divorce, or a court order, in the order offices check."
+    source_prefix: "ID-"
+    source_label: "ID & vital sources (ID-*)"
+    source_note: "Courts, vital records, DMVs & federal"
+    hub: id-records
+    tool: {label: "Path finder", page: id-records-path}
+    art: id-sequence.webp
+    states:
+      - {name: Oregon, page: id-records-oregon}
+      - {name: Washington, page: id-records-washington}
+      - {name: Utah, page: id-records-utah}
+      - {name: Federal, page: id-records-federal}
+  - slug: public-records
+    status: upcoming
+    name: "Public records"
+    kicker: "Coming in 2027"
+    blurb: "Ask a government office for its records."
+    launch_note: "Planned for 2027"
+
 # Zero-code drop-in artist logo configuration (see docs/DESIGN.md Section 6).
 # Defaults keep CivicDesk's programmatic 5-stripe mark and HTML wordmark unchanged.
 brand:
@@ -19,4 +61,4 @@ brand:
   favicon_svg: "favicon.svg"
   apple_touch_icon: "apple-touch-icon.png"
   og_image: "og-card.png"
-  og_image_alt: "CivicDesk five-stripe service-desk mark on dark slate"
+  og_image_alt: "CivicDesk five-stripe service-desk mark on press ink"

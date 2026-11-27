@@ -249,7 +249,7 @@ def test_scoped_leave_quickly_and_reading_settings(site_server: str, browser_ins
     page.click(".safety-exit-link[data-quick-exit]")
     page.wait_for_url("https://www.weather.gov/**", timeout=5000)
 
-    # 4. Reading settings modal, dark slate theme, and Forget everything
+    # 4. Reading settings modal, Dark ink theme, and Forget everything
     goto_local(page, site_server + "/")
     page.click("#settings-open")
     assert page.evaluate("() => document.getElementById('settings').open")
@@ -271,7 +271,7 @@ def test_hardening_ux_controls_timezone_and_storage(site_server: str, browser_in
     ctx = browser_instance.new_context(viewport={"width": 1280, "height": 800})
     page = ctx.new_page()
 
-    # 1. Dark slate sets computed color-scheme: dark on native radio controls; light/warm/contrast set light
+    # 1. Dark ink sets computed color-scheme: dark on native radio controls; light/warm/contrast set light
     goto_local(page, site_server + "/medicaid/oregon/check/")
     assert page.evaluate("""() => {
         document.documentElement.setAttribute('data-theme', 'dark');

@@ -90,8 +90,12 @@
 </nav>
 {%- endmacro %}
 
-{% macro step(slug, n, id, title) -%}
-<li class="step" id="{{ id }}">
+{#- One checklist step. timeline=true draws it on the Broadsheet step rail (use inside
+    <ol class="steps step-timeline">); the Done checkbox and #id stay the same either way. -#}
+{% macro step(slug, n, id, title, timeline=false) -%}
+<li class="step{% if timeline %} step-tl{% endif %}" id="{{ id }}">
+  {% if timeline %}<span class="step-rail" aria-hidden="true"><span class="step-node">{{ n }}</span><span class="step-line"></span></span>
+  <div class="step-main">{% endif %}
   <div class="step-head">
     <h3 class="step-title"><span class="step-num">Step {{ n }}</span> {{ title }}</h3>
     <label class="done js-only"><input type="checkbox" data-check="{{ slug }}:{{ id }}"> <span>Done</span><span class="vh"> with step {{ n }}: {{ title }}</span></label>
@@ -99,6 +103,7 @@
   <div class="step-body">
     {{ caller() }}
   </div>
+  {% if timeline %}</div>{% endif %}
 </li>
 {%- endmacro %}
 
