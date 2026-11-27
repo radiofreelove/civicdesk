@@ -3,10 +3,15 @@
 {% import "visuals.html" as v %}
 {% import "broadsheet.html" as bs %}
 {% block main %}
-<p class="kicker">Legal Name, ID &amp; Vital Records</p>
-<h1>Update your legal name, ID, and vital records in the right order</h1>
-{{ m.lede("Whether you are changing your name after marriage or domestic partnership, restoring a name through divorce, filing a court petition, or updating a sex or gender designation, offices check each other's records across Oregon, Washington, Utah, and federal agencies.") }}
-{{ m.checked_line(page) }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Legal Name, ID &amp; Vital Records</p>
+    <h1>Update your legal name, ID, and vital records in the right order</h1>
+    {{ m.lede("Whether you are changing your name after marriage or domestic partnership, restoring a name through divorce, filing a court petition, or updating a sex or gender designation, offices check each other's records across Oregon, Washington, Utah, and federal agencies.") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 <section class="big-start" aria-labelledby="start-h">
   <h2 id="start-h">Find your exact steps in about 1 minute</h2>
@@ -15,7 +20,6 @@
 </section>
 
 <h2 id="how">Why order matters: the 4-stage agency sequence</h2>
-{{ v.editorial_art('id-sequence.webp', variant='wide') }}
 {% set id_seq_note %}<a href="{{ page_url('id-records-compare') }}">Compare Oregon, Washington, and Utah</a> or open the <a href="{{ page_url('id-records-after') }}">printable record-update checklist</a>. {{ src('ID-US-SSA-NAME') }}{% endset %}
 {{ v.process_flow([
   {'title': 'Court or vital record', 'body': 'Get a certified marriage certificate, divorce decree, or court order first.', 'meta': 'Or state marker form'},

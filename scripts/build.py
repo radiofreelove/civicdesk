@@ -31,6 +31,7 @@ TEMPLATES = ROOT / "templates"
 STATIC = ROOT / "static"
 SITE_ROOT = ROOT / "site-root"
 DEFAULT_OUT = ROOT / "public"
+ART_NAME_RE = re.compile(r"print-[a-z0-9-]+\.webp")
 
 DEFAULT_BRAND = {
     "custom_artwork": False,
@@ -40,7 +41,7 @@ DEFAULT_BRAND = {
     "favicon_svg": "favicon.svg",
     "apple_touch_icon": "apple-touch-icon.png",
     "og_image": "og-card.png",
-    "og_image_alt": "CivicDesk five-stripe service-desk mark on press ink",
+    "og_image_alt": "CivicDesk faceted desk mark on press ink",
 }
 VALID_BRAND_MODES = {"mark_and_wordmark", "lockup_only"}
 
@@ -671,6 +672,12 @@ def main(argv: list[str] | None = None) -> int:
         for sid in p.get("sources", []):
             if sid not in sources:
                 errors.append(f"page {slug}: unknown declared source '{sid}'")
+        # Every page carries one press print (scripts/make_art.py) beside its heading.
+        art = str(p.get("art") or "")
+        if not art:
+            errors.append(f"page {slug}: missing 'art' (a static/img/art/print-*.webp file)")
+        elif not ART_NAME_RE.fullmatch(art) or not (static_dir / "img" / "art" / art).is_file():
+            errors.append(f"page {slug}: art '{art}' is not an existing static/img/art/print-*.webp file")
 
     validate_desks(site, set(pages_by_slug), errors)
 

@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Privacy and shared-computer safety</p>
-<h1>Zero cookies. Zero analytics. Built for shared computers.</h1>
-{{ m.lede("CivicDesk is designed for public libraries, clinic kiosks, and shared household phones or computers. Nothing you read, select, or check is sent to us or shared with third parties.") }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Privacy and shared-computer safety</p>
+    <h1>Zero cookies. Zero analytics. Built for shared computers.</h1>
+    {{ m.lede("CivicDesk is designed for public libraries, clinic kiosks, and shared household phones or computers. Nothing you read, select, or check is sent to us or shared with third parties.") }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ m.onthispage([
   ('collect', 'What we collect'),

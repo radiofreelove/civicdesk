@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
-<h1>Words on your OHP letters</h1>
-<p class="purpose">Plain-English definitions for official terms OHP uses in letters and forms, listed A to Z.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon Health Plan (OHP)</p>
+    <h1>Words on your OHP letters</h1>
+    <p class="purpose">Plain-English definitions for official terms OHP uses in letters and forms, listed A to Z.</p>
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {% set d_exemption %}A reason you do not have to meet the work or activity rules. <a href="{{ page_url('medicaid-oregon-reasons') }}">See every reason</a>. {{ src('MED-S03') }}{% endset %}
 {% set d_work %}The new rules starting Jan.&nbsp;1, 2027. <a href="{{ page_url('medicaid-oregon-rules') }}">Read them in plain words</a>. {{ src('MED-S01') }} {{ src('MED-S27') }}{% endset %}

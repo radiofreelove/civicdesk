@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon Health Plan (OHP)</p>
-<h1>The new rules, in plain words</h1>
-<p class="purpose">Who the rules apply to starting Jan.&nbsp;1, 2027, and the 3 ways to meet them. Not sure if they fit you? <a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check</a>.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon Health Plan (OHP)</p>
+    <h1>The new rules, in plain words</h1>
+    <p class="purpose">Who the rules apply to starting Jan.&nbsp;1, 2027, and the 3 ways to meet them. Not sure if they fit you? <a href="{{ page_url('medicaid-oregon-check') }}">Take the 1-minute check</a>.</p>
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ m.onthispage([
   ('state-choice', 'Hold harmless delay'),

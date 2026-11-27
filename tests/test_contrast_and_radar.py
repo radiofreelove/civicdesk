@@ -88,6 +88,7 @@ def test_broadsheet_palette_and_aaa_contrast() -> None:
         ("focus-ring", "bg"), ("focus-ring", "surface"),
         ("nav-current", "header-bg"),
         ("mark-sky", "mark-bg"), ("mark-rose", "mark-bg"), ("mark-paper", "mark-bg"),
+        ("mark-sky-2", "mark-bg"), ("mark-rose-2", "mark-bg"), ("mark-gold", "mark-bg"),
         ("viz-border", "bg"), ("viz-border", "viz-surface"), ("viz-border", "card-bg"), ("viz-border", "viz-paper"),
         ("viz-border", "viz-fill-1"), ("viz-border", "viz-fill-2"), ("viz-border", "viz-fill-3"),
         ("viz-accent", "bg"), ("viz-accent", "viz-surface"), ("viz-accent", "viz-track"),

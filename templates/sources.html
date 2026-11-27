@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Primary source registries</p>
-<h1>Every source we cite</h1>
-{{ m.lede("CivicDesk maintains desk-partitioned primary source registries for Medicaid (MED-*) and Legal Name, ID & Vital Records (ID-*). Every entry records its 4-tier honesty label, printed document date, and check date.") }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Primary source registries</p>
+    <h1>Every source we cite</h1>
+    {{ m.lede("CivicDesk maintains desk-partitioned primary source registries for Medicaid (MED-*) and Legal Name, ID & Vital Records (ID-*). Every entry records its 4-tier honesty label, printed document date, and check date.") }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ m.onthispage([
   ('labels', '4 honesty labels'),

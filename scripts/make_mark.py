@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
-"""Generate CivicDesk's 5-stripe service-desk mark, icons, and 1200x630 Open Graph card.
+"""Generate CivicDesk's faceted desk mark, icons, and 1200x630 Open Graph card.
 
     python3 scripts/make_mark.py          # write templates/brand-mark.svg, static/favicon.svg, static/apple-touch-icon.png, static/og-card.png
     python3 scripts/make_mark.py --check  # exit 1 if generated files are out of date (or validate custom files when brand.custom_artwork is true)
 
-Palette (Broadsheet, on #201E1D press ink):
-  Stripe 1 & 5: #0088B0 (process cyan)        4.07:1 non-text contrast on #201E1D
-  Stripe 2 & 4: #D6006C (process magenta)  3.22:1 non-text contrast on #201E1D
-  Stripe 3:     #F3F2F2 (newsprint)     14.86:1 non-text contrast on #201E1D (wider central service counter)
+The mark is the old five-stripe service-desk mark cut as a gem. Its five bands become the
+crown (two bands), the girdle (the wide middle band, the service counter), and the pavilion
+(two bands). A ridge splits every band into a lit facet and a shaded facet. The ridge is drawn
+as a ray of light that bends where it meets the girdle and bends back as it leaves, the way a
+prism refracts light, and the light and dark tints trade sides above and below the girdle.
+Every facet is a Broadsheet press ink or a tint of one; process yellow lights the girdle.
+
+Facet colors on #201E1D press ink (non-text contrast, all >= 3:1):
+  sky    #0088B0 process cyan       4.07:1     sky-2  #6DB8CE cyan tint       7.6:1
+  rose   #D6006C process magenta    3.22:1     rose-2 #E36DA8 magenta tint    5.5:1
+  paper  #F3F2F2 newsprint         14.86:1     gold   #EDBB00 process yellow  9.3:1
+The header copy uses CSS classes, so each reading theme can retint the facets.
 """
 from __future__ import annotations
 
@@ -20,48 +28,145 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# (x, y, width, height, role, hex_color)
-STRIPES = [
-    (7, 7.0, 26, 3.6, "cyan", "#0088B0"),
-    (7, 12.6, 26, 3.6, "magenta", "#D6006C"),
-    (5, 18.2, 30, 3.6, "paper", "#F3F2F2"),
-    (7, 23.8, 26, 3.6, "magenta", "#D6006C"),
-    (7, 29.4, 26, 3.6, "cyan", "#0088B0"),
-]
-
-RGB = {
-    "slate": (32, 30, 29),      # #201E1D
-    "panel": (45, 43, 43),      # #2D2B2B
-    "cyan": (0, 136, 176),      # #0088B0
-    "magenta": (214, 0, 108),     # #D6006C
-    "paper": (243, 242, 242),   # #F3F2F2
+COLORS = {
+    "bg": "#201E1D",
+    "sky": "#0088B0",
+    "sky-2": "#6DB8CE",
+    "rose": "#D6006C",
+    "rose-2": "#E36DA8",
+    "paper": "#F3F2F2",
+    "gold": "#EDBB00",
 }
+
+GAP = 0.7          # ink showing between facets
+CX = 20.0          # vertical ridge
+TIP_TOP, TIP_BOTTOM = 4.0, 36.0
+SHOULDER = 12.0    # crown and pavilion half-width where they meet the girdle
+GIRDLE = (17.6, 22.4, 15.0)  # top, bottom, half-width
+BANDS = [(4.0, 10.4), (11.1, 16.9), (23.1, 28.9), (29.6, 36.0)]
+
+
+def _r(v: float) -> float:
+    return round(v, 2)
+
+
+def _half_width(y: float) -> float:
+    """Half-width of the crown (above the girdle) or pavilion (below) at height y."""
+    if y <= 20:
+        return SHOULDER * (y - TIP_TOP) / (17.0 - TIP_TOP)
+    return SHOULDER * (TIP_BOTTOM - y) / (TIP_BOTTOM - 23.0)
+
+
+# The ridge is a ray of light: it enters at the top tip, bends at the girdle, crosses it on a
+# slant, bends back, and leaves through the bottom tip (180-degree rotational symmetry).
+RAY = [(20.0, TIP_TOP), (17.0, GIRDLE[0]), (23.0, GIRDLE[1]), (20.0, TIP_BOTTOM)]
+
+
+def _clip(poly, p0, p1, keep_left: bool, offset: float):
+    """Sutherland-Hodgman: keep the part of a convex polygon on one side of the line p0->p1,
+    pulled back from the line by `offset` (half the facet gap)."""
+    (x0, y0), (x1, y1) = p0, p1
+    dx, dy = x1 - x0, y1 - y0
+    length = (dx * dx + dy * dy) ** 0.5
+    sign = 1.0 if keep_left else -1.0
+
+    def side(pt):
+        # Positive on the kept side; the line runs downward, so "left" is +x of the cross product.
+        return sign * ((pt[0] - x0) * dy - (pt[1] - y0) * dx) / length * -1 - offset
+
+    out = []
+    n = len(poly)
+    for i in range(n):
+        cur, nxt = poly[i], poly[(i + 1) % n]
+        sc, sn = side(cur), side(nxt)
+        if sc >= 0:
+            out.append(cur)
+        if (sc >= 0) != (sn >= 0):
+            t = sc / (sc - sn)
+            out.append((cur[0] + (nxt[0] - cur[0]) * t, cur[1] + (nxt[1] - cur[1]) * t))
+    return out
+
+
+def _band_outline(y0: float, y1: float):
+    hw0, hw1 = _half_width(y0), _half_width(y1)
+    pts = []
+    pts.append((CX - hw0, y0)) if hw0 > 0.01 else None
+    pts.append((CX + hw0, y0)) if hw0 > 0.01 else pts.append((CX, y0))
+    pts += [(CX + hw1, y1)] + ([(CX - hw1, y1)] if hw1 > 0.01 else [(CX, y1)])
+    if hw0 <= 0.01:
+        pts = [(CX, y0), (CX + hw1, y1), (CX - hw1, y1)]
+    if hw1 <= 0.01:
+        pts = [(CX - hw0, y0), (CX + hw0, y0), (CX, y1)]
+    return pts
+
+
+def _girdle_outline():
+    import math
+
+    top, bottom, hw = GIRDLE
+    r = (bottom - top) / 2
+    cy = (top + bottom) / 2
+    pts = []
+    for i in range(13):  # right cap, top to bottom
+        a = -math.pi / 2 + math.pi * i / 12
+        pts.append((CX + hw - r + r * math.cos(a), cy + r * math.sin(a)))
+    for i in range(13):  # left cap, bottom to top
+        a = math.pi / 2 + math.pi * i / 12
+        pts.append((CX - hw + r + r * math.cos(a), cy + r * math.sin(a)))
+    return pts
+
+
+def _split(poly, seg):
+    g = GAP / 2
+    left = _clip(poly, seg[0], seg[1], True, g)
+    right = _clip(poly, seg[0], seg[1], False, g)
+    tidy = lambda pts: [(_r(x), _r(y)) for x, y in pts]
+    return tidy(left), tidy(right)
+
+
+def facets() -> list[tuple[str, list[tuple[float, float]]]]:
+    """(role, polygon) pairs in a 40x40 box, top to bottom, left facet first."""
+    roles = [("sky", "sky-2"), ("rose", "rose-2"), ("rose-2", "rose"), ("sky-2", "sky")]
+    crown, girdle, pavilion = (RAY[0], RAY[1]), (RAY[1], RAY[2]), (RAY[2], RAY[3])
+    out = []
+    for i, (y0, y1) in enumerate(BANDS):
+        if i == 2:
+            gl, gr = _split(_girdle_outline(), girdle)
+            out += [("paper", gl), ("gold", gr)]
+        left, right = _split(_band_outline(y0, y1), crown if i < 2 else pavilion)
+        out += [(roles[i][0], left), (roles[i][1], right)]
+    return out
+
+
+def _pts(poly) -> str:
+    return " ".join(f"{x:g},{y:g}" for x, y in poly)
 
 
 def header_svg() -> str:
-    bars = "".join(
-        f'<rect x="{x}" y="{y:g}" width="{w}" height="{h:g}" rx="1.8" class="mark-{role}"/>'
-        for x, y, w, h, role, _ in STRIPES
-    )
+    shapes = "".join(f'<polygon points="{_pts(p)}" class="mark-{role}"/>' for role, p in facets())
     return (
         "{# Generated by scripts/make_mark.py. Edit that script, not this file. #}\n"
         '<svg class="brand-mark" aria-hidden="true" focusable="false" viewBox="0 0 40 40" width="40" height="40">'
         '<rect x="0" y="0" width="40" height="40" rx="2" class="mark-bg"/>'
-        f"{bars}</svg>\n"
+        f"{shapes}</svg>\n"
     )
 
 
 def icon_svg() -> str:
-    bars = "".join(
-        f'<rect x="{x}" y="{y:g}" width="{w}" height="{h:g}" rx="1.8" fill="{color}"/>'
-        for x, y, w, h, _, color in STRIPES
-    )
+    shapes = "".join(f'<polygon points="{_pts(p)}" fill="{COLORS[role]}"/>' for role, p in facets())
     return (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">'
-        "<!-- CivicDesk 5-stripe service-desk mark. Generated by scripts/make_mark.py. -->"
-        '<rect x="0" y="0" width="40" height="40" rx="2" fill="#201E1D"/>'
-        f"{bars}</svg>\n"
+        "<!-- CivicDesk faceted desk mark. Generated by scripts/make_mark.py. -->"
+        f'<rect x="0" y="0" width="40" height="40" rx="2" fill="{COLORS["bg"]}"/>'
+        f"{shapes}</svg>\n"
     )
+
+
+# ---- Pure-Python antialiased rasterizer (the build and CI have no imaging library) ----------
+
+def _rgb(hex_color: str) -> tuple[int, int, int]:
+    h = hex_color.lstrip("#")
+    return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
 
 
 def _png_chunk(chunk_type: bytes, data: bytes) -> bytes:
@@ -69,129 +174,102 @@ def _png_chunk(chunk_type: bytes, data: bytes) -> bytes:
     return struct.pack(">I", len(data)) + chunk_type + data + struct.pack(">I", crc)
 
 
-def og_card_png(width: int = 1200, height: int = 630) -> bytes:
-    """Render a zero-text 1200x630 PNG social card with the 5-stripe Broadsheet mark."""
-    scale = 8  # 40 * 8 = 320x320 emblem centered in 1200x630
-    ox = (width - 40 * scale) // 2
-    oy = (height - 40 * scale) // 2
-
-    scaled_bars = [
-        (
-            ox + int(round(x * scale)),
-            ox + int(round((x + w) * scale)),
-            oy + int(round(y * scale)),
-            oy + int(round((y + h) * scale)),
-            RGB[role],
-        )
-        for x, y, w, h, role, _ in STRIPES
-    ]
-
-    bg_px = bytes(RGB["slate"])
-    panel_px = bytes(RGB["panel"])
-    sky_px = bytes(RGB["cyan"])
-    rose_px = bytes(RGB["magenta"])
-
-    rows: list[bytes] = []
-    for py in range(height):
-        if py >= height - 8:
-            row = sky_px * width
-        elif py >= height - 14:
-            row = rose_px * width
-        elif oy <= py < oy + 40 * scale:
-            bar_hit = None
-            for bx0, bx1, by0, by1, color in scaled_bars:
-                if by0 <= py < by1:
-                    bar_hit = (bx0, bx1, bytes(color))
-                    break
-            left_pad = ox
-            right_pad = width - (ox + 40 * scale)
-            if bar_hit is None:
-                row = (bg_px * left_pad) + (panel_px * (40 * scale)) + (bg_px * right_pad)
-            else:
-                bx0, bx1, c_px = bar_hit
-                inner_left = bx0 - ox
-                inner_mid = bx1 - bx0
-                inner_right = (ox + 40 * scale) - bx1
-                row = (
-                    (bg_px * left_pad)
-                    + (panel_px * inner_left)
-                    + (c_px * inner_mid)
-                    + (panel_px * inner_right)
-                    + (bg_px * right_pad)
-                )
-        else:
-            row = bg_px * width
-        rows.append(b"\x00" + row)
-
-    raw_stream = b"".join(rows)
-    compressed = zlib.compress(raw_stream, level=9)
+def _png(width: int, height: int, rows: list[bytes]) -> bytes:
+    raw = b"".join(b"\x00" + r for r in rows)
     ihdr = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
-    return (
-        b"\x89PNG\r\n\x1a\n"
-        + _png_chunk(b"IHDR", ihdr)
-        + _png_chunk(b"IDAT", compressed)
-        + _png_chunk(b"IEND", b"")
-    )
+    return (b"\x89PNG\r\n\x1a\n" + _png_chunk(b"IHDR", ihdr)
+            + _png_chunk(b"IDAT", zlib.compress(raw, level=9)) + _png_chunk(b"IEND", b""))
+
+
+def _span(poly, y: float):
+    """Left and right x where a horizontal line crosses a convex polygon (or None)."""
+    xs = []
+    n = len(poly)
+    for i in range(n):
+        (x0, y0), (x1, y1) = poly[i], poly[(i + 1) % n]
+        if y0 == y1:
+            continue
+        if min(y0, y1) <= y < max(y0, y1):
+            xs.append(x0 + (y - y0) * (x1 - x0) / (y1 - y0))
+    if len(xs) < 2:
+        return None
+    return min(xs), max(xs)
+
+
+def _draw_shapes(canvas: list[list[list[float]]], shapes, sub: int = 4) -> None:
+    """Composite (rgb, polygon-in-pixels) shapes over a float canvas with 4x vertical and exact
+    horizontal coverage. Shapes must not overlap each other."""
+    height, width = len(canvas), len(canvas[0])
+    for rgb, poly in shapes:
+        ys = [p[1] for p in poly]
+        y_lo, y_hi = max(0, int(min(ys))), min(height - 1, int(max(ys)) + 1)
+        for py in range(y_lo, y_hi + 1):
+            cov = {}
+            for s in range(sub):
+                span = _span(poly, py + (s + 0.5) / sub)
+                if span is None:
+                    continue
+                xl, xr = max(0.0, span[0]), min(float(width), span[1])
+                for px in range(int(xl), min(width, int(xr) + 1)):
+                    c = min(xr, px + 1) - max(xl, px)
+                    if c > 0:
+                        cov[px] = cov.get(px, 0.0) + c / sub
+            row = canvas[py]
+            for px, a in cov.items():
+                a = min(1.0, a)
+                pix = row[px]
+                for k in range(3):
+                    pix[k] = pix[k] * (1 - a) + rgb[k] * a
+
+
+def _rounded_rect(x0: float, y0: float, x1: float, y1: float, r: float, steps: int = 6):
+    import math
+
+    pts = []
+    for cx, cy, a0 in ((x1 - r, y0 + r, -90), (x1 - r, y1 - r, 0), (x0 + r, y1 - r, 90), (x0 + r, y0 + r, 180)):
+        for i in range(steps + 1):
+            a = math.radians(a0 + 90 * i / steps)
+            pts.append((cx + r * math.cos(a), cy + r * math.sin(a)))
+    return pts
+
+
+def _mark_shapes(ox: float, oy: float, scale: float, tile: bool = True):
+    shapes = []
+    if tile:
+        shapes.append((_rgb(COLORS["bg"]), _rounded_rect(ox, oy, ox + 40 * scale, oy + 40 * scale, 2 * scale)))
+    for role, poly in facets():
+        shapes.append((_rgb(COLORS[role]), [(ox + x * scale, oy + y * scale) for x, y in poly]))
+    return shapes
+
+
+def _flatten(canvas) -> list[bytes]:
+    return [bytes(int(max(0, min(255, round(v)))) for pix in row for v in pix) for row in canvas]
+
+
+def og_card_png(width: int = 1200, height: int = 630) -> bytes:
+    """Zero-text 1200x630 social card: the faceted mark on press ink over a CMY press rule."""
+    bg = _rgb(COLORS["bg"])
+    canvas = [[list(bg) for _ in range(width)] for _ in range(height)]
+    panel = (45, 43, 43)
+    scale = 8.0
+    ox, oy = (width - 40 * scale) / 2, (height - 40 * scale) / 2 - 10
+    shapes = [(panel, _rounded_rect(ox, oy, ox + 320, oy + 320, 16))]
+    shapes += _mark_shapes(ox, oy, scale, tile=False)
+    _draw_shapes(canvas, shapes)
+    for y0, y1, role in ((height - 22, height - 16, "gold"), (height - 16, height - 8, "rose"), (height - 8, height, "sky")):
+        rgb = list(_rgb(COLORS[role]))
+        for y in range(y0, y1):
+            canvas[y] = [list(rgb) for _ in range(width)]
+    return _png(width, height, _flatten(canvas))
 
 
 def apple_touch_png(size: int = 180) -> bytes:
-    """Render a zero-text 180x180 PNG touch icon with the 5-stripe Broadsheet mark."""
-    emblem = int(round(size * 0.8888889))  # 160x160 centered inside 180x180
-    scale = emblem / 40.0
-    ox = (size - emblem) // 2
-    oy = (size - emblem) // 2
-
-    scaled_bars = [
-        (
-            ox + int(round(x * scale)),
-            ox + int(round((x + w) * scale)),
-            oy + int(round(y * scale)),
-            oy + int(round((y + h) * scale)),
-            RGB[role],
-        )
-        for x, y, w, h, role, _ in STRIPES
-    ]
-
-    bg_px = bytes(RGB["slate"])
-    panel_px = bytes(RGB["panel"])
-
-    rows: list[bytes] = []
-    for py in range(size):
-        if oy <= py < oy + emblem:
-            bar_hit = None
-            for bx0, bx1, by0, by1, color in scaled_bars:
-                if by0 <= py < by1:
-                    bar_hit = (bx0, bx1, bytes(color))
-                    break
-            left_pad = ox
-            right_pad = size - (ox + emblem)
-            if bar_hit is None:
-                row = (bg_px * left_pad) + (panel_px * emblem) + (bg_px * right_pad)
-            else:
-                bx0, bx1, c_px = bar_hit
-                inner_left = bx0 - ox
-                inner_mid = bx1 - bx0
-                inner_right = (ox + emblem) - bx1
-                row = (
-                    (bg_px * left_pad)
-                    + (panel_px * inner_left)
-                    + (c_px * inner_mid)
-                    + (panel_px * inner_right)
-                    + (bg_px * right_pad)
-                )
-        else:
-            row = bg_px * size
-        rows.append(b"\x00" + row)
-
-    raw_stream = b"".join(rows)
-    compressed = zlib.compress(raw_stream, level=9)
-    ihdr = struct.pack(">IIBBBBB", size, size, 8, 2, 0, 0, 0)
-    return (
-        b"\x89PNG\r\n\x1a\n"
-        + _png_chunk(b"IHDR", ihdr)
-        + _png_chunk(b"IDAT", compressed)
-        + _png_chunk(b"IEND", b"")
-    )
+    """Zero-text 180x180 opaque touch icon: the faceted mark filling a press-ink square."""
+    bg = _rgb(COLORS["bg"])
+    canvas = [[list(bg) for _ in range(size)] for _ in range(size)]
+    scale = size / 40.0
+    _draw_shapes(canvas, _mark_shapes(0, 0, scale, tile=False))
+    return _png(size, size, _flatten(canvas))
 
 
 def _load_brand_config(root: Path) -> dict:

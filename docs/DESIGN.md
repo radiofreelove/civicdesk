@@ -1,12 +1,12 @@
 # Broadsheet visual system (`docs/DESIGN.md`)
 
-CivicDesk's Broadsheet visual system translates public-interest information design (GOV.UK, Stripe Docs, NYT Upshot) into a high-trust, typographic, neurodivergent-friendly, WCAG 2.2 AAA public-service interface: newsprint ground, Source Serif 4 type, process cyan and magenta used as spot color, and hierarchy set by type size and whitespace rather than boxes. Zero decorative clip-art; visuals are used only to show order, time, proportion, branching choices, or realistic notice structure; every fact is stated once without duplicating graphic content in adjacent prose.
+CivicDesk's Broadsheet visual system translates public-interest information design (GOV.UK, Stripe Docs, NYT Upshot) into a high-trust, typographic, neurodivergent-friendly, WCAG 2.2 AAA public-service interface: newsprint ground, Source Serif 4 type, process cyan and magenta used as spot color, and hierarchy set by type size and whitespace rather than boxes. Zero decorative clip-art: diagrams are used only to show order, time, proportion, branching choices, or realistic notice structure, and every fact is stated once without duplicating graphic content in adjacent prose. Pictures are original four-plate press prints drawn in code (section 4), one beside every page heading.
 
 ---
 
 ## 1. Core Design Principles ("Earn Every Visual, Say It Once")
 
-1. **Purposeful Information Design Over Widget Quotas:** Visual components appear only where spatial layout teaches a timeline, sequential agency dependency, proportional breakdown, multi-option matrix, or realistic state notice layout faster than prose. Trust and utility pages (`/privacy/`, `/about/`, `/accessibility/`, `/404.html`) stay clean, direct, and typographic without filler graphics.
+1. **Purposeful Information Design Over Widget Quotas:** Diagram components appear only where spatial layout teaches a timeline, sequential agency dependency, proportional breakdown, multi-option matrix, or realistic state notice layout faster than prose. Trust and utility pages (`/privacy/`, `/about/`, `/accessibility/`, `/404.html`) carry their one press print and no diagram widgets.
 2. **Say It Once (Zero Visual-Prose Duplication):** Whenever a key-facts strip, dependency flow, comparison matrix, or sample notice presents concrete fees, deadlines, or channels, adjacent prose never repeats those same figures or lists.
 3. **Concise Node Copy & Sleek Jump Pills:** Dependency cards (`.viz-flow-card`) and timeline milestones (`.viz-timeline-item`) pair numbered typographic counters (`aria-hidden="true"` inside `<ol>`) with a concise title and `<= 120` characters of body text—zero cartoon medallions or distorted state-map blobs. Page tables of contents render as compact horizontal **Jump Pill Strips** (`.toc-pills`).
 4. **Quiet Inclusion & Strict Self-Hosted CSP (`default-src 'none'`):** All layout proportions, colors, notice mockups, and proportional meters use external CSS classes in `static/css/site.css` (`style-src 'self'`). Inline `style="..."` attributes and `<style>` blocks are forbidden across templates, SVGs, and JavaScript.
@@ -54,8 +54,12 @@ Inside `@media print`, all `--viz-*` tokens reset to crisp `#000000` ink on `#FF
 ## 4. Purposeful Information Design & Cohesive Editorial Art (`templates/visuals.html`)
 
 - **Readable Labels in Semantic HTML:** All labels, dates, fees, and callouts live in semantic HTML (`<ol>`, `<ul>`, `<dl>`, `<table>`, `<h3>`, `<p>`) inside CSS Grid/Flex layouts so **Extra large** text (`150%`), **Wide spacing** (WCAG 1.4.12), and `320px` viewports (WCAG 1.4.10) reflow cleanly without horizontal scrollbars or clipped words.
-- **Cohesive Self-Hosted Editorial Spot Illustrations (`static/img/art/*.webp` & `editorial_art`):**
-  - Six cohesive vector-editorial `.webp` spot illustrations (`desk-overview.webp`, `medicaid-calendar.webp`, `id-sequence.webp`, `medicaid-exemptions.webp`, `official-notice.webp`, `community-help.webp`) sit directly on Light and Warm paper surfaces, receive a soft-lit frame in Dark ink and High contrast so their dark linework stays high-contrast, and hide automatically in `@media print` (with secondary spot art hidden in `data-brief` Short version mode).
+- **Press prints (`static/img/art/print-*.webp`, `scripts/make_art.py`, `v.page_art(page)`):**
+  - Every picture is an original print drawn in code the way a print shop pulls a four-plate job: process cyan, process magenta, process yellow (`#EDBB00`), and press ink are laid down as separate plates on newsprint, screened (fine risograph-style grain for tints, a rotated halftone for skies and gradients), nudged slightly out of register, and multiplied so overlapping inks mix. Nothing is traced, photographed, stock, or made by an image model, and no print shows a fee, date, count, or rule, so a policy change never makes a picture wrong.
+  - The series: `front` (coast, volcano, and mesas joined by a road), `oregon`, `washington`, `utah` (one landscape per state), `homes`, `mail`, `calendar`, `window`, `courthouse`, `certificate`, `cards`, `letters`, `archive`, and `fog` (404). `python3 scripts/make_art.py --list` prints each subject.
+  - Every page names its print in `data/pages.yaml` (`art:`); `scripts/build.py` fails if a page has none or the file is missing, and tests require exactly one print per page. Templates place it with `v.page_art(page)` inside `.intro-split` (or `page_head`, `.hero-split`, and the front-page hero). Desk tiles take `art:` from the `site.yaml` desk registry.
+  - Prints are decorative (`alt=""`), sit in a 1px `--rule` frame, crop to a 5:2 banner under 46rem and with Extra large text or Wide spacing, dim slightly in Dark ink, take a 2px black frame in High contrast, hide in Short version (except heroes), and never print.
+  - To change or add a print: edit or add a `draw_*` function and its `Print(...)` entry, run `pip install -r requirements-art.txt` once, then `python3 scripts/make_art.py <name>` and commit the `.webp`. Output is deterministic (fixed seeds).
 - **Purposeful Macro Suite (`templates/visuals.html` & `templates/icons.html`):**
   1. `stat_hero_strip`: Architectural hairline key-facts strip (`tabular-nums`) for concrete fees, ages, deadlines, and verified counts.
   2. `process_flow`: Sequential agency dependencies (`<= 120` chars per step) drawn on the Broadsheet step timeline where order genuinely matters (`Court -> SSA -> DMV -> Passport`, court filing steps, post-application checks).
@@ -73,7 +77,12 @@ Inside `@media print`, all `--viz-*` tokens reset to crisp `#000000` ink on `#FF
 
 ---
 
-## 6. Custom Artist Logo Spec & 3-Step Swap Guide
+## 6. The faceted desk mark, custom artist logo spec, and 3-step swap guide
+
+### Default mark (`scripts/make_mark.py`)
+
+The mark is the original five-stripe service-desk mark cut as a gem on a press-ink tile. Its five bands become the crown (two bands), the girdle (the wide middle band, still the service counter), and the pavilion (two bands). A ridge splits every band into a lit facet and a shaded facet; the ridge is drawn as a ray of light that bends where it meets the girdle and bends back as it leaves, the way a prism refracts light, and the light and dark tints trade sides above and below the girdle. Facets use process cyan and magenta, their tints (`#6DB8CE`, `#E36DA8`), newsprint, and process yellow on the girdle, each at least 3:1 against press ink. The header copy uses `.mark-*` classes, so Dark ink lightens the facets and High contrast turns them into a white and yellow checker. `python3 scripts/make_mark.py` writes the header SVG, `favicon.svg`, `apple-touch-icon.png`, and `og-card.png` with no imaging library; `--check` (run by the tests) fails if any is out of date.
+
 
 CivicDesk includes a declarative `brand:` block in `data/site.yaml` so a custom artist-designed mark or full wordmark lockup can be dropped into `static/brand/` with zero HTML template or CSS edits.
 
@@ -95,7 +104,7 @@ CivicDesk includes a declarative `brand:` block in `data/site.yaml` so a custom 
 
 1. **Drop artwork files into `static/brand/`:** Place the artist's files under `static/brand/` (for example `static/brand/logo-light.svg`, `static/brand/logo-dark.svg`, `static/brand/favicon.svg`, `static/brand/apple-touch-icon.png`, and `static/brand/og-card.png`).
 2. **Update `brand:` in `data/site.yaml`:**
-   - Set `custom_artwork: true` (tells `scripts/make_mark.py --check` to validate your custom files rather than enforcing checksums on the default 5-stripe mark).
+   - Set `custom_artwork: true` (tells `scripts/make_mark.py --check` to validate your custom files rather than enforcing checksums on the default faceted desk mark).
    - Choose `mode: "mark_and_wordmark"` (if the artwork is a standalone emblem beside HTML `"CivicDesk"` text) or `mode: "lockup_only"` (if the artwork already includes `"CivicDesk"` lettering; HTML `"CivicDesk"` moves automatically into `.sr-only` so screen readers still announce the home link cleanly without visual duplication).
    - Point `logo`, `logo_dark`, `favicon_svg`, `apple_touch_icon`, `og_image`, and `og_image_alt` to your paths relative to `static/` (for example `"brand/logo-light.svg"`).
 3. **Verify locally and open a PR:** Run `python3 scripts/make_mark.py --check && python3 scripts/build.py && pytest` to verify XML/CSP safety, cache-busted asset URLs, and 4-theme accessibility before opening a pull request.

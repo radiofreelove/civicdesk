@@ -2,10 +2,15 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon / License and ID</p>
-<h1>Oregon driver license or ID: name and gender marker</h1>
-{{ m.lede("Choose M, F, or X on a standard or REAL ID Oregon card in person with no court order or medical proof. If you are also changing your name, update Social Security first.") }}
-{{ m.checked_line(page) }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon / License and ID</p>
+    <h1>Oregon driver license or ID: name and gender marker</h1>
+    {{ m.lede("Choose M, F, or X on a standard or REAL ID Oregon card in person with no court order or medical proof. If you are also changing your name, update Social Security first.") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {% set or_dmv_note %}8-year renewal option instead of replacement: $54 license or $43 ID (+$30 for REAL ID). {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}{% endset %}
 {{ v.stat_hero_strip([

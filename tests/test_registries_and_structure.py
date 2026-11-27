@@ -113,13 +113,18 @@ class PageAuditor(HTMLParser):
             entry["text"] += data
 
 
-def test_five_stripe_mark_up_to_date() -> None:
+def test_faceted_mark_up_to_date() -> None:
     res = subprocess.run([sys.executable, str(ROOT / "scripts" / "make_mark.py"), "--check"], cwd=ROOT)
     assert res.returncode == 0
     fav = (ROOT / "static" / "favicon.svg").read_text(encoding="utf-8")
-    for color in ("#201E1D", "#0088B0", "#D6006C", "#F3F2F2"):
+    for color in ("#201E1D", "#0088B0", "#D6006C", "#F3F2F2", "#EDBB00", "#6DB8CE", "#E36DA8"):
         assert color in fav
-    assert fav.count("<rect") == 6  # 1 press-ink background + 5 Broadsheet stripes
+    assert fav.count("<rect") == 1  # press-ink tile
+    assert fav.count("<polygon") == 10  # 5 bands (crown x2, girdle, pavilion x2), each a lit + shaded facet
+    header = (ROOT / "templates" / "brand-mark.svg").read_text(encoding="utf-8")
+    css = (ROOT / "static" / "css" / "site.css").read_text(encoding="utf-8")
+    for cls in set(re.findall(r'class="(mark-[a-z0-9-]+)"', header)):
+        assert f".{cls} {{ fill: var(--{cls}); }}" in css, f"header mark class .{cls} has no fill rule"
 
 
 def test_desk_partitioned_source_registries() -> None:
@@ -683,15 +688,16 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
                 f"{route}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
             )
 
-    # Verify all 6 cohesive editorial WebP assets exist with exact expected dimensions
+    # Every press print from scripts/make_art.py exists with exact expected dimensions
     expected_art_dims = {
-        "desk-overview.webp": (960, 668),
-        "medicaid-calendar.webp": (880, 433),
-        "id-sequence.webp": (960, 351),
-        "medicaid-exemptions.webp": (760, 736),
-        "official-notice.webp": (760, 687),
-        "community-help.webp": (800, 517),
+        "print-front.webp": (960, 720),
+        **{f"print-{n}.webp": (960, 640) for n in (
+            "oregon", "washington", "utah", "fog", "mail", "calendar", "window", "homes",
+            "courthouse", "certificate", "cards", "letters", "archive",
+        )},
     }
+    art_dir = ROOT / "static" / "img" / "art"
+    assert {p.name for p in art_dir.glob("*.webp")} == set(expected_art_dims), "unexpected files in static/img/art"
 
     def _webp_dims(data: bytes) -> tuple[int, int]:
         assert data[:4] == b"RIFF" and data[8:12] == b"WEBP"
@@ -716,6 +722,8 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
     seen_art_files: set[str] = set()
     for html_path in html_files:
         raw = html_path.read_text(encoding="utf-8")
+        prints = art_img_re.findall(raw)
+        assert len(prints) == 1, f"{html_path}: every page shows exactly one press print beside its heading (got {len(prints)})"
         for im in art_img_re.finditer(raw):
             attrs_str = im.group(1)
             src_m = re.search(r'src="(/static/img/art/([a-z0-9-]+)\.webp)\?v=[0-9a-f]{8}"', attrs_str)
@@ -731,47 +739,47 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
 
     # Core purposeful structural diagrams & editorial art render on routes where they belong
     expected_markers = {
-        "index.html": ("desk-overview.webp", "medicaid-calendar.webp", "id-sequence.webp"),
-        "start/index.html": ('id="start-form"', 'class="page-head page-head-dispatch"'),
+        "index.html": ("print-front.webp", "print-homes.webp", "print-cards.webp"),
+        "start/index.html": ('id="start-form"', "print-front.webp"),
         "sources/index.html": ('class="viz-stat-strip"',),
-        "medicaid/index.html": ("medicaid-calendar.webp", 'class="viz-timeline', 'class="viz-rail-node"'),
-        "medicaid/oregon/index.html": ("medicaid-calendar.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),
-        "medicaid/washington/index.html": ("medicaid-calendar.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),
-        "medicaid/utah/index.html": ("medicaid-calendar.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),
+        "medicaid/index.html": ("print-homes.webp", 'class="viz-timeline', 'class="viz-rail-node"'),
+        "medicaid/oregon/index.html": ("print-oregon.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),
+        "medicaid/washington/index.html": ("print-washington.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),
+        "medicaid/utah/index.html": ("print-utah.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),
         "medicaid/oregon/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-donut-svg"', 'viewBox="0 0 600 36"', 'class="viz-calendar"', "data-deeper"),
         "medicaid/washington/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-donut-svg"', 'viewBox="0 0 600 36"', 'class="viz-calendar"', "data-deeper"),
         "medicaid/utah/rules/index.html": ("toc-pills", 'class="viz-hours"', 'class="viz-donut-svg"', 'viewBox="0 0 600 36"', 'class="viz-calendar"', "data-deeper"),
-        "medicaid/oregon/reasons/index.html": ("medicaid-exemptions.webp", 'class="viz-split-board"'),
-        "medicaid/washington/reasons/index.html": ("medicaid-exemptions.webp", 'class="viz-split-board"'),
-        "medicaid/utah/reasons/index.html": ("medicaid-exemptions.webp", 'class="viz-split-board"'),
-        "medicaid/oregon/letter/index.html": ("official-notice.webp", "doc-mockup-letter", 'class="glossary-grid"'),
-        "medicaid/washington/letter/index.html": ("official-notice.webp", "doc-mockup-letter"),
-        "medicaid/utah/letter/index.html": ("official-notice.webp", "doc-mockup-letter", 'class="glossary-grid"'),
-        "medicaid/oregon/denied/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
-        "medicaid/washington/denied/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
-        "medicaid/utah/denied/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
-        "medicaid/oregon/bills/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
-        "medicaid/washington/bills/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
-        "medicaid/utah/bills/index.html": ("official-notice.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
-        "medicaid/oregon/log/index.html": ("medicaid-calendar.webp", 'class="viz-donut-svg"', 'class="viz-calendar"', 'class="viz-proof-tiles"'),
-        "medicaid/washington/log/index.html": ("medicaid-calendar.webp", 'class="viz-donut-svg"', 'class="viz-calendar"', 'class="viz-proof-tiles"'),
-        "medicaid/utah/log/index.html": ("medicaid-calendar.webp", 'class="viz-donut-svg"', 'class="viz-calendar"', 'class="viz-proof-tiles"'),
-        "medicaid/oregon/apply/index.html": ("community-help.webp", 'class="viz-flow'),
-        "medicaid/washington/apply/index.html": ("community-help.webp", 'class="viz-flow'),
-        "medicaid/utah/apply/index.html": ("community-help.webp", 'class="viz-flow'),
-        "medicaid/oregon/help/index.html": ("community-help.webp", 'class="glossary-grid"'),
-        "medicaid/washington/help/index.html": ("community-help.webp", 'class="glossary-grid"'),
-        "medicaid/utah/help/index.html": ("community-help.webp", 'class="glossary-grid"'),
+        "medicaid/oregon/reasons/index.html": ("print-window.webp", 'class="viz-split-board"'),
+        "medicaid/washington/reasons/index.html": ("print-window.webp", 'class="viz-split-board"'),
+        "medicaid/utah/reasons/index.html": ("print-window.webp", 'class="viz-split-board"'),
+        "medicaid/oregon/letter/index.html": ("print-mail.webp", "doc-mockup-letter", 'class="glossary-grid"'),
+        "medicaid/washington/letter/index.html": ("print-mail.webp", "doc-mockup-letter"),
+        "medicaid/utah/letter/index.html": ("print-mail.webp", "doc-mockup-letter", 'class="glossary-grid"'),
+        "medicaid/oregon/denied/index.html": ("print-mail.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/washington/denied/index.html": ("print-mail.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/utah/denied/index.html": ("print-mail.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/oregon/bills/index.html": ("print-mail.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/washington/bills/index.html": ("print-mail.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/utah/bills/index.html": ("print-mail.webp", 'class="viz-swimlane"', 'class="viz-rail-node"'),
+        "medicaid/oregon/log/index.html": ("print-calendar.webp", 'class="viz-donut-svg"', 'class="viz-calendar"', 'class="viz-proof-tiles"'),
+        "medicaid/washington/log/index.html": ("print-calendar.webp", 'class="viz-donut-svg"', 'class="viz-calendar"', 'class="viz-proof-tiles"'),
+        "medicaid/utah/log/index.html": ("print-calendar.webp", 'class="viz-donut-svg"', 'class="viz-calendar"', 'class="viz-proof-tiles"'),
+        "medicaid/oregon/apply/index.html": ("print-homes.webp", 'class="viz-flow'),
+        "medicaid/washington/apply/index.html": ("print-homes.webp", 'class="viz-flow'),
+        "medicaid/utah/apply/index.html": ("print-homes.webp", 'class="viz-flow'),
+        "medicaid/oregon/help/index.html": ("print-homes.webp", 'class="glossary-grid"'),
+        "medicaid/washington/help/index.html": ("print-homes.webp", 'class="glossary-grid"'),
+        "medicaid/utah/help/index.html": ("print-homes.webp", 'class="glossary-grid"'),
         "medicaid/oregon/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/washington/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/utah/check/index.html": ('id="checker-steps-track"', 'class="viz-progress"'),
         "medicaid/oregon/words/index.html": ('class="glossary-grid"',),
         "medicaid/washington/words/index.html": ('class="glossary-grid"',),
         "medicaid/utah/words/index.html": ('class="glossary-grid"',),
-        "id-records/index.html": ("id-sequence.webp", 'class="viz-flow'),
-        "id-records/oregon/index.html": ("id-sequence.webp", 'class="viz-stat-strip"', 'class="viz-flow'),
-        "id-records/washington/index.html": ("id-sequence.webp", 'class="viz-stat-strip"', 'class="viz-flow'),
-        "id-records/utah/index.html": ("id-sequence.webp", 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/index.html": ("print-cards.webp", 'class="viz-flow'),
+        "id-records/oregon/index.html": ("print-oregon.webp", 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/washington/index.html": ("print-washington.webp", 'class="viz-stat-strip"', 'class="viz-flow'),
+        "id-records/utah/index.html": ("print-utah.webp", 'class="viz-stat-strip"', 'class="viz-flow'),
         "id-records/oregon/court/index.html": ('class="viz-stat-strip"', 'class="viz-flow', "toc-pills"),
         "id-records/washington/court/index.html": ('class="viz-stat-strip"', 'class="viz-flow', "toc-pills"),
         "id-records/utah/court/index.html": ('class="viz-stat-strip"', 'class="viz-flow', "toc-pills"),
@@ -781,11 +789,11 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
         "id-records/oregon/id/index.html": ('class="viz-stat-strip"',),
         "id-records/washington/id/index.html": ('class="viz-stat-strip"',),
         "id-records/utah/id/index.html": ('class="viz-stat-strip"',),
-        "id-records/federal/index.html": ("id-sequence.webp", "passport-form-matrix"),
+        "id-records/federal/index.html": ("print-cards.webp", "passport-form-matrix"),
         "id-records/compare/index.html": ('class="viz-compare-board"', 'viewBox="0 0 320 22"'),
         "id-records/glossary/index.html": ('class="glossary-grid"',),
-        "id-records/after/index.html": ("id-sequence.webp", 'class="viz-flow'),
-        "id-records/help/index.html": ("community-help.webp",),
+        "id-records/after/index.html": ("print-certificate.webp", 'class="viz-flow'),
+        "id-records/help/index.html": ("print-homes.webp",),
         "id-records/path/index.html": ('id="path-form"', 'class="result-emblem'),
     }
     for rel_file, markers in expected_markers.items():
@@ -793,12 +801,13 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
         for marker in markers:
             assert marker in html, f"{rel_file}: missing expected visual marker {marker!r}"
 
-    # Trust and utility pages stay clean and direct without forced diagram widgets or illustrations
-    for clean_page in ("privacy/index.html", "about/index.html", "accessibility/index.html", "404.html"):
+    # Trust and utility pages stay clean and direct: their one press print, no diagram widgets
+    for clean_page, print_name in (("privacy/index.html", "print-window.webp"), ("about/index.html", "print-front.webp"),
+                                   ("accessibility/index.html", "print-letters.webp"), ("404.html", "print-fog.webp")):
         clean_html = (built_site / clean_page).read_text(encoding="utf-8")
         assert "doc-mockup" not in clean_html, f"{clean_page}: unexpected doc-mockup widget"
         assert 'class="viz-' not in clean_html, f"{clean_page}: unexpected forced .viz-* widget"
-        assert "editorial-art" not in clean_html, f"{clean_page}: unexpected editorial-art widget"
+        assert print_name in clean_html, f"{clean_page}: expected its press print {print_name}"
 
 
 def test_drop_in_artist_logo_system_and_make_mark_custom_mode(tmp_path: Path, built_site: Path) -> None:
@@ -807,7 +816,7 @@ def test_drop_in_artist_logo_system_and_make_mark_custom_mode(tmp_path: Path, bu
     build_mod = _load_script("civicdesk_build_brand", "scripts/build.py")
     make_mark = _load_script("civicdesk_make_mark_brand", "scripts/make_mark.py")
 
-    # 1. Default built site keeps inline 5-stripe mark, visible wordmark, and generated apple-touch-icon.png
+    # 1. Default built site keeps inline faceted mark, visible wordmark, and generated apple-touch-icon.png
     assert (built_site / "static" / "apple-touch-icon.png").is_file()
     assert (built_site / "static" / "apple-touch-icon.png").stat().st_size > 0
     assert not (built_site / "static" / "brand" / ".gitkeep").exists()
