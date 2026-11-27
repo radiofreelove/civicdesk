@@ -370,6 +370,38 @@ def outline_sections(region: str, existing_ids: set[str], tabs: bool) -> dict:
     return {"tabs_at": tabs_at, "add_ids": add_ids, "sections": sections}
 
 
+# Trailing punctuation stays on the same line as the inline element it follows. Some engines
+# (WebKit with text-wrap: pretty) can otherwise wrap a lone ".", ",", ";", or ":" onto the next
+# line after </a>, </code>, or </span>. A WORD JOINER (U+2060, zero width, ignored by screen
+# readers) forbids that break without changing what anyone reads or copies.
+WORD_JOINER = "&#8288;"
+INLINE_CLOSE_PUNCT_RE = re.compile(
+    r"(</(?:a|abbr|b|bdi|code|em|i|kbd|q|small|span|strong|sup|time)>)(?=[.,;:!?)\]])"
+)
+RAW_TEXT_BLOCK_RE = re.compile(r"<!--.*?-->|<(script|style|pre|textarea)\b.*?</\1\s*>", re.S | re.I)
+
+
+BADGE_LABEL_RE = re.compile(r'(<span class="(?:badge|tag)\b[^"]*">)([^<]*)(</span>)')
+
+
+def _bind_segment(text: str) -> str:
+    # Badge labels ("Not official") stay on one line unless the badge is wider than the line.
+    text = BADGE_LABEL_RE.sub(lambda m: m.group(1) + m.group(2).replace(" ", "&nbsp;") + m.group(3), text)
+    return INLINE_CLOSE_PUNCT_RE.sub(r"\1" + WORD_JOINER, text)
+
+
+def bind_trailing_punctuation(html: str) -> str:
+    """Insert a word joiner between a closing inline tag and the punctuation right after it, and
+    join badge words with no-break spaces, outside comments and script, style, pre, and textarea."""
+    out, last = [], 0
+    for m in RAW_TEXT_BLOCK_RE.finditer(html):
+        out.append(_bind_segment(html[last:m.start()]))
+        out.append(m.group(0))
+        last = m.end()
+    out.append(_bind_segment(html[last:]))
+    return "".join(out)
+
+
 def apply_sources_layer(html: str, used: list[str], render_tabs, render_section_link, render_panel,
                         tabs: bool) -> str:
     """Strip inline citations, add per-section links and tabs, and fill the grouped Sources panel."""
@@ -1090,6 +1122,7 @@ def main(argv: list[str] | None = None) -> int:
             dest_file = out_dir / "index.html"
         else:
             dest_file = out_dir / route.strip("/") / "index.html"
+        html = bind_trailing_punctuation(html)
         dest_file.parent.mkdir(parents=True, exist_ok=True)
         dest_file.write_text(html, encoding="utf-8")
 

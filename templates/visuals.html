@@ -22,10 +22,12 @@
   'print-archive.webp': (960, 640)
 } %}
 
+{#- Page-head prints sit above the fold, so they always load eagerly; only extra=true art
+    (folded into Short version, below the fold) is lazy. -#}
 {% macro editorial_art(filename, variant='banner', extra=false) -%}
 {% set dims = ART_DIMS.get(filename, (960, 640)) %}
 <div class="editorial-art editorial-art--{{ variant }}"{% if extra %} data-deeper{% endif %}>
-  <img src="{{ asset('img/art/' ~ filename) }}" alt="" width="{{ dims[0] }}" height="{{ dims[1] }}" loading="{{ 'eager' if (not extra and variant in ('hero', 'card', 'wide', 'spot')) else 'lazy' }}" decoding="async">
+  <img src="{{ asset('img/art/' ~ filename) }}" alt="" width="{{ dims[0] }}" height="{{ dims[1] }}" loading="{{ 'lazy' if extra else 'eager' }}" decoding="async">
 </div>
 {%- endmacro %}
 
