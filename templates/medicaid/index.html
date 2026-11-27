@@ -7,11 +7,13 @@
   <div class="hero-copy">
     <p class="kicker">2027 Medicaid Work &amp; Activity Rules</p>
     <h1>2027 Medicaid work and activity rules in Oregon, Washington, and Utah</h1>
-    {{ m.lede("Starting January 1, 2027, federal law adds work or activity rules, shorter retroactive bill windows, and 6-month renewals for many adults ages 19 to 64 in Medicaid expansion programs. Oregon and Washington have announced delayed work-rule enforcement through June 30, 2027.") }}
+    {{ m.answer(page) }}
     {{ m.checked_line(page) }}
   </div>
   {{ v.page_art(page, 'hero') }}
 </div>
+
+{{ m.analogy(page) }}
 
 {% set med_cites %}{{ src('MED-S01') }} {{ src('MED-WA03') }} {{ src('MED-U02') }} {{ src('MED-S27') }} {{ src('MED-U28') }} {{ src('MED-S41') }} {{ src('MED-S53') }} {{ src('MED-WA27') }}{% endset %}
 {{ v.timeline_strip([

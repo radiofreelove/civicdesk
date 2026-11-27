@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Oregon Health Plan (OHP)</p>
     <h1>OHP sent me a letter. Now what?</h1>
-    <p class="purpose">Spot the reply deadline first, check what OHP could not confirm electronically, and send your answer online, by phone, in person, by fax, or by mail.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set c1 %}Write your ONE case number on every page you send and save a copy with the date sent.{% endset %}
 {% set c2 %}A <strong>Request for Information</strong> gives you <strong>35 days</strong> to answer (plus an email reminder 5 days ahead if enrolled). {{ src('MED-S04') }}{% endset %}

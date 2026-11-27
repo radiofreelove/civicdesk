@@ -3,8 +3,10 @@
 {% import "visuals.html" as v %}
 {% import "broadsheet.html" as bs %}
 {% block main %}
-{% set guide_lede %}{{ m.lede("One court form can change your name, your legal sex, or both. Since July 1, 2026, any case that includes a sex change is confidential by law, and your Oregon driver license and Oregon birth certificate can change without court.") }}{% endset %}
+{% set guide_lede %}{{ m.answer(page) }}{% endset %}
 {{ bs.page_head('Change your name and legal sex in Oregon', page=page, kicker='Oregon', purpose=guide_lede, checked=m.checked_line(page)) }}
+
+{{ m.analogy(page) }}
 
 {% set or_facts_note %}{{ src('ID-OR-ORS-33') }} {{ src('ID-OR-OJD-ADULT-PACKET') }} {{ src('ID-OR-OJD-FEES') }} {{ src('ID-OR-OHA-GENDER') }} {{ src('ID-OR-DMV-GENDER') }} {{ src('ID-OR-DMV-DRIVER-INFO') }}{% endset %}
 {{ v.stat_hero_strip([

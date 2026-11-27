@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Washington Apple Health</p>
     <h1>Have a health condition?</h1>
-    <p class="purpose">People who are <strong>medically frail</strong>—or in alcohol or substance-use treatment—do not have to meet the new Apple Health work rules.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set wa_health_note %}{{ src('MED-WA05') }} {{ src('MED-WA07') }} {{ src('MED-WA21') }} {{ src('MED-WA22') }} {{ src('MED-S27') }} {{ src('MED-S29') }}{% endset %}
 {{ v.yes_no_split_board(

@@ -192,3 +192,91 @@ usts_mistreated:
   value: 22%
   sources:
   - ID-DATA-USTS-2022
+ssa_name_cost:
+  value: Free
+  sources:
+  - ID-US-SSA-NAME
+  note: Requesting a replacement Social Security card to update a legal name is free.
+wa_doh_mail_clock:
+  value: 4 to 6 weeks by mail
+  sources:
+  - ID-WA-DOH-SEX
+  note: Washington DOH published mail processing window for birth-record sex-designation requests.
+ut_court_residency_clock:
+  value: 1 year living in the filing county before filing a name change
+  sources:
+  - ID-UT-CODE-42-1
+  note: Utah Code 42-1-1 county residency prerequisite for district court name-change petitions.
+or_rfi_reply_clock:
+  value: 35 days from the date on an OHP Request for Information
+  sources:
+  - MED-S04
+  note: Reply window on OHA applicant and renewal journey maps for OHP work or activity rules.
+wa_per_reply_clock:
+  value: 15 days to return verification on a Post Eligibility Review letter
+  sources:
+  - MED-WA04
+  - MED-WA13
+  note: HCA verification return deadline for Apple Health Post Eligibility Review notices.
+ut_rfi_reply_clock:
+  value: 30 days for community-engagement forms; 10 days for general application proofs
+  sources:
+  - MED-U03
+  - MED-U04
+  - MED-U16
+  note: DWS return windows for Utah community-engagement forms and standard application verification requests.
+wa_appeal_clock:
+  value: 10 days to keep coverage during an appeal; 90 calendar days to request a hearing
+  sources:
+  - MED-WA17
+  - MED-WA29
+  note: Washington Apple Health continued-coverage and administrative-hearing request deadlines.
+ut_appeal_clock:
+  value: 15 days to keep coverage during an appeal; 90 days to request a fair hearing
+  sources:
+  - MED-U19
+  note: Utah DWS Form 490 deadlines for continued medical benefits and fair hearing requests.
+ut_apply_decision_clock:
+  value: 30 days for a written decision (up to 90 days if based on disability)
+  sources:
+  - MED-U14
+  - MED-U16
+  note: Published Utah DWS Medicaid application processing timelines.
+or_retro_2027_clock:
+  value: 1 month before applying for most adults ages 19 to 64 starting Jan. 1, 2027
+  sources:
+  - MED-S01
+  note: OHP retroactive coverage window changes from 3 months through Dec. 31, 2026 to 1 month for most expansion adults.
+wa_retro_2027_clock:
+  value: 1 month before applying for Apple Health for Adults starting Jan. 1, 2027
+  sources:
+  - MED-WA01
+  - MED-WA03
+  note: Apple Health for Adults retroactive window changes from 3 months through Dec. 31, 2026 to 1 month on Jan. 1, 2027.
+ut_retro_2027_clock:
+  value: 1 month before applying for Adult Expansion starting Jan. 1, 2027
+  sources:
+  - MED-U02
+  note: Utah Adult Expansion retroactive window drops from 3 months through Dec. 31, 2026 to 1 month on Jan. 1, 2027.
+or_hold_harmless_clock:
+  value: Work-rule denials paused through June 30, 2027; record checks begin Jan. 1, 2027
+  sources:
+  - MED-S07
+  - MED-S53
+  - MED-S41
+  note: Oregon hold-harmless enforcement delay directed through June 30, 2027 (subject to federal approval).
+wa_hold_harmless_clock:
+  value: Work-rule denials paused through June 30, 2027; 6-month renewals begin Jan. 1, 2027
+  sources:
+  - MED-WA22
+  - MED-WA27
+  - MED-S41
+  note: Washington HCA hold-harmless enforcement delay pursued through June 30, 2027 (pending federal approval).
+ut_six_month_clock:
+  value: Applicant checks begin Jan. 1, 2027; renewals shift to every 6 months
+  sources:
+  - MED-U01
+  - MED-U02
+  - MED-U13
+  note: Utah community-engagement start date and 6-month renewal schedule for Adult Expansion and Targeted Adult Medicaid.
+

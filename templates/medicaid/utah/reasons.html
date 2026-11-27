@@ -6,10 +6,14 @@
   <div class="intro-copy">
     <p class="kicker">Utah Medicaid</p>
     <h1>Reasons you may not have to meet the Utah rules</h1>
-    <p class="purpose">Utah calls these <strong>exclusions</strong> and <strong>exceptions</strong>. DWS checks its own records first in the month you apply or renew; if it cannot confirm your reason, you report it with proof. <a href="{{ page_url('medicaid-utah-check') }}">Take the 1-minute check</a>.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
+<p>Want to see which published rules match? <a href="{{ page_url('medicaid-utah-check') }}">Open the 1-minute check</a>.</p>
 
 {{ m.onthispage([
   ('exclusions-vs-hardships', 'Exclusions vs. hardships'),

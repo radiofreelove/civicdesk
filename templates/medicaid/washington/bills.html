@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Washington Apple Health</p>
     <h1>Medical bills from before you apply for Apple Health</h1>
-    <p class="purpose">Apple Health may pay some medical bills from before you apply. Starting Jan.&nbsp;1, 2027, that retroactive window gets shorter.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set wa_bills_cite %}{{ src('MED-WA01') }} {{ src('MED-WA03') }} {{ src('MED-WA07') }}{% endset %}
 {{ v.swimlane_timeline(

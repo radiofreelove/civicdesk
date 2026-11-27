@@ -6,10 +6,13 @@
   <div class="intro-copy">
     <p class="kicker">Utah Medicaid</p>
     <h1>Utah sent me a letter. Now what?</h1>
-    <p class="purpose">Find the due date first, write your name and case number on every page you return, and keep copies with the date sent.</p>
+    {{ m.answer(page) }}
   </div>
   {{ v.page_art(page) }}
 </div>
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {% set c1 %}Write your name and DWS case number on every sheet and keep a copy with the date sent (keep your address, phone, and email updated in myCase).{% endset %}
 {% set c2 %}If DWS needs community-engagement proof, you may have <strong>30 days</strong> to return the form or lose coverage.{% endset %}

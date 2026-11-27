@@ -12,8 +12,11 @@
   </ul>
 </nav>
 
-{% set guide_purpose %}<p class="purpose"><strong>Why this site exists:</strong> Facts about the new Apple Health rules are spread across many official pages and notices. This guide puts what applicants need in one place, in plain words, with every official source linked.</p>{% endset %}
+{% set guide_purpose %}{{ m.answer(page) }}{% endset %}
 {{ bs.page_head('Applying for Apple Health? New rules start Jan. 1, 2027.', page=page, kicker='Washington Apple Health', purpose=guide_purpose) }}
+
+{{ m.analogy(page) }}
+{{ m.spec_strip(page) }}
 
 {{ v.stat_hero_strip([
   {'num': '19–64', 'label': 'Apple Health for Adults', 'note': 'Under 138% FPL, no Medicare'},
