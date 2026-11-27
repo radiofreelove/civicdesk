@@ -72,7 +72,7 @@ SKIP_CLASSES = {"page-sources"}
 
 
 def normalize(text: str) -> str:
-    text = html.unescape(text).replace("⁠", "").replace("­", "")
+    text = html.unescape(text).replace("\u2060", "").replace("\u00ad", "")
     return re.sub(r"\s+", " ", text).strip()
 
 
@@ -94,7 +94,6 @@ class _MainText(HTMLParser):
         self._in_main = False
         self._skip_depth = 0
         self._raw_depth = 0
-        self._stack: list[str] = []
 
     def _flush(self) -> None:
         text = "".join(self._buf)
@@ -128,7 +127,14 @@ class _MainText(HTMLParser):
                 self.runs.append((line, value))
 
     def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        self.handle_starttag(tag, attrs)
+        # Self-closing tags (<path/> in inline SVG icons, <input/>) open no element: they only
+        # contribute attribute text and never change the Sources-panel skip depth.
+        if not self._in_main or self._skip_depth or self._raw_depth:
+            return
+        line = self.getpos()[0]
+        for name, value in attrs:
+            if name in TEXT_ATTRS and value and value.strip():
+                self.runs.append((line, value))
 
     def handle_endtag(self, tag: str) -> None:
         if not self._in_main:
@@ -162,15 +168,27 @@ def html_runs(text: str) -> list[tuple[int, str]]:
     return parser.runs
 
 
+_REGEX_PREV_CHARS = set("([={,:;!?&|+-*~^%<>\n")
+_REGEX_PREV_WORDS = {"return", "case", "in", "of", "typeof", "void", "delete", "throw", "new", "else", "do"}
+
+
+def _starts_js_regex(prev_char: str, prev_word: str) -> bool:
+    return not prev_char or prev_char in _REGEX_PREV_CHARS or prev_word in _REGEX_PREV_WORDS
+
+
 def js_string_literals(source: str) -> list[tuple[int, str]]:
-    """Return (line, value) for each string literal, skipping // and /* */ comments."""
+    """Return (line, value) for each string literal, skipping comments and regex literals."""
     out: list[tuple[int, str]] = []
     i, n, line = 0, len(source), 1
+    prev_char = ""
+    prev_word = ""
     while i < n:
         ch = source[i]
         nxt = source[i + 1] if i + 1 < n else ""
         if ch == "\n":
             line += 1
+            i += 1
+        elif ch.isspace():
             i += 1
         elif ch == "/" and nxt == "/":
             end = source.find("\n", i)
@@ -180,6 +198,29 @@ def js_string_literals(source: str) -> list[tuple[int, str]]:
             end = n if end == -1 else end + 2
             line += source.count("\n", i, end)
             i = end
+        elif ch == "/" and _starts_js_regex(prev_char, prev_word):
+            j = i + 1
+            in_class = False
+            while j < n and source[j] != "\n":
+                c = source[j]
+                if c == "\\" and j + 1 < n:
+                    j += 2
+                    continue
+                if c == "[":
+                    in_class = True
+                elif c == "]":
+                    in_class = False
+                elif c == "/" and not in_class:
+                    j += 1
+                    while j < n and source[j].isalpha():
+                        j += 1
+                    break
+                j += 1
+            else:
+                j = i + 1
+            i = j
+            prev_char = "/"
+            prev_word = ""
         elif ch in "\"'`":
             start_line, j, buf = line, i + 1, []
             while j < n and source[j] != ch:
@@ -198,7 +239,18 @@ def js_string_literals(source: str) -> list[tuple[int, str]]:
                 j += 1
             out.append((start_line, "".join(buf)))
             i = j + 1
+            prev_char = ch
+            prev_word = ""
+        elif ch.isalpha() or ch in "_$":
+            j = i + 1
+            while j < n and (source[j].isalnum() or source[j] in "_$"):
+                j += 1
+            prev_word = source[i:j]
+            prev_char = source[j - 1]
+            i = j
         else:
+            prev_char = ch
+            prev_word = ""
             i += 1
     return out
 

@@ -421,6 +421,8 @@ def test_report_mistake_mailto_and_github_options(built_site: Path) -> None:
         assert 'href="https://github.com/radiofreelove/civicdesk/issues"' in raw, f"{route}: missing GitHub issues link"
         assert "Never include personal health or case details." in raw, f"{route}: missing plain privacy note"
         assert "corrections at civicdesk.net" not in raw, f"{route}: stale obfuscated email text"
+        assert "pre-fills only this page path" not in raw, f"{route}: stale mailto description (body is also pre-filled)"
+        assert "Personalized step-by-step path finder" not in raw, f"{route}: stale 'Personalized' path finder label"
 
     # Specifically verify /about/ main body #report section has both contact options and the plain privacy warning
     about_main = (built_site / "about" / "index.html").read_text(encoding="utf-8").split("<main", 1)[1].split("</main>", 1)[0]

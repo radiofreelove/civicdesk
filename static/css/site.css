@@ -905,6 +905,9 @@ details.deeper[open] > summary { border-bottom: 1px solid var(--rule); }
 .deeper-label { color: var(--text); }
 .deeper-body { padding: 0.8rem 1rem 0.4rem; }
 
+/* ---------- Medicaid 1-minute check reason category tags ---------- */
+.reason-kind { font-weight: 600; color: var(--heading); }
+
 /* ---------- Pre-tool notice (macros.tool_notice) ---------- */
 .tool-notice {
   display: flex; align-items: flex-start; gap: 0.6rem; max-width: 65ch;
@@ -936,8 +939,8 @@ details.deeper[open] > summary { border-bottom: 1px solid var(--rule); }
 .basis-line { margin: 0 0 0.5rem; color: var(--text); font-size: 0.95em; }
 details.other-pathways { background: var(--card-bg); border: 1px solid var(--rule); border-radius: 2px; margin: 1.5rem 0; }
 details.other-pathways > summary {
-  cursor: pointer; padding: 0.8rem 1rem; min-height: 44px; font-weight: 700; color: var(--heading);
-  list-style-position: outside; margin-left: 1rem;
+  cursor: pointer; padding: 0.8rem 0.875rem; min-height: 44px; font-weight: 700; color: var(--heading);
+  list-style-position: inside; margin-left: 0;
 }
 details.other-pathways[open] > summary { border-bottom: 1px solid var(--rule); }
 .other-pathways-body { padding: 0.4rem 1rem 0.8rem; }
@@ -2105,6 +2108,8 @@ html[data-spacing="wide"] .viz-flow-connector { display: inline-flex; transform:
   .glossary-row, .timeline-item, .rule-bridge, .bridge-lane {
     break-inside: avoid; page-break-inside: avoid; border: 1px solid #000000; background: #FFFFFF; color: #000000; box-shadow: none;
   }
+  details.other-pathways[open] { border: 1px solid #000000; background: #FFFFFF; color: #000000; box-shadow: none; }
+  .other-group { break-inside: avoid; page-break-inside: avoid; }
   details.sources-toggle { border: 1px solid #000000; background: #FFFFFF; }
   details.sources-toggle > *:not(summary),
   details.deeper > *:not(summary),

@@ -74,8 +74,10 @@
     return okChange && okWho && okCourt;
   }
 
-  // Clone a result template and split it: the matching lines stay in the step, and the lines
-  // that do not match are kept (not discarded) for the Other published pathways drawer.
+  // Clone a result template and split it: the matching lines stay in the step, and alternate
+  // pathway/filer lines (data-change or data-who) stay on the page in the Other published
+  // pathways drawer. Pure wording variants (data-court only, as in t-after) are not alternate
+  // pathways, so they are dropped rather than duplicated into the drawer.
   function split(id, answers) {
     var tpl = document.getElementById(id);
     if (!tpl || !tpl.content) return null;
@@ -84,7 +86,9 @@
     frag.querySelectorAll(FILTERED).forEach(function (el) {
       if (!keep(el, answers)) {
         el.parentNode.removeChild(el);
-        other.push(el);
+        if (el.hasAttribute("data-change") || el.hasAttribute("data-who")) {
+          other.push(el);
+        }
       }
     });
     frag.querySelectorAll("ul").forEach(function (ul) {

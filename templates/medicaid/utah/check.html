@@ -33,7 +33,7 @@
       </div>
     </noscript>
 
-    {{ v.step_progress_track(['Age group', 'Exemptions', 'Ways to meet']) }}
+    {{ v.step_progress_track(['Age group', 'Exclusions & exceptions', 'Ways to meet']) }}
     <p class="progress" id="checker-progress" aria-live="polite" hidden>Step 1 of 3</p>
 
     <form id="checker" class="checker checker-form" novalidate hidden>
@@ -80,9 +80,10 @@
 
           <div class="step-group" role="group" aria-labelledby="group-recent">
             <h3 id="group-recent">Something that happened recently</h3>
-            <label class="choice"><input type="checkbox" name="reason" value="jail"> I got out of jail or prison in the last 90 days.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="jail"> I am in jail or prison, or I got out in the last 90 days.</label>
             <label class="choice"><input type="checkbox" name="reason" value="hospital"> I was a patient in a hospital, or I lived in a nursing home or another care facility.</label>
             <label class="choice"><input type="checkbox" name="reason" value="travel"> I had to travel outside my community for medical care for me or a dependent.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="county"> I live in a county with a federal emergency or disaster declaration, or with high unemployment.</label>
           </div>
 
           <div class="step-group">
@@ -114,11 +115,11 @@
     </form>
 
     <section id="checker-result" class="result" tabindex="-1" aria-labelledby="result-title" hidden>
-      <h2 id="result-title" tabindex="-1">Your results</h2>
+      <h2 id="result-title" tabindex="-1">Check results</h2>
     </section>
 
     <div class="more">
       <h2>How this check works</h2>
-      <p>The check runs on this page only. It uses the same lists as our pages on <a href="{{ page_url('medicaid-utah-rules') }}">the Utah rules</a> and <a href="{{ page_url('medicaid-utah-reasons') }}">the reasons you may not have to meet them</a>. It does not ask about your county, because the state checks that.</p>
+      <p>The check runs on this page only. It uses the same lists as our pages on <a href="{{ page_url('medicaid-utah-rules') }}">the Utah rules</a> and <a href="{{ page_url('medicaid-utah-reasons') }}">the reasons you may not have to meet them</a>.</p>
     </div>
 {% endblock %}

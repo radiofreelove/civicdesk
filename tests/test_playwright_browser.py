@@ -67,6 +67,7 @@ def test_all_pages_clean_load_and_reflow(site_server: str, browser_instance) -> 
         "/medicaid/oregon/check/",
         "/medicaid/washington/",
         "/medicaid/utah/",
+        "/medicaid/utah/check/",
         "/id-records/",
         "/id-records/path/",
         "/id-records/oregon/",
@@ -145,8 +146,10 @@ def test_start_router_and_medicaid_checks(site_server: str, browser_instance) ->
     assert page.is_visible("#checker-result")
     assert "do not apply to your age group" in page.inner_text("#checker-result")
 
-    # 4. Test Utah 1-minute check exemption path
+    # 4. Test Utah 1-minute check categories (MED-U05) and non-table treatment tag
     goto_local(page, site_server + "/medicaid/utah/check/")
+    assert "Exemptions" not in page.inner_text("#checker-steps-track")
+    assert "does not ask about your county" not in page.inner_text("main")
     page.check('input[name="age"][value="19to64"]')
     page.click('[data-step="1"] button[data-next]')
     page.check('input[name="reason"][value="pregnant"]')
@@ -155,11 +158,72 @@ def test_start_router_and_medicaid_checks(site_server: str, browser_instance) ->
     page.click('#checker button[type="submit"]')
     assert page.is_visible("#checker-result")
     utah_result = page.inner_text("#checker-result")
-    # Rule-indexed wording: what Utah's published list says, and what DWS asks, never "applies to you".
-    assert "This reason is on Utah's published list." in utah_result
+    # Rule-indexed wording in Utah's own categories (MED-U05), never "applies to you".
+    assert "Utah's rules list this reason as an exclusion." in utah_result
+    assert "Utah's table: excluded individuals." in utah_result
     assert "What DWS asks people in this group to do" in utah_result
     assert "apply to you" not in utah_result and "What to do" not in utah_result
+    assert "exemption" not in utah_result.lower()
 
+    # Mixed categories: a mandatory exception and a requested short-term hardship.
+    page.click("#checker-result button:has-text('Change my answers')")
+    page.click('[data-step="3"] button[data-back]')
+    page.uncheck('input[name="reason"][value="pregnant"]')
+    page.check('input[name="reason"][value="medicare"]')
+    page.check('input[name="reason"][value="hospital"]')
+    page.click('[data-step="2"] button[data-next]')
+    page.click('#checker button[type="submit"]')
+    mixed = page.inner_text("#checker-result")
+    assert "Utah's rules list these reasons as mandatory exceptions or optional short-term hardships." in mixed
+    assert "Utah's table: mandatory exceptions." in mixed and "Utah's table: optional short-term hardships." in mixed
+    assert "You must ask the state for it." in mixed
+
+    # Treatment is not on MED-U05, so its tag must cite Utah Medicaid pages/federal rule, not "Utah's table".
+    page.click("#checker-result button:has-text('Change my answers')")
+    page.click('[data-step="3"] button[data-back]')
+    page.uncheck('input[name="reason"][value="medicare"]')
+    page.uncheck('input[name="reason"][value="hospital"]')
+    page.check('input[name="reason"][value="treatment"]')
+    page.click('[data-step="2"] button[data-next]')
+    page.click('#checker button[type="submit"]')
+    treat = page.inner_text("#checker-result")
+    assert "Utah's rules list this reason as an exclusion." in treat
+    assert "Utah Medicaid pages and federal rule: excluded individuals." in treat
+    assert "Utah's table:" not in treat
+
+    ctx.close()
+
+
+def test_utah_check_reasons_match_utah_table(site_server: str, browser_instance) -> None:
+    # Every Utah checkbox has a reason entry with one of Utah's three table categories (MED-U05)
+    # and registry sources that are also listed in the page's Sources panel; jail covers people
+    # still in jail or prison; county hardships are listed.
+    registry = {s["id"] for s in yaml.safe_load((ROOT / "data" / "sources" / "medicaid.yaml").read_text(encoding="utf-8"))}
+    pages = {p["slug"]: p for p in yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))}
+    page_sources = set(pages["medicaid-utah-check"].get("sources") or [])
+    ctx = browser_instance.new_context(viewport={"width": 1280, "height": 900})
+    page = ctx.new_page()
+    goto_local(page, site_server + "/medicaid/utah/check/")
+    reasons = page.evaluate("""() => Object.fromEntries(Object.entries(window.CivicDeskCheck.reasons)
+        .map(([k, v]) => [k, { kind: v.kind, basis: v.basis || [], label: v.label, tag: v.tag || "" }]))""")
+    boxes = set(page.eval_on_selector_all('input[name="reason"]', "els => els.map(e => e.value)")) - {"none"}
+    assert boxes == set(reasons), f"checkboxes {sorted(boxes ^ set(reasons))} do not match the reason table"
+    expected = {
+        "exclusion": {"pregnant", "care", "health", "treatment", "snap", "aian", "foster", "veteran"},
+        "exception": {"medicare", "ssi", "jail"},
+        "hardship": {"hospital", "travel", "county"},
+    }
+    for kind, keys in expected.items():
+        assert {k for k, v in reasons.items() if v["kind"] == kind} == keys, kind
+    for key, v in reasons.items():
+        assert v["basis"], f"{key}: no basis sources"
+        for sid in v["basis"]:
+            assert sid in registry, f"{key}: basis {sid} is not in data/sources/medicaid.yaml"
+            assert sid in page_sources, f"{key}: basis {sid} is missing from medicaid-utah-check sources in data/pages.yaml"
+    # Treatment is not on Utah's table, so it must not rest on MED-U05 or claim "Utah's table".
+    assert "MED-U05" not in reasons["treatment"]["basis"]
+    assert reasons["treatment"]["tag"] and "Utah's table" not in reasons["treatment"]["tag"]
+    assert reasons["jail"]["label"].startswith("You are in jail or prison")
     ctx.close()
 
 
@@ -207,10 +271,17 @@ def test_broadened_id_records_path_finder(site_server: str, browser_instance) ->
     assert page.inner_text("#other-pathways > summary") == "Other published pathways in Washington"
     drawer = page.evaluate("""() => {
         const d = document.getElementById('other-pathways');
-        return { open: d.open, text: document.getElementById('other-pathways-body').textContent };
+        const s = d.querySelector(':scope > summary');
+        return {
+            open: d.open,
+            text: document.getElementById('other-pathways-body').textContent,
+            leftGap: Math.abs(s.getBoundingClientRect().left - d.getBoundingClientRect().left),
+        };
     }""")
     assert drawer["open"] is False
+    assert drawer["leftGap"] <= 2, f"drawer summary indented away from its container: {drawer['leftGap']}px"
     assert "Court in Washington" in drawer["text"] and "RCW 4.24.130" in drawer["text"]
+    assert "After your core IDs" not in drawer["text"], "t-after wording swap must not duplicate into Other pathways"
     # Sorted-by names the rule behind the lines shown: a marker-only update cites SSA's sex-field
     # rule for the Social Security step, not the name-change page.
     assert "POMS RM 10212.200" in basis_lines[0] and "change your name" not in basis_lines[0], basis_lines[0]
@@ -237,11 +308,14 @@ def test_broadened_id_records_path_finder(site_server: str, browser_instance) ->
     both_text = page.inner_text("#results-body")
     assert "any Oregon circuit court" in both_text
     assert "DOH 422-143" in both_text
+    or_basis = page.locator("#results-body .basis-line").first.inner_text()
+    assert "2026 Oregon Laws ch. 52" in or_basis, or_basis
     # Lines for other situations (a parent or a minor filing) move to the drawer, not away.
     other_text = page.evaluate("() => document.getElementById('other-pathways-body').textContent")
     assert "Marriage or domestic partnership certificate in Oregon" in other_text
     assert "As a parent or guardian, you file the minor forms." in other_text
     assert "As a parent or guardian, you file the minor forms." not in both_text
+    assert "After your core IDs" not in other_text
 
     ctx.close()
 

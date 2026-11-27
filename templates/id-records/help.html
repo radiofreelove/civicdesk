@@ -41,6 +41,6 @@
 </ul>
 
 {% call m.callout('note', 'How we choose what to list', 'how-we-list', extra=true) %}
-<p>We list court, government, legal-aid, and national programs whose own pages we verified on the date above. Spot an outdated number or link? <a href="{{ correction_mailto(page) }}">Email {{ site.corrections_email }}</a> (pre-fills only this page path) or <a href="{{ issues_url }}" rel="noreferrer">open a public GitHub issue</a>—never include personal health or case details.</p>
+<p>We list court, government, legal-aid, and national programs whose own pages we verified on the date above. Spot an outdated number or link? <a href="{{ correction_mailto(page) }}">Email {{ site.corrections_email }}</a> (pre-fills this page path and a reminder to leave out personal details) or <a href="{{ issues_url }}" rel="noreferrer">open a public GitHub issue</a>—never include personal health or case details.</p>
 {% endcall %}
 {% endblock %}
