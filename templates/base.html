@@ -148,7 +148,7 @@
   <div class="wrap">
     <p><strong>Independent.</strong> CivicDesk is an independent public-interest project. It is not run by any court or government agency and does not provide legal advice.</p>
     <p id="report-mistake"><strong>Report a mistake.</strong> Spot an outdated rule, fee, or broken link? <a href="{{ correction_mailto(page) }}">Email {{ site.corrections_email }}</a> (no account needed; pre-fills only this page path in the subject line) or <a href="{{ issues_url }}" rel="noreferrer">open a public GitHub issue</a>. Never include personal health or case details.</p>
-    <p><strong>Private on shared computers.</strong> Zero cookies, zero analytics, and <code>Referrer-Policy: no-referrer</code>. <a href="{{ page_url('privacy') }}">How your privacy is protected</a>.</p>
+    <p><strong>Private on shared computers.</strong> Zero cookies, zero analytics, and <code class="http-header"><span class="nowrap">Referrer-Policy:</span> <span class="nowrap">no-referrer</span></code>. <a href="{{ page_url('privacy') }}">How your privacy is protected</a>.</p>
     <nav aria-label="Site links">
       <ul class="footer-links">
       {% for target_slug, label in footer_items(page) %}

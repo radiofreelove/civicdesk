@@ -510,6 +510,75 @@ def test_no_stranded_parentheses_around_citations_and_social_meta(built_site: Pa
         assert '<meta name="twitter:card" content="summary_large_image">' in raw
 
 
+class _VisibleText(HTMLParser):
+    """Visible page text, with a line break at every block boundary."""
+
+    BLOCK = {"address", "article", "aside", "blockquote", "br", "button", "dd", "details", "div", "dl", "dt",
+             "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header",
+             "hr", "label", "legend", "li", "main", "nav", "ol", "option", "p", "section", "summary", "table",
+             "td", "th", "tr", "ul"}
+    RAW = {"script", "style", "pre", "textarea", "template"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self.raw_depth = 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in self.RAW:
+            self.raw_depth += 1
+        if tag in self.BLOCK:
+            self.parts.append("\n")
+
+    def handle_endtag(self, tag):
+        if tag in self.RAW:
+            self.raw_depth = max(0, self.raw_depth - 1)
+        if tag in self.BLOCK:
+            self.parts.append("\n")
+
+    def handle_data(self, data):
+        if not self.raw_depth:
+            self.parts.append(data)
+
+
+def test_punctuation_hugs_the_word_before_it(built_site: Path) -> None:
+    """No space before . , ; or :, and no line break allowed between a closing inline tag and the
+    punctuation after it (scripts/build.py bind_trailing_punctuation adds a WORD JOINER)."""
+    raw_blocks = re.compile(r"<!--.*?-->|<(script|style|pre|textarea|template)\b.*?</\1\s*>", re.S | re.I)
+    gap_after_tag = re.compile(r"</(a|code|span)>\s+[.,;:]")
+    unbound_after_tag = re.compile(r"</(a|abbr|b|bdi|code|em|i|kbd|q|small|span|strong|sup|time)>[.,;:!?)\]]")
+    space_before_punct = re.compile(r"\S[ \t\u00a0]+[.,;:](?=\s|$)")
+    # Verbatim court-calendar text quoted in a source note (data/sources/medicaid.yaml).
+    verbatim = ("10:00 am : Judge Aiken : Telephone :",)
+
+    html_files = sorted(built_site.rglob("*.html"))
+    assert len(html_files) == 68
+    for html_path in html_files:
+        raw = html_path.read_text(encoding="utf-8")
+        body = raw_blocks.sub("", raw)
+        rel = html_path.relative_to(built_site)
+        m = gap_after_tag.search(body)
+        assert not m, f"{rel}: space between </{m.group(1)}> and punctuation: {body[m.start() - 60:m.end()]!r}"
+        m = unbound_after_tag.search(body)
+        assert not m, f"{rel}: punctuation after </{m.group(1)}> is not joined with &#8288;: {body[m.start() - 60:m.end()]!r}"
+        for badge in re.finditer(r'<span class="(?:badge|tag)\b[^"]*">([^<]*)</span>', body):
+            assert " " not in badge.group(1), f"{rel}: badge label {badge.group(1)!r} should use no-break spaces"
+
+        parser = _VisibleText()
+        parser.feed(raw)
+        for line in "".join(parser.parts).split("\n"):
+            for quote in verbatim:
+                line = line.replace(quote, "")
+            m = space_before_punct.search(line)
+            assert not m, f"{rel}: stray space before punctuation: {line[max(0, m.start() - 50):m.end() + 20]!r}"
+
+    # HTTP header names break only at the space after the colon, never at their hyphens.
+    header = '<span class="nowrap">Referrer-Policy:</span> <span class="nowrap">no-referrer</span>'
+    for rel in ("index.html", "privacy/index.html", "medicaid/index.html"):
+        assert header in (built_site / rel).read_text(encoding="utf-8"), f"{rel}: Referrer-Policy header can split mid-name"
+    assert "<code>Referrer-Policy: no-referrer</code>" not in (built_site / "index.html").read_text(encoding="utf-8")
+
+
 def test_404_page_completeness_and_no_quick_exit(built_site: Path) -> None:
     not_found = built_site / "404.html"
     assert not_found.is_file()
@@ -731,6 +800,7 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
             rel_asset, stem = src_m.group(1), src_m.group(2) + ".webp"
             assert (built_site / rel_asset.lstrip("/")).is_file(), f"{html_path}: broken editorial art {rel_asset}"
             assert 'alt=""' in attrs_str, f"{html_path}: decorative editorial art must carry alt=\"\""
+            assert 'loading="eager"' in attrs_str, f"{html_path}: page-head print must load eagerly (lazy is only for extra art)"
             w_m = re.search(r'width="(\d+)"', attrs_str)
             h_m = re.search(r'height="(\d+)"', attrs_str)
             assert w_m and h_m and (int(w_m.group(1)), int(h_m.group(1))) == expected_art_dims[stem]
