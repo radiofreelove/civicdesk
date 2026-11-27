@@ -60,7 +60,28 @@ jurisdictions:
       - "State Records Committee"
 
 channels:
+  page_watch:
+    enabled: true
+
+  state_registers:
+    - kind: "ut_rss"
+      jurisdiction: "UT"
+      name: "Utah Office of Administrative Rules"
+      url: "https://rules.utah.gov/feed/"
+      match_pattern: '\b(r17|grama|government records|ombudsman|63g-2|utah state bulletin)\b'
+    - kind: "wa_wsr"
+      jurisdiction: "WA"
+      name: "Washington State Register (Attorney General)"
+      url: "https://lawfilesext.leg.wa.gov/law/wsr/agency/AttorneyGeneral'sOffice.htm"
+      match_pattern: '\b(44-14|public records|42\.56)\b'
+    - kind: "or_olis_odata"
+      jurisdiction: "OR"
+      name: "Oregon Legislative Information System (OLIS)"
+      url: "https://api.oregonlegislature.gov/odata/ODataService.svc/Measures"
+      match_pattern: '\b(public records|192\.|public records advocate)\b'
+
   federal_register:
+    public_inspection: true
     terms:
       - '"Freedom of Information Act" AND ("fee" OR "deadline" OR "exemption" OR "portal")'
     must_match_pattern: '\b(freedom of information act|foia|5 u\.?s\.?c\.?\s*552)\b'
@@ -82,6 +103,7 @@ channels:
   legiscan:
     min_relevance: 60
     year: 3
+    tracked_bills: []
     queries:
       - state: "OR"
         query: '"public records" AND ("192.314" OR "192.324" OR "fee waiver" OR "public interest")'
@@ -118,3 +140,5 @@ channels:
       - courtlistener.com
     queries:
       - '("ORS 192" OR "RCW 42.56" OR "GRAMA" OR "63G-2") ("public records" OR "fee schedule" OR guidance)'
+    undated_queries:
+      - 'filetype:pdf ("foia.gov" OR "doj.state.or.us" OR "atg.wa.gov" OR "ombudsman.utah.gov") ("fee schedule" OR "public records" OR "GRAMA")'

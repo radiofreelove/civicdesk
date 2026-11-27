@@ -1,6 +1,7 @@
 name: Weekly Source Verification
 
-# Runs Mondays for source link, freshness, registry, and build verification.
+# Runs Mondays for source link, fingerprint, `kind`-based freshness, `review_by`,
+# build, and live Policy Wire API contract verification.
 
 on:
   schedule:
@@ -10,6 +11,7 @@ on:
 permissions:
   contents: read
   issues: write
+  actions: write
 
 concurrency:
   group: weekly-source-verification
@@ -17,7 +19,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Weekly link, registry, and build check
+    name: Weekly link, registry, build, and wire contract check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -32,14 +34,33 @@ jobs:
       - run: python3 scripts/build.py
       - run: python3 scripts/check_brand_purge.py
 
-      - name: Check source freshness and links
+      - name: Keep scheduled workflows active against GitHub 60-day inactivity rule
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api -X PUT "repos/${GITHUB_REPOSITORY}/actions/workflows/radar.yml/enable" 2>/dev/null || true
+          gh api -X PUT "repos/${GITHUB_REPOSITORY}/actions/workflows/weekly.yml/enable" 2>/dev/null || true
+
+      - name: Check source freshness, review_by dates, fingerprints, and links
         id: verify
         continue-on-error: true
         run: |
           set -o pipefail
           python3 scripts/verify_sources.py 2>&1 | tee verify-report.txt
 
-      - name: Open or update issue if verification needs human review
+      - name: Verify live Policy Wire channel API contracts
+        id: contracts
+        continue-on-error: true
+        env:
+          COURTLISTENER_TOKEN: ${{ secrets.COURTLISTENER_TOKEN }}
+          LEGISCAN_API_KEY: ${{ secrets.LEGISCAN_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -o pipefail
+          python3 scripts/check_wire_contracts.py --json-out wire-contracts.json 2>&1 | tee contracts-report.txt
+
+      - name: Open or update automated-source-check issue if verification needs human review
         if: steps.verify.outcome == 'failure'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +73,7 @@ jobs:
           clipped = raw[:limit]
           suffix = "\n... [truncated]" if len(raw) > limit else ""
           body = (
-              "The Monday weekly source verification flagged items for human review.\n\n"
+              "The Monday weekly source verification flagged items (`STALE`, `REVIEW_BY`, or `LINK`) for human review.\n\n"
               f"```\n{clipped}{suffix}\n```\n"
           )
           Path("body.md").write_text(body, encoding="utf-8")
@@ -71,3 +92,58 @@ jobs:
               --label "automated-source-check" \
               --body-file body.md
           fi
+
+      - name: Open or update wire:health issue if live API contracts fail
+        if: steps.contracts.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          raw = Path("contracts-report.txt").read_text(encoding="utf-8", errors="replace")
+          body = (
+              "The Monday live Policy Wire contract check detected an upstream API error or schema change.\n\n"
+              f"```\n{raw[:30000]}\n```\n"
+          )
+          Path("contracts-body.md").write_text(body, encoding="utf-8")
+          PY
+          gh label create "wire:health" \
+            --description "Policy Wire channel error, key expiration, or silent empty-streak alert" \
+            --color "B45309" 2>/dev/null || true
+          today_utc="$(date -u +%Y-%m-%d)"
+          existing="$(gh issue list --state open --label "wire:health" --search "Live wire contract check" --limit 1 --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --title "Live wire contract check failed ($today_utc)"
+            gh issue comment "$existing" --body-file contracts-body.md
+          else
+            gh issue create \
+              --title "Live wire contract check failed ($today_utc)" \
+              --label "wire:health" \
+              --body-file contracts-body.md
+          fi
+
+      - name: Ping external dead-man's-switch heartbeat if configured
+        if: always()
+        env:
+          WIRE_HEARTBEAT_URL: ${{ secrets.WIRE_HEARTBEAT_URL }}
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+          CONTRACTS_OUTCOME: ${{ steps.contracts.outcome }}
+        run: |
+          python3 - <<'PY'
+          import os, sys
+          sys.path.insert(0, "scripts")
+          import policy_radar
+
+          hb = (os.environ.get("WIRE_HEARTBEAT_URL") or "").strip()
+          if not hb:
+              raise SystemExit(0)
+          v_out = os.environ.get("VERIFY_OUTCOME", "")
+          c_out = os.environ.get("CONTRACTS_OUTCOME", "")
+          healthy = (v_out == "success") and (c_out == "success")
+          policy_radar.send_heartbeat(
+              hb,
+              healthy=healthy,
+              summary=f"CivicDesk Weekly Verification: verify={v_out}, contracts={c_out}",
+          )
+          PY

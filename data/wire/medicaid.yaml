@@ -98,7 +98,33 @@ jurisdictions:
       - "26B-3-142.1"
 
 channels:
+  page_watch:
+    enabled: true
+
+  state_registers:
+    - kind: "ut_rss"
+      jurisdiction: "UT"
+      name: "Utah Office of Administrative Rules"
+      url: "https://rules.utah.gov/feed/"
+      match_pattern: '\b(r414|medicaid|health and human services|workforce services|26b-3|utah state bulletin)\b'
+    - kind: "wa_wsr"
+      jurisdiction: "WA"
+      name: "Washington State Register (Health Care Authority)"
+      url: "https://lawfilesext.leg.wa.gov/law/wsr/agency/HealthCareAuthority.htm"
+      match_pattern: '\b(182-5\d\d|apple health|medicaid|community engagement|work|exemption|frail|retroactive|eligibility|renewal)\b'
+    - kind: "wa_wsr"
+      jurisdiction: "WA"
+      name: "Washington State Register (DSHS)"
+      url: "https://lawfilesext.leg.wa.gov/law/wsr/agency/SocialandHealthServices,Departmentof.htm"
+      match_pattern: '\b(medicaid|apple health|medical assistance|182-5\d\d|388-4\d\d|public charge)\b'
+    - kind: "or_olis_odata"
+      jurisdiction: "OR"
+      name: "Oregon Legislative Information System (OLIS)"
+      url: "https://api.oregonlegislature.gov/odata/ODataService.svc/Measures"
+      match_pattern: '\b(medicaid|oregon health plan|healthier oregon|medical assistance|414\.|community engagement|work requirement)\b'
+
   federal_register:
+    public_inspection: true
     terms:
       - '"community engagement" Medicaid'
       - '"435.552" OR "435.603" OR "hold harmless" Medicaid'
@@ -142,6 +168,7 @@ channels:
   legiscan:
     min_relevance: 50
     year: 3
+    tracked_bills: []
     queries:
       - state: "OR"
         query: '("Medicaid" OR "Oregon Health Plan" OR "medical assistance" OR "Healthier Oregon") AND ("community engagement" OR "work requirement" OR "work requirements" OR (work NEAR requirement) OR "hold harmless" OR "public charge" OR "retroactive")'
@@ -186,3 +213,5 @@ channels:
       - '("Oregon Health Plan" OR OHP OR OHA OR "OAR 410" OR "OAR 461") ("community engagement" OR "work requirements" OR "federal changes" OR exemption OR retroactive)'
       - '("Apple Health" OR "WAC 182" OR "Utah Medicaid" OR "R414" OR "26B-3") ("community engagement" OR "work requirements" OR waiver OR exemption)'
       - 'Medicaid ("community engagement" OR "435.552" OR "hold harmless" OR "public charge" OR noncitizen) (guidance OR rule OR letter OR injunction)'
+    undated_queries:
+      - 'filetype:pdf ("Oregon Health Plan" OR "Apple Health" OR "Utah Medicaid") ("community engagement" OR "work" OR exemption OR "H.R. 1")'

@@ -117,7 +117,33 @@ jurisdictions:
       - "Driver License Division"
 
 channels:
+  page_watch:
+    enabled: true
+
+  state_registers:
+    - kind: "ut_rss"
+      jurisdiction: "UT"
+      name: "Utah Office of Administrative Rules"
+      url: "https://rules.utah.gov/feed/"
+      match_pattern: '\b(r436|r261|vital records|birth certificate|driver license|sex designation|name change|26b-8|utah state bulletin)\b'
+    - kind: "wa_wsr"
+      jurisdiction: "WA"
+      name: "Washington State Register (Department of Health)"
+      url: "https://lawfilesext.leg.wa.gov/law/wsr/agency/Health,Departmentof.htm"
+      match_pattern: '\b(246-490|246-491|vital records|birth certificate|sex designation|gender|amend|certificate)\b'
+    - kind: "wa_wsr"
+      jurisdiction: "WA"
+      name: "Washington State Register (Department of Licensing)"
+      url: "https://lawfilesext.leg.wa.gov/law/wsr/agency/Licensing,Departmentof.htm"
+      match_pattern: '\b(308-104|308-105|driver|identicard|gender|sex designation|name change|real id)\b'
+    - kind: "or_olis_odata"
+      jurisdiction: "OR"
+      name: "Oregon Legislative Information System (OLIS)"
+      url: "https://api.oregonlegislature.gov/odata/ODataService.svc/Measures"
+      match_pattern: '\b(name change|change of sex|sex designation|vital records|birth certificate|33\.410|33\.420|33\.460|21\.145|432\.235)\b'
+
   federal_register:
+    public_inspection: true
     terms:
       - '("passport" OR "passports") AND ("sex" OR "gender" OR "name change" OR "14168" OR "DS-11" OR "DS-82" OR "DS-5504")'
       - '("Social Security" OR "NUMIDENT" OR "SS-5") AND ("sex" OR "gender" OR "name change")'
@@ -157,6 +183,7 @@ channels:
   legiscan:
     min_relevance: 50
     year: 3
+    tracked_bills: []
     queries:
       - state: "OR"
         query: '"name change" OR "change of sex" OR "sex designation" OR "gender marker" OR "33.410" OR "33.420" OR "33.460" OR "106.220" OR "107.105" OR "432.235" OR "21.145"'
@@ -198,3 +225,5 @@ channels:
       - '(passport OR "DS-11" OR "DS-82" OR "DS-5504" OR "Social Security" OR "SS-5" OR USCIS OR "REAL ID") ("sex marker" OR "sex designation" OR "gender marker" OR "name change" OR "Orr v. Trump")'
       - '("Oregon" OR "courts.oregon.gov" OR "Washington" OR "doh.wa.gov" OR "dol.wa.gov") ("name change" OR "change of sex" OR "sex designation" OR "gender designation" OR "filing fee" OR marriage OR dissolution) (form OR fee OR packet OR rule)'
       - '("Utah" OR "utcourts.gov" OR "vitalrecords.utah.gov" OR "dld.utah.gov") ("name change" OR "sex designation" OR "gender marker" OR "birth certificate" OR "78A-2-301") (form OR fee OR rule)'
+    undated_queries:
+      - 'filetype:pdf ("courts.oregon.gov" OR "courts.wa.gov" OR "utcourts.gov" OR "travel.state.gov") ("fee schedule" OR "name and sex change" OR "DS-11" OR "DS-82")'

@@ -3,7 +3,8 @@ name: Policy Radar
 # Twice-weekly CivicDesk Policy Wire (Tuesdays and Fridays, 16:23 UTC) plus
 # on-demand manual runs. Dynamically discovers enabled desks from `data/wire/*.yaml`
 # so new desks added to CivicDesk enter rotation without workflow edits.
-# Read-only against repository contents: opens or updates `policy-radar` issues only.
+# Read-only against repository contents: maintains per-desk `wire:state` ledger,
+# `wire:health` diagnostics, and `policy-radar` dispatch issues only.
 
 on:
   schedule:
@@ -16,12 +17,12 @@ on:
         default: "all"
         type: string
       lookback_days:
-        description: "Days to look back (1 to 60)"
+        description: "Default days to look back when no prior channel cursor exists (1 to 60)"
         required: false
         default: "7"
         type: string
       dry_run:
-        description: "Preview wire report in Job Summary without opening or commenting on an issue"
+        description: "Preview wire report in Job Summary without updating state, health, or dispatch issues"
         required: false
         default: false
         type: boolean
@@ -98,18 +99,26 @@ jobs:
       - name: Install PyYAML
         run: python3 -m pip install -r requirements.txt
 
-      - name: Fetch recent desk wire issues for deduplication
+      - name: Fetch per-desk JSON state ledger and recent dispatch issues
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DESK_LABEL: "radar:${{ matrix.desk }}"
         run: |
           gh issue list \
+            --label "policy-radar" \
             --label "$DESK_LABEL" \
             --state all \
             --limit 25 \
-            --json number,state,title,body,comments > recent-radar-issues.json || echo "[]" > recent-radar-issues.json
+            --json number,state,title,labels,body,comments > recent-radar-issues.json || echo "[]" > recent-radar-issues.json
+          gh issue list \
+            --label "wire:state" \
+            --label "$DESK_LABEL" \
+            --state all \
+            --limit 1 \
+            --json number,state,body > wire-state-issue.json || echo "[]" > wire-state-issue.json
 
       - name: Run CivicDesk Policy Wire sweep
+        id: sweep
         env:
           DESK: ${{ matrix.desk }}
           LOOKBACK_RAW: ${{ inputs.lookback_days }}
@@ -117,20 +126,122 @@ jobs:
           LEGISCAN_API_KEY: ${{ secrets.LEGISCAN_API_KEY }}
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WIRE_HEARTBEAT_URL: ${{ secrets.WIRE_HEARTBEAT_URL }}
         run: |
           days="${LOOKBACK_RAW:-7}"
           if ! [[ "$days" =~ ^[0-9]+$ ]]; then
             days="7"
           fi
+          set +e
           python3 scripts/policy_radar.py \
             --desk "$DESK" \
             --days "$days" \
             --ai-brief \
             --seen-issues recent-radar-issues.json \
+            --state-in wire-state-issue.json \
+            --state-out wire-state-out.json \
+            --state-issue-body wire-state-body.md \
             --report radar-report.md \
             --results radar-results.json
-          jq -r '.statuses[] | "  \(.source): \(.status)"' radar-results.json
-          cat radar-report.md >> "$GITHUB_STEP_SUMMARY"
+          rc=$?
+          set -e
+          echo "radar_rc=$rc" >> "$GITHUB_OUTPUT"
+          if [ -f radar-results.json ]; then
+            jq -r '.statuses[] | "  \(.source): \(.status)"' radar-results.json
+          fi
+          if [ -f radar-report.md ]; then
+            cat radar-report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Persist per-desk wire:state ledger issue
+        if: inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DESK: ${{ matrix.desk }}
+          DESK_LABEL: "radar:${{ matrix.desk }}"
+        run: |
+          if [ ! -f wire-state-body.md ]; then
+            echo "No state body produced; skipping state ledger update."
+            exit 0
+          fi
+          all_failed="$(jq -r '.all_channels_failed // false' radar-results.json 2>/dev/null || echo 'false')"
+          if [ "$all_failed" = "true" ]; then
+            echo "All channels failed; preserving prior wire:state cursor."
+            exit 0
+          fi
+          gh label create "wire:state" \
+            --description "Automated Policy Wire JSON state, cursor, and fingerprint ledger" \
+            --color "57534E" 2>/dev/null || true
+          gh label create "$DESK_LABEL" \
+            --description "CivicDesk Policy Wire dispatches for the $DESK desk" \
+            --color "D6006C" 2>/dev/null || true
+          state_num="$(jq -r '.[0].number // empty' wire-state-issue.json)"
+          if [ -n "$state_num" ]; then
+            gh issue edit "$state_num" --body-file wire-state-body.md
+          else
+            created_url="$(gh issue create \
+              --title "CivicDesk Wire State ($DESK) — automated ledger" \
+              --label "wire:state" \
+              --label "$DESK_LABEL" \
+              --body-file wire-state-body.md)"
+            gh issue close "$created_url" --reason "completed" || true
+          fi
+
+      - name: Open, update, or resolve wire:health issue on channel errors or empty streaks
+        if: inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DESK: ${{ matrix.desk }}
+          DESK_LABEL: "radar:${{ matrix.desk }}"
+        run: |
+          if [ ! -f radar-results.json ]; then
+            exit 0
+          fi
+          alert_count="$(jq -r '(.health_alerts // []) | length' radar-results.json)"
+          existing_health="$(gh issue list --state open --label "wire:health" --label "$DESK_LABEL" --limit 1 --json number --jq '.[0].number // empty')"
+          today="$(date -u +%Y-%m-%d)"
+          if [ "$alert_count" -gt 0 ]; then
+            gh label create "wire:health" \
+              --description "Policy Wire channel error, key expiration, or silent empty-streak alert" \
+              --color "B45309" 2>/dev/null || true
+            gh label create "$DESK_LABEL" \
+              --description "CivicDesk Policy Wire dispatches for the $DESK desk" \
+              --color "D6006C" 2>/dev/null || true
+            python3 - <<'PY'
+            import json
+            from pathlib import Path
+
+            res = json.loads(Path("radar-results.json").read_text(encoding="utf-8"))
+            lines = [
+                f"## CivicDesk Wire Health Alert — `{res['desk']}` ({res['desk_label']})",
+                "",
+                f"Sweep on `{res['today']}` flagged **{len(res.get('health_alerts', []))}** channel health issue(s):",
+                "",
+            ]
+            for alert in res.get("health_alerts", []):
+                lines.append(f"- {alert}")
+            lines.extend(["", "### Channel telemetry", "", "| Channel | Status |", "|---|---|"])
+            for st in res.get("statuses", []):
+                src = str(st["source"]).replace("|", "/")
+                val = str(st["status"]).replace("|", "/").replace("\n", " ")
+                lines.append(f"| `{src}` | {val} |")
+            lines.append("")
+            Path("wire-health-body.md").write_text("\n".join(lines), encoding="utf-8")
+            PY
+            if [ -n "$existing_health" ]; then
+              gh issue edit "$existing_health" --title "CivicDesk Wire Health ($DESK): $alert_count channel alert(s) ($today)"
+              gh issue comment "$existing_health" --body-file wire-health-body.md
+            else
+              gh issue create \
+                --title "CivicDesk Wire Health ($DESK): $alert_count channel alert(s) ($today)" \
+                --label "wire:health" \
+                --label "$DESK_LABEL" \
+                --body-file wire-health-body.md
+            fi
+          elif [ -n "$existing_health" ]; then
+            gh issue comment "$existing_health" --body "All configured channels for \`$DESK\` completed without health alerts on \`$today\`. Closing resolved \`wire:health\` issue."
+            gh issue close "$existing_health" --reason "completed"
+          fi
 
       - name: Open or update desk policy-radar issue when unseen dispatches arrive
         env:
@@ -139,6 +250,9 @@ jobs:
           DESK_LABEL: "radar:${{ matrix.desk }}"
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
+          if [ ! -f radar-results.json ]; then
+            exit 0
+          fi
           new_count="$(jq -r '.new_count // 0' radar-results.json)"
           urgent_count="$(jq -r '.urgent_count // 0' radar-results.json)"
           if [ "$DRY_RUN" = "true" ]; then
@@ -157,11 +271,11 @@ jobs:
             --color "D6006C" 2>/dev/null || true
           if [ "$urgent_count" -gt 0 ]; then
             gh label create "wire:urgent" \
-              --description "Contains primary regulatory/court filings or urgent statutory/fee changes" \
+              --description "Contains direct registry changes, near-term final rules, or court orders/opinions" \
               --color "111827" 2>/dev/null || true
           fi
           today="$(date -u +%Y-%m-%d)"
-          open_num="$(jq -r '[.[] | select(.state == "OPEN")][0].number // empty' recent-radar-issues.json)"
+          open_num="$(jq -r '[.[] | select(.state == "OPEN" and (([.labels[]?.name] | index("wire:health")) == null) and (([.labels[]?.name] | index("wire:state")) == null))][0].number // empty' recent-radar-issues.json)"
           if [ -n "$open_num" ]; then
             gh issue comment "$open_num" --body-file radar-report.md
             if [ "$urgent_count" -gt 0 ]; then
@@ -187,4 +301,13 @@ jobs:
                 --label "$DESK_LABEL" \
                 --body-file radar-report.md
             fi
+          fi
+
+      - name: Fail job when every active wire channel failed
+        env:
+          RADAR_RC: ${{ steps.sweep.outputs.radar_rc }}
+        run: |
+          if [ "${RADAR_RC:-0}" -ne 0 ]; then
+            echo "Every active Policy Wire channel failed (exit code $RADAR_RC)." >&2
+            exit "$RADAR_RC"
           fi
