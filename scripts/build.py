@@ -482,6 +482,8 @@ def validate_registry(entries: list[dict], expected_prefix: str, expected_desk: 
         elif read_depth != "not_read" and read_by != "human_machine_hybrid":
             errors.append(f"source {sid}: read source requires read_by='human_machine_hybrid'")
         as_date(s["checked"])
+        if s.get("review_by"):
+            as_date(s["review_by"])
         out[sid] = s
     return out
 
@@ -678,6 +680,11 @@ def main(argv: list[str] | None = None) -> int:
     sources = {**med_map, **id_map}
 
     for fid, f in facts.items():
+        if f.get("review_by"):
+            try:
+                as_date(f["review_by"])
+            except ValueError:
+                errors.append(f"fact {fid}: invalid review_by date {f['review_by']!r}")
         for sid in f.get("sources", []):
             if sid not in sources:
                 errors.append(f"fact {fid}: unknown source {sid}")

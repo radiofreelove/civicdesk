@@ -128,6 +128,7 @@ wa_dol_fee:
   note: 'Quick facts: the license line of ''What it costs'' on the Washington page, which pulls this value.'
 ut_fee_petition:
   value: $375
+  review_by: '2027-01-01'
   sources:
   - ID-UT-CODE-78A-2-301
   - ID-UT-COURTS-FEES
