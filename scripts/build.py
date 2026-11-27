@@ -94,6 +94,7 @@ CSP_META = (
 BADGE_RE = re.compile(r'<span class="badge badge-(not-official|not-confirmed|our-reading)">')
 CHECKED_P_RE = re.compile(r'(<p class="checked">.*?</p>)', re.S)
 LEDE_P_RE = re.compile(r'(<p class="lede">.*?</p>)', re.S)
+WHY_P_RE = re.compile(r'(<p class="why-it-matters">.*?</p>)', re.S)
 PURPOSE_P_RE = re.compile(r'(<p class="purpose">.*?</p>)', re.S)
 
 _SRC_LINK_RE = r'<a class="src" [^>]+><span class="src-label">Source:</span>(?:&nbsp;|\s+)[^<]+</a>'
@@ -183,7 +184,7 @@ def render_label_key(sources_labels_url: str) -> str:
 
 def insert_label_key(html: str, sources_labels_url: str) -> str:
     key = render_label_key(sources_labels_url)
-    for pattern in (LEDE_P_RE, PURPOSE_P_RE, CHECKED_P_RE):
+    for pattern in (WHY_P_RE, LEDE_P_RE, PURPOSE_P_RE, CHECKED_P_RE):
         if pattern.search(html):
             return pattern.sub(r"\1\n" + key, html, count=1)
     return html
@@ -211,8 +212,8 @@ _EMPTY_P_RE = re.compile(r"<p(?![^>]*\bid=)(?:\s[^>]*)?>\s*</p>\s*")
 _ID_ATTR_RE = re.compile(r'\bid="([^"]+)"')
 _VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
 _OPTIONAL_END_TAGS = {"li", "p", "dt", "dd", "tr", "td", "th", "option", "thead", "tbody"}
-HEAD_P_CLASSES = {"kicker", "lede", "purpose", "checked"}
-HEAD_BLOCK_CLASSES = {"hero-split", "page-head", "fp-hero", "guide-switch", "brief-strip", "label-key"}
+HEAD_P_CLASSES = {"kicker", "lede", "why-it-matters", "purpose", "checked"}
+HEAD_BLOCK_CLASSES = {"hero-split", "intro-split", "page-head", "fp-hero", "guide-switch", "brief-strip", "label-key"}
 
 
 # ---------- Four-beat page fields (data/pages.yaml) ----------
@@ -222,9 +223,10 @@ HEAD_BLOCK_CLASSES = {"hero-split", "page-head", "fp-hero", "guide-switch", "bri
 SPEC_KEYS = ("cost", "clock", "paperwork", "catch")
 ANALOGY_PLACEMENTS = {"lead", "inline"}
 ANALOGY_ID_RE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
-# Abbreviations whose periods do not end a sentence (U.S., D.C., a.m., No., Sept.).
+# Abbreviations whose periods do not end a sentence (U.S., D.C., a.m., No., Sept., Fed. Reg., v.).
 _ABBREV_RE = re.compile(
-    r"\b(?:[A-Za-z]\.){2,}|\b(?:No|Nos|Mr|Ms|Mrs|Dr|St|Inc|Co|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept|Sep|Oct|Nov|Dec|Ch|Sec|Stat|Or|Wn|App|Rev|Ann|vs|etc|approx|p|pp|para|ed)\."
+    r"\b(?:[A-Za-z]\.){2,}|\b(?:No|Nos|Mr|Ms|Mrs|Dr|St|Inc|Co|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept|Sep|Oct|Nov|Dec"
+    r"|Ch|Sec|Subsec|Art|Stat|Fed|Reg|Admin|Dept|Div|Gov|Sen|Rep|Mass|Wash|Ore|Or|Wn|App|Rev|Ann|vs|v|etc|approx|p|pp|para|ed)\."
 )
 _SENTENCE_BREAK_RE = re.compile(r"[.!?][\"')\]]*\s+(?=[\"'(\[]?[A-Z0-9])")
 
@@ -249,21 +251,24 @@ def validate_page_voice(p: dict, sources: Mapping, facts: Mapping, errors: list[
                 if key not in SPEC_KEYS:
                     errors.append(f"page {slug}: unknown spec key '{key}' (allowed: {', '.join(SPEC_KEYS)})")
             for key in ("cost", "clock"):
-                if spec.get(key) is not None and spec[key] not in facts:
-                    errors.append(f"page {slug}: spec.{key} '{spec[key]}' is not a data/facts.yaml key")
-            if spec.get("paperwork") is not None and spec["paperwork"] not in sources:
-                errors.append(f"page {slug}: spec.paperwork '{spec['paperwork']}' is not a source id")
+                val = spec.get(key)
+                if val is not None and (not isinstance(val, str) or val not in facts):
+                    errors.append(f"page {slug}: spec.{key} '{val}' is not a data/facts.yaml key")
+            paperwork = spec.get("paperwork")
+            if paperwork is not None and (not isinstance(paperwork, str) or paperwork not in sources):
+                errors.append(f"page {slug}: spec.paperwork '{paperwork}' is not a source id")
             catch = spec.get("catch")
             if catch is not None:
-                if not isinstance(catch, dict) or not str(catch.get("text") or "").strip():
+                if not isinstance(catch, dict) or not isinstance(catch.get("text"), str) or not catch["text"].strip():
                     errors.append(f"page {slug}: spec.catch needs 'text' and 'basis'")
                 else:
-                    basis = catch.get("basis") or []
-                    if not basis:
+                    basis = catch.get("basis")
+                    if not isinstance(basis, list) or not basis:
                         errors.append(f"page {slug}: spec.catch needs at least one basis source id")
-                    for sid in basis:
-                        if sid not in sources:
-                            errors.append(f"page {slug}: spec.catch basis '{sid}' is not a source id")
+                    else:
+                        for sid in basis:
+                            if not isinstance(sid, str) or sid not in sources:
+                                errors.append(f"page {slug}: spec.catch basis '{sid}' is not a source id")
 
     analogies = p.get("analogies")
     if analogies is None:
@@ -294,12 +299,12 @@ def validate_page_voice(p: dict, sources: Mapping, facts: Mapping, errors: list[
             errors.append(f"{label}: 'boundary' (where the comparison stops) is required")
         elif not is_one_sentence(boundary):
             errors.append(f"{label}: 'boundary' must be exactly one sentence")
-        basis = a.get("basis") or []
+        basis = a.get("basis")
         if not isinstance(basis, list) or not basis:
             errors.append(f"{label}: 'basis' needs at least one MED-* or ID-* source id")
         else:
             for sid in basis:
-                if sid not in sources:
+                if not isinstance(sid, str) or sid not in sources:
                     errors.append(f"{label}: basis '{sid}' is not in data/sources/*.yaml")
         unknown = set(a) - {"id", "placement", "compare", "boundary", "basis"}
         if unknown:
@@ -321,10 +326,11 @@ def analogy_for(page: Mapping, aid: str | None = None) -> dict | None:
 
 # ---------- Sitemap lastmod (data/lastmod.json) ----------
 # lastmod follows page content, not source check dates. The hash covers <main> text, image alt
-# text, and absolute links, minus "Sources checked" lines, the print masthead, the Sources panel,
-# per-section source links, and page tabs, so re-checking a source never moves lastmod.
+# text, and absolute links, minus "Sources checked" lines, checked-date spans, the print masthead,
+# the Sources panel, per-section source links, and page tabs, so re-checking a source never moves
+# lastmod.
 LASTMOD_PATH = DATA / "lastmod.json"
-_HASH_SKIP_CLASSES = {"checked", "print-masthead", "page-sources", "section-sources-row", "page-tabs"}
+_HASH_SKIP_CLASSES = {"checked", "checked-date", "print-masthead", "page-sources", "section-sources-row", "page-tabs"}
 _HASH_VOID = {"br", "hr", "img", "input", "meta", "link", "source", "wbr", "col", "area", "base", "embed", "track"}
 CI_ENV_KEYS = ("CI", "GITHUB_ACTIONS", "WORKERS_CI", "WORKERS_CI_COMMIT_SHA", "WORKERS_CI_BRANCH", "CF_PAGES")
 
@@ -355,14 +361,20 @@ class _ContentText(HTMLParser):
             if tag not in _HASH_VOID:
                 self._skip = 1
             return
+        self._collect(a)
+
+    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        # Self-closing tags (<path/> inside inline SVG icons, <img/>) open no element, so they
+        # must never change the skip depth; they only contribute alt text and links.
+        if self._in_main and not self._skip and not self._raw:
+            self._collect(dict(attrs))
+
+    def _collect(self, a: dict) -> None:
         if a.get("alt"):
             self.parts.append(f"[alt:{a['alt']}]")
         href = a.get("href") or ""
         if href.startswith(("http://", "https://")):
             self.parts.append(f"[href:{href}]")
-
-    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        self.handle_starttag(tag, attrs)
 
     def handle_endtag(self, tag: str) -> None:
         if tag == "main":
@@ -1120,7 +1132,7 @@ def main(argv: list[str] | None = None) -> int:
                 {"slug": "id-records-washington", "name": "Washington", "guide": "Washington court, birth record, and DOL", "sep": False},
                 {"slug": "id-records-utah", "name": "Utah", "guide": "Utah court, Vital Records, and DLD", "sep": False},
                 {"slug": "id-records-federal", "name": "Federal records", "guide": "Passports, Social Security & immigration", "sep": False},
-                {"slug": "id-records-path", "name": "Find your path", "guide": "Personalized step-by-step path finder", "sep": True},
+                {"slug": "id-records-path", "name": "Find your path", "guide": "Step-by-step record-update order", "sep": True},
                 {"slug": "medicaid", "name": "2027 Medicaid desk", "guide": "OHP, Apple Health, and Utah Medicaid", "sep": False},
                 {"slug": "start", "name": "Start here", "guide": "2-question router & full guide finder", "sep": False},
             ]
@@ -1130,7 +1142,7 @@ def main(argv: list[str] | None = None) -> int:
             {"slug": "medicaid-oregon", "name": "Oregon Medicaid (OHP)", "guide": "Rules, exemptions & 1-minute check", "sep": False},
             {"slug": "medicaid-washington", "name": "Washington Apple Health", "guide": "Rules, exemptions & 1-minute check", "sep": False},
             {"slug": "medicaid-utah", "name": "Utah Medicaid", "guide": "Rules, exclusions & 1-minute check", "sep": False},
-            {"slug": "id-records-path", "name": "ID & records path finder", "guide": "Step-by-step custom checklist", "sep": True},
+            {"slug": "id-records-path", "name": "ID & records path finder", "guide": "Step-by-step record-update order", "sep": True},
             {"slug": "id-records-oregon", "name": "Oregon ID & vital records", "guide": "Marriage, divorce, court, OHA & DMV", "sep": False},
             {"slug": "id-records-washington", "name": "Washington ID & vital records", "guide": "Marriage, divorce, court, DOH & DOL", "sep": False},
             {"slug": "id-records-utah", "name": "Utah ID & vital records", "guide": "Marriage, divorce, court, Vital & DLD", "sep": False},
@@ -1147,7 +1159,7 @@ def main(argv: list[str] | None = None) -> int:
                     (f"medicaid-{st}", f"{st.capitalize()} home"),
                     (f"medicaid-{st}-check", "1-minute check"),
                     (f"medicaid-{st}-rules", "Rules"),
-                    (f"medicaid-{st}-reasons", "Exemptions"),
+                    (f"medicaid-{st}-reasons", "Exclusions & exceptions" if st == "utah" else "Exemptions"),
                     (f"medicaid-{st}-apply", "Apply"),
                     (f"medicaid-{st}-help", "Get help"),
                 ]

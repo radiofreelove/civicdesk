@@ -22,7 +22,7 @@
 
 <h2 id="states">Pick your state guide or 1-minute check</h2>
 {% macro checked(key) -%}
-Sources checked {% if state_checked[key]['oldest'] == state_checked[key]['newest'] %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time> to <time datetime="{{ state_checked[key]['newest'] }}">{{ state_checked[key]['newest']|human_date }}</time>{% endif %}
+<span class="checked-date">Sources checked {% if state_checked[key]['oldest'] == state_checked[key]['newest'] %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time> to <time datetime="{{ state_checked[key]['newest'] }}">{{ state_checked[key]['newest']|human_date }}</time>{% endif %}</span>
 {%- endmacro %}
 {{ bs.state_tiles([
   {'state': 'Oregon', 'program': 'Oregon Health Plan (OHP)', 'href': page_url('medicaid-oregon'),

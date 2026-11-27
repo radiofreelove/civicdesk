@@ -42,7 +42,7 @@
 
 <h2 id="states">Choose your state or federal guide</h2>
 {% macro checked(key) -%}
-Sources checked {% if state_checked[key]['oldest'] == state_checked[key]['newest'] %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time> to <time datetime="{{ state_checked[key]['newest'] }}">{{ state_checked[key]['newest']|human_date }}</time>{% endif %}
+<span class="checked-date">Sources checked {% if state_checked[key]['oldest'] == state_checked[key]['newest'] %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time>{% else %}<time datetime="{{ state_checked[key]['oldest'] }}">{{ state_checked[key]['oldest']|human_date }}</time> to <time datetime="{{ state_checked[key]['newest'] }}">{{ state_checked[key]['newest']|human_date }}</time>{% endif %}</span>
 {%- endmacro %}
 {% set or_summary %}Marriage and divorce updates, {{ fact('or_fee_petition') }} court petitions (confidential when a sex change is included), OHA 2673 birth records, and DMV cards.{% endset %}
 {% set ut_summary %}Marriage and divorce updates, district court name and sex orders ({{ fact('ut_fee_petition') }} filing fee, waiver available), form 902, and DLD steps.{% endset %}

@@ -666,14 +666,18 @@
   template: medicaid/utah/check.html
   title: Do the Utah rules fit me? A 1-minute check
   nav_label: Do the rules fit me?
-  description: Answer 3 quick questions to see which published Utah Medicaid work or activity rules, exclusions, and exceptions match your answers. Your answers never leave your device.
+  description: Answer 3 quick questions to see which published Utah Medicaid work or activity rules, exclusions, mandatory exceptions, and short-term hardships match your answers. Your answers never leave your device.
   checked: '2026-11-24'
   sources:
   - MED-U01
+  - MED-U02
   - MED-U03
   - MED-U04
   - MED-U05
+  - MED-U07
   - MED-U28
+  - MED-U39
+  - MED-U40
   - MED-S27
   show_short_toggle: false
   scripts:

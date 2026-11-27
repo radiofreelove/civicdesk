@@ -12,8 +12,8 @@
   var STATE = (CHECK && CHECK.state) || "This state";
   var AGENCY = (CHECK && CHECK.agency) || "the state";
 
-  // Default result wording. A state file overrides a key with a string or a function of the
-  // number of items picked (CHECK.text.reasonTitleExcluded, for example).
+  // Default result wording. A state file overrides a key with a string or a function of
+  // (number picked, keys picked), for example CHECK.text.reasonTitle.
   var DEFAULT_TEXT = {
     ageTitle: function () { return "The new rules do not apply to your age group."; },
     reasonTitle: function (n) {
@@ -28,12 +28,12 @@
     waysHeading: function () { return "Published ways to meet the requirement or get help"; }
   };
 
-  function resultText(key, count) {
+  function resultText(key, count, picked) {
     var custom = CHECK && CHECK.text ? CHECK.text : {};
     // An excluded-reason title falls back to the general reason title.
     if (key === "reasonTitleExcluded" && !custom.reasonTitleExcluded) { key = "reasonTitle"; }
     var value = custom[key] || DEFAULT_TEXT[key];
-    if (typeof value === "function") { return value(count); }
+    if (typeof value === "function") { return value(count, picked || []); }
     return typeof value === "string" ? value : "";
   }
 
@@ -301,6 +301,11 @@
       if (!item) { return; }
       var li = el("li");
       li.appendChild(el("strong", item.label));
+      // A state that names its own categories (CHECK.kinds) tags each reason with one;
+      // an item not in that table can carry its own item.tag override.
+      var kind = item.kind && CHECK && CHECK.kinds ? CHECK.kinds[item.kind] : null;
+      var tag = item.tag || (kind && kind.tag);
+      if (tag) { li.appendChild(document.createTextNode(" ")); li.appendChild(el("span", tag, "reason-kind")); }
       if (item.how) { li.appendChild(document.createTextNode(" " + item.how)); }
       ul.appendChild(li);
     });
@@ -322,7 +327,7 @@
     Array.prototype.slice.call(result.children).forEach(function (child) {
       if (child !== title) { result.removeChild(child); }
     });
-    title.textContent = "Your results";
+    title.textContent = "Check results";
     return title;
   }
 
@@ -360,7 +365,7 @@
       result.appendChild(para([link(CHECK.age.link.href, CHECK.age.link.text)]));
     } else if (reasons.length > 0) {
       result.insertBefore(buildEmblem("shield", "Reason check", "result-emblem-good"), title);
-      title.textContent = resultText(notApply ? "reasonTitleExcluded" : "reasonTitle", reasons.length);
+      title.textContent = resultText(notApply ? "reasonTitleExcluded" : "reasonTitle", reasons.length, reasons);
       result.appendChild(el("p", CHECK.reasonIntro));
       result.appendChild(listOf(reasons, REASONS));
       if (meets.length > 0) {

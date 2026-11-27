@@ -82,6 +82,29 @@ def test_js_literals_skip_comments_and_decode_escapes() -> None:
     assert cv.find_hits(texts[1]) == ["my-results"]
 
 
+def test_js_literals_skip_regex_literals() -> None:
+    # Regression: a regex ending with //i (like /^https?:\/\//i) or containing quotes must not be
+    # mistaken for a // line comment or string delimiter that hides later strings.
+    src = (
+        'if (/^https?:\\/\\//i.test(href)) { msg = "You should call."; }\n'
+        "var q = /['\"]/g; var next = 'Print my results';\n"
+    )
+    texts = [t for _, t in cv.js_string_literals(src)]
+    assert texts == ["You should call.", "Print my results"]
+    assert cv.find_hits(texts[0]) == ["you-should"]
+    assert cv.find_hits(texts[1]) == ["my-results"]
+
+
+def test_html_runs_resume_after_a_sources_panel_with_icons() -> None:
+    # Regression: a self-closing <path/> inside the skipped Sources panel must not hide later text.
+    page = (
+        '<main><section class="page-sources"><svg class="icon"><path d="M0 0"/></svg><p>Sources</p></section>'
+        "<p>You should file first.</p></main>"
+    )
+    hits = {name for _, text in cv.html_runs(page) for name in cv.find_hits(text)}
+    assert hits == {"you-should"}
+
+
 def test_html_runs_join_inline_markup_and_skip_sources_panel() -> None:
     page = (
         "<header><p>you should not be scanned</p></header>"
