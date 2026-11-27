@@ -2,10 +2,15 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah / License and ID</p>
-<h1>Utah driver license or ID: name and sex marker</h1>
-{{ m.lede("To change your name on a Utah license or ID, update Social Security first and bring court-sealed papers to an in-person appointment. Call the Driver License Division ahead of time for sex-marker requirements.") }}
-{{ m.checked_line(page) }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah / License and ID</p>
+    <h1>Utah driver license or ID: name and sex marker</h1>
+    {{ m.lede("To change your name on a Utah license or ID, update Social Security first and bring court-sealed papers to an in-person appointment. Call the Driver License Division ahead of time for sex-marker requirements.") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ v.stat_hero_strip([
   {'num': '$23', 'label': 'DLD replacement card fee', 'note': 'In-person appointment required'},

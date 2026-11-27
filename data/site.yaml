@@ -23,7 +23,7 @@ desks:
     source_label: "Medicaid sources (MED-*)"
     source_note: "OHP, Apple Health, Utah & federal"
     hub: medicaid
-    art: medicaid-calendar.webp
+    art: print-homes.webp
     states:
       - {name: Oregon, page: medicaid-oregon}
       - {name: Washington, page: medicaid-washington}
@@ -38,7 +38,7 @@ desks:
     source_note: "Courts, vital records, DMVs & federal"
     hub: id-records
     tool: {label: "Path finder", page: id-records-path}
-    art: id-sequence.webp
+    art: print-cards.webp
     states:
       - {name: Oregon, page: id-records-oregon}
       - {name: Washington, page: id-records-washington}
@@ -52,7 +52,7 @@ desks:
     launch_note: "Planned for 2027"
 
 # Zero-code drop-in artist logo configuration (see docs/DESIGN.md Section 6).
-# Defaults keep CivicDesk's programmatic 5-stripe mark and HTML wordmark unchanged.
+# Defaults keep CivicDesk's programmatic faceted desk mark (scripts/make_mark.py) and HTML wordmark.
 brand:
   custom_artwork: false
   mode: "mark_and_wordmark"
@@ -61,4 +61,4 @@ brand:
   favicon_svg: "favicon.svg"
   apple_touch_icon: "apple-touch-icon.png"
   og_image: "og-card.png"
-  og_image_alt: "CivicDesk five-stripe service-desk mark on press ink"
+  og_image_alt: "CivicDesk faceted desk mark on press ink"

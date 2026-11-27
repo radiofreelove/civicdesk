@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Legal Name, ID &amp; Vital Records</p>
-<h1>Primary sources for Legal Name, ID &amp; Vital Records (<code>ID-*</code>)</h1>
-{{ m.lede("Every statute, court fee schedule, agency form, and legal-aid reference cited on the /id-records/ desk, backed by data/sources/id_records.yaml.") }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Legal Name, ID &amp; Vital Records</p>
+    <h1>Primary sources for Legal Name, ID &amp; Vital Records (<code>ID-*</code>)</h1>
+    {{ m.lede("Every statute, court fee schedule, agency form, and legal-aid reference cited on the /id-records/ desk, backed by data/sources/id_records.yaml.") }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ m.onthispage([
   ('src-or', 'Oregon'),

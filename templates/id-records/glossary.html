@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Plain definitions</p>
-<h1>Words to know</h1>
-{{ m.lede("Court, DMV, and vital-records forms use legal words most people rarely see. Scan this plain-English definition table in the order those words show up.") }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Plain definitions</p>
+    <h1>Words to know</h1>
+    {{ m.lede("Court, DMV, and vital-records forms use legal words most people rarely see. Scan this plain-English definition table in the order those words show up.") }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {% set g_noe %}Oregon notice mailed once your judgment is entered in court records, making the change official. {{ src('ID-OR-OJD-ADULT-PACKET') }}{% endset %}
 {% set g_conf %}Oregon <strong>confidential</strong> cases restrict access to you, counsel, the court, and judge-authorized people; Washington <strong>sealed</strong> superior-court files have zero public access; Utah <strong>private</strong> cases shield filed papers while case history and hearings stay public. {{ src('ID-OR-2026-CH52') }} {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}{% endset %}

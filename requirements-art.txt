@@ -1,0 +1,5 @@
+# Only for redrawing the press prints (python3 scripts/make_art.py). Not needed to build or test the site.
+numpy>=2.0
+Pillow>=11.0
+fonttools>=4.50
+brotli>=1.1

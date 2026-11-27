@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Accessibility</p>
-<h1>Accessibility and inclusive communication</h1>
-{{ m.lede("CivicDesk follows UK Home Office and GOV.UK inclusive communication standards, W3C cognitive accessibility guidance, and WCAG 2.2 AAA reading contrast.") }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Accessibility</p>
+    <h1>Accessibility and inclusive communication</h1>
+    {{ m.lede("CivicDesk follows UK Home Office and GOV.UK inclusive communication standards, W3C cognitive accessibility guidance, and WCAG 2.2 AAA reading contrast.") }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ m.onthispage([
   ('standards', 'Built-in guardrails'),

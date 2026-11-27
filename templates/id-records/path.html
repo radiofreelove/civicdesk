@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block head %}<script src="{{ asset('js/path.js') }}" defer></script>{% endblock %}
 {% block main %}
-<p class="kicker">Legal Name, ID &amp; Vital Records</p>
-<h1>Find your record-update path</h1>
-{{ m.lede("Answer a few quick questions to see only the steps that fit your situation—whether you are updating your name after marriage or divorce, filing a court petition, or updating a sex or gender designation. Birth-certificate questions are optional, and your answers never leave this page.") }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Legal Name, ID &amp; Vital Records</p>
+    <h1>Find your record-update path</h1>
+    {{ m.lede("Answer a few quick questions to see only the steps that fit your situation—whether you are updating your name after marriage or divorce, filing a court petition, or updating a sex or gender designation. Birth-certificate questions are optional, and your answers never leave this page.") }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 <div class="callout callout-note no-js-only">
   <p class="callout-title"><strong>JavaScript is off, so use these full step-by-step pages instead:</strong></p>

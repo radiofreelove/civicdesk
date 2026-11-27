@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
+{% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">About</p>
-<h1>About CivicDesk</h1>
-{{ m.lede("CivicDesk is an independent, ad-free public-interest project offering plain-language guides to government rules, public benefits, and official records, backed by dated primary sources.") }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">About</p>
+    <h1>About CivicDesk</h1>
+    {{ m.lede("CivicDesk is an independent, ad-free public-interest project offering plain-language guides to government rules, public benefits, and official records, backed by dated primary sources.") }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ m.onthispage([
   ('boundaries', 'Mission & boundaries'),

@@ -2,10 +2,15 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Oregon / Court order</p>
-<h1>Oregon court order: name and legal sex change</h1>
-{{ m.lede("One Oregon court form can change your name, your legal sex, or both. Since July 1, 2026, any case that includes a sex change is confidential by law, and you can file without a lawyer.") }}
-{{ m.checked_line(page) }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Oregon / Court order</p>
+    <h1>Oregon court order: name and legal sex change</h1>
+    {{ m.lede("One Oregon court form can change your name, your legal sex, or both. Since July 1, 2026, any case that includes a sex change is confidential by law, and you can file without a lawyer.") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ m.onthispage([
   ('cost', 'Key numbers & costs'),

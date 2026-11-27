@@ -1,6 +1,7 @@
 # Complete page manifest for CivicDesk (civicdesk.net).
 
 - slug: index
+  art: print-front.webp
   route: /
   template: index.html
   title: Government rules and paperwork, explained in plain words
@@ -10,6 +11,7 @@
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: start
+  art: print-front.webp
   route: /start/
   template: start.html
   title: Find the right guide in 2 questions
@@ -19,6 +21,7 @@
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: medicaid
+  art: print-homes.webp
   route: /medicaid/
   desk: medicaid
   template: medicaid/index.html
@@ -29,7 +32,7 @@
   checked: '2026-11-24'
   show_short_toggle: false
 - slug: medicaid-oregon
-  art: medicaid-calendar.webp
+  art: print-oregon.webp
   route: /medicaid/oregon/
   desk: medicaid
   state: oregon
@@ -56,6 +59,7 @@
   - MED-S46
   show_short_toggle: true
 - slug: medicaid-oregon-check
+  art: print-calendar.webp
   route: /medicaid/oregon/check/
   desk: medicaid
   state: oregon
@@ -78,6 +82,7 @@
   - checker
   tool: true
 - slug: medicaid-oregon-rules
+  art: print-calendar.webp
   route: /medicaid/oregon/rules/
   desk: medicaid
   state: oregon
@@ -106,6 +111,7 @@
   - MED-S47
   show_short_toggle: true
 - slug: medicaid-oregon-reasons
+  art: print-window.webp
   route: /medicaid/oregon/reasons/
   desk: medicaid
   state: oregon
@@ -131,6 +137,7 @@
   - MED-S46
   show_short_toggle: true
 - slug: medicaid-oregon-apply
+  art: print-homes.webp
   route: /medicaid/oregon/apply/
   desk: medicaid
   state: oregon
@@ -157,6 +164,7 @@
   - MED-SSA-NAME
   show_short_toggle: true
 - slug: medicaid-oregon-letter
+  art: print-mail.webp
   route: /medicaid/oregon/letter/
   desk: medicaid
   state: oregon
@@ -176,6 +184,7 @@
   - MED-S42
   show_short_toggle: true
 - slug: medicaid-oregon-denied
+  art: print-mail.webp
   route: /medicaid/oregon/denied/
   desk: medicaid
   state: oregon
@@ -202,6 +211,7 @@
   - MED-S46
   show_short_toggle: true
 - slug: medicaid-oregon-bills
+  art: print-mail.webp
   route: /medicaid/oregon/bills/
   desk: medicaid
   state: oregon
@@ -215,6 +225,7 @@
   - MED-S01
   show_short_toggle: true
 - slug: medicaid-oregon-health
+  art: print-window.webp
   route: /medicaid/oregon/health/
   desk: medicaid
   state: oregon
@@ -239,6 +250,7 @@
   - MED-S46
   show_short_toggle: true
 - slug: medicaid-oregon-immigration
+  art: print-window.webp
   route: /medicaid/oregon/immigration/
   desk: medicaid
   state: oregon
@@ -264,6 +276,7 @@
   - MED-S51
   show_short_toggle: true
 - slug: medicaid-oregon-help
+  art: print-homes.webp
   route: /medicaid/oregon/help/
   desk: medicaid
   state: oregon
@@ -285,6 +298,7 @@
   - MED-S10
   show_short_toggle: true
 - slug: medicaid-oregon-words
+  art: print-letters.webp
   route: /medicaid/oregon/words/
   desk: medicaid
   state: oregon
@@ -307,6 +321,7 @@
   - MED-S29
   show_short_toggle: false
 - slug: medicaid-oregon-log
+  art: print-calendar.webp
   route: /medicaid/oregon/log/
   desk: medicaid
   state: oregon
@@ -325,7 +340,7 @@
   - MED-S01
   show_short_toggle: false
 - slug: medicaid-washington
-  art: medicaid-calendar.webp
+  art: print-washington.webp
   route: /medicaid/washington/
   desk: medicaid
   state: washington
@@ -353,6 +368,7 @@
   - MED-WA27
   show_short_toggle: true
 - slug: medicaid-washington-check
+  art: print-calendar.webp
   route: /medicaid/washington/check/
   desk: medicaid
   state: washington
@@ -377,6 +393,7 @@
   - checker
   tool: true
 - slug: medicaid-washington-rules
+  art: print-calendar.webp
   route: /medicaid/washington/rules/
   desk: medicaid
   state: washington
@@ -403,6 +420,7 @@
   - MED-WA27
   show_short_toggle: true
 - slug: medicaid-washington-reasons
+  art: print-window.webp
   route: /medicaid/washington/reasons/
   desk: medicaid
   state: washington
@@ -427,6 +445,7 @@
   - MED-S46
   show_short_toggle: true
 - slug: medicaid-washington-apply
+  art: print-homes.webp
   route: /medicaid/washington/apply/
   desk: medicaid
   state: washington
@@ -447,6 +466,7 @@
   - MED-SSA-NAME
   show_short_toggle: true
 - slug: medicaid-washington-letter
+  art: print-mail.webp
   route: /medicaid/washington/letter/
   desk: medicaid
   state: washington
@@ -466,6 +486,7 @@
   - MED-WA30
   show_short_toggle: true
 - slug: medicaid-washington-denied
+  art: print-mail.webp
   route: /medicaid/washington/denied/
   desk: medicaid
   state: washington
@@ -495,6 +516,7 @@
   - MED-WA27
   show_short_toggle: true
 - slug: medicaid-washington-bills
+  art: print-mail.webp
   route: /medicaid/washington/bills/
   desk: medicaid
   state: washington
@@ -510,6 +532,7 @@
   - MED-WA07
   show_short_toggle: true
 - slug: medicaid-washington-health
+  art: print-window.webp
   route: /medicaid/washington/health/
   desk: medicaid
   state: washington
@@ -533,6 +556,7 @@
   - MED-S46
   show_short_toggle: true
 - slug: medicaid-washington-immigration
+  art: print-window.webp
   route: /medicaid/washington/immigration/
   desk: medicaid
   state: washington
@@ -553,6 +577,7 @@
   - MED-S54
   show_short_toggle: true
 - slug: medicaid-washington-help
+  art: print-homes.webp
   route: /medicaid/washington/help/
   desk: medicaid
   state: washington
@@ -571,6 +596,7 @@
   - MED-WA10
   show_short_toggle: true
 - slug: medicaid-washington-words
+  art: print-letters.webp
   route: /medicaid/washington/words/
   desk: medicaid
   state: washington
@@ -595,6 +621,7 @@
   - MED-WA27
   show_short_toggle: false
 - slug: medicaid-washington-log
+  art: print-calendar.webp
   route: /medicaid/washington/log/
   desk: medicaid
   state: washington
@@ -610,7 +637,7 @@
   - MED-WA22
   show_short_toggle: false
 - slug: medicaid-utah
-  art: medicaid-calendar.webp
+  art: print-utah.webp
   route: /medicaid/utah/
   desk: medicaid
   state: utah
@@ -636,6 +663,7 @@
   - MED-S41
   show_short_toggle: true
 - slug: medicaid-utah-check
+  art: print-calendar.webp
   route: /medicaid/utah/check/
   desk: medicaid
   state: utah
@@ -658,6 +686,7 @@
   - checker
   tool: true
 - slug: medicaid-utah-rules
+  art: print-calendar.webp
   route: /medicaid/utah/rules/
   desk: medicaid
   state: utah
@@ -683,6 +712,7 @@
   - MED-S41
   show_short_toggle: true
 - slug: medicaid-utah-reasons
+  art: print-window.webp
   route: /medicaid/utah/reasons/
   desk: medicaid
   state: utah
@@ -708,6 +738,7 @@
   - MED-S41
   show_short_toggle: true
 - slug: medicaid-utah-apply
+  art: print-homes.webp
   route: /medicaid/utah/apply/
   desk: medicaid
   state: utah
@@ -736,6 +767,7 @@
   - MED-SSA-NAME
   show_short_toggle: true
 - slug: medicaid-utah-letter
+  art: print-mail.webp
   route: /medicaid/utah/letter/
   desk: medicaid
   state: utah
@@ -758,6 +790,7 @@
   - MED-S27
   show_short_toggle: true
 - slug: medicaid-utah-denied
+  art: print-mail.webp
   route: /medicaid/utah/denied/
   desk: medicaid
   state: utah
@@ -787,6 +820,7 @@
   - MED-S41
   show_short_toggle: true
 - slug: medicaid-utah-bills
+  art: print-mail.webp
   route: /medicaid/utah/bills/
   desk: medicaid
   state: utah
@@ -803,6 +837,7 @@
   - MED-U09
   show_short_toggle: true
 - slug: medicaid-utah-health
+  art: print-window.webp
   route: /medicaid/utah/health/
   desk: medicaid
   state: utah
@@ -823,6 +858,7 @@
   - MED-S41
   show_short_toggle: true
 - slug: medicaid-utah-immigration
+  art: print-window.webp
   route: /medicaid/utah/immigration/
   desk: medicaid
   state: utah
@@ -842,6 +878,7 @@
   - MED-S54
   show_short_toggle: true
 - slug: medicaid-utah-help
+  art: print-homes.webp
   route: /medicaid/utah/help/
   desk: medicaid
   state: utah
@@ -870,6 +907,7 @@
   - MED-U40
   show_short_toggle: true
 - slug: medicaid-utah-words
+  art: print-letters.webp
   route: /medicaid/utah/words/
   desk: medicaid
   state: utah
@@ -896,6 +934,7 @@
   - MED-S27
   show_short_toggle: false
 - slug: medicaid-utah-log
+  art: print-calendar.webp
   route: /medicaid/utah/log/
   desk: medicaid
   state: utah
@@ -915,6 +954,7 @@
   - MED-S27
   show_short_toggle: false
 - slug: medicaid-sources
+  art: print-archive.webp
   route: /medicaid/sources/
   desk: medicaid
   template: medicaid/sources.html
@@ -924,6 +964,7 @@
   checked: '2026-11-24'
   show_short_toggle: false
 - slug: id-records
+  art: print-cards.webp
   route: /id-records/
   desk: id-records
   template: id-records/index.html
@@ -934,6 +975,7 @@
   checked: '2026-11-25'
   show_short_toggle: true
 - slug: id-records-path
+  art: print-cards.webp
   route: /id-records/path/
   desk: id-records
   tool: true
@@ -945,7 +987,7 @@
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: id-records-oregon
-  art: id-sequence.webp
+  art: print-oregon.webp
   route: /id-records/oregon/
   desk: id-records
   template: id-records/oregon.html
@@ -957,6 +999,7 @@
   nav_label: Oregon
   state: oregon
 - slug: id-records-oregon-court
+  art: print-courthouse.webp
   route: /id-records/oregon/court/
   desk: id-records
   template: id-records/oregon-court.html
@@ -968,6 +1011,7 @@
   nav_label: Court order
   state: oregon
 - slug: id-records-oregon-birth
+  art: print-certificate.webp
   route: /id-records/oregon/birth/
   desk: id-records
   template: id-records/oregon-birth.html
@@ -979,6 +1023,7 @@
   nav_label: Birth certificate
   state: oregon
 - slug: id-records-oregon-id
+  art: print-cards.webp
   route: /id-records/oregon/id/
   desk: id-records
   template: id-records/oregon-id.html
@@ -990,7 +1035,7 @@
   nav_label: License & ID
   state: oregon
 - slug: id-records-washington
-  art: id-sequence.webp
+  art: print-washington.webp
   route: /id-records/washington/
   desk: id-records
   template: id-records/washington.html
@@ -1002,6 +1047,7 @@
   nav_label: Washington
   state: washington
 - slug: id-records-washington-court
+  art: print-courthouse.webp
   route: /id-records/washington/court/
   desk: id-records
   template: id-records/washington-court.html
@@ -1013,6 +1059,7 @@
   nav_label: Court order
   state: washington
 - slug: id-records-washington-birth
+  art: print-certificate.webp
   route: /id-records/washington/birth/
   desk: id-records
   template: id-records/washington-birth.html
@@ -1024,6 +1071,7 @@
   nav_label: Birth certificate
   state: washington
 - slug: id-records-washington-id
+  art: print-cards.webp
   route: /id-records/washington/id/
   desk: id-records
   template: id-records/washington-id.html
@@ -1035,7 +1083,7 @@
   nav_label: License & ID
   state: washington
 - slug: id-records-utah
-  art: id-sequence.webp
+  art: print-utah.webp
   route: /id-records/utah/
   desk: id-records
   template: id-records/utah.html
@@ -1047,6 +1095,7 @@
   nav_label: Utah
   state: utah
 - slug: id-records-utah-court
+  art: print-courthouse.webp
   route: /id-records/utah/court/
   desk: id-records
   template: id-records/utah-court.html
@@ -1058,6 +1107,7 @@
   nav_label: Court order
   state: utah
 - slug: id-records-utah-birth
+  art: print-certificate.webp
   route: /id-records/utah/birth/
   desk: id-records
   template: id-records/utah-birth.html
@@ -1069,6 +1119,7 @@
   nav_label: Birth certificate
   state: utah
 - slug: id-records-utah-id
+  art: print-cards.webp
   route: /id-records/utah/id/
   desk: id-records
   template: id-records/utah-id.html
@@ -1080,6 +1131,7 @@
   nav_label: License & ID
   state: utah
 - slug: id-records-federal
+  art: print-cards.webp
   route: /id-records/federal/
   desk: id-records
   template: id-records/federal.html
@@ -1090,6 +1142,7 @@
   show_short_toggle: true
   nav_label: Federal
 - slug: id-records-after
+  art: print-certificate.webp
   route: /id-records/after/
   desk: id-records
   template: id-records/after.html
@@ -1100,6 +1153,7 @@
   show_short_toggle: true
   nav_label: After court
 - slug: id-records-help
+  art: print-homes.webp
   route: /id-records/help/
   desk: id-records
   template: id-records/help.html
@@ -1110,6 +1164,7 @@
   show_short_toggle: true
   nav_label: Get help
 - slug: id-records-compare
+  art: print-courthouse.webp
   route: /id-records/compare/
   desk: id-records
   template: id-records/compare.html
@@ -1119,6 +1174,7 @@
   checked: '2026-11-03'
   show_short_toggle: true
 - slug: id-records-glossary
+  art: print-letters.webp
   route: /id-records/glossary/
   desk: id-records
   template: id-records/glossary.html
@@ -1127,6 +1183,7 @@
   checked: '2026-11-03'
   show_short_toggle: false
 - slug: id-records-sources
+  art: print-archive.webp
   route: /id-records/sources/
   desk: id-records
   template: id-records/sources.html
@@ -1136,6 +1193,7 @@
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: sources
+  art: print-archive.webp
   route: /sources/
   template: sources.html
   title: Every source we cite
@@ -1145,6 +1203,7 @@
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: about
+  art: print-front.webp
   route: /about/
   template: about.html
   title: About CivicDesk
@@ -1154,6 +1213,7 @@
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: accessibility
+  art: print-letters.webp
   route: /accessibility/
   template: accessibility.html
   title: Accessibility and inclusive communication
@@ -1162,6 +1222,7 @@
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: privacy
+  art: print-window.webp
   route: /privacy/
   template: privacy.html
   title: Privacy and shared-computer safety
@@ -1171,6 +1232,7 @@
   checked: '2026-11-25'
   show_short_toggle: false
 - slug: '404'
+  art: print-fog.webp
   route: /404.html
   template: 404.html
   title: Page not found

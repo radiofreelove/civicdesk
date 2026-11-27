@@ -22,9 +22,9 @@ CivicDesk is an independent public-interest project. It is **not** run by any co
 - `data/sources/` — Desk-partitioned primary source registries
 - `data/wire/` — Declarative per-desk Policy Wire beat configurations
 - `docs/` — Project documentation and architecture decisions
-- `scripts/` — Build and verification scripts
+- `scripts/` — Build and verification scripts, plus `make_mark.py` (faceted desk mark and icons) and `make_art.py` (the site's press prints; needs `requirements-art.txt`)
 - `site-root/` — Static root configuration (`_headers`, `_redirects`)
-- `static/` — Static assets (CSS, SVG, fonts)
+- `static/` — Static assets (CSS, SVG, fonts, and the press prints in `static/img/art/`)
 - `templates/` — Jinja2 HTML templates
 - `tests/` — Automated test suite
 

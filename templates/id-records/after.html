@@ -2,14 +2,18 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">After court</p>
-<h1>Update your records in the right order</h1>
-{{ m.lede("Courts do not notify other agencies for you. Start with certified copies, then Social Security, then your state license or ID, then your birth certificate, passport, and everyday accounts.") }}
-{{ m.checked_line(page) }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">After court</p>
+    <h1>Update your records in the right order</h1>
+    {{ m.lede("Courts do not notify other agencies for you. Start with certified copies, then Social Security, then your state license or ID, then your birth certificate, passport, and everyday accounts.") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {% set after_seq_note %}Why order matters: state DMVs verify your new legal name electronically against Social Security first. {{ src('ID-OR-DMV-GENDER') }}{% endset %}
 <div id="after-why">
-{{ v.editorial_art('id-sequence.webp', variant='wide') }}
 {{ v.process_flow([
   {'title': 'Certified copies', 'body': 'Order official court, marriage, or divorce copies.'},
   {'title': 'Social Security', 'body': 'Update your legal name before visiting the DMV.'},

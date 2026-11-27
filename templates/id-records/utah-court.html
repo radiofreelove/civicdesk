@@ -2,10 +2,15 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Utah / Court order</p>
-<h1>Utah court order: name and sex designation change</h1>
-{{ m.lede("Utah uses district court for both a name change (1 year living in your county + hearing) and a sex designation change (clear and convincing proof of six statutory items).") }}
-{{ m.checked_line(page) }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Utah / Court order</p>
+    <h1>Utah court order: name and sex designation change</h1>
+    {{ m.lede("Utah uses district court for both a name change (1 year living in your county + hearing) and a sex designation change (clear and convincing proof of six statutory items).") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ m.onthispage([
   ('cost', 'Key numbers & costs'),

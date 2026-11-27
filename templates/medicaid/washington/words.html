@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Washington Apple Health</p>
-<h1>Words on your Apple Health letters</h1>
-<p class="purpose">Plain-English definitions for official terms Washington uses in Apple Health notices and pages, listed A to Z.</p>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Washington Apple Health</p>
+    <h1>Words on your Apple Health letters</h1>
+    <p class="purpose">Plain-English definitions for official terms Washington uses in Apple Health notices and pages, listed A to Z.</p>
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {% set wd_adults %}Coverage group the 2027 work rules apply to (WAC 182-505-0250). <a href="{{ page_url('medicaid-washington-rules') }}">Who the rules are for</a>. {{ src('MED-WA15') }}{% endset %}
 {% set wd_exempt %}HCA's word for a reason you do not have to meet the work rules. <a href="{{ page_url('medicaid-washington-reasons') }}">See every reason</a>. {{ src('MED-WA05') }} {{ src('MED-WA22') }}{% endset %}

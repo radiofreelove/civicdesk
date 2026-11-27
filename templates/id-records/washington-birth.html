@@ -2,10 +2,15 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Washington / Birth certificate</p>
-<h1>Washington birth certificate: sex designation and name change</h1>
-{{ m.lede("If you were born in Washington, you update your birth-record sex designation (M, F, or X) with a state form—Washington does not accept a court order or doctor's letter for the sex designation.") }}
-{{ m.checked_line(page) }}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Washington / Birth certificate</p>
+    <h1>Washington birth certificate: sex designation and name change</h1>
+    {{ m.lede("If you were born in Washington, you update your birth-record sex designation (M, F, or X) with a state form—Washington does not accept a court order or doctor's letter for the sex designation.") }}
+    {{ m.checked_line(page) }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
 {{ m.onthispage([
   ('birth-anatomy', 'Fees & timing'),

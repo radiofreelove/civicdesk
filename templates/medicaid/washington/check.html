@@ -2,9 +2,14 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% block main %}
-<p class="kicker">Washington Apple Health</p>
-<h1>Do the Washington rules fit me?</h1>
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">Washington Apple Health</p>
+    <h1>Do the Washington rules fit me?</h1>
     <p class="purpose">Answer 3 quick questions. See what may apply to you, and what to do next.</p>
+  </div>
+  {{ v.page_art(page) }}
+</div>
 
     <div class="promise">
       <p class="box-kicker"><span class="box-icon">{{ m.icon('shield') }}</span><span>Privacy</span></p>
