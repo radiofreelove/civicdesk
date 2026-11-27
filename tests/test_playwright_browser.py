@@ -227,6 +227,85 @@ def test_utah_check_reasons_match_utah_table(site_server: str, browser_instance)
     ctx.close()
 
 
+def test_washington_and_oregon_check_reasons_match_state_lists(site_server: str, browser_instance) -> None:
+    # Every Washington and Oregon checkbox has a reason entry with its state's published category
+    # and MED-* basis IDs declared in that page's Sources panel; mixed results render rule-indexed
+    # category titles and per-item tags.
+    registry = {s["id"] for s in yaml.safe_load((ROOT / "data" / "sources" / "medicaid.yaml").read_text(encoding="utf-8"))}
+    pages = {p["slug"]: p for p in yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))}
+    ctx = browser_instance.new_context(viewport={"width": 1280, "height": 900})
+    page = ctx.new_page()
+
+    # Washington (HCA categories: excluded, exemption, hardship)
+    goto_local(page, site_server + "/medicaid/washington/check/")
+    assert "Exemptions & hardships" in page.inner_text("#checker-steps-track")
+    assert "does not ask about your county" not in page.inner_text("main")
+    wa_reasons = page.evaluate("""() => Object.fromEntries(Object.entries(window.CivicDeskCheck.reasons)
+        .map(([k, v]) => [k, { kind: v.kind, basis: v.basis || [], label: v.label }]))""")
+    wa_boxes = set(page.eval_on_selector_all('input[name="reason"]', "els => els.map(e => e.value)")) - {"none"}
+    assert wa_boxes == set(wa_reasons), f"WA checkboxes {sorted(wa_boxes ^ set(wa_reasons))} mismatch"
+    wa_expected = {
+        "excluded": {"medicare"},
+        "exemption": {"pregnant", "care", "health", "treatment", "snap", "aian", "foster", "veteran", "jail"},
+        "hardship": {"hospital", "travel", "county"},
+    }
+    for kind, keys in wa_expected.items():
+        assert {k for k, v in wa_reasons.items() if v["kind"] == kind} == keys, f"WA {kind}"
+    wa_sources = set(pages["medicaid-washington-check"].get("sources") or [])
+    for key, v in wa_reasons.items():
+        assert v["basis"], f"WA {key}: no basis"
+        for sid in v["basis"]:
+            assert sid in registry and sid in wa_sources, f"WA {key}: basis {sid} missing from registry or page sources"
+    assert wa_reasons["jail"]["label"].startswith("You are in jail or prison")
+
+    # Exercise WA mixed selection: exemption + short-term hardship
+    page.check('input[name="age"][value="19to64"]')
+    page.click('[data-step="1"] button[data-next]')
+    page.check('input[name="reason"][value="pregnant"]')
+    page.check('input[name="reason"][value="hospital"]')
+    page.click('[data-step="2"] button[data-next]')
+    page.check('input[name="meet"][value="none"]')
+    page.click('#checker button[type="submit"]')
+    wa_mixed = page.inner_text("#checker-result")
+    assert "Washington's rules list these reasons as exemptions or short-term hardships." in wa_mixed
+    assert "HCA's list: exemption." in wa_mixed and "HCA's list: short-term hardship." in wa_mixed
+    assert "You must ask HCA to grant this short-term hardship." in wa_mixed
+
+    # Oregon (OHA categories: excluded, auto, self_report)
+    goto_local(page, site_server + "/medicaid/oregon/check/")
+    assert "Exemptions & exclusions" in page.inner_text("#checker-steps-track")
+    or_reasons = page.evaluate("""() => Object.fromEntries(Object.entries(window.CivicDeskCheck.reasons)
+        .map(([k, v]) => [k, { kind: v.kind, basis: v.basis || [], label: v.label }]))""")
+    or_boxes = set(page.eval_on_selector_all('input[name="reason"]', "els => els.map(e => e.value)")) - {"none"}
+    assert or_boxes == set(or_reasons), f"OR checkboxes {sorted(or_boxes ^ set(or_reasons))} mismatch"
+    or_expected = {
+        "excluded": {"medicare", "disability_ohp"},
+        "auto": {"snap", "tanf", "foster", "county"},
+        "self_report": {"pregnant", "child", "caregiver", "health", "ssi", "treatment", "aian", "veteran", "jail", "hospital", "travel"},
+    }
+    for kind, keys in or_expected.items():
+        assert {k for k, v in or_reasons.items() if v["kind"] == kind} == keys, f"OR {kind}"
+    or_sources = set(pages["medicaid-oregon-check"].get("sources") or [])
+    for key, v in or_reasons.items():
+        assert v["basis"], f"OR {key}: no basis"
+        for sid in v["basis"]:
+            assert sid in registry and sid in or_sources, f"OR {key}: basis {sid} missing from registry or page sources"
+
+    # Exercise OR mixed selection: auto + self_report
+    page.check('input[name="age"][value="19to64"]')
+    page.click('[data-step="1"] button[data-next]')
+    page.check('input[name="reason"][value="county"]')
+    page.check('input[name="reason"][value="health"]')
+    page.click('[data-step="2"] button[data-next]')
+    page.check('input[name="meet"][value="none"]')
+    page.click('#checker button[type="submit"]')
+    or_mixed = page.inner_text("#checker-result")
+    assert "Oregon's rules list these reasons as exemptions OHP checks automatically or exemptions you report to OHP." in or_mixed
+    assert "OHP list: exemption checked automatically by OHP." in or_mixed
+    assert "OHP list: exemption you report to OHP." in or_mixed
+    ctx.close()
+
+
 def test_broadened_id_records_path_finder(site_server: str, browser_instance) -> None:
     ctx = browser_instance.new_context(viewport={"width": 1280, "height": 900})
     page = ctx.new_page()

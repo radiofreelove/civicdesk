@@ -131,6 +131,9 @@
   - MED-S05
   - MED-S04
   - MED-S27
+  - MED-S07
+  - MED-S42
+  - MED-S53
   show_short_toggle: false
   scripts:
   - checker-oregon
@@ -196,6 +199,17 @@
     - MED-S01
     - MED-S27
     - MED-S04
+  - id: household-income-vs-individual-hours
+    placement: inline
+    compare: 'Federal rules treat the $580 income bar like a joint household checking account while treating the
+      80-hour bar like individual factory timecards: one shared household paycheck of $580 or more clears the
+      income bar for covered adults in the household, whereas one adult''s work or school hours never spill over
+      onto another adult''s timecard.'
+    boundary: Only adults ages 19 to 64 who do not have an exemption need to clear either bar.
+    basis:
+    - MED-S27
+    - MED-S05
+    - MED-S01
 - slug: medicaid-oregon-reasons
   art: print-window.webp
   route: /medicaid/oregon/reasons/
@@ -668,6 +682,7 @@
   - MED-S27
   - MED-S29
   - MED-WA22
+  - MED-WA27
   show_short_toggle: false
   scripts:
   - checker-washington
@@ -730,6 +745,16 @@
     - MED-WA04
     - MED-WA05
     - MED-WA22
+  - id: lookback-snapshot-vs-monthly-clock
+    placement: inline
+    compare: 'Washington checks activity on two different camera settings with no monthly reporting in between:
+      applying takes a single snapshot of the month right before you apply, while a 6-month renewal scans the
+      last six months like a highlight reel where clearing the bar in just 1 of those 6 months is enough.'
+    boundary: Seasonal workers can also average income across 6 months to hit the $580 monthly threshold instead
+      of needing $580 in one single month.
+    basis:
+    - MED-WA05
+    - MED-WA22
 - slug: medicaid-washington-reasons
   art: print-window.webp
   route: /medicaid/washington/reasons/
@@ -768,7 +793,7 @@
   analogies:
   - id: zip-code-switch-vs-request-form
     placement: lead
-    compare: Washington's hardship system splits into an automatic ZIP-code switch and a manual request desk.
+    compare: Washington's hardship system splits into an automatic county-line switch and a manual request desk.
       When a county hits a federal disaster declaration or high unemployment, HCA flips the hardship switch on
       for everyone living there; for an inpatient stay or travel outside the community for serious care, the person
       must tell HCA so a caseworker can apply it.
@@ -1286,7 +1311,8 @@
   - MED-S41
   show_short_toggle: true
   answer: Utah divides reasons people may not have to meet work rules into exclusions, mandatory exceptions, and
-    short-term hardships—checking DWS records first and requiring proof in myCase or on form 742 when unconfirmed.
+    optional short-term hardships—checking DWS records first and requiring proof in myCase or on form 742 when
+    unconfirmed.
   why: American Indian and Alaska Native members whose Tribal status is not yet verified are asked to send proof
     by Jan. 1, 2027 to keep 12-month renewals and stay excluded.
   spec:
@@ -1300,11 +1326,11 @@
   analogies:
   - id: three-buckets-paper-gate
     placement: lead
-    compare: 'Think of Utah''s exemption list like three labeled folders on a caseworker''s desk: permanent exclusions
-      (like age, Medicare, or verified Tribal status), mandatory exceptions (like pregnancy, caregiving, or medical
-      frailty), and short-term hardships (like hospital stays or disaster counties). If DWS''s computer already
-      sees the status, the folder closes automatically; otherwise, form 742 plus proof documents are what open
-      it.'
+    compare: 'Think of Utah''s official list like three labeled folders on a caseworker''s desk: excluded individuals
+      (like pregnancy, caregiving, medical frailty, or verified Tribal status), mandatory exceptions (like Medicare,
+      SSI, or recent release from jail or prison), and optional short-term hardships (like hospital stays, medical
+      travel, or disaster counties). If DWS''s computer already sees the status, the folder clears automatically;
+      otherwise, reporting it in myCase or on form 742 with proof documents is what opens it.'
     boundary: Utah was not a plaintiff in Massachusetts v. Oz, so Utah residents cannot assume that federal court
       ruling changed Utah's clinical-proof rules without checking current DWS guidance.
     basis:
@@ -1312,6 +1338,17 @@
     - MED-U28
     - MED-U39
     - MED-S40
+  - id: tribal-verification-clock
+    placement: inline
+    compare: 'Utah''s Tribal verification works like an express-lane pass at a toll plaza: once DWS has a Tribal
+      ID, CDIB, or IHS face sheet on file, the pass stays active, excludes the member from work rules, and keeps
+      renewals once a year instead of every six months.'
+    boundary: Members whose Tribal status is not yet verified in DWS records received a yellow 2026 letter asking
+      for proof by Jan. 1, 2027.
+    basis:
+    - MED-U05
+    - MED-U28
+    - MED-U40
 - slug: medicaid-utah-apply
   art: print-homes.webp
   route: /medicaid/utah/apply/
@@ -1540,8 +1577,8 @@
   - MED-S40
   - MED-S41
   show_short_toggle: true
-  answer: 'Blindness, disability, mental health or substance-use conditions, or difficulty with daily tasks can
-    exempt an adult from Utah''s work rules, confirmed in 3 escalating steps: claims codes first, then a provisional
+  answer: 'Blindness, disability, mental health or substance-use conditions, or difficulty with daily tasks count
+    as an exclusion from Utah''s work rules, confirmed in 3 escalating steps: claims codes first, then a provisional
     screener, then clinical proof.'
   why: Because Utah law does not allow permanent self-attestation, turning in the signed screener buys temporary
     protection while gathering a provider statement if claims records do not match.
@@ -1557,7 +1594,7 @@
     placement: lead
     compare: 'Utah checks medical frailty like a three-rung ladder: first, DWS scans existing Medicaid billing
       diagnosis codes automatically; second, if nothing matches, a signed screener acts as a temporary pass so
-      coverage is not held up; third, under Utah law, a provider statement locks in the exemption.'
+      coverage is not held up; third, under Utah law, a provider statement locks in the exclusion.'
     boundary: A blank automatic diagnosis-code scan is never a denial by itself—it simply moves the file to the
       screener and provider-statement rungs.
     basis:
@@ -1803,6 +1840,17 @@
     - ID-OR-OJD-ADULT-PACKET
     - ID-OR-2026-CH52
     - ID-US-SSA-NAME
+  - id: confidential-vs-sealed-folder
+    placement: inline
+    compare: 'Oregon''s July 2026 privacy rule treats the court docket like two different shelves: any petition
+      that includes a sex change goes straight behind a locked staff counter where public search cannot pull it,
+      while a name-only case stays on the open public shelf unless sealed through Oregon''s Address Confidentiality
+      Program.'
+    boundary: Sex-change cases filed before July 1, 2026 do not become confidential automatically and require
+      a separate motion asking the court to close the file.
+    basis:
+    - ID-OR-2026-CH52
+    - ID-OR-ORS-33
 - slug: id-records-oregon-birth
   art: print-certificate.webp
   route: /id-records/oregon/birth/
@@ -2089,6 +2137,16 @@
     - ID-UT-CODE-26B-8-111
     - ID-UT-CODE-42-1
     - ID-UT-COURTS-SEX-CHANGE
+  - id: closed-papers-open-courtroom
+    placement: inline
+    compare: 'Utah splits courtroom privacy down the middle like a sealed envelope resting on an open lobby schedule:
+      the medical letter and filed sex-designation papers stay private inside the envelope, while the case history
+      log and courtroom hearing itself remain on the public calendar.'
+    boundary: Name-only Utah district court petitions do not get the sex-designation private-record protection
+      and appear public.
+    basis:
+    - ID-UT-COURTS-SEX-CHANGE
+    - ID-UT-COURTS-NONPUBLIC
 - slug: id-records-utah-birth
   art: print-certificate.webp
   route: /id-records/utah/birth/
@@ -2203,6 +2261,16 @@
     basis:
     - ID-US-EO-14168
     - ID-US-STATE-SEX-MARKER
+    - ID-US-SSA-NAME
+    - ID-US-SSA-POMS-10212-200
+  - id: card-face-vs-back-office-ledger
+    placement: inline
+    compare: 'Social Security separates what prints on your wallet card from what sits in its internal database:
+      the paper card shows only your name and number, never a sex marker, while the internal NUMIDENT ledger behind
+      the counter holds a sex field that SSA locked to sex at birth under its 2025 and 2026 policy updates.'
+    boundary: Updating a legal name for free at Social Security still works normally after marriage, divorce,
+      or a court order and stays required before state DMVs will update a license name.
+    basis:
     - ID-US-SSA-NAME
     - ID-US-SSA-POMS-10212-200
 - slug: id-records-after
