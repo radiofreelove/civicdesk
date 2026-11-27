@@ -12,15 +12,18 @@
   ('id-records-registry', 'ID & vital records sources (ID-*)')
 ]) }}
 
-{% set ns = namespace(med=0, idr=0) %}
-{% for s in medicaid_sources if not s.get('docs_only') %}{% set ns.med = ns.med + 1 %}{% endfor %}
-{% for s in id_records_sources if not s.get('docs_only') %}{% set ns.idr = ns.idr + 1 %}{% endfor %}
-{{ v.stat_hero_strip([
-  {'num': (ns.med + ns.idr)|string, 'label': 'Verified public sources', 'note': 'Statutes, rules, court dockets & forms'},
-  {'num': ns.med|string, 'label': 'Medicaid sources (MED-*)', 'note': 'OHP, Apple Health, Utah & federal'},
-  {'num': ns.idr|string, 'label': 'ID & vital sources (ID-*)', 'note': 'Courts, vital records, DMVs & federal'},
-  {'num': (facts|length)|string, 'label': 'Shared dated facts', 'note': 'Exported in facts.json'}
-]) }}
+{#- Per-desk counts come from the site.yaml desk registry (public entries only; docs_only
+    research notes are not published and are not counted). -#}
+{% set public_ids = [] %}
+{% for s in medicaid_sources + id_records_sources if not s.get('docs_only') %}{% set _ = public_ids.append(s.id) %}{% endfor %}
+{% set stats = [{'num': public_ids|length|string, 'label': 'Verified public sources', 'note': 'Statutes, rules, court dockets & forms', 'desk': 'site'}] %}
+{% for d in site.desks if d.status == 'active' %}
+{% set count = namespace(n=0) %}
+{% for sid in public_ids if sid.startswith(d.source_prefix) %}{% set count.n = count.n + 1 %}{% endfor %}
+{% set _ = stats.append({'num': count.n|string, 'label': d.source_label, 'note': d.source_note, 'desk': d.slug}) %}
+{% endfor %}
+{% set _ = stats.append({'num': (facts|length)|string, 'label': 'Shared dated facts', 'note': 'Exported in facts.json', 'desk': 'site'}) %}
+{{ v.stat_hero_strip(stats) }}
 
 <h2 id="labels">Four-tier source honesty labels</h2>
 {% set lbl_official %}<span class="badge badge-official">Official</span> Confirmed in a published government statute, administrative rule, court order, or agency form or guidance.{% endset %}
@@ -41,7 +44,7 @@
 {% for s in medicaid_sources if not s.get('docs_only') %}
   <li class="source-item" id="{{ s.id|lower }}">
     <h3><a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a>{% if s.get('format') == 'PDF' %} <span class="tag">PDF</span>{% endif %} {{ status_badge(s.status) }}</h3>
-    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time> · Read depth: {{ read_depth_labels[s.read_depth] }} · Read by: {{ read_by_labels[s.read_by] }}.</p>
+    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time> · {{ read_note(s) }}.</p>
     {% if s.get('public_note') %}<p class="source-meta">{{ s.public_note }}</p>{% endif %}
   </li>
 {% endfor %}
@@ -52,7 +55,7 @@
 {% for s in id_records_sources if not s.get('docs_only') %}
   <li class="source-item" id="{{ s.id|lower }}">
     <h3><a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a> {{ status_badge(s.status) }}</h3>
-    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time> · Read depth: {{ read_depth_labels[s.read_depth] }} · Read by: {{ read_by_labels[s.read_by] }}.</p>
+    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time> · {{ read_note(s) }}.</p>
     {% if s.get('public_note') %}<p class="source-meta">{{ s.public_note }}</p>{% endif %}
   </li>
 {% endfor %}

@@ -4,7 +4,7 @@
 {% import "broadsheet.html" as bs %}
 {% block main %}
 {% set guide_lede %}{{ m.lede("Utah uses district court for both. A name change requires 1 year in your county and a hearing; a sex designation change requires clear and convincing proof of six statutory findings. MyPaperwork walks you through filing online.") }}{% endset %}
-{{ bs.page_head('Change your name and sex designation in Utah', kicker='Utah', purpose=guide_lede, art=v.editorial_art(page.art, variant='hero'), checked=m.checked_line(page)) }}
+{{ bs.page_head('Change your name and sex designation in Utah', page=page, kicker='Utah', purpose=guide_lede, checked=m.checked_line(page)) }}
 
 {% set ut_facts_note %}{{ src('ID-UT-CODE-42-1') }} {{ src('ID-UT-CODE-26B-8-111') }} {{ src('ID-UT-CODE-78A-2-301') }} {{ src('ID-UT-COURTS-FEES') }} {{ src('ID-UT-VITAL-FEES') }} {{ src('ID-UT-COURTS-SEX-CHANGE') }}{% endset %}
 {{ v.stat_hero_strip([

@@ -8,7 +8,7 @@
 <title>{% if page.slug == 'index' %}{{ site.name }}: {{ site.tagline }}{% else %}{{ page.title }} | {{ site.name }}{% endif %}</title>
 <meta name="description" content="{{ page.description }}">
 <meta name="color-scheme" content="light dark">
-{% if page.slug == '404' %}<meta name="robots" content="noindex">
+{% if page.slug == '404' or noindex_build %}<meta name="robots" content="noindex">
 {% endif %}<meta property="og:site_name" content="{{ site.name }}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{% if page.slug == 'index' %}{{ site.name }}: {{ site.tagline }}{% else %}{{ page.title }} | {{ site.name }}{% endif %}">
@@ -71,6 +71,29 @@
           <span class="state-switcher-label">{{ switcher_label(page) }}</span>
           <span class="state-switcher-caret" aria-hidden="true">&#9662;</span>
         </summary>
+        {% if not desk %}
+        {#- Site-level pages: guides grouped by desk, from the site.yaml desk registry. -#}
+        <ul class="state-switcher-menu state-switcher-desks">
+          <li class="state-switcher-start">
+            <a href="{{ page_url('start') }}"{% if page.slug == 'start' %} aria-current="page"{% endif %}>
+              <span class="state-switcher-name">Start here</span>
+              <span class="state-switcher-guide">2-question router &amp; full guide finder</span>
+            </a>
+          </li>
+          {% for d in site.desks if d.status == 'active' %}
+          <li class="state-switcher-desk desk-flag-{{ d.slug }}">
+            <a href="{{ page_url(d.hub) }}">
+              <span class="state-switcher-name">{{ d.name }}</span>
+              <span class="state-switcher-guide">{{ d.kicker }} desk</span>
+            </a>
+            <ul class="state-switcher-pills" aria-label="{{ d.name }} guides">
+              {% for st in d.states %}<li><a href="{{ page_url(st.page) }}">{{ st.name }}</a></li>{% endfor %}
+              {% if d.get('tool') %}<li><a href="{{ page_url(d.tool.page) }}">{{ d.tool.label }}</a></li>{% endif %}
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
         <ul class="state-switcher-menu">
         {% for item in switcher_items(page) %}
           <li{% if item.sep %} class="state-switcher-sep"{% endif %}>
@@ -81,12 +104,14 @@
           </li>
         {% endfor %}
         </ul>
+        {% endif %}
       </details>
       <button class="settings-btn js-only" type="button" id="settings-open" aria-haspopup="dialog" aria-controls="settings">Reading settings</button>
     </div>
   </div>
   {{ bs.press_rule() }}
-  <nav class="site-nav" aria-label="Main navigation">
+  {% if page.slug in ['index', 'medicaid', 'id-records'] %}{{ bs.dateline({'index': 'Oregon · Washington · Utah · Federal', 'medicaid': 'Oregon · Washington · Utah', 'id-records': 'Oregon · Washington · Utah · Federal'}[page.slug], site_latest_checked) }}
+  {% endif %}  <nav class="site-nav" aria-label="Main navigation">
     <ul class="wrap">
     {% for target_slug, label in nav_items(page) %}
       <li><a href="{{ page_url(target_slug) }}"{% if target_slug == page.slug %} aria-current="page"{% endif %}>{{ label }}</a></li>
@@ -96,6 +121,9 @@
 </header>
 
 <main id="main" tabindex="-1">
+  {#- Printed tear-sheet masthead: nameplate, page address, and check dates (print only). -#}
+  {% set p_oldest = page.get('oldest_checked', page.checked) %}{% set p_newest = page.get('newest_checked', page.checked) %}
+  <p class="wrap print-masthead"><strong>{{ site.name }}</strong> · {% if public_base_url and page.slug != '404' %}{{ public_base_url }}{{ page.route.lstrip('/') }}{% else %}{{ page.route }}{% endif %} · Sources checked {% if p_oldest == p_newest %}{{ p_oldest|human_date }}{% else %}{{ p_oldest|human_date }} to {{ p_newest|human_date }}{% endif %}</p>
   <div class="wrap content">
     {% if page.get('show_short_toggle', false) %}
     <aside class="brief-strip js-only" aria-label="How much to show">
@@ -130,7 +158,7 @@
       </ul>
     </nav>
     {% set f_oldest = page.get('oldest_checked', page.checked) %}{% set f_newest = page.get('newest_checked', page.checked) %}
-    <p class="build-line">Sources checked {% if f_oldest == f_newest %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time>{% else %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time> to <time datetime="{{ f_newest }}">{{ f_newest|human_date }}</time>{% endif %}. Version {{ site.version }}. Built from {% if build_commit_url %}<a href="{{ build_commit_url }}" rel="noreferrer"><code>{{ build_commit_short }}</code></a>{% else %}<code>{{ build_commit_short }}</code>{% endif %}. <a href="{{ root_prefix(page) }}build-report.json">Build report</a>. Writing: <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noreferrer">CC BY 4.0<span class="vh"> (outside site)</span></a>. Code: MIT. <a href="{{ page_url('about#license') }}">Reuse this guide</a>.</p>
+    <p class="build-line">Sources checked {% if f_oldest == f_newest %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time>{% else %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time> to <time datetime="{{ f_newest }}">{{ f_newest|human_date }}</time>{% endif %}. Edition: <time datetime="{{ site_latest_checked.strftime('%Y-%m') }}">{{ site_latest_checked.strftime('%B %Y') }}</time>. Built from {% if build_commit_url %}<a href="{{ build_commit_url }}" rel="noreferrer"><code>{{ build_commit_short }}</code></a>{% else %}<code>{{ build_commit_short }}</code>{% endif %}. <a href="{{ root_prefix(page) }}build-report.json">Build report</a>. Writing: <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noreferrer">CC BY 4.0<span class="vh"> (outside site)</span></a>. Code: MIT. <a href="{{ page_url('about#license') }}">Reuse this guide</a>.</p>
   </div>
 </footer>
 

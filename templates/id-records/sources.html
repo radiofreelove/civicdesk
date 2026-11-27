@@ -22,7 +22,7 @@
 {% for s in id_records_sources if s.jurisdiction == code and not s.get('docs_only') %}
   <li class="source-item" id="{{ s.id|lower }}">
     <h3><a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a> {{ status_badge(s.status) }}</h3>
-    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time> · Read depth: {{ read_depth_labels[s.read_depth] }} · Read by: {{ read_by_labels[s.read_by] }}.</p>
+    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time> · {{ read_note(s) }}.</p>
     {% if s.get('public_note') %}<p class="source-meta">{{ s.public_note }}</p>{% endif %}
   </li>
 {% endfor %}

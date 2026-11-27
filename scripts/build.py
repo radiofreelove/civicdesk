@@ -56,9 +56,17 @@ READ_DEPTH_LABELS = {
     "not_read": "Linked only (not relied on for facts)",
 }
 READ_BY_LABELS = {
-    "human_machine_hybrid": "Human-machine hybrid",
+    "human_machine_hybrid": "Read by a person, with software help",
     "not_read": "Not read",
 }
+
+
+def read_note(s: dict) -> str:
+    """Reader-facing line for how closely a source was read, e.g. "Read in full by a person, with software help"."""
+    depth = READ_DEPTH_LABELS[s["read_depth"]]
+    if s["read_by"] == "not_read":
+        return depth
+    return f"{depth} by a person, with software help"
 STATUS_LABELS = {
     "official": ("badge-official", "Official"),
     "not_official": ("badge-not-official", "Not official"),
@@ -573,6 +581,39 @@ def validate_brand_config(
     return brand
 
 
+VALID_DESK_STATUS = {"active", "upcoming"}
+
+
+def validate_desks(site: dict, page_slugs: set[str], errors: list[str]) -> list[dict]:
+    """Check the desk registry in site.yaml. Active desks must point at real pages."""
+    desks = site.get("desks") or []
+    seen: set[str] = set()
+    for d in desks:
+        slug = str(d.get("slug", ""))
+        label = f"site.yaml desk {slug or '?'}"
+        for key in ("slug", "status", "name", "kicker", "blurb"):
+            if not d.get(key):
+                errors.append(f"{label}: missing '{key}'")
+        if slug in seen:
+            errors.append(f"{label}: duplicate slug")
+        seen.add(slug)
+        if d.get("status") not in VALID_DESK_STATUS:
+            errors.append(f"{label}: status must be one of {sorted(VALID_DESK_STATUS)}")
+        if d.get("status") == "active":
+            pages_needed = [d.get("hub")] + [st.get("page") for st in d.get("states", [])]
+            if d.get("tool"):
+                pages_needed.append(d["tool"].get("page"))
+            for ps in pages_needed:
+                if ps not in page_slugs:
+                    errors.append(f"{label}: unknown page slug {ps!r}")
+            for key in ("source_prefix", "art", "states"):
+                if not d.get(key):
+                    errors.append(f"{label}: active desk needs '{key}'")
+    if not any(d.get("status") == "active" for d in desks):
+        errors.append("site.yaml: desks must list at least one active desk")
+    return desks
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT, help="Output directory (default: public/)")
@@ -631,6 +672,8 @@ def main(argv: list[str] | None = None) -> int:
             if sid not in sources:
                 errors.append(f"page {slug}: unknown declared source '{sid}'")
 
+    validate_desks(site, set(pages_by_slug), errors)
+
     if errors:
         print("BUILD VALIDATION FAILED", file=sys.stderr)
         for e in errors:
@@ -651,6 +694,9 @@ def main(argv: list[str] | None = None) -> int:
     issues_url = f"{repo_url}/issues"
     commit = resolve_commit_sha(env_vars, ROOT)
     commit_short = commit[:7] if commit != "localdev" else "localdev"
+    # Workers Builds sets WORKERS_CI_BRANCH; any build not from main is a preview.
+    ci_branch = str(env_vars.get("WORKERS_CI_BRANCH") or "").strip()
+    noindex_build = env_vars.get("CIVICDESK_NOINDEX") == "1" or (ci_branch not in ("", "main"))
     commit_url = f"{repo_url}/commit/{commit}" if commit != "localdev" else ""
     build_time = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
 
@@ -923,6 +969,9 @@ def main(argv: list[str] | None = None) -> int:
         ]
         return base_links + state_links + tail_links
 
+    public_checked = [as_date(s["checked"]) for s in sources.values() if not s.get("docs_only")]
+    site_latest_checked = max(public_checked) if public_checked else as_date(site["last_checked"])
+
     env.globals.update(
         site=site,
         pages=pages,
@@ -934,6 +983,7 @@ def main(argv: list[str] | None = None) -> int:
         state_checked=state_checked,
         read_depth_labels=READ_DEPTH_LABELS,
         read_by_labels=READ_BY_LABELS,
+        read_note=read_note,
         status_badge=status_badge,
         src=src,
         fact=fact,
@@ -959,6 +1009,8 @@ def main(argv: list[str] | None = None) -> int:
         build_commit_url=commit_url,
         build_time=build_time,
         used_sources=lambda: [sources[i] for i in state["used"]],
+        site_latest_checked=site_latest_checked,
+        noindex_build=noindex_build,
     )
 
     bs_macros = env.get_template("broadsheet.html").module

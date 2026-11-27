@@ -129,3 +129,26 @@ Import the macros with `{% import "broadsheet.html" as bs %}`. Every macro is CS
 4. Adds one `.section-sources` link per section that used a source, the Guide/Sources tabs (not on `/`), and the grouped Sources panel.
 
 Honesty badges that qualify a claim stay inline: `Our reading` (from `fact()` or `m.badge('our_reading')`) and `Not confirmed`. A source's own `Not official` badge moves to the Sources panel with it. `ext()` links stay in the text because they are content links, not citations. When writing templates, never build a sentence whose meaning depends on a `src()` link (for example "Sources: ..." or "bring proof, {{ src(...) }}"); write the sentence so it reads correctly after the link is removed.
+
+### Desk color model: 85% press ink, 15% section flag
+
+Section color is a wayfinding flag, not UI paint. Buttons (press ink fill, arrows in `currentColor`), form controls and selected answers, links, and focus rings look the same on every desk. `--desk-accent` marks only five landmarks: the header flag rule, eyebrows (`.kicker`, in `--desk-accent-ink`), the active nav and tab underline, step nodes and rails, and desk ledger borders (key-figure cards, desk tiles, the "Jump to a guide" desk groups).
+
+`body.desk-<slug>` sets `--desk-accent`, `--desk-accent-ink`, and `--desk-tint` from per-theme tokens (`--med-*`, `--id-*`, `--pub-*`, plus reserved `--food-*` and `--legal-*`). Accents pass 3:1 and inks 7:1 on every ground in every theme; `tests/test_contrast_and_radar.py` checks them. The ID desk leads charts with magenta and keeps cyan second (`--viz-accent` and `--viz-accent-2` swap), so charts always have two distinct accents. Semantic callouts (Context, Watch out, Changed) keep their meaning colors on every desk.
+
+### Desk registry (`data/site.yaml` `desks:`)
+
+Each desk has `slug`, `status` (`active` or `upcoming`), `name`, `kicker`, `blurb`, and for active desks `hub`, `states`, `source_prefix`, `source_label`, `source_note`, `art`, and an optional `tool`. `scripts/build.py` validates it (`validate_desks`). It drives the front-page desk tiles, the "On the drawing board" brief, the site-level "Jump to a guide" menu, and the per-desk counts on `/sources/`. To add a desk: add its registry entry, its pages, a `body.desk-<slug>` block, and its per-theme tokens.
+
+### Page head modes
+
+`bs.page_head(title, page=page, ...)` reads `page.art` from `data/pages.yaml`:
+
+1. **Illustrated feature:** `page.art` is set, so the head shows the matted art plate.
+2. **Ledger-first:** `art=false`, followed by a key-figure strip.
+3. **Clean dispatch:** `art=false` (`.page-head-dispatch`), closed by a Scotch rule. Used on `/start/`.
+
+### Print grammar
+
+Scotch rules (3px ink over a 1px hairline) mark major boundaries (`.scotch`, the Sources panel, dispatch heads); interior rows use 1px hairlines. The dateline strip (`bs.dateline`) sits under the masthead on `/` and desk fronts with the newest source check date. Money, dates, counts, and step numbers use `lining-nums tabular-nums`. In print, each page becomes a black-on-white tear-sheet: a `.print-masthead` line (nameplate, page address, check dates), no controls, tabs, art, or tinted fills, both tab panels shown, and steps, key figures, and tables kept whole across pages.
+

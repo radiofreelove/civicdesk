@@ -106,6 +106,36 @@ def test_broadsheet_palette_and_aaa_contrast() -> None:
             r = contrast_ratio(tokens[fg], tokens[bg])
             assert r >= 3.0, f"{theme_name}: UI/mark {fg} ({tokens[fg]}) on {bg} ({tokens[bg]}) = {r:.2f}:1 (< 3.0)"
 
+    # Desk section flags: accents mark UI (>= 3:1), inks color eyebrow text (>= 7:1, AAA).
+    auto_contrast_match = re.search(r'prefers-contrast: more\)\s*\{\s*html\[data-theme="auto"\]\s*\{(.*?)\}', css, re.S)
+    assert auto_contrast_match
+    auto_contrast = {**light, **extract_tokens(auto_contrast_match.group(1))}
+    desks = ("site", "med", "id", "pub", "food", "legal")
+    for theme_name, tokens in [("light", light), ("warm", warm), ("dark", dark), ("contrast", contrast),
+                               ("auto-dark", auto_dark), ("auto-contrast", auto_contrast)]:
+        for d in desks:
+            for ground in ("bg", "surface", "header-bg", "card-bg"):
+                r = contrast_ratio(tokens[f"{d}-accent"], tokens[ground])
+                assert r >= 3.0, f"{theme_name}: --{d}-accent on {ground} = {r:.2f}:1 (< 3.0)"
+                r = contrast_ratio(tokens[f"{d}-ink"], tokens[ground])
+                assert r >= 7.0, f"{theme_name}: --{d}-ink on {ground} = {r:.2f}:1 (< 7.0 AAA)"
+            if d != "site":
+                for fg in ("text", "heading", "link"):
+                    r = contrast_ratio(tokens[fg], tokens[f"{d}-tint"])
+                    assert r >= 7.0, f"{theme_name}: {fg} on --{d}-tint = {r:.2f}:1 (< 7.0 AAA)"
+                r = contrast_ratio(tokens[f"{d}-accent"], tokens[f"{d}-tint"])
+                assert r >= 3.0, f"{theme_name}: --{d}-accent on --{d}-tint = {r:.2f}:1 (< 3.0)"
+        # body.desk-id-records swaps the chart accents and fills; the swapped pairs must still pass.
+        for fg, bg in (("id-accent", "id-tint"), ("med-accent", "med-tint"), ("id-accent", "viz-track"),
+                       ("med-accent", "viz-track"), ("id-accent", "viz-paper"), ("med-accent", "viz-paper"),
+                       ("id-accent", "viz-surface"), ("med-accent", "viz-surface-2")):
+            r = contrast_ratio(tokens[fg], tokens[bg])
+            assert r >= 3.0, f"{theme_name}: ID desk chart pair {fg} on {bg} = {r:.2f}:1 (< 3.0)"
+    for k, v in dark.items():
+        if k.startswith("press-"):
+            continue
+        assert auto_dark.get(k, "").upper() == v.upper(), f"auto-dark mismatch on --{k}"
+
     print_match = re.search(r"@media print\s*\{(.*)\Z", css, re.S)
     assert print_match, "Missing @media print block"
     print_tokens = extract_tokens(print_match.group(1))

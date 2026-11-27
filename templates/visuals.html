@@ -23,7 +23,7 @@
 <section class="viz-stat-strip"{% if id %} id="{{ id }}"{% endif %} aria-label="{{ label }}">
   <ul class="viz-stat-list viz-stat-cols-{{ stats|length }}">
   {% for s in stats %}
-    <li class="viz-stat-card viz-stat-tone-{{ loop.index }}">
+    <li class="viz-stat-card viz-stat-tone-{{ loop.index }}{% if s.desk is defined and s.desk %} viz-stat-desk-{{ s.desk }}{% endif %}">
       {%- set num_text = (s.num ~ '')|striptags|trim %}
       <span class="viz-stat-num{% if num_text|length > 9 %} viz-stat-num-long{% endif %}">{{ s.num }}</span>
       <strong class="viz-stat-label">{{ s.label }}</strong>

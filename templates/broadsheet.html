@@ -2,23 +2,35 @@
     Import with: {% import "broadsheet.html" as bs %}
     CSP-safe: no inline styles, no inline scripts. Icons come from templates/icons.html. -#}
 {% from "icons.html" import svg_icon %}
+{% import "visuals.html" as vis %}
 
 {#- Thick-thin front-page rule pair. Place directly under .header-row in base.html. -#}
 {% macro press_rule() -%}
 <div class="press-rule" aria-hidden="true"></div>
 {%- endmacro %}
 
-{#- Page head: kicker, h1, standfirst, checked line, optional editorial art.
-    purpose and checked: Markup or ''. art: rendered visuals.editorial_art() Markup or ''. -#}
-{% macro page_head(title, kicker='', purpose='', art='', checked='') -%}
-<div class="page-head">
+{#- Dateline strip between the masthead rules on the front page and desk fronts.
+    places: the jurisdictions the page covers; latest: the newest source check date. -#}
+{% macro dateline(places, latest) -%}
+<div class="dateline">
+  <p class="wrap dateline-row"><span class="dateline-motto">Plain-language public benefits and records guides</span><span class="dateline-meta"><span>{{ places }}</span> <span aria-hidden="true">·</span> <span>Sources checked through <time datetime="{{ latest }}">{{ latest|human_date }}</time></span></span></p>
+</div>
+{%- endmacro %}
+
+{#- Page head: kicker, h1, standfirst, checked line, and the page's editorial art plate.
+    Pass page=page so the art comes from page.art in data/pages.yaml. art=false gives the
+    clean dispatch head with no plate; a filename overrides pages.yaml.
+    purpose and checked: Markup or ''. -#}
+{% macro page_head(title, page=none, kicker='', purpose='', art=none, checked='') -%}
+{%- set art_file = (page.get('art') if page else none) if art is none else art -%}
+<div class="page-head{% if not art_file %} page-head-dispatch{% endif %}">
   <div>
     {% if kicker %}<p class="kicker">{{ kicker }}</p>{% endif %}
     <h1>{{ title }}</h1>
     {% if purpose %}<div class="standfirst">{{ purpose }}</div>{% endif %}
     {{ checked }}
   </div>
-  {% if art %}<div class="page-head-art">{{ art }}</div>{% endif %}
+  {% if art_file %}<div class="page-head-art">{{ vis.editorial_art(art_file, variant='hero') }}</div>{% endif %}
 </div>
 {%- endmacro %}
 
@@ -36,7 +48,7 @@
       <span>{{ d.blurb }}</span>
     </div>
     {% else %}
-    <a class="desk-tile desk-tile-{{ 'id' if d.id == 'id-records' else 'med' }}" href="{{ d.href }}" aria-describedby="desk-{{ d.id }}-desc">
+    <a class="desk-tile desk-tile-{{ d.id }}" href="{{ d.href }}" aria-describedby="desk-{{ d.id }}-desc">
       <span class="desk-tile-art"><img src="{{ d.art }}" alt="" width="{{ d.art_w }}" height="{{ d.art_h }}" decoding="async"></span>
       <span class="desk-tile-kicker">{{ d.kicker }}</span>
       <span class="desk-tile-name">{{ d.name }}<span class="desk-tile-go">{{ svg_icon('arrow-right') }}</span></span>
@@ -47,6 +59,18 @@
   </li>
   {% endfor %}
 </ul>
+{%- endmacro %}
+
+{#- Slim "On the drawing board" brief for desks that are not live yet (site.desks, status: upcoming). -#}
+{% macro upcoming_desks(desks) -%}
+{% if desks %}
+<section class="upcoming-desks" aria-labelledby="upcoming-desks-h">
+  <h2 id="upcoming-desks-h">On the drawing board</h2>
+  <ul>
+    {% for d in desks %}<li class="upcoming-desk desk-flag-{{ d.slug }}"><strong>{{ d.name }}</strong>{% if d.get('launch_note') %} <span class="upcoming-note">{{ d.launch_note }}</span>{% endif %}. {{ d.blurb }}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
 {%- endmacro %}
 
 {#- Big state tiles on desk hubs.
@@ -120,8 +144,7 @@
         {{ status_badge(s.status) }}
         Date on it: {{ s.document_date }}.
         Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time>.
-        Read depth: {{ read_depth_labels[s.read_depth] }}.
-        Read by: {{ read_by_labels[s.read_by] }}.
+        {{ read_note(s) }}.
       </li>
       {% set seen.ids = seen.ids + [s.id] %}
     {% endfor %}

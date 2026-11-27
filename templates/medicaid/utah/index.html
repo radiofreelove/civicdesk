@@ -13,7 +13,7 @@
 </nav>
 
 {% set guide_purpose %}<p class="purpose"><strong>Why this site exists:</strong> Utah explains the new Medicaid rules across 19+ pages and forms. This guide puts what applicants need in one place, in plain words, with every official source linked.</p>{% endset %}
-{{ bs.page_head('Applying for Utah Medicaid? New rules start Jan. 1, 2027.', kicker='Utah Medicaid', purpose=guide_purpose, art=v.editorial_art(page.art, variant='hero')) }}
+{{ bs.page_head('Applying for Utah Medicaid? New rules start Jan. 1, 2027.', page=page, kicker='Utah Medicaid', purpose=guide_purpose) }}
 
 {{ v.stat_hero_strip([
   {'num': '19–64', 'label': 'Adults covered by rules', 'note': 'Adult Expansion & TAM'},

@@ -1,16 +1,11 @@
 {% extends "base.html" %}
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
+{% import "broadsheet.html" as bs %}
 {% block head %}<script src="{{ asset('js/start.js') }}" defer></script>{% endblock %}
 {% block main %}
-<div class="intro-split">
-  <div class="intro-copy">
-    <p class="kicker">Start here</p>
-    <h1>Find the right guide in 2 questions</h1>
-    {{ m.lede("Pick your state and topic below, or search the full guide directory beneath the questions. Your answers stay in page memory only and are never saved or sent anywhere.") }}
-  </div>
-  {{ v.editorial_art('desk-overview.webp', variant='spot') }}
-</div>
+{% set start_lede %}{{ m.lede("Pick your state and topic below, or search the full guide directory beneath the questions. Your answers stay in page memory only and are never saved or sent anywhere.") }}{% endset %}
+{{ bs.page_head('Find the right guide in 2 questions', page=page, kicker='Start here', purpose=start_lede, art=false) }}
 
 <div class="callout callout-note no-js-only">
   <p class="callout-title"><strong>JavaScript is off, so browse the full guide directory below.</strong></p>

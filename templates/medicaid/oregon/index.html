@@ -13,7 +13,7 @@
 </nav>
 
 {% set guide_purpose %}<p class="purpose"><strong>Why this site exists:</strong> The state explains the new OHP rules across more than a dozen documents. This guide puts what applicants need in one place, in plain words, with every official source linked.</p>{% endset %}
-{{ bs.page_head('Applying for OHP? New rules start Jan. 1, 2027.', kicker='Oregon Health Plan (OHP)', purpose=guide_purpose, art=v.editorial_art(page.art, variant='hero')) }}
+{{ bs.page_head('Applying for OHP? New rules start Jan. 1, 2027.', page=page, kicker='Oregon Health Plan (OHP)', purpose=guide_purpose) }}
 
 {{ v.stat_hero_strip([
   {'num': '19–64', 'label': 'Adults covered by rules', 'note': 'OHP Plus & Healthier Oregon'},

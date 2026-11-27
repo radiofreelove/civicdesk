@@ -732,7 +732,7 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
     # Core purposeful structural diagrams & editorial art render on routes where they belong
     expected_markers = {
         "index.html": ("desk-overview.webp", "medicaid-calendar.webp", "id-sequence.webp"),
-        "start/index.html": ("desk-overview.webp",),
+        "start/index.html": ('id="start-form"', 'class="page-head page-head-dispatch"'),
         "sources/index.html": ('class="viz-stat-strip"',),
         "medicaid/index.html": ("medicaid-calendar.webp", 'class="viz-timeline', 'class="viz-rail-node"'),
         "medicaid/oregon/index.html": ("medicaid-calendar.webp", 'class="viz-stat-strip"', 'class="viz-timeline', 'class="viz-rail-node"'),

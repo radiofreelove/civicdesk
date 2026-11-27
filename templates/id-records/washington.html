@@ -4,7 +4,7 @@
 {% import "broadsheet.html" as bs %}
 {% block main %}
 {% set guide_lede %}{{ m.lede("Washington splits this into two jobs: your name changes in court (public in district court or sealed in superior court), while your gender marker on a Washington license or birth certificate updates by form with no court needed.") }}{% endset %}
-{{ bs.page_head('Change your name and gender marker in Washington', kicker='Washington', purpose=guide_lede, art=v.editorial_art(page.art, variant='hero'), checked=m.checked_line(page)) }}
+{{ bs.page_head('Change your name and gender marker in Washington', page=page, kicker='Washington', purpose=guide_lede, checked=m.checked_line(page)) }}
 
 {% set wa_facts_note %}{{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-RCW-36-18-020') }} {{ src('ID-WA-2025-CH357') }} {{ src('ID-WA-RCW-36-18-016') }} {{ src('ID-WA-DOL-GENDER') }} {{ src('ID-WA-DOH-SEX') }}{% endset %}
 {{ v.stat_hero_strip([

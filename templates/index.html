@@ -12,19 +12,15 @@
   {{ v.editorial_art('desk-overview.webp', variant='hero') }}
 </div>
 
-<h2 id="desks">Choose a service desk</h2>
-{{ bs.desk_tiles([
-  {'id': 'medicaid', 'href': page_url('medicaid'), 'kicker': 'Medicaid', 'name': 'Health coverage',
-   'blurb': 'New work and activity rules start Jan. 1, 2027. Exemptions, deadlines, and a 1-minute check.',
-   'places': 'Oregon · Washington · Utah', 'art': asset('img/art/medicaid-calendar.webp'),
-   'art_w': v.ART_DIMS['medicaid-calendar.webp'][0], 'art_h': v.ART_DIMS['medicaid-calendar.webp'][1], 'soon': false},
-  {'id': 'id-records', 'href': page_url('id-records'), 'kicker': 'Legal name and vital records', 'name': 'Name, ID & records',
-   'blurb': 'Update your name or sex designation after marriage, divorce, or a court order, in the order offices check.',
-   'places': 'Oregon · Washington · Utah · Federal', 'art': asset('img/art/id-sequence.webp'),
-   'art_w': v.ART_DIMS['id-sequence.webp'][0], 'art_h': v.ART_DIMS['id-sequence.webp'][1], 'soon': false},
-  {'id': 'public-records', 'href': '', 'kicker': 'Coming in 2027', 'name': 'Public records',
-   'blurb': 'Ask a government office for its records.', 'places': '', 'art': '', 'soon': true}
-]) }}
+<h2 id="desks" class="scotch">Choose a service desk</h2>
+{% set tiles = [] %}
+{% for d in site.desks if d.status == 'active' %}
+{% set _ = tiles.append({'id': d.slug, 'href': page_url(d.hub), 'kicker': d.kicker, 'name': d.name, 'blurb': d.blurb,
+  'places': d.states|map(attribute='name')|join(' · '), 'art': asset('img/art/' ~ d.art),
+  'art_w': v.ART_DIMS[d.art][0], 'art_h': v.ART_DIMS[d.art][1], 'soon': false}) %}
+{% endfor %}
+{{ bs.desk_tiles(tiles) }}
+{{ bs.upcoming_desks(site.desks|selectattr('status', 'equalto', 'upcoming')|list) }}
 
 <section class="big-start" aria-labelledby="start-router-h">
   <h2 id="start-router-h">Not sure where to start?</h2>
@@ -36,7 +32,7 @@
 <p>Medicaid agencies check Social Security, payroll, and school records automatically. If your name changed through marriage, divorce, or court, <a href="{{ page_url('id-records-after') }}">updating Social Security and IDs in order</a> prevents avoidable proof letters. {{ m.badge('our_reading') }} {{ src('MED-SSA-NAME') }}</p>
 {% endcall %}
 
-<h2 id="guarantees">How CivicDesk works</h2>
+<h2 id="guarantees" class="scotch">How CivicDesk works</h2>
 <ul class="how-grid">
   <li>
     {{ ic.svg_icon('check', 'how-icon', 44) }}
