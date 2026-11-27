@@ -31,9 +31,9 @@ CivicDesk is an independent public-interest project. It is **not** run or endors
 ## Build and Test Commands (Python 3.13)
 
 ```bash
-python3 scripts/build.py
+python3 scripts/build.py          # also refreshes data/lastmod.json; commit it with content changes
 python3 scripts/check_brand_purge.py
-pytest
+pytest                            # includes scripts/check_voice.py through tests/test_voice.py
 ```
 
 ## Reporting a Mistake
