@@ -2,7 +2,7 @@
 
 Plain-language guides to government rules, benefits, and official records, backed by dated primary sources — [civicdesk.net](https://civicdesk.net).
 
-CivicDesk is an independent public-interest project. It is **not** run by any court or government agency and does **not** provide legal advice.
+CivicDesk is an independent public-interest project. It is **not** run or endorsed by any court or government agency and does **not** provide legal advice.
 
 ## Active Desks
 

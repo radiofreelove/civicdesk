@@ -36,22 +36,22 @@
     "id-records": {
       oregon: {
         primary: { title: "Open the Oregon name, ID, and vital records guide", href: "id-records/oregon/" },
-        tool: { title: "Use the personalized ID & records path finder", href: "id-records/path/" },
+        tool: { title: "Open the ID & records path finder", href: "id-records/path/" },
         note: "Covers marriage, divorce, and circuit court name changes, confidential sex-change filings, Oregon birth certificates (form OHA 2673), and Oregon DMV cards."
       },
       washington: {
         primary: { title: "Open the Washington name, ID, and vital records guide", href: "id-records/washington/" },
-        tool: { title: "Use the personalized ID & records path finder", href: "id-records/path/" },
+        tool: { title: "Open the ID & records path finder", href: "id-records/path/" },
         note: "Covers marriage, divorce, public district court and sealed superior court name changes, Washington birth certificates, and Department of Licensing cards."
       },
       utah: {
         primary: { title: "Open the Utah name, ID, and vital records guide", href: "id-records/utah/" },
-        tool: { title: "Use the personalized ID & records path finder", href: "id-records/path/" },
+        tool: { title: "Open the ID & records path finder", href: "id-records/path/" },
         note: "Covers marriage, divorce, and Utah district court name and sex-designation orders, Vital Records form 902, and Driver License Division updates."
       },
       federal: {
         primary: { title: "Open the Passports and Social Security guide", href: "id-records/federal/" },
-        tool: { title: "Use the personalized ID & records path finder", href: "id-records/path/" },
+        tool: { title: "Open the ID & records path finder", href: "id-records/path/" },
         note: "Covers Social Security replacement cards after marriage, divorce, or court orders, passport name changes, and 2025-2026 federal sex-marker rules."
       }
     }

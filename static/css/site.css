@@ -905,6 +905,30 @@ details.deeper[open] > summary { border-bottom: 1px solid var(--rule); }
 .deeper-label { color: var(--text); }
 .deeper-body { padding: 0.8rem 1rem 0.4rem; }
 
+/* ---------- Pre-tool notice (macros.tool_notice) ---------- */
+.tool-notice {
+  display: flex; align-items: flex-start; gap: 0.6rem; max-width: 65ch;
+  margin: 1rem 0; padding: 0.75rem 1rem; background: var(--surface); color: var(--text);
+  border: 1px solid var(--rule); border-left: 4px solid var(--heading); border-radius: 2px;
+}
+.tool-notice-icon { flex: none; color: var(--heading); line-height: 0; padding-top: 0.15rem; }
+.promise .tool-notice { margin: 0.75rem 0 0; }
+
+/* ---------- ID path finder: rule citations and the Other published pathways drawer ---------- */
+.basis-line { margin: 0 0 0.5rem; color: var(--text); font-size: 0.95em; }
+details.other-pathways { background: var(--card-bg); border: 1px solid var(--rule); border-radius: 2px; margin: 1.5rem 0; }
+details.other-pathways > summary {
+  cursor: pointer; padding: 0.8rem 1rem; min-height: 44px; font-weight: 700; color: var(--heading);
+  list-style-position: outside; margin-left: 1rem;
+}
+details.other-pathways[open] > summary { border-bottom: 1px solid var(--rule); }
+.other-pathways-body { padding: 0.4rem 1rem 0.8rem; }
+.other-group h3 { margin: 1rem 0 0.4rem; }
+.other-group > ul { margin-top: 0.25rem; }
+@media print {
+  details.other-pathways:not([open]), .tool-notice { display: none !important; }
+}
+
 html[data-brief="on"] .deeper,
 html[data-brief="on"] .brief-extra,
 html[data-brief="on"] .more,

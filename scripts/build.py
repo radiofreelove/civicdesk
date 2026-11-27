@@ -799,6 +799,22 @@ def main(argv: list[str] | None = None) -> int:
             return Markup(f'{mark(sid)}<span class="src-unit">{link} {b}</span>')
         return Markup(mark(sid) + link)
 
+    def basis(*sids: str) -> Markup:
+        # Rule citation for an ID path finder result block (templates/id-records/path.html).
+        # data-basis lists the ID-* sources whose published rule sorts a reader onto this pathway;
+        # data-basis-label carries their short names for the visible "Sorted by" line in path.js.
+        if not sids:
+            raise BuildError(f"page {state['page']}: basis() needs at least one source id")
+        labels = []
+        for sid in sids:
+            if not sid.startswith("ID-"):
+                raise BuildError(f"page {state['page']}: basis() takes ID-* sources only, got '{sid}'")
+            s = use(sid)
+            labels.append(str(s.get("short") or s["title"]))
+        return Markup(
+            f' data-basis="{escape(" ".join(sids))}" data-basis-label="{escape("; ".join(labels))}"'
+        )
+
     def fact(fid: str) -> Markup:
         if fid not in facts:
             raise BuildError(f"page {state['page']}: unknown fact id '{fid}'")
@@ -851,7 +867,11 @@ def main(argv: list[str] | None = None) -> int:
     def correction_mailto(page: dict) -> str:
         route = str(page.get("route") or "/")
         subject = f"CivicDesk correction: {route}"
-        return f"mailto:{site['corrections_email']}?subject={quote(subject, safe='')}"
+        href = f"mailto:{site['corrections_email']}?subject={quote(subject, safe='')}"
+        body = str(site.get("corrections_mailto_body") or "").strip()
+        if body:
+            href += f"&body={quote(body, safe='')}"
+        return href
 
     def header_tagline(page: dict) -> str:
         desk = page.get("desk", "")
@@ -1032,6 +1052,7 @@ def main(argv: list[str] | None = None) -> int:
         read_note=read_note,
         status_badge=status_badge,
         src=src,
+        basis=basis,
         fact=fact,
         fact_src=fact_src,
         ext=ext,

@@ -4,6 +4,8 @@ window.CivicDeskCheck = (function () {
   var HARDSHIP = "Utah calls this a short-term hardship. You must ask the state for this exception.";
 
   return {
+    state: "Utah",
+    agency: "DWS",
     reasons: {
       pregnant: {
         label: "You are pregnant, or you get Medicaid for the months after a birth."

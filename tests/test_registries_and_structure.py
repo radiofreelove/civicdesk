@@ -290,9 +290,35 @@ def test_path_finder_template_rules() -> None:
         assert f"t-birth-{born}" in blocks
     assert "t-federal" in blocks and "t-after" in blocks
 
+    # Every template the answers sort carries a rule citation: basis('ID-...') renders data-basis and
+    # data-basis-label for path.js's "Sorted by" line. Help and after steps always show (no sort), and
+    # the two fallbacks for places CivicDesk does not cover have no registry source to cite.
+    id_registry = {s["id"] for s in yaml.safe_load((ROOT / "data" / "sources" / "id_records.yaml").read_text(encoding="utf-8"))}
+    unsorted = {f"t-help-{live}" for live in ("or", "wa", "ut", "other")} | {"t-after"}
+    fallbacks = {"t-court-other", "t-birth-outside"}
+    root_re = re.compile(r'<li class="result-block"(?P<basis>\{\{ basis\((?P<args>[^)]*)\) \}\})?>')
+
     for bid, body in blocks.items():
-        assert '<li class="result-block">' in body and 'class="step-node"' in body, f"{bid}: not a step-timeline step"
-        body = body.replace('<li class="result-block">', "", 1)
+        root = root_re.search(body)
+        assert root and 'class="step-node"' in body, f"{bid}: not a step-timeline step"
+        basis_ids = re.findall(r"'([^']+)'", root.group("args") or "")
+        if bid in unsorted or bid in fallbacks:
+            assert not basis_ids, f"{bid}: unsorted or fallback step should not claim a sorting rule"
+        else:
+            assert basis_ids, f"{bid}: sorted step needs basis('ID-...') on its result-block"
+            for sid in basis_ids:
+                assert sid in id_registry, f"{bid}: basis source {sid} is not in data/sources/id_records.yaml"
+        body = body[: root.start()] + body[root.end():]
+        # Line-level basis (where name and sex-marker lines follow different rules) must be complete:
+        # once one data-change line in a step names its own rule, every data-change line does.
+        line_attrs = re.findall(r"<li([^>]*)>", body)
+        changed = [a for a in line_attrs if "data-change=" in a]
+        with_basis = [a for a in changed if "basis(" in a]
+        if with_basis:
+            assert len(with_basis) == len(changed), f"{bid}: some data-change lines lack their own basis()"
+        for a in line_attrs:
+            for sid in re.findall(r"'([^']+)'", a):
+                assert sid in id_registry, f"{bid}: line basis source {sid} is not in data/sources/id_records.yaml"
         rows = []
         for attrs, text in re.findall(r"<li([^>]*)>(.*?)</li>", body, re.S):
             ch_m = re.search(r'data-change="([^"]+)"', attrs)
@@ -354,6 +380,9 @@ def test_workers_static_assets_config_and_headers(built_site: Path) -> None:
 
 def test_report_mistake_mailto_and_github_options(built_site: Path) -> None:
     pages_yaml = yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))
+    site_yaml = yaml.safe_load((ROOT / "data" / "site.yaml").read_text(encoding="utf-8"))
+    expected_body = site_yaml["corrections_mailto_body"]
+    assert "Do not include names, case numbers, health details" in expected_body
 
     for p in pages_yaml:
         route = p["route"]
@@ -372,7 +401,8 @@ def test_report_mistake_mailto_and_github_options(built_site: Path) -> None:
         expected_top_anchor = "#report" if p["slug"] == "about" else "#report-mistake"
         assert f'<a href="{expected_top_anchor}">Report a mistake</a>' in raw, f"{route}: missing top Report a mistake anchor"
 
-        # Every page must expose a direct mailto:corrections@civicdesk.net link pre-filling ONLY CivicDesk correction: <route>
+        # Every page must expose a direct mailto:corrections@civicdesk.net link pre-filling ONLY the
+        # "CivicDesk correction: <route>" subject and the site.yaml no-personal-details body.
         correction_links = [
             href for href, _ in auditor.links if href.startswith("mailto:corrections@civicdesk.net")
         ]
@@ -383,8 +413,9 @@ def test_report_mistake_mailto_and_github_options(built_site: Path) -> None:
             assert parsed.scheme == "mailto"
             assert parsed.path == "corrections@civicdesk.net"
             params = parse_qs(parsed.query, keep_blank_values=True)
-            assert list(params.keys()) == ["subject"], f"{route}: mailto must pre-fill ONLY subject, got {href}"
+            assert list(params.keys()) == ["subject", "body"], f"{route}: mailto must pre-fill ONLY subject and body, got {href}"
             assert params["subject"] == [expected_subject], f"{route}: expected subject={expected_subject!r}, got {params['subject']!r}"
+            assert params["body"] == [expected_body], f"{route}: unexpected mailto body {params['body']!r}"
 
         # GitHub issue option + plain privacy note must appear alongside the email option
         assert 'href="https://github.com/radiofreelove/civicdesk/issues"' in raw, f"{route}: missing GitHub issues link"
@@ -394,7 +425,7 @@ def test_report_mistake_mailto_and_github_options(built_site: Path) -> None:
     # Specifically verify /about/ main body #report section has both contact options and the plain privacy warning
     about_main = (built_site / "about" / "index.html").read_text(encoding="utf-8").split("<main", 1)[1].split("</main>", 1)[0]
     assert '<h2 id="report">Report a mistake</h2>' in about_main
-    assert 'href="mailto:corrections@civicdesk.net?subject=CivicDesk%20correction%3A%20%2Fabout%2F"' in about_main
+    assert 'href="mailto:corrections@civicdesk.net?subject=CivicDesk%20correction%3A%20%2Fabout%2F&amp;body=' in about_main
     assert 'href="https://github.com/radiofreelove/civicdesk/issues"' in about_main
     assert "Never include personal health or case details." in about_main
 
