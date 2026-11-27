@@ -88,6 +88,7 @@
 </ol>
 
 <h2 id="privacy">Who can see your case {{ m.badge('changed') }}</h2>
+{{ m.analogy(page, 'confidential-vs-sealed-folder') }}
 {% call m.callout('changed', '2026 confidentiality access rules', 'or-confidential') %}
 <p>For sex-change or combined petitions filed on or after {{ fact('or_confidential_date') }}, access is restricted to you, your lawyer, the court, someone granted access by judge order for good cause, and required minor-notice recipients. Pre-July 2026 filers can file a motion requesting confidentiality; name-only cases stay public unless sealed via Oregon's Address Confidentiality Program. {{ src('ID-OR-2026-CH52') }} {{ src('ID-OR-ORS-33') }}</p>
 {% endcall %}

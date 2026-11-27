@@ -33,7 +33,7 @@
       </div>
     </noscript>
 
-    {{ v.step_progress_track(['Age group', 'Exemptions', 'Ways to meet']) }}
+    {{ v.step_progress_track(['Age group', 'Exemptions & exclusions', 'Ways to meet']) }}
     <p class="progress" id="checker-progress" aria-live="polite" hidden>Step 1 of 3</p>
 
     <form id="checker" class="checker checker-form" novalidate hidden>
@@ -63,7 +63,7 @@
             <label class="choice"><input type="checkbox" name="reason" value="caregiver"> I care for someone with a disability or a serious health condition.</label>
             <label class="choice"><input type="checkbox" name="reason" value="health"> I have a serious or disabling health condition.</label>
             <label class="choice"><input type="checkbox" name="reason" value="ssi"> I get SSI or SSDI.</label>
-            <label class="choice"><input type="checkbox" name="reason" value="treatment"> I am in drug or alcohol treatment, or I was in the last 5 years.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="treatment"> I am in drug or alcohol treatment, or in stable recovery within the last 5 years.</label>
           </div>
 
           <div class="step-group" role="group" aria-labelledby="group-coverage">
@@ -86,6 +86,7 @@
             <label class="choice"><input type="checkbox" name="reason" value="jail"> I got out of jail or prison in the last 4 months.</label>
             <label class="choice"><input type="checkbox" name="reason" value="hospital"> I stayed at least one night as a patient in a hospital, nursing facility, or behavioral health facility.</label>
             <label class="choice"><input type="checkbox" name="reason" value="travel"> I was away from home 7 or more days in a month to get medical care for me, my child, or a tax dependent.</label>
+            <label class="choice"><input type="checkbox" name="reason" value="county"> I live in a county with a federal disaster declaration or high unemployment.</label>
           </div>
 
           <div class="step-group">
