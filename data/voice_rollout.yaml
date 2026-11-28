@@ -7,7 +7,7 @@
 # the same change that adds its fields; the test fails if a pending page is already complete, so
 # this list only shrinks.
 
-# 27 pages exempt from the analogy requirement; 41 pages require one.
+# Exempt from the analogy requirement (27 slugs, including '404'; leaves 41 of 67 non-404 pages).
 analogy_exempt:
   # Front door, router, and site utility pages
   - index

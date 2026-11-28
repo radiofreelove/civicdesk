@@ -46,12 +46,8 @@
   analogies:
   - id: federal-floor-state-gates
     placement: lead
-    compare: Think of federal Medicaid law like a building code written in Washington, D.C., and each state agency
-      as the local contractor building the actual doors. Congress set the same 80-hour or $580 baseline for expansion
-      adults, but Oregon, Washington, and Utah each built different verification desks, reply clocks, and enforcement
-      pauses on top of it.
-    boundary: The 1-month retroactive medical-bill cutoff on Jan. 1, 2027 and 6-month renewal cycles begin across
-      states even where a state uses the federal hold-harmless pause on work-rule denials.
+    compare: 'Think of Congress writing one national store-coupon rule—earn $580 or log 80 hours—while letting each state wire up its own checkout register. One state''s scanner clears regulars silently from state files, two states wave penalties through June 2027 while testing their registers, and the third checks receipts at the door starting New Year''s Day.'
+    boundary: 'Unlike a store manager who can postpone every corporate policy at once, no state can pause Congress''s Jan. 1, 2027 switch to 6-month renewals and a 1-month cap on unpaid past medical bills.'
     basis:
     - MED-S27
     - MED-S41
@@ -102,12 +98,8 @@
   analogies:
   - id: soft-launch-inspection-period
     placement: lead
-    compare: Oregon's hold-harmless period works like a city testing new parking meters for six months with warning
-      tickets instead of towing. Starting Jan. 1, 2027, OHP's computers still check payroll and school databases
-      and mail status letters, but Oregon directed the agency not to deny or close coverage solely over work rules
-      through June 30, 2027.
-    boundary: The hold-harmless delay is subject to federal approval and never protects an application that misses
-      standard OHP income, residency, or renewal rules.
+    compare: 'Oregon''s rollout works like a town turning on new speed cameras for a six-month test run where the flash still fires and drivers still get a photo in the mail—stamped as a $0 warning instead of a ticket. Starting Jan. 1, 2027, OHP''s computers check payroll and school records and mail status notices without closing coverage solely over work rules through June 30, 2027.'
+    boundary: 'Unlike a guaranteed local grace period, Oregon''s six-month pause still awaits federal sign-off—and ignoring regular OHP renewal mail can still close coverage before July.'
     basis:
     - MED-S07
     - MED-S53
@@ -189,23 +181,16 @@
   analogies:
   - id: three-pass-turnstile-bucket
     placement: lead
-    compare: Think of OHP's activity test like a subway station with three turnstiles—household income of $580+,
-      half-time school, or an 80-hour bucket—and only one gate needs to click open. The 80-hour bucket lets paid
-      shifts, gig work, classes, job training, and tracked nonprofit volunteering pour in together until the bucket
-      reaches 80 hours for that prior month.
-    boundary: OHP counts combined Medicaid household income toward the $580 bar (so two adults do not each need
-      $580), whereas the 80-hour bar is checked separately for each covered adult.
+    compare: 'Picture a parking lot with three ways to validate your ticket: spend one flat amount at the grocery store, scan a student pass, or combine smaller stamps from different shops on the block until they reach 80 points. OHP opens the gate as soon as any single option clears—$580 in household pay, half-time school, or 80 combined hours across paid work, gig shifts, job training, classes, and nonprofit volunteering.'
+    boundary: Unlike paid work or classes where payroll and school records exist, volunteer hours count toward the 80-hour mix only when tracked through a nonprofit or public program rather than informal help for friends or neighbors.
     basis:
     - MED-S01
     - MED-S27
     - MED-S04
   - id: household-income-vs-individual-hours
     placement: inline
-    compare: 'Federal rules treat the $580 income bar like a joint household checking account while treating the
-      80-hour bar like individual factory timecards: one shared household paycheck of $580 or more clears the
-      income bar for covered adults in the household, whereas one adult''s work or school hours never spill over
-      onto another adult''s timecard.'
-    boundary: Only adults ages 19 to 64 who do not have an exemption need to clear either bar.
+    compare: 'Splitting household rent works differently than clocking in at work: one roommate''s $580 paycheck can cover the rent check for the whole apartment, yet clocking extra overtime at your job never puts hours onto your roommate''s timecard. Federal rules pool household income the first way and count the 80-hour rule the second way.'
+    boundary: Unlike shared rent where everyone on the lease owes a share, household members outside ages 19 to 64 or covered by an exemption skip both checks.
     basis:
     - MED-S27
     - MED-S05
@@ -252,12 +237,8 @@
   analogies:
   - id: automatic-pass-vs-hand-raise
     placement: lead
-    compare: 'OHP sorts exemptions into two lanes like airport security: an automatic lane where the agency''s
-      own files already flag age, Medicare, SNAP or TANF work compliance, or disaster counties, and a raise-your-hand
-      lane for caregiving, Tribal status, hospital stays, or health conditions that no state wage database knows
-      about.'
-    boundary: Being excused from SNAP work rules does not carry over automatically to OHP—only actively meeting
-      SNAP or TANF work requirements counts in the automatic lane.
+    compare: 'Picture a toll bridge with an overhead tag reader and an intercom button: cars with a registered tag roll through automatically, while a van carrying three kids in the back seat looks like a solo commuter on camera until the driver presses the button and says who is aboard. OHP clears age, Medicare, active SNAP or TANF work compliance, and disaster counties silently from state files, while caregiving, Tribal status, recovery, and health exemptions stay invisible until you flag them.'
+    boundary: 'Unlike a transit tag that carries every waiver across programs, being excused from SNAP work rules does not transfer automatically—only actively meeting SNAP or TANF work rules triggers OHP''s automatic pass.'
     basis:
     - MED-S02
     - MED-S03
@@ -305,11 +286,8 @@
   analogies:
   - id: auto-lookup-before-receipt-request
     placement: lead
-    compare: 'Applying for OHP works like a tax return that prefills W-2s before asking for receipts: once an
-      application is submitted, OHP''s system queries state payroll, school, and benefit databases behind the
-      scenes. It sends a proof letter only for the specific blanks those electronic feeds could not confirm.'
-    boundary: OHP Bridge covers adults slightly above standard OHP income limits with $0 premiums, so being over
-      standard OHP income does not automatically close public coverage options.
+    compare: 'Set ten items on a library checkout pad and nine barcodes chime green right away because they are already in the catalog; the screen pauses only on the one local booklet missing a sticker. Once an OHP application goes in through ONE, phone, paper form 7210, or a free community helper, Oregon''s computer checks payroll, school, and benefit feeds first and asks only about the blanks it could not read.'
+    boundary: Unlike a strict checkout scanner that turns you away a dollar past the limit, ONE automatically routes adults slightly above standard OHP income into $0-premium OHP Bridge coverage.
     basis:
     - MED-S04
     - MED-S09
@@ -349,12 +327,8 @@
   analogies:
   - id: four-different-envelopes-one-clock
     placement: lead
-    compare: 'Treat OHP mail like sorting four different utility notices on a kitchen table: a December newsletter,
-      an eligibility statement, a heads-up status alert, and a 35-day shutoff-prevention request. Only the Request
-      for Information is asking to fill a specific missing blank from OHP''s database check, and it accepts replies
-      across five channels.'
-    boundary: Even after a missed 35-day reply date leads to a denial or closure, Oregon imposes no waiting period
-      to reapply in any month or request a hearing.
+    compare: 'Four envelopes from the same agency feel less stressful once you read them like car dashboard lights: three are passive readouts—like trip mileage or a seasonal tire reminder—and only one is the blinking oil light asking you to top off within 35 days. OHP''s general mailers and status alerts ask for nothing today, while only a Request for Information needs the missing detail or exemption reported across five reply options.'
+    boundary: 'Unlike an engine that locks up for good when a warning runs out, missing Oregon''s 35-day reply date creates zero lockout penalty—anyone can file a fresh OHP application the very next month or ask for a hearing.'
     basis:
     - MED-S04
     - MED-S06
@@ -402,12 +376,8 @@
   analogies:
   - id: freeze-button-vs-fresh-application
     placement: lead
-    compare: When an OHP termination notice arrives, asking for a hearing before the effective cutoff works like
-      hitting a freeze button—current coverage stays active while an independent reviewer checks the decision.
-      Submitting a new application works like opening a clean tab whenever hours, income, or an exemption changes
-      next month.
-    boundary: Aid paid pending keeps existing OHP benefits running during an appeal of a closure or reduction,
-      not on an initial application that was never approved.
+    compare: 'Disputing a mistaken electric shutoff before the cutoff date keeps your lights on while billing checks last month''s meter reading, whereas opening a new service order looks at what you earn today. Asking for a free OHP hearing before the notice cutoff keeps current coverage active during review, while turning in a fresh application checks this month''s hours, pay, or exemption from scratch.'
+    boundary: Just as keeping the lights on requires power that is already connected, continuing OHP benefits during an appeal applies only when existing coverage is closing or shrinking—never on a denied first-time application.
     basis:
     - MED-S04
     - MED-S14
@@ -441,12 +411,8 @@
   analogies:
   - id: shrinking-rearview-mirror
     placement: lead
-    compare: 'Retroactive OHP coverage works like an insurance policy with a rearview mirror: once approved, it
-      looks backward from the application month and picks up unpaid bills from months when the person already
-      met eligibility rules. On Jan. 1, 2027, federal law shortens that mirror from three months back to just
-      one month for most expansion adults.'
-    boundary: Children 18 or younger, adults 65+, pregnant members, and disability-based OHP groups keep a 2-month
-      lookback window starting Jan. 1, 2027 instead of dropping to 1 month.
+    compare: 'Think of a work-wear store that honors a discount on boots you bought earlier in the fall—as long as you qualified on the day on the receipt—until New Year''s Day, when the store trims that receipt window from 90 days down to 30. OHP''s retroactive coverage reaches back from your application month to pay eligible unpaid medical bills, and on Jan. 1, 2027 that reach-back drops from three months to one month for most adults ages 19 to 64.'
+    boundary: Unlike a flat storewide cut, children 18 or younger, adults 65 and older, pregnant members, and disability-based OHP groups keep a 2-month lookback window starting Jan. 1, 2027.
     basis:
     - MED-S01
 - slug: medicaid-oregon-health
@@ -488,12 +454,8 @@
   analogies:
   - id: open-list-self-attest-lane
     placement: lead
-    compare: Oregon's 2027 health exemption works like a clinic accommodation form where the printed examples
-      are starters rather than a locked roster—people report their condition directly without paying for a doctor's
-      signature first. Meanwhile, a federal court threw out an extra federal test for Oregon that tried to tie
-      medical frailty to whether someone could still comply with work rules.
-    boundary: In 2028, Oregon may begin requesting provider verification for non-permanent health exemptions that
-      electronic records cannot confirm.
+    compare: 'Think of priority seating at the front of a city bus: the sign names a few visible examples without shutting out unseen illnesses, the driver asks for zero doctor''s note when you sit down, and nobody tests whether you could technically stand for twenty stops. In 2027, Oregon treats health and recovery exemptions as an open list taken on your word, and a federal court barred adding a second test over whether the condition literally blocks 80 hours of work.'
+    boundary: 'Unlike permanent disability programs that require a lifelong diagnosis, Oregon''s health exemption covers ongoing recovery and episodic conditions too—though standard OHP income and renewal rules still apply.'
     basis:
     - MED-S03
     - MED-S07
@@ -651,12 +613,8 @@
   analogies:
   - id: two-clocks-one-pause
     placement: lead
-    compare: 'Washington''s 2027 rollout runs two separate timers on the same dashboard: the work-rule penalty
-      clock is on hold through June 30, 2027 while HCA tests its system, but the 6-month renewal clock and shorter
-      past-bill clock both start ticking on Jan. 1, 2027. Answering renewal mail on time still matters even while
-      the work-rule penalty is paused.'
-    boundary: Washington's hold-harmless pause is pending federal approval and covers only work-rule denials—not
-      income changes, missed renewals, or non-expansion Apple Health rules.
+    compare: 'Imagine an apartment manager who waives a new community-hours rule until July while debugging the sign-in sheet, yet switches leases to 6-month renewals right away in January: leaving your renewal envelope unopened still ends the lease even while the hours rule is paused. That is how Apple Health''s 2027 calendar works—work-rule denials pause through June 30, 2027, while 6-month renewals and shorter back-bill limits start Jan. 1.'
+    boundary: 'Unlike a signed lease waiver already locked in, Washington''s six-month pause still awaits federal approval and applies only to Apple Health for Adults ages 19 to 64.'
     basis:
     - MED-WA01
     - MED-WA22
@@ -735,23 +693,16 @@
   analogies:
   - id: six-lanes-with-credit-converter
     placement: lead
-    compare: 'Washington built a six-lane highway with a built-in currency converter for part-time students: 1
-      to 6 college credits convert into 13 to 78 monthly hours that combine with work or community service, and
-      seasonal workers can average income over six months. Behind the scenes, HCA checks state wage and eligibility
-      feeds first—clearing roughly two-thirds of covered adults without mailing a proof letter.'
-    boundary: Washington's 1-to-6 credit conversion table is for part-time enrollment combined with other hours,
-      whereas students enrolled at least half-time already clear the rule on school alone.
+    compare: Picture a neighborhood co-op where typing your phone number at checkout waves nearly two out of three members straight through from existing purchase records, while everyone else can mix regular points, seasonal averages, or school tokens on one card to reach 80. Washington HCA clears roughly 64% of covered adults automatically from state records, averages seasonal pay across six months, and lets part-time college credits stack with work or volunteering.
+    boundary: 'Unlike part-time classes that convert into hours to mix with other work, enrolling at least half-time in school, college, or job training clears Washington''s rule all by itself without counting hours.'
     basis:
     - MED-WA04
     - MED-WA05
     - MED-WA22
   - id: lookback-snapshot-vs-monthly-clock
     placement: inline
-    compare: 'Washington checks activity on two different camera settings with no monthly reporting in between:
-      applying takes a single snapshot of the month right before you apply, while a 6-month renewal scans the
-      last six months like a highlight reel where clearing the bar in just 1 of those 6 months is enough.'
-    boundary: Seasonal workers can also average income across 6 months to hit the $580 monthly threshold instead
-      of needing $580 in one single month.
+    compare: 'Washington checks activity with a snapshot camera, not a live security feed watching every week: applying checks just the single month before you apply, and a 6-month renewal passes as soon as any 1 month out of those 6 clears the bar—with zero monthly reporting in between.'
+    boundary: Even when no single month hits $580 on its own, seasonal workers whose pay bunches up in harvest or summer months can average six months of earnings together instead of relying on one snapshot.
     basis:
     - MED-WA05
     - MED-WA22
@@ -793,12 +744,8 @@
   analogies:
   - id: zip-code-switch-vs-request-form
     placement: lead
-    compare: Washington's hardship system splits into an automatic county-line switch and a manual request desk.
-      When a county hits a federal disaster declaration or high unemployment, HCA flips the hardship switch on
-      for everyone living there; for an inpatient stay or travel outside the community for serious care, the person
-      must tell HCA so a caseworker can apply it.
-    boundary: Washington allows self-attestation for medical frailty through 2027, though HCA notes it may begin
-      requesting proof in 2028 when electronic records cannot confirm an exemption.
+    compare: When an ice storm knocks out power across a whole county, the electric company waives late fees automatically for every home on that map; when a water pipe bursts inside one kitchen on a clear Tuesday, billing never knows unless the household calls in. Washington flips county disaster and high-unemployment hardships on automatically, while hospital stays, medical travel, caregiving, or health exemptions invisible to state files rely on telling Healthplanfinder or HCA.
+    boundary: Unlike ongoing exemptions such as caregiving or verified Tribal status, short-term hardships excuse only the affected stretch rather than permanently waiving future renewals.
     basis:
     - MED-WA04
     - MED-WA05
@@ -842,12 +789,8 @@
   analogies:
   - id: two-front-doors-one-program
     placement: lead
-    compare: 'Washington splits Apple Health into two separate front doors based on age and disability: adults
-      under 65 without Medicare walk into Healthplanfinder (run with HCA), while people who are 65+, blind, disabled,
-      or on Medicare walk into DSHS''s Washington Connection. Picking the right door upfront keeps a file out
-      of agency transfer limbo.'
-    boundary: Both doors stay open every month of the year with no open-enrollment blackout window, and certified
-      local navigators help with applications at zero cost.
+    compare: 'Walk up to a clinic building where Urgent Care and Specialty Care share the same name on the roof yet run separate check-in computers: lining up at the wrong desk does not block your care, it just stalls your paperwork while staff forward it across the hall. Apple Health uses one brand name across two state websites—Healthplanfinder for adults 19 to 64 without Medicare, and DSHS Washington Connection for Medicare, disability, or age 65 and up.'
+    boundary: Unlike workplace or Marketplace insurance plans that lock out sign-ups outside fall open enrollment, both Apple Health portals stay open every day of the year with free local navigator help.
     basis:
     - MED-WA06
     - MED-WA07
@@ -889,12 +832,8 @@
   analogies:
   - id: fifteen-day-auditor-ticket
     placement: lead
-    compare: A Washington Post Eligibility Review letter works like an automated bank security alert that stays
-      open until confirmed—even after calling customer service the week before. HCA checks state wage feeds first,
-      and when a field still looks unverified, the letter starts a 15-day countdown clock before coverage can
-      close.
-    boundary: If a missed renewal closes Apple Health, Washington gives a 90-day late-renewal window to reopen
-      coverage without starting a brand-new application.
+    compare: Tell a bank teller you are driving out of town and the automated fraud system can still text asking you to confirm a gas-station swipe within 15 minutes—ignore the text because you already updated your account last week and the card still locks. A Washington Post Eligibility Review letter comes from a separate back-end check, starting its own 15-calendar-day clock that clears only when you answer that notice directly.
+    boundary: Unlike a canceled bank card that forces you to apply all over again, Apple Health gives 90 days after a missed renewal closure to return late renewal details and reopen coverage.
     basis:
     - MED-WA01
     - MED-WA04
@@ -947,12 +886,8 @@
   analogies:
   - id: three-safety-nets-different-timers
     placement: lead
-    compare: 'Washington''s appeal rules work like three stacked safety nets with different expiration timers:
-      a 10-day net that keeps existing coverage active while an administrative judge reviews the case, a 90-day
-      net to contest HCA''s eligibility letter, and a 90-day late-renewal net that revives closed coverage without
-      a new application.'
-    boundary: Continued coverage during an appeal protects existing coverage that is ending or shrinking, not
-      an initial application that was denied.
+    compare: 'Imagine a phone carrier cuts your line by mistake and offers three recovery clocks: dispute within 10 days (before the monthly billing cycle flips) and your phone stays connected during review, or take up to 90 days either to appeal the notice or to turn in late renewal info and switch your account right back on. Washington wires those exact three timers onto Apple Health eligibility closures.'
+    boundary: Just as keeping a phone line active works only when service is already turned on, continued Apple Health benefits apply only to existing coverage that is ending or shrinking—never to a denied first-time application.
     basis:
     - MED-WA16
     - MED-WA17
@@ -989,11 +924,8 @@
   analogies:
   - id: calendar-cutoff-backdate-window
     placement: lead
-    compare: 'Apple Health retroactive coverage works like a warranty backdate stamped from the month an application
-      is submitted: if the applicant qualified during those earlier months, the state can reach back and pay unpaid
-      medical bills. On Jan. 1, 2027, that reach-back drops from 3 months to 1 month for Apple Health for Adults.'
-    boundary: Other Apple Health programs outside Apple Health for Adults keep up to a 2-month retroactive window
-      starting Jan. 1, 2027.
+    compare: 'Picture a roadside tow club that lets stranded drivers join after a breakdown and still turn in earlier tow bills—as long as they qualified on the day of the tow—until Jan. 1, when the club trims that past-receipt window from three months down to just the month before joining. Apple Health''s retroactive coverage stamps the calendar the same way, shrinking from three prior months to one prior month on Jan. 1, 2027 for Apple Health for Adults.'
+    boundary: Unlike a blanket cut across every program, Apple Health groups outside Apple Health for Adults—such as children, pregnancy, and disability coverage—keep up to a 2-month lookback window in 2027.
     basis:
     - MED-WA01
     - MED-WA03
@@ -1037,12 +969,8 @@
   analogies:
   - id: honor-system-medical-lane
     placement: lead
-    compare: 'Through 2027, Washington treats the medical-frailty exemption like an honor-system check-in box:
-      HCA checks state records first, and if a condition is not in their system, the applicant declares it directly
-      in Healthplanfinder without chasing a doctor''s letter. The federal court in Massachusetts v. Oz also stripped
-      out the extra hurdle asking whether the condition stopped someone from working.'
-    boundary: Starting in 2028, HCA may ask for supporting medical verification if electronic health or disability
-      records do not confirm the exemption.
+    compare: Picture a workplace where hospital leaves already on file clear automatically, anyone else taps a sick-day box on their phone without paying an urgent-care clinic just to sign an excuse slip, and company rules bar asking whether you could still work through the illness. Through 2027, Washington checks state records first for medical frailty or substance-use treatment, accepts a plain self-attestation box in Healthplanfinder when records are silent, and follows the court order barring any extra test over ability to work.
+    boundary: 'Unlike a formal Social Security disability determination, checking the medical-frailty box excuses only Apple Health''s work rule and does not move an account into disability-based Classic Medicaid.'
     basis:
     - MED-WA05
     - MED-WA21
@@ -1190,12 +1118,8 @@
   analogies:
   - id: show-your-receipts-enforcement
     placement: lead
-    compare: While Oregon and Washington put a six-month warning period on work-rule denials, Utah's system is
-      built like a full audit desk from day one. Utah's Department of Workforce Services (DWS) runs electronic
-      checks first, then mails a proof request—and under Utah rules, written documents matter whenever the database
-      comes up blank.
-    boundary: Utah Medicaid programs outside Adult Expansion and Targeted Adult Medicaid are not subject to the
-      2027 community-engagement rules.
+    compare: 'Imagine three big warehouse grocery stores adding exit receipt checks on New Year''s Day: two wave shoppers past with reminder flyers until July while testing their registers, while the third checks every unverified cart starting Jan. 1. While Oregon and Washington announced six-month pauses on work-rule denials, Utah''s DWS goes straight to live checks—clearing state wage and benefit feeds first and requiring written proof whenever a file comes back blank.'
+    boundary: Unlike an exit checker stopping every cart in the store, Utah Medicaid programs outside Adult Expansion and Targeted Adult Medicaid never go through the 2027 work-rule check at all.
     basis:
     - MED-U01
     - MED-U02
@@ -1273,12 +1197,8 @@
   analogies:
   - id: database-first-receipts-backup
     placement: lead
-    compare: Utah's 80-hour check works like an expense-report audit where a corporate card auto-clears most charges,
-      but any cash purchase needs a paper receipt. DWS queries wage, school, and benefit databases first for the
-      prior month (or any 1 month since the last review at renewal); if gig work, classes, or volunteering are
-      not in those feeds, Utah law requires written proof.
-    boundary: Utah's own pages describe the income path as earning at least $580 a month while the federal rule
-      counts combined Medicaid household income, so multi-adult households need to confirm how DWS counts theirs.
+    compare: 'Think of the difference between a regular W-2 paycheck and cash odd jobs when proving your income for an apartment: payroll direct deposits leave an automatic digital trail, whereas cash babysitting, yard work, or volunteering stays invisible unless you keep a pay stub or signed log. Utah''s DWS computer auto-clears W-2 wages and state benefit records first for last month (or any 1 qualifying month since your last renewal), and asks for written proof only when hours sit outside those feeds.'
+    boundary: 'Unlike a settled W-2 rulebook, federal regulations pool Medicaid household income toward $580 while Utah''s published pages describe individual earnings—so multi-adult households need to watch how DWS counts theirs.'
     basis:
     - MED-U01
     - MED-U04
@@ -1326,13 +1246,8 @@
   analogies:
   - id: three-buckets-paper-gate
     placement: lead
-    compare: 'Think of Utah''s official list like three labeled folders on a caseworker''s desk: excluded individuals
-      (like pregnancy, caregiving, medical frailty, or verified Tribal status), mandatory exceptions (like Medicare,
-      SSI, or recent release from jail or prison), and optional short-term hardships (like hospital stays, medical
-      travel, or disaster counties). If DWS''s computer already sees the status, the folder clears automatically;
-      otherwise, reporting it in myCase or on form 742 with proof documents is what opens it.'
-    boundary: Utah was not a plaintiff in Massachusetts v. Oz, so Utah residents cannot assume that federal court
-      ruling changed Utah's clinical-proof rules without checking current DWS guidance.
+    compare: 'Picture a county fairground gate with three kinds of free-entry passes—season wristbands, working-crew badges, and weather rain-checks—all checked on the same handheld tablet: if your name is already in the tablet you walk right in, and if not, you show proof at the booth. Utah''s MED-U05 chart uses three legal labels—excluded individuals, mandatory exceptions, and short-term hardships—yet all three follow that single rule in myCase or on Form 742.'
+    boundary: 'Unlike neighboring Oregon and Washington, Utah never joined the Massachusetts v. Oz lawsuit—so that federal court ruling did not relax Utah''s medical-proof rules.'
     basis:
     - MED-U05
     - MED-U28
@@ -1340,11 +1255,8 @@
     - MED-S40
   - id: tribal-verification-clock
     placement: inline
-    compare: 'Utah''s Tribal verification works like an express-lane pass at a toll plaza: once DWS has a Tribal
-      ID, CDIB, or IHS face sheet on file, the pass stays active, excludes the member from work rules, and keeps
-      renewals once a year instead of every six months.'
-    boundary: Members whose Tribal status is not yet verified in DWS records received a yellow 2026 letter asking
-      for proof by Jan. 1, 2027.
+    compare: 'Verifying Tribal status with DWS works like linking a permanent discount pass to a bus card once instead of feeding a 6-month meter: once a Tribal ID, CDIB, or IHS face sheet is on file, the account skips work rules altogether.'
+    boundary: 'Members who already received Utah''s pink confirmation letter are already verified on file with nothing new to mail, and parent or grandparent lineage records can establish status even without a personal enrollment card.'
     basis:
     - MED-U05
     - MED-U28
@@ -1394,12 +1306,8 @@
   analogies:
   - id: old-paper-form-triggers-callback
     placement: lead
-    compare: Applying online in myCase puts an application and phone-uploaded proof into the same digital inbox
-      DWS caseworkers review, whereas paper form 61MED works like an older intake clipboard that is still missing
-      the 2027 work-rule checklist. Either way, DWS checks state wage and school feeds first and mails a proof
-      notice for anything missing.
-    boundary: If an employer offers health insurance, Utah Medicaid may require enrolling in that job plan and
-      reimburse the monthly premium share instead of providing standard Medicaid alone.
+    compare: 'Ordering dinner on a diner''s counter touchscreen asks every current question up front and clips your receipt straight to the ticket, while ordering off last year''s printed takeout menu still works—the kitchen just calls back to ask the new questions left off the old print run. Applying in DWS myCase bundles your form and phone photos of proof in one queue, whereas older paper Form 61MED leaves 2027 blanks that DWS checks electronically first and follows up on by mail.'
+    boundary: Unlike a standard meal order, if your job offers a qualifying health plan, Utah Medicaid can require signing up for that workplace plan and reimburse your share of the monthly premium instead.
     basis:
     - MED-U04
     - MED-U14
@@ -1446,12 +1354,8 @@
   analogies:
   - id: color-coded-mail-vs-live-deadline
     placement: lead
-    compare: 'Utah sorted its 2026 heads-up letters like color-coded school flyers—blue for immigration rules,
-      yellow when Tribal proof is still missing, pink when Tribal status is confirmed, and green for general 2027
-      work-rule news. Once a live verification request arrives with a due date, it switches from a flyer to a
-      timed exam: label every page with the DWS case number and send it before the clock runs out.'
-    boundary: Always use any specific return address or fax number printed on an actual notice if it differs from
-      DWS Imaging Operations' standard PO Box.
+    compare: 'On a Utah canyon trail, painted blazes on the rocks—blue, yellow, pink, or green—simply mark which path you are on without locking any gate, whereas a dated ranger slip on your windshield starts a real clock to post your permit number. Utah''s 2026 color-coded mailers were early heads-up flyers, while a dated DWS verification notice starts a live countdown—up to 30 days—to send only what state records could not confirm.'
+    boundary: 'Unlike a park where every permit drops into one central box, whenever a DWS letter prints a specialized return address or fax number different from DWS Imaging Operations'' main PO Box, the address on that letter controls.'
     basis:
     - MED-U03
     - MED-U04
@@ -1504,11 +1408,8 @@
   analogies:
   - id: wrong-mailbox-for-appeals
     placement: lead
-    compare: DWS keeps eligibility processing and fair-hearing appeals in two completely separate mailboxes. Uploading
-      pay stubs goes into myCase, but challenging a denial has to go straight to DWS Fair Hearings on Form 490—drop
-      an appeal in the myCase inbox and the appeals judge never gets it.
-    boundary: Requesting a hearing within 15 days keeps existing medical coverage active during an appeal of a
-      closure or reduction, not on an initial application that was turned down.
+    compare: 'Slipping a parking-ticket dispute into the water-bill drop slot at City Hall fails even though both signs say City Hall: the clerk scanning water checks never walks mail down the hall to the traffic judge, so the deadline runs out untouched. DWS runs two separate mailrooms the same way—pay stubs go into myCase, whereas a Form 490 appeal counts only when sent straight to DWS Fair Hearings.'
+    boundary: 'Just as pausing a utility shutoff works only while water is already turned on, Utah''s 15-day benefit hold keeps existing Medicaid running on a closure or cutback—never on a denied first-time application.'
     basis:
     - MED-U17
     - MED-U18
@@ -1546,11 +1447,8 @@
   analogies:
   - id: opt-in-backdate-window
     placement: lead
-    compare: 'Utah''s retroactive coverage works like an opt-in rebate window on recent medical bills: the applicant
-      has to check the box asking DWS to look backward, and it covers only months when the person already qualified.
-      On Jan. 1, 2027, that lookback shrinks from three months to one month for Adult Expansion adults.'
-    boundary: Most Utah Medicaid groups outside Adult Expansion keep up to a 2-month retroactive lookback starting
-      Jan. 1, 2027.
+    compare: Buy a water heater during a mail-in rebate sale and the store never sends cash back automatically just because you bought it—you have to check the rebate box on the form, show you qualified that month, and beat the calendar cutoff. Utah Medicaid looks back at unpaid medical bills only when you check the retroactive box when applying, and on Jan. 1, 2027 that window shrinks from three prior months to one month for Adult Expansion.
+    boundary: 'Unlike Adult Expansion''s 1-month cap, most other Utah Medicaid categories—including children, pregnancy, and disability groups—keep up to a 2-month lookback window starting Jan. 1, 2027.'
     basis:
     - MED-U01
     - MED-U02
@@ -1592,11 +1490,8 @@
   analogies:
   - id: three-step-medical-verification-ladder
     placement: lead
-    compare: 'Utah checks medical frailty like a three-rung ladder: first, DWS scans existing Medicaid billing
-      diagnosis codes automatically; second, if nothing matches, a signed screener acts as a temporary pass so
-      coverage is not held up; third, under Utah law, a provider statement locks in the exclusion.'
-    boundary: A blank automatic diagnosis-code scan is never a denial by itself—it simply moves the file to the
-      screener and provider-statement rungs.
+    compare: 'Picture a late-night shuttle where riders already on the driver''s tablet hop right aboard, and anyone whose booking hasn''t synced yet gets a paper ride slip so nobody is left standing in the cold while the office confirms it tomorrow. Utah DWS checks medical frailty in those three steps—scanning existing Medicaid billing codes first, taking a signed screener as a temporary pass second, and locking in the exclusion with a provider statement third.'
+    boundary: Unlike a ticket scanner that rejects you when the screen comes up empty, a blank Step 1 billing-code check in Utah is never a denial—it simply hands your case to the screener step.
     basis:
     - MED-U03
     - MED-U04
@@ -1747,12 +1642,8 @@
   analogies:
   - id: separate-ledgers-chain
     placement: lead
-    compare: Updating legal records works like changing your address across five separate banks that never share
-      a mailing list, except one bank's ledger gates the next. A judge's order or marriage certificate unlocks
-      Social Security, Social Security's database is what state DMVs ping at the counter, and your birth state
-      holds its own archive that no other state can edit.
-    boundary: Oregon and Washington let residents update a driver license or state birth-record gender marker
-      by agency form without going to court or updating Social Security first.
+    compare: 'Updating identity records across agencies works like changing the Wi-Fi password at home: type the new password into your TV before updating the main router in the hallway and every screen throws an error because it checks upstream against the router. Government databases never auto-sync—for a legal name change, a court order or marriage certificate updates Social Security''s router first, Social Security is what state DMVs check live at the counter, and your birth state keeps its own separate archive.'
+    boundary: 'Unlike a legal name change that has to clear Social Security''s router first, Oregon and Washington let residents update the gender marker on a state ID or state birth certificate directly by agency form without visiting court or Social Security.'
     basis:
     - ID-US-SSA-NAME
     - ID-OR-DMV-GENDER
@@ -1792,12 +1683,8 @@
   analogies:
   - id: two-doors-same-building
     placement: lead
-    compare: 'Oregon runs two doors into the same records system: an express agency window for state IDs and Oregon
-      birth certificates, and a courthouse desk for a statewide legal name or sex judgment. You only need the
-      courthouse ticket when changing a legal name outside marriage or divorce or when an outside agency demands
-      a judge''s signature.'
-    boundary: A state form at Oregon DMV or Oregon Vital Records updates only that state record and cannot change
-      a legal name at Social Security or on an out-of-state birth certificate.
+    compare: 'Changing a display name inside one neighborhood store app takes two minutes and fixes that single screen right away, whereas cutting a master key at a locksmith is what opens outside locks down the street. Oregon splits identity updates along that same line—Oregon DMV and Vital Records update state gender markers on agency forms alone, while one $124 circuit court petition creates the master legal judgment needed for a non-marriage name change or outside agencies demanding a judge''s order.'
+    boundary: Just as editing one store app never rewrites the name on your debit card, an Oregon DMV or Vital Records form updates only that single Oregon record—not Social Security or an out-of-state birth certificate.
     basis:
     - ID-OR-ORS-33
     - ID-OR-2026-CH52
@@ -1830,24 +1717,16 @@
   analogies:
   - id: sealed-permission-slip
     placement: lead
-    compare: An Oregon circuit court judgment works like a stamped permission slip that a judge signs on paper
-      and hands back to you—the court does not fax it to Social Security, the DMV, or your bank. When a petition
-      includes a sex change on or after July 1, 2026, the clerk also locks the courthouse folder itself inside
-      a confidential file cabinet.
-    boundary: Federal passport and Social Security sex-marker policies currently do not follow state court sex-change
-      judgments, even when the Oregon order is certified.
+    compare: 'Think of earning a trade license or school diploma with a raised seal: the school hands the stamped certificate to you and files the original away, yet no employer or bank down the street knows anything changed until you bring them an official copy yourself. An Oregon circuit court judgment works the same way—usually signed on paperwork alone with zero courtroom hearing, locked in a confidential file when a post-July 1, 2026 petition includes a sex change, and delivered to Social Security or DMV only when you carry certified copies.'
+    boundary: Unlike a state credential that every counter honors across the board, U.S. passport and Social Security sex-marker systems currently ignore state court sex-change judgments even when certified.
     basis:
     - ID-OR-OJD-ADULT-PACKET
     - ID-OR-2026-CH52
     - ID-US-SSA-NAME
   - id: confidential-vs-sealed-folder
     placement: inline
-    compare: 'Oregon''s July 2026 privacy rule treats the court docket like two different shelves: any petition
-      that includes a sex change goes straight behind a locked staff counter where public search cannot pull it,
-      while a name-only case stays on the open public shelf unless sealed through Oregon''s Address Confidentiality
-      Program.'
-    boundary: Sex-change cases filed before July 1, 2026 do not become confidential automatically and require
-      a separate motion asking the court to close the file.
+    compare: 'Oregon''s courthouse treats privacy like a neighborhood store with an open magazine rack up front and a pharmacy counter in back: a standalone name-only filing sits on the open search rack, while any petition that includes a sex change—even a combined name-and-sex filing—goes behind the pharmacy glass automatically.'
+    boundary: 'Unlike a sealed archive nobody can touch again, a confidential court file still lets you buy certified copies at the clerk''s window—while cases filed before July 1, 2026 stay open unless you file a motion to close them.'
     basis:
     - ID-OR-2026-CH52
     - ID-OR-ORS-33
@@ -1877,12 +1756,8 @@
   analogies:
   - id: one-time-registrar-stamp
     placement: lead
-    compare: 'Oregon Vital Records'' form OHA 2673 works like a one-time self-service correction token at the
-      state archive: sign it in front of a notary, pay the amendment fee, and the registrar reissues the certificate
-      directly without waiting for a judge. A court judgment is the permanent master key used if that one-time
-      token has already been spent or an outside agency asks for a court order.'
-    boundary: Oregon Vital Records can amend only Oregon birth certificates, and a court-ordered name-only change
-      prints an old-name footnote unless the court sealed the order.
+    compare: 'Many bus and train tickets include one built-in trip change you can handle yourself before any second change requires a station supervisor''s signed override. For anyone born in Oregon, notarized form OHA 2673 is that one-time self-service pass to update sex (M, F, or X), a related name change, or both at Vital Records without going to court, while a certified court order acts as the override whenever needed.'
+    boundary: Unlike a transit app that can rebook partner lines across state borders, Oregon Vital Records can amend only Oregon-born certificates—and a court-ordered name-only update prints an old-name footnote unless a judge sealed the order.
     basis:
     - ID-OR-OHA-GENDER
     - ID-OR-OHA-2673
@@ -1914,12 +1789,8 @@
   analogies:
   - id: counter-check-against-ssa
     placement: lead
-    compare: At an Oregon DMV counter, the gender box works like a customer preference selected on the spot, while
-      the legal name field works like a cashier verifying your card against a national ledger. If Social Security's
-      database has not posted the new legal name yet, the DMV screen flags a mismatch even when a fresh court
-      order is sitting on the counter.
-    boundary: Oregon DMV retains prior card history internally and shares licensing records with Selective Service
-      and law-enforcement systems even after printing a new card.
+    compare: 'Changing your phone''s lock-screen picture takes two taps because nobody outside the phone approves it, whereas moving your phone number to a new carrier throws an instant counter error if your old carrier''s computer hasn''t released the line yet. At Oregon DMV, picking M, F, or X on a standard or REAL ID card works like that local setting—no court order or doctor''s letter—while changing your legal name checks Social Security''s computer live and bounces even a signed court order if SSA hasn''t posted the new name yet.'
+    boundary: 'Unlike swapping a phone picture that wipes the old screen clean, printing a new Oregon card leaves prior history in DMV''s internal file and still shares licensing records with Selective Service and law enforcement.'
     basis:
     - ID-OR-DMV-GENDER
     - ID-OR-DMV-NAME
@@ -1944,12 +1815,8 @@
   analogies:
   - id: split-tracks-two-windows
     placement: lead
-    compare: 'Think of Washington''s system as two separate ticket counters in different buildings: courts hold
-      the monopoly on legal name changes outside marriage or divorce, while the Departments of Licensing and Health
-      control gender markers on state cards and birth records. Neither counter does the other''s job, so updating
-      both takes one courthouse visit and two state forms.'
-    boundary: A Washington superior court sealed order hides the court file from the public, but DOL still requires
-      routing sealed orders through its Identity Management Team after updating Social Security.
+    compare: 'Updating both your name and gender marker in Washington works like getting ready for a wedding on a block where only the tailor hems pants and only the shoe shop fixes soles: hand shoes to the tailor or pants to the cobbler and each shop points you next door. Washington splits identity updates with that exact rule—courts handle all non-marriage legal name changes, while Licensing and Health handle M, F, or X markers on state IDs and birth records by form alone.'
+    boundary: 'Unlike picking up finished clothes at any front counter once both shops are done, a sealed Washington superior court name order cannot clear a walk-in DOL window until it routes through DOL''s Identity Management Team after Social Security updates.'
     basis:
     - ID-WA-RCW-4-24-130
     - ID-WA-DOL-GENDER
@@ -1982,12 +1849,8 @@
   analogies:
   - id: public-bulletin-vs-locked-vault
     placement: lead
-    compare: 'Washington gives name-change filers a choice between two rooms: district court is like a public
-      town bulletin board where the order gets filed with the county auditor, while superior court is like a locked
-      bank vault where the petition, hearing, and order stay sealed from public search. Unlike most states, Washington
-      law lets residents file in any county''s court, not just their home county.'
-    boundary: Even a sealed superior court order requires a brief appearance before a judge and separate follow-up
-      at Social Security and DOL.
+    compare: 'Washington gives name-change filers two completely different rooms—and lets residents use any county''s courthouse across the state, not just the one near home. District court works like pinning a card on a grocery community corkboard where county auditor websites index names forever, while superior court works like a locked back-office cabinet that seals the petition, hearing, and order from public search whenever tied to gender identity, gender expression, or safety.'
+    boundary: Even on the sealed superior-court track, filers still make a brief appearance before a judge and carry sealed certified copies to Social Security and DOL themselves because the court notifies nobody outside.
     basis:
     - ID-WA-RCW-4-24-130
     - ID-WA-RCW-36-18-020
@@ -2020,12 +1883,8 @@
   analogies:
   - id: two-locks-one-envelope
     placement: lead
-    compare: 'Washington''s birth-record archive puts two different locks on the same certificate: the sex-designation
-      lock opens only with notarized state form DOH 422-143 (a judge''s order does not fit that keyhole), while
-      the legal-name lock opens only with a certified court order plus form DOH 422-126. Both forms can travel
-      in one envelope so the archive updates both fields in a single 4-to-6-week pass.'
-    boundary: Minors under 18 cannot self-attest alone and must submit form DOH 422-144 signed by both a parent
-      or guardian and a licensed health care provider.
+    compare: 'Picture an apartment front door with both a top deadbolt and a bottom knob lock: turning the house key twice in the knob never slides the deadbolt open, yet putting both keys on one ring opens the whole door in a single trip. A Washington birth certificate has two separate locks—free notarized form DOH 422-143 unlocks the M, F, or X marker, a certified court order plus form DOH 422-126 unlocks the legal name, and mailing both in one envelope updates the whole certificate in one 4-to-6-week pass.'
+    boundary: Unlike adults whose notarized signature turns that sex-marker lock alone, updating a minor under 18 requires two signatures on form DOH 422-144—one from a parent or guardian and one from a licensed health care provider.
     basis:
     - ID-WA-DOH-SEX
     - ID-WA-DOH-422-143
@@ -2059,12 +1918,8 @@
   analogies:
   - id: standard-mail-vs-border-badge
     placement: lead
-    compare: Washington DOL treats a standard license gender update like updating a club membership profile—free,
-      self-selected, and even doable by mail with form 520043. An Enhanced license or a legal name change works
-      like a border-crossing credential, requiring an in-person check against Social Security and certified proof
-      before the printer issues a new card.
-    boundary: DOL's online portal has no gender-marker option, and sealed superior court name orders route through
-      DOL's Identity Management Team rather than a routine walk-in check.
+    compare: 'Updating a neighborhood library card is casual enough to handle with a free form in the mailbox, whereas reissuing a card that crosses the Canadian border requires standing at a counter while staff verify identity records in person. Washington DOL splits driver licenses along that exact line: changing only M, F, or X on a standard card costs $0 and works by mail on form 520043, while Enhanced cards and any legal name change require an in-person check after Social Security matches.'
+    boundary: 'Unlike address renewals you can click through on DOL''s website, License eXpress has no gender-marker toggle at all, and sealed superior court name orders must clear DOL''s Identity Management Team before a counter visit.'
     basis:
     - ID-WA-DOL-GENDER
     - ID-WA-DOL-NAME
@@ -2088,11 +1943,8 @@
   analogies:
   - id: single-courthouse-gatekeeper
     placement: lead
-    compare: Unlike Oregon and Washington, where state agencies run express counters for markers, Utah places
-      the district courthouse in front of every door like a single security checkpoint. A judge must sign off
-      on both a legal name change and a sex-designation change before Vital Records will touch a Utah birth certificate.
-    boundary: A certified marriage certificate or Utah divorce decree restoring a former name still bypasses the
-      Title 42 name-change petition at Social Security and Utah DLD.
+    compare: 'Picture a canyon park where neighboring valleys have open trailheads right off the highway, yet every trail in this canyon funnels past one staffed ranger booth at the mouth of the road. While Oregon and Washington let state agencies update markers at walk-up counters, Utah puts its district court across both paths—requiring a judge''s signed order for both a non-marriage legal name change and a birth-certificate sex-designation change after a 2026 bill (H.B. 183) to alter those rules failed.'
+    boundary: Only a certified marriage certificate or a Utah divorce decree restoring a former name takes a legal side road straight to Social Security and Utah DLD without stopping at that Title 42 court gatehouse.
     basis:
     - ID-UT-CODE-42-1
     - ID-UT-CODE-26B-8-111
@@ -2127,23 +1979,16 @@
   analogies:
   - id: six-box-underwriting-checklist
     placement: lead
-    compare: A Utah sex-designation petition works less like a routine name form and more like a strict loan underwriting
-      packet with six mandatory checkboxes. Even if five boxes are spotless—residency, six months of living consistently,
-      and a licensed provider's letter—an unresolved lawsuit or missing clinical proof stops the judge from approving
-      the order.
-    boundary: Utah's statutory bar against anyone under age 15 years and 6 months, plus its guardian ad litem
-      requirement for older minors, creates a much stricter courtroom process for youth.
+    compare: 'Think of an old string of holiday lights wired in a row where five working bulbs still leave the whole set dark until bulb number six clicks all the way in. Utah''s sex-designation law works like that single string: a district judge cannot sign the order unless clear and convincing proof lights up all six statutory items—including residency, six months of consistent history, clean background and lawsuit checks, and a licensed provider''s letter—plus 1 full year in the county when changing a legal name.'
+    boundary: Unlike adult filers who can light all six bulbs on their own paperwork, Utah law bars petitions completely under age 15 years and 6 months and appoints a guardian ad litem for older teens.
     basis:
     - ID-UT-CODE-26B-8-111
     - ID-UT-CODE-42-1
     - ID-UT-COURTS-SEX-CHANGE
   - id: closed-papers-open-courtroom
     placement: inline
-    compare: 'Utah splits courtroom privacy down the middle like a sealed envelope resting on an open lobby schedule:
-      the medical letter and filed sex-designation papers stay private inside the envelope, while the case history
-      log and courtroom hearing itself remain on the public calendar.'
-    boundary: Name-only Utah district court petitions do not get the sex-designation private-record protection
-      and appear public.
+    compare: 'Think of a clinic handing your lab results across the desk inside a frosted privacy sleeve while still calling your name on the waiting-room screen: nobody in the lobby can read your provider letter or filed papers, yet the docket log and hearing still show up on the public schedule.'
+    boundary: Unlike Oregon or Washington filings that hide the case index from public search too, Utah keeps the docket entry visible—and standalone name-only petitions get no privacy sleeve at all.
     basis:
     - ID-UT-COURTS-SEX-CHANGE
     - ID-UT-COURTS-NONPUBLIC
@@ -2175,12 +2020,8 @@
   analogies:
   - id: clean-reprint-with-archive-log
     placement: lead
-    compare: Utah Vital Records treats a birth certificate like a clean replacement page printed for the front
-      of a binder while keeping a change log in the back office. The new certificate does not advertise which
-      lines changed unless asked, yet Vital Records retains a separate amendment history—and will not open the
-      binder without a judge's certified order plus form 902.
-    boundary: Utah Vital Records amends only certificates for births recorded in Utah, and fees rise by $40 extra
-      if a record is being sealed.
+    compare: 'When a café updates a dish, it prints a fresh laminated menu sheet rather than crossing out the old line in black marker—even though the manager still keeps last year''s menu tucked in a back-office binder and never reprints a page without the owner''s signed okay. Once Utah Vital Records gets a certified court order, Form 902, and $50, it prints a clean replacement certificate without marking which lines changed on the front.'
+    boundary: Unlike a chain café that can reprint menus for any location, Utah Vital Records can amend only births originally recorded in Utah—and sealing that back-office record under court order adds an extra $40 fee.
     basis:
     - ID-UT-CODE-26B-8-111
     - ID-UT-VITAL-902-2026
@@ -2213,12 +2054,8 @@
   analogies:
   - id: published-menu-vs-unlisted-item
     placement: lead
-    compare: At Utah DLD, a legal name update is on the published menu—update Social Security first, show a certified
-      court order or marriage certificate, and pay for a replacement card. A sex-marker update sits off the published
-      online menu, where statutes define sex strictly and Utah Courts tells applicants to call DLD ahead of time
-      to learn what the counter actually accepts.
-    boundary: Calling DLD clarifies current counter practice on the day of an appointment, but phone answers do
-      not override Utah Code 53-3-205 or 68-3-12.5.
+    compare: Walk into a diner and pancakes sit right on the printed menu with a clear price and checklist; ask for an unlisted allergy swap after corporate tightened kitchen rules, and the only way to know what the cook can plate today is phoning ahead before you drive across town. At Utah DLD, legal name updates sit right on the published menu once Social Security matches your court or marriage proof, while sex-marker rules sit off the website behind strict state statutes.
+    boundary: Unlike a diner cook who can improvise freely off-menu, a phone answer from DLD explains current counter practice for that day without overriding Utah Code 53-3-205 or 68-3-12.5.
     basis:
     - ID-UT-DLD-NAME
     - ID-UT-CODE-53-3-205
@@ -2252,12 +2089,8 @@
   analogies:
   - id: passport-counter-reprint-trigger
     placement: lead
-    compare: Think of the 2026 U.S. passport system like an old building permit that stays valid on the wall as
-      long as nobody reopens it, but triggers the newest code the instant any renovation is filed. Unexpired passports
-      stay valid for travel as printed, yet turning one in for a renewal or even a name change puts it back through
-      the federal printer under Executive Order 14168.
-    boundary: Social Security cards do not print a sex field at all, so updating a legal name for free at SSA
-      does not alter a visible card marker even though SSA froze internal NUMIDENT sex updates.
+    compare: 'Anyone holding a grandfathered cell-phone plan knows the catch: keep using your current phone untouched and every old feature keeps working until the contract expires, yet ask the carrier to change even the billing name on the account and the computer forces the whole line onto this year''s stricter contract. Unexpired U.S. passports stay valid for travel as printed until expiration, while mailing one in for renewal or a name update runs the replacement book through the post-2025 printer under Executive Order 14168.'
+    boundary: Unlike mailing in a passport—which triggers a newly printed book—updating your legal name at Social Security leaves your unexpired passport untouched in your drawer while unlocking your state driver license update.
     basis:
     - ID-US-EO-14168
     - ID-US-STATE-SEX-MARKER
@@ -2265,11 +2098,8 @@
     - ID-US-SSA-POMS-10212-200
   - id: card-face-vs-back-office-ledger
     placement: inline
-    compare: 'Social Security separates what prints on your wallet card from what sits in its internal database:
-      the paper card shows only your name and number, never a sex marker, while the internal NUMIDENT ledger behind
-      the counter holds a sex field that SSA locked to sex at birth under its 2025 and 2026 policy updates.'
-    boundary: Updating a legal name for free at Social Security still works normally after marriage, divorce,
-      or a court order and stays required before state DMVs will update a license name.
+    compare: 'Think of a debit card in your wallet versus the bank''s computer screen behind the counter: the paper Social Security card you show an employer prints only your name and nine-digit number—never a sex marker—even though SSA keeps a separate internal file field locked behind the scenes.'
+    boundary: Unlike mailing in a U.S. passport where a name change reprints a visible sex marker on the photo page, updating your legal name for free at Social Security never puts a sex marker on your card.
     basis:
     - ID-US-SSA-NAME
     - ID-US-SSA-POMS-10212-200
@@ -2300,11 +2130,8 @@
   analogies:
   - id: upstream-domino-row
     placement: lead
-    compare: Post-court paperwork is a row of dominoes where Social Security is the first tile that knocks over
-      the rest. State DMVs, employers' payroll tax feeds, and Medicaid eligibility systems all verify legal names
-      upstream against SSA's database, so pushing the middle dominoes first just leaves them standing.
-    boundary: Birth-record amendments in Oregon, Washington, and Utah depend on the birth state's vital-records
-      rules rather than Social Security, so a birth-certificate packet does not have to wait for SSA.
+    compare: 'Replacing a kitchen sink faucet stays dry only when you shut the main water valve at the curb first and give the pipe a moment to clear—unbolt the sink first and pressure sprays right back at your wrench. Post-court name updates follow that exact upstream order: buy 3 to 5 certified court copies first, update Social Security second, give SSA''s system a day or two to post, and only then visit the DMV, payroll, and bank counters that verify against SSA.'
+    boundary: 'Unlike DMVs and employer payroll systems that tap into Social Security''s main line, state vital-records offices run on a separate pipe—so a birth-certificate packet in Oregon, Washington, or Utah never has to wait on Social Security first.'
     basis:
     - ID-US-SSA-NAME
     - ID-OR-DMV-GENDER
@@ -2342,12 +2169,8 @@
   analogies:
   - id: three-different-toll-roads
     placement: lead
-    compare: 'Crossing state lines changes the entire road network for identity records: Oregon runs one $124
-      courthouse lane with no routine hearing plus form-only DMV and birth counters, Washington splits public
-      and sealed name courts while keeping state markers form-only, and Utah puts a $375 courtroom tollbooth with
-      a 1-year county residency rule in front of both.'
-    boundary: State borders decide which court or DMV rules govern a person's residence, but only the birth state's
-      law governs a birth certificate and federal policy governs passports everywhere.
+    compare: 'Compare making the exact same exchange at three stores down one highway: Store One handles everything on one $124 counter form with no manager meeting and free self-service tag swaps; Store Two lets you visit any branch statewide with a ~$290 private-room option while keeping tag swaps self-service; Store Three charges $375, asks for a full year of local residency bills, and calls a manager out to check six signed proofs. That is the real-world gap across Oregon, Washington, and Utah.'
+    boundary: Unlike choosing whichever store has the easiest return desk, nobody can shop states across every document—where you live sets court and driver-license rules, only your birth state controls your birth certificate, and federal rules govern U.S. passports everywhere.
     basis:
     - ID-OR-OJD-FEES
     - ID-WA-RCW-36-18-020

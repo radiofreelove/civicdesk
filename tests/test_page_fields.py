@@ -245,6 +245,21 @@ def test_lead_analogies_sit_outside_deeper_drawers(built_site: Path) -> None:
         assert parser.bad == 0, f"{f}: a lead analogy is inside a brief-hidden container"
 
 
+def test_every_configured_analogy_renders_in_compiled_html(built_site: Path) -> None:
+    for p in PAGES:
+        if p["slug"] == "404":
+            continue
+        route = p["route"].strip("/")
+        html_path = built_site / (f"{route}/index.html" if route else "index.html")
+        rendered = html_path.read_text(encoding="utf-8")
+        for a in p.get("analogies") or []:
+            expected_id = f'id="analogy-{a["id"]}"'
+            assert expected_id in rendered, (
+                f"page {p['slug']} defines analogy '{a['id']}' in data/pages.yaml "
+                f"but {html_path} never renders m.analogy()"
+            )
+
+
 # ---------- Sitemap lastmod ----------
 
 BASE_PAGE = (
