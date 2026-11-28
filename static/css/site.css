@@ -1054,8 +1054,7 @@ details.deeper[open] > summary { border-bottom: 1px solid var(--rule); }
   border-top: 3px solid var(--heading);
   box-shadow: 3px 3px 0 var(--viz-shadow);
 }
-body.desk-medicaid .analogy { border-top-color: var(--med-accent); }
-body.desk-id-records .analogy { border-top-color: var(--id-accent); }
+body:not(.desk-site) .analogy { border-top-color: var(--desk-accent); }
 .analogy-kicker {
   margin: 0 0 0.45rem;
   font-size: 0.82rem;
@@ -1907,6 +1906,8 @@ dl.glossary-grid {
   html:not([data-size="xl"]):not([data-spacing="wide"]) .viz-calendar-graphic {
     grid-template-columns: auto minmax(0, 1fr);
   }
+  .viz-stat-list { grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+  .viz-stat-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .viz-stat-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .viz-stat-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   html:not([data-size="xl"]):not([data-spacing="wide"]) .viz-timeline-3,
@@ -1943,6 +1944,8 @@ dl.glossary-grid {
 }
 @media (min-width: 56rem) {
   .viz-stat-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .viz-stat-cols-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .viz-stat-cols-6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   html:not([data-size="xl"]):not([data-spacing="wide"]) .viz-timeline-4,
   html:not([data-size="xl"]):not([data-spacing="wide"]) .viz-swimlane-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.85rem;
@@ -2189,6 +2192,8 @@ body.desk-legal-disability { --desk-accent: var(--legal-accent); --desk-accent-i
 .desk-tile-medicaid, .desk-flag-medicaid { --desk-accent: var(--med-accent); --desk-accent-ink: var(--med-ink); --desk-tint: var(--med-tint); }
 .desk-tile-id-records, .desk-flag-id-records { --desk-accent: var(--id-accent); --desk-accent-ink: var(--id-ink); --desk-tint: var(--id-tint); }
 .desk-tile-public-records, .desk-flag-public-records { --desk-accent: var(--pub-accent); --desk-accent-ink: var(--pub-ink); --desk-tint: var(--pub-tint); }
+.desk-tile-food-housing, .desk-flag-food-housing { --desk-accent: var(--food-accent); --desk-accent-ink: var(--food-ink); --desk-tint: var(--food-tint); }
+.desk-tile-legal-disability, .desk-flag-legal-disability { --desk-accent: var(--legal-accent); --desk-accent-ink: var(--legal-ink); --desk-tint: var(--legal-tint); }
 /* 3. Active nav and tab underline */
 .site-nav a[aria-current="page"] { border-bottom-color: var(--desk-accent); }
 .page-tab[aria-selected="true"] { border-bottom-color: var(--desk-accent); }
@@ -2198,6 +2203,9 @@ body.desk-legal-disability { --desk-accent: var(--legal-accent); --desk-accent-i
 .viz-stat-card { border-top-color: var(--desk-accent); }
 .viz-stat-desk-medicaid { border-top-color: var(--med-accent); }
 .viz-stat-desk-id-records { border-top-color: var(--id-accent); }
+.viz-stat-desk-public-records { border-top-color: var(--pub-accent); }
+.viz-stat-desk-food-housing { border-top-color: var(--food-accent); }
+.viz-stat-desk-legal-disability { border-top-color: var(--legal-accent); }
 .viz-stat-desk-site { border-top-color: var(--site-accent); }
 .desk-tile { border-top: 4px solid var(--desk-accent); }
 .desk-tile-soon { border-top-width: 2px; }

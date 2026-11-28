@@ -128,22 +128,26 @@ def test_faceted_mark_up_to_date() -> None:
 
 
 def test_desk_partitioned_source_registries() -> None:
-    med = yaml.safe_load((ROOT / "data" / "sources" / "medicaid.yaml").read_text(encoding="utf-8"))
-    idr = yaml.safe_load((ROOT / "data" / "sources" / "id_records.yaml").read_text(encoding="utf-8"))
+    site = yaml.safe_load((ROOT / "data" / "site.yaml").read_text(encoding="utf-8"))
+    active_desks = [d for d in site["desks"] if d.get("status") == "active"]
     allowed = {"official", "not_official", "not_confirmed", "our_reading"}
+    assert active_desks
 
-    assert len(med) >= 130
-    assert len(idr) >= 75
-
-    med_ids = {s["id"] for s in med}
-    id_ids = {s["id"] for s in idr}
-    assert all(i.startswith("MED-") for i in med_ids)
-    assert all(i.startswith("ID-") for i in id_ids)
-    assert not (med_ids & id_ids)
-
-    for s in med + idr:
-        assert s["status"] in allowed
-        assert "automattic" not in s["url"].lower()
+    seen_ids: set[str] = set()
+    for d in active_desks:
+        entries = yaml.safe_load((ROOT / "data" / d["registry"]).read_text(encoding="utf-8"))
+        assert len(entries) >= 1, f"{d['slug']}: empty registry"
+        prefix = d["source_prefix"]
+        desk_ids = {s["id"] for s in entries}
+        assert len(desk_ids) == len(entries), f"{d['slug']}: duplicate source IDs"
+        assert all(i.startswith(prefix) for i in desk_ids), f"{d['slug']}: prefix mismatch (expected {prefix})"
+        assert not (seen_ids & desk_ids), f"{d['slug']}: overlapping IDs {seen_ids & desk_ids}"
+        seen_ids |= desk_ids
+        for s in entries:
+            assert s["status"] in allowed
+            assert s["url"].startswith("https://")
+            assert "automattic" not in s["url"].lower()
+            assert "guide" not in s, f"{s['id']}: redundant legacy 'guide' key; use 'jurisdiction'"
 
 
 def test_all_built_pages_html_links_and_scoping(built_site: Path) -> None:
@@ -242,23 +246,21 @@ def test_all_built_pages_html_links_and_scoping(built_site: Path) -> None:
     assert "data-quick-exit" not in front_html
     assert 'class="exit-bar"' not in front_html
 
-    # Verify Leave quickly scoping across all routes
+    # Verify Leave quickly scoping across all routes from site.yaml + pages.yaml metadata
+    site_yaml = yaml.safe_load((ROOT / "data" / "site.yaml").read_text(encoding="utf-8"))
+    quick_exit_desks = {d["slug"] for d in site_yaml["desks"] if d.get("status") == "active" and d.get("quick_exit")}
+    pages_by_route = {p["route"]: p for p in pages_yaml}
     for route, fpath in route_to_file.items():
         if fpath.suffix != ".html":
             continue
         html_text = fpath.read_text(encoding="utf-8")
-        if route.startswith("/id-records/"):
+        page_meta = pages_by_route[route]
+        if page_meta.get("desk") in quick_exit_desks:
             assert 'class="exit-bar"' in html_text, f"{route}: missing top .exit-bar"
             assert 'id="quick-exit"' in html_text, f"{route}: missing #quick-exit"
         else:
-            assert 'class="exit-bar"' not in html_text, f"{route}: .exit-bar must NEVER render outside /id-records/*"
-            is_safety_page = route in {
-                "/medicaid/oregon/reasons/",
-                "/medicaid/washington/reasons/",
-                "/medicaid/utah/reasons/",
-                "/medicaid/utah/immigration/",
-            }
-            if is_safety_page:
+            assert 'class="exit-bar"' not in html_text, f"{route}: .exit-bar must NEVER render outside quick_exit desks"
+            if page_meta.get("domestic_safety_exit"):
                 assert 'class="safety-exit-link"' in html_text, f"{route}: missing domestic-safety Leave quickly link"
             else:
                 assert "data-quick-exit" not in html_text, f"{route}: unexpected data-quick-exit outside scoped pages"
@@ -584,8 +586,9 @@ def test_punctuation_hugs_the_word_before_it(built_site: Path) -> None:
     # Verbatim court-calendar text quoted in a source note (data/sources/medicaid.yaml).
     verbatim = ("10:00 am : Judge Aiken : Telephone :",)
 
+    pages_yaml = yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))
     html_files = sorted(built_site.rglob("*.html"))
-    assert len(html_files) == 68
+    assert len(html_files) == len(pages_yaml) and len(html_files) > 0
     for html_path in html_files:
         raw = html_path.read_text(encoding="utf-8")
         body = raw_blocks.sub("", raw)
@@ -747,9 +750,9 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
     )
 
     pages_yaml = yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))
-    assert len(pages_yaml) == 68
+    assert len(pages_yaml) > 0
     html_files = sorted(built_site.rglob("*.html"))
-    assert len(html_files) == 68
+    assert len(html_files) == len(pages_yaml)
 
     for p in pages_yaml:
         route = p["route"]
@@ -790,35 +793,16 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
                 f"{route}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
             )
 
-    # Every press print from scripts/make_art.py exists with exact expected dimensions
-    expected_art_dims = {
-        "print-front.webp": (960, 720),
-        **{f"print-{n}.webp": (960, 640) for n in (
-            "oregon", "washington", "utah", "fog", "mail", "calendar", "window", "homes",
-            "courthouse", "certificate", "cards", "letters", "archive",
-        )},
-    }
+    # Every press print in static/img/art/ is a valid WebP, built cleanly, and used with exact dimensions
+    build_mod = _load_script("civicdesk_build_art", "scripts/build.py")
     art_dir = ROOT / "static" / "img" / "art"
-    assert {p.name for p in art_dir.glob("*.webp")} == set(expected_art_dims), "unexpected files in static/img/art"
-
-    def _webp_dims(data: bytes) -> tuple[int, int]:
-        assert data[:4] == b"RIFF" and data[8:12] == b"WEBP"
-        chunk = data[12:16]
-        if chunk == b"VP8X":
-            return (1 + int.from_bytes(data[24:27], "little"), 1 + int.from_bytes(data[27:30], "little"))
-        if chunk == b"VP8L":
-            bits = int.from_bytes(data[21:25], "little")
-            return ((bits & 0x3FFF) + 1, ((bits >> 14) & 0x3FFF) + 1)
-        if chunk == b"VP8 ":
-            return (int.from_bytes(data[26:28], "little") & 0x3FFF, int.from_bytes(data[28:30], "little") & 0x3FFF)
-        raise AssertionError(f"Unsupported WebP chunk {chunk!r}")
-
-    for fname, want_wh in expected_art_dims.items():
-        src_art = ROOT / "static" / "img" / "art" / fname
+    actual_art_dims = build_mod.discover_art_dims(art_dir)
+    assert actual_art_dims, "Expected press prints in static/img/art/"
+    for fname, want_wh in actual_art_dims.items():
+        assert re.fullmatch(r"print-[a-z0-9-]+\.webp", fname), f"Unexpected filename in static/img/art/: {fname}"
+        assert want_wh[0] > 0 and want_wh[1] > 0, f"{fname}: invalid dimensions {want_wh}"
         built_art = built_site / "static" / "img" / "art" / fname
-        assert src_art.is_file(), f"Missing static/img/art/{fname}"
         assert built_art.is_file(), f"Missing built public/static/img/art/{fname}"
-        assert _webp_dims(src_art.read_bytes()) == want_wh, f"{fname}: unexpected dimensions"
 
     art_img_re = re.compile(r'<div class="editorial-art[^"]*">\s*<img\s+([^>]+)>', re.S)
     seen_art_files: set[str] = set()
@@ -836,9 +820,9 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
             assert 'loading="eager"' in attrs_str, f"{html_path}: page-head print must load eagerly (lazy is only for extra art)"
             w_m = re.search(r'width="(\d+)"', attrs_str)
             h_m = re.search(r'height="(\d+)"', attrs_str)
-            assert w_m and h_m and (int(w_m.group(1)), int(h_m.group(1))) == expected_art_dims[stem]
+            assert w_m and h_m and (int(w_m.group(1)), int(h_m.group(1))) == actual_art_dims[stem]
             seen_art_files.add(stem)
-    assert seen_art_files == set(expected_art_dims), f"Unused editorial art files: {set(expected_art_dims) - seen_art_files}"
+    assert seen_art_files == set(actual_art_dims), f"Unused editorial art files: {set(actual_art_dims) - seen_art_files}"
 
     # Core purposeful structural diagrams & editorial art render on routes where they belong
     expected_markers = {
@@ -1145,6 +1129,46 @@ def test_ordered_list_badges_aria_hidden_and_dynamic_letter_pins(built_site: Pat
             assert title and title not in sheet_html, (
                 f"{st} letter: legend title {title!r} must not be printed verbatim on the sample notice sheet"
             )
+
+
+def test_declarative_multidesk_validation_and_single_pass_checked_dates(built_site: Path) -> None:
+    build_mod = _load_script("civicdesk_build_decl", "scripts/build.py")
+
+    # 1. Registry validation enforces https:// URLs, non-empty kind, and valid ISO checked dates
+    bad_entries = [
+        {
+            "id": "PR-01",
+            "desk": "public-records",
+            "title": "Insecure",
+            "publisher": "Agency",
+            "url": "http://example.gov/doc",
+            "kind": "",
+            "jurisdiction": "OR",
+            "document_date": "2026-01-01",
+            "checked": "not-a-date",
+            "status": "official",
+            "read_depth": "full",
+            "read_by": "human_machine_hybrid",
+        }
+    ]
+    errs: list[str] = []
+    build_mod.validate_registry(bad_entries, "PR-", "public-records", errs)
+    assert any("https://" in e for e in errs), errs
+    assert any("kind must be non-empty" in e for e in errs), errs
+    assert any("invalid checked date" in e for e in errs), errs
+
+    # 2. Single-pass placeholder markers are completely resolved in every compiled HTML file
+    for html_path in sorted(built_site.rglob("*.html")):
+        raw = html_path.read_text(encoding="utf-8")
+        assert "<!--cd-checked-" not in raw, f"{html_path}: unresolved checked-date placeholder"
+
+    # 3. build-report.json exposes per-desk counts dynamically matching active desks in site.yaml
+    site_yaml = yaml.safe_load((ROOT / "data" / "site.yaml").read_text(encoding="utf-8"))
+    active_slugs = [d["slug"] for d in site_yaml["desks"] if d.get("status") == "active"]
+    report = json.loads((built_site / "build-report.json").read_text(encoding="utf-8"))
+    assert list(report["desk_source_counts"].keys()) == active_slugs
+    assert sum(report["desk_source_counts"].values()) == report["total_source_count"]
+
 
 
 

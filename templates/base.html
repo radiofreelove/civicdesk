@@ -37,7 +37,7 @@
 
 {% set current_state = page.get('state', '') %}
 
-{% if desk == 'id-records' %}
+{% if desk_has_quick_exit(page) %}
 <div class="exit-bar" role="region" aria-label="Leave this site quickly">
   <div class="wrap exit-wrap">
     <span class="exit-note">Opens weather.gov. Press Shift 3 times quickly. Earlier pages stay in browser history.</span>
@@ -110,7 +110,7 @@
     </div>
   </div>
   {{ bs.press_rule() }}
-  {% if page.slug in ['index', 'medicaid', 'id-records'] %}{{ bs.dateline({'index': 'Oregon · Washington · Utah · Federal', 'medicaid': 'Oregon · Washington · Utah', 'id-records': 'Oregon · Washington · Utah · Federal'}[page.slug], site_latest_checked) }}
+  {% set dl_places = dateline_places(page) %}{% if dl_places %}{{ bs.dateline(dl_places, site_latest_checked) }}
   {% endif %}  <nav class="site-nav" aria-label="Main navigation">
     <ul class="wrap">
     {% for target_slug, label in nav_items(page) %}
@@ -122,8 +122,7 @@
 
 <main id="main" tabindex="-1">
   {#- Printed tear-sheet masthead: nameplate, page address, and check dates (print only). -#}
-  {% set p_oldest = page.get('oldest_checked', page.checked) %}{% set p_newest = page.get('newest_checked', page.checked) %}
-  <p class="wrap print-masthead"><strong>{{ site.name }}</strong> · {% if public_base_url and page.slug != '404' %}{{ public_base_url }}{{ page.route.lstrip('/') }}{% else %}{{ page.route }}{% endif %} · Sources checked {% if p_oldest == p_newest %}{{ p_oldest|human_date }}{% else %}{{ p_oldest|human_date }} to {{ p_newest|human_date }}{% endif %}</p>
+  <p class="wrap print-masthead"><strong>{{ site.name }}</strong> · {% if public_base_url and page.slug != '404' %}{{ public_base_url }}{{ page.route.lstrip('/') }}{% else %}{{ page.route }}{% endif %} · Sources checked <!--cd-checked-text--></p>
   <div class="wrap content">
     {% set crumbs = breadcrumbs(page) %}
     {% if crumbs %}
@@ -147,7 +146,7 @@
 
 {#- Filled after rendering by scripts/build.py apply_sources_layer(): one Sources panel, grouped
     by page section (see broadsheet.html sources_panel). -#}
-{% if page.slug not in ['sources', 'medicaid-sources', 'id-records-sources', '404'] and used_sources() %}
+{% if not page.get('source_registry') and page.slug != '404' and used_sources() %}
 <!--cd-source-panel-->
 {% endif %}
   </div>
@@ -167,8 +166,7 @@
         <li><a href="{{ repo_url }}" rel="noreferrer">Source code and audit trail</a></li>
       </ul>
     </nav>
-    {% set f_oldest = page.get('oldest_checked', page.checked) %}{% set f_newest = page.get('newest_checked', page.checked) %}
-    <p class="build-line">Sources checked {% if f_oldest == f_newest %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time>{% else %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time> to <time datetime="{{ f_newest }}">{{ f_newest|human_date }}</time>{% endif %}. Edition: <time datetime="{{ site_latest_checked.strftime('%Y-%m') }}">{{ site_latest_checked.strftime('%B %Y') }}</time>. Built from {% if build_commit_url %}<a href="{{ build_commit_url }}" rel="noreferrer"><code>{{ build_commit_short }}</code></a>{% else %}<code>{{ build_commit_short }}</code>{% endif %}. <a href="{{ root_prefix(page) }}build-report.json">Build report</a>. Writing: <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noreferrer">CC BY 4.0<span class="vh"> (outside site)</span></a>. Code: <a href="{{ repo_url }}/blob/main/LICENSE" rel="license noreferrer">MIT<span class="vh"> (outside site)</span></a>. <a href="{{ page_url('about#license') }}">Reuse this guide</a>.</p>
+    <p class="build-line">Sources checked <!--cd-checked-time-->. Edition: <time datetime="{{ site_latest_checked.strftime('%Y-%m') }}">{{ site_latest_checked.strftime('%B %Y') }}</time>. Built from {% if build_commit_url %}<a href="{{ build_commit_url }}" rel="noreferrer"><code>{{ build_commit_short }}</code></a>{% else %}<code>{{ build_commit_short }}</code>{% endif %}. <a href="{{ root_prefix(page) }}build-report.json">Build report</a>. Writing: <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noreferrer">CC BY 4.0<span class="vh"> (outside site)</span></a>. Code: <a href="{{ repo_url }}/blob/main/LICENSE" rel="license noreferrer">MIT<span class="vh"> (outside site)</span></a>. <a href="{{ page_url('about#license') }}">Reuse this guide</a>.</p>
   </div>
 </footer>
 

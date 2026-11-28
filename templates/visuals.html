@@ -4,28 +4,13 @@
 {% import "icons.html" as ic %}
 
 {#- Press prints drawn by scripts/make_art.py (four process plates on newsprint). Every page
-    names one in data/pages.yaml `art:`; the build fails if a page has none or the file is missing. -#}
-{% set ART_DIMS = {
-  'print-front.webp': (960, 720),
-  'print-oregon.webp': (960, 640),
-  'print-washington.webp': (960, 640),
-  'print-utah.webp': (960, 640),
-  'print-fog.webp': (960, 640),
-  'print-mail.webp': (960, 640),
-  'print-calendar.webp': (960, 640),
-  'print-window.webp': (960, 640),
-  'print-homes.webp': (960, 640),
-  'print-courthouse.webp': (960, 640),
-  'print-certificate.webp': (960, 640),
-  'print-cards.webp': (960, 640),
-  'print-letters.webp': (960, 640),
-  'print-archive.webp': (960, 640)
-} %}
+    names one in data/pages.yaml `art:`; scripts/build.py reads exact pixel dimensions from the
+    WebP headers into `art_dims` and fails if a page has none or the file is missing. -#}
 
 {#- Page-head prints sit above the fold, so they always load eagerly; only extra=true art
     (folded into Short version, below the fold) is lazy. -#}
 {% macro editorial_art(filename, variant='banner', extra=false) -%}
-{% set dims = ART_DIMS.get(filename, (960, 640)) %}
+{% set dims = art_dims.get(filename, (960, 640)) %}
 <div class="editorial-art editorial-art--{{ variant }}"{% if extra %} data-deeper{% endif %}>
   <img src="{{ asset('img/art/' ~ filename) }}" alt="" width="{{ dims[0] }}" height="{{ dims[1] }}" loading="{{ 'lazy' if extra else 'eager' }}" decoding="async">
 </div>

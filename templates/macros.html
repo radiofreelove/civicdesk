@@ -191,11 +191,5 @@
 {%- endmacro %}
 
 {% macro checked_line(page) -%}
-{% set oldest = page.get('oldest_checked', page.checked) -%}
-{% set newest = page.get('newest_checked', page.checked) -%}
-{% if oldest == newest -%}
-<p class="checked">Sources checked: <time datetime="{{ oldest }}">{{ oldest|human_date }}</time>.</p>
-{%- else -%}
-<p class="checked">Sources checked: <time datetime="{{ oldest }}">{{ oldest|human_date }}</time> to <time datetime="{{ newest }}">{{ newest|human_date }}</time>.</p>
-{%- endif %}
+<p class="checked">Sources checked: <!--cd-checked-time-->.</p>
 {%- endmacro %}

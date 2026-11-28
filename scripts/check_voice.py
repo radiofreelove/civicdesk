@@ -71,15 +71,21 @@ GUIDE_PATTERNS: tuple[str, ...] = (
     "fits-your-situation",
 )
 
-TOOL_SCRIPTS = (
-    "static/js/path.js",
-    "static/js/checker.js",
-    "static/js/checker-oregon.js",
-    "static/js/checker-washington.js",
-    "static/js/checker-utah.js",
-    "static/js/start.js",
-)
-EXTRA_TOOL_SLUGS = ("start",)
+def discover_tool_scripts(root: Path = ROOT, pages: list[dict] | None = None) -> tuple[str, ...]:
+    """Return deduplicated relative JS paths declared under `scripts:` on `tool: true` pages."""
+    entries = pages if pages is not None else yaml.safe_load((root / "data" / "pages.yaml").read_text(encoding="utf-8"))
+    found: list[str] = []
+    for p in entries:
+        if not p.get("tool"):
+            continue
+        for sname in p.get("scripts") or []:
+            rel = f"static/js/{sname}.js"
+            if rel not in found:
+                found.append(rel)
+    return tuple(found)
+
+
+TOOL_SCRIPTS: tuple[str, ...] = discover_tool_scripts(ROOT)
 
 # Tags that end a run of text. Inline tags (a, strong, em, span, code) do not, so a phrase split
 # across inline markup is still checked as one piece.
@@ -310,7 +316,7 @@ def scan(root: Path = ROOT, built: Path | None = None) -> list[str]:
     pages = yaml.safe_load((root / "data" / "pages.yaml").read_text(encoding="utf-8"))
     hits: list[str] = []
 
-    tool_slugs = {p["slug"] for p in pages if p.get("tool") or p["slug"] in EXTRA_TOOL_SLUGS}
+    tool_slugs = {p["slug"] for p in pages if p.get("tool")}
     for p in pages:
         fpath = built_file(built, p)
         if not fpath.is_file():
@@ -326,7 +332,7 @@ def scan(root: Path = ROOT, built: Path | None = None) -> list[str]:
             for name in find_hits(text, active_patterns):
                 hits.append(f"{built.name}/{rel}:{line}: [{name}] {normalize(text)[:120]}")
 
-    for rel in TOOL_SCRIPTS:
+    for rel in discover_tool_scripts(root, pages):
         for line, text in js_string_literals((root / rel).read_text(encoding="utf-8")):
             for name in find_hits(text):
                 hits.append(f"{rel}:{line}: [{name}] {normalize(text)[:120]}")

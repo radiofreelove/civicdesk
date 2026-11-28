@@ -17,6 +17,9 @@
 - slug: start
   art: print-front.webp
   route: /start/
+  tool: true
+  scripts:
+  - start
   template: start.html
   title: Find the right guide in 2 questions
   nav_label: Start here
@@ -200,6 +203,7 @@
   route: /medicaid/oregon/reasons/
   desk: medicaid
   state: oregon
+  domestic_safety_exit: true
   template: medicaid/oregon/reasons.html
   title: Reasons you may not have to meet the rules
   nav_label: Reasons you may not have to
@@ -711,6 +715,7 @@
   route: /medicaid/washington/reasons/
   desk: medicaid
   state: washington
+  domestic_safety_exit: true
   template: medicaid/washington/reasons.html
   title: Reasons you may not have to meet the Apple Health rules
   nav_label: Reasons you may not have to
@@ -1209,6 +1214,7 @@
   route: /medicaid/utah/reasons/
   desk: medicaid
   state: utah
+  domestic_safety_exit: true
   template: medicaid/utah/reasons.html
   title: Reasons you may not have to meet the Utah rules
   nav_label: Reasons you may not have to
@@ -1502,6 +1508,7 @@
   route: /medicaid/utah/immigration/
   desk: medicaid
   state: utah
+  domestic_safety_exit: true
   template: medicaid/utah/immigration.html
   title: Immigration status and Utah Medicaid
   nav_label: Immigration status
@@ -1614,8 +1621,9 @@
   art: print-archive.webp
   route: /medicaid/sources/
   desk: medicaid
-  template: medicaid/sources.html
-  title: 'Primary sources: 2027 Medicaid Work & Activity Rules'
+  source_registry: medicaid
+  template: desk-sources.html
+  title: 'Primary sources: 2027 Medicaid work and activity rules'
   description: Every statute, federal rule, CMS letter, court filing, and state explainer cited on the CivicDesk
     2027 Medicaid desk (MED-*).
   checked: '2026-11-24'
@@ -1654,6 +1662,8 @@
   route: /id-records/path/
   desk: id-records
   tool: true
+  scripts:
+  - path
   template: id-records/path.html
   title: Find your record-update path
   nav_label: Find your path
@@ -2193,8 +2203,9 @@
   art: print-archive.webp
   route: /id-records/sources/
   desk: id-records
-  template: id-records/sources.html
-  title: 'Primary sources: Legal Name, ID & Vital Records'
+  source_registry: id-records
+  template: desk-sources.html
+  title: 'Primary sources: Legal name, ID, and vital records'
   description: Every statute, court schedule, agency form, and guide cited on the CivicDesk Legal Name, ID & Vital
     Records desk (ID-*).
   checked: '2026-11-25'
@@ -2206,6 +2217,7 @@
 - slug: sources
   art: print-archive.webp
   route: /sources/
+  source_registry: all
   template: sources.html
   title: Every source we cite
   nav_label: Sources

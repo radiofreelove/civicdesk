@@ -3,7 +3,6 @@
 
 - id: MED-S01
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: How will providers be affected by federal changes to Oregon Health Plan (OHP)? (HR1 provider FAQ)
   short: OHA provider FAQ on the federal changes
@@ -23,7 +22,6 @@
     and does not mention the ruling.
 - id: MED-S02
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Work or Activity Rules for Some Oregon Health Plan (OHP) Members
   short: OHA fact sheet on the work or activity rules
@@ -42,7 +40,6 @@
     rule.
 - id: MED-S03
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'OHP work or activity rules: exemptions explainer and checklist'
   short: OHA exemptions explainer
@@ -62,7 +59,6 @@
     the ruling.'
 - id: MED-S04
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Applicant and renewal journey maps (OHP work or activity rules)
   short: OHA applicant and renewal journey maps
@@ -81,7 +77,6 @@
     hearings, reapplying, Marketplace and clinic options.
 - id: MED-S05
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: HR1 mythbusters (OHP)
   short: OHA mythbusters
@@ -101,7 +96,6 @@
     and Healthier Oregon members.
 - id: MED-S06
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'New Federal Rules: Impact to Oregon Health Plan and Healthier Oregon (staff and partner talking points)'
   short: OHA staff and partner talking points
@@ -120,7 +114,6 @@
     reapply at any time.
 - id: MED-S07
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: OHP Work or Activity Rules and Federal Changes to Oregon Health Plan
   short: OHA federal changes web page
@@ -142,7 +135,6 @@
     the Oct. 29, 2026 court ruling.
 - id: MED-S08
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'Sample notice: New OHP Rules Begin 01/01/2027 (ONE outreach notice, English)'
   short: OHA sample outreach notice
@@ -161,7 +153,6 @@
     the Statewide Processing Center.
 - id: MED-S09
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Apply for the Oregon Health Plan
   short: OHA how-to-apply page
@@ -180,7 +171,6 @@
     in 17 languages, and income chart. Lists ONE.Oregon.gov; newer OHA pages use benefits.oregon.gov.
 - id: MED-S10
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: OHP application, form OHP 7210 (English)
   short: OHP paper application (form 7210)
@@ -198,7 +188,6 @@
   public_note: Read in full except the last 747 characters. Has no questions about the new work or activity rules.
 - id: MED-S11
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Healthier Oregon
   short: OHA Healthier Oregon page
@@ -217,7 +206,6 @@
     ways to apply; Open Card move; public charge pointer.
 - id: MED-S12
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Public Charge
   short: OHA public charge page
@@ -238,7 +226,6 @@
     count), see MED-S48.
 - id: MED-S13
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Oregon Health Plan (OHP) Bridge
   short: OHA OHP Bridge page
@@ -257,7 +244,6 @@
     the 2027 work or activity rules.
 - id: MED-S14
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Appeals and Hearings
   short: OHA appeals and hearings page
@@ -276,7 +262,6 @@
     and deadline on their own notice, as the journey maps say.
 - id: MED-S15
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: ODHS office finder
   short: ODHS office finder
@@ -298,7 +283,6 @@
     footer gives 800-699-9075 for benefits and 855-673-2372 for the Aging and Disability Resource Connection.'
 - id: MED-S16
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Find free local help (OHP-certified community partners)
   short: OHA community partner finder
@@ -322,7 +306,6 @@
     No claim cites this source.
 - id: MED-S17
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: ONE language lines
   short: ONE language lines (PDF)
@@ -346,7 +329,6 @@
     (833) 687-1508, is the same on both. No claim cites this source.
 - id: MED-S18
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: OHP income limit chart
   short: OHP income limit chart (PDF)
@@ -368,7 +350,6 @@
     which change.
 - id: MED-S19
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: ONE online account and Oregon ONE mobile app
   short: benefits.oregon.gov
@@ -392,7 +373,6 @@
     application for OHP with 12 translations. No claim cites this source.
 - id: MED-S20
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Oregon Health Insurance Marketplace
   short: OregonHealthCare.gov
@@ -414,7 +394,6 @@
     Marketplace and 800-699-9075 for OHP application questions.
 - id: MED-S21
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Find a Federally Qualified Health Center (FQHC)
   short: FQHC finder
@@ -437,7 +416,6 @@
     charge. The page's data carries the date 2026-03-04. No claim cites this source.
 - id: MED-S22
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: OHP Open Card provider search
   short: OHPOpenCard.org
@@ -461,7 +439,6 @@
     a search tool at another address, opl.kepro.com. No claim cites this source.
 - id: MED-S23
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Oregon Health Plan (OHP) Community Resources
   short: OHA Community Resources page
@@ -486,7 +463,6 @@
     is kept in this note so the printed notices can still be traced.'
 - id: MED-S24
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: OHP federal updates (HR1)
   short: OHP.Oregon.gov/HR1
@@ -509,7 +485,6 @@
     MED-S07.
 - id: MED-S25
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Public Benefits Hotline
   short: Public Benefits Hotline (LASO and OLC)
@@ -528,7 +503,6 @@
     are referred elsewhere.
 - id: MED-S26
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'FAQ: OHP (Medicaid) New Rules'
   short: Disability Rights Oregon FAQ
@@ -546,7 +520,6 @@
   public_note: Disability-focused explainer. Lists the Aging and Disability Resource Connection at 855-673-2372.
 - id: MED-S26B
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Request help from Disability Rights Oregon
   short: DRO request-help form
@@ -569,7 +542,6 @@
     was seen. The form was not filled in, and its later steps were not seen. No claim cites this source.
 - id: MED-S27
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: Medicaid Program; Community Engagement Requirement for Certain Individuals (interim final rule), 91 Fed.
     Reg. 33348
@@ -593,7 +565,6 @@
     GED), work and community service definitions, exclusions, hardships, and the 30-day cure period.
 - id: MED-S28
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: Order of Vacatur and Enjoinment, Commonwealth of Massachusetts v. Oz, No. 1:26-cv-12962 (D. Mass. Oct.
     29, 2026), Doc. 148
@@ -615,7 +586,6 @@
     the clause, and the 6-month bar on penalties, name the plaintiff states only.
 - id: MED-S29
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: Memorandum and Order on cross-motions for summary judgment, Commonwealth of Massachusetts v. Oz, Doc. 147
   short: Federal court memorandum, Oct. 29, 2026
@@ -634,7 +604,6 @@
     limit.
 - id: MED-S30
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'House Resolution 1 (HR1) Implementation: Work or Activity Rules and Eligibility (Senate Health Care Committee,
     Sept. 9, 2026)'
@@ -654,7 +623,6 @@
     stubs; ONE account shows rule status.
 - id: MED-S32
   desk: medicaid
-  guide: all
   jurisdiction: standards
   title: Making Content Usable for People with Cognitive and Learning Disabilities (W3C Working Group Note)
   short: W3C cognitive accessibility guidance (COGA)
@@ -672,7 +640,6 @@
   public_note: Non-normative plain-language and cognitive accessibility guidance beyond WCAG.
 - id: MED-S33
   desk: medicaid
-  guide: all
   jurisdiction: standards
   title: Web Content Accessibility Guidelines (WCAG) 2.2
   short: WCAG 2.2
@@ -690,7 +657,6 @@
   public_note: 'Conformance target: Level AA, with AAA contrast and target size where practical.'
 - id: MED-S34
   desk: medicaid
-  guide: all
   jurisdiction: standards
   title: Cloudflare Privacy Policy
   short: Cloudflare privacy policy
@@ -709,7 +675,6 @@
     as a processor for those customers, and gives no fixed retention period. Disclosed on the privacy page.
 - id: MED-S35
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: AG Rayfield sues Trump over unlawful implementation of Medicaid work requirements
   short: Oregon Department of Justice news release
@@ -727,7 +692,6 @@
   public_note: Confirms Oregon joined the multistate suit decided Oct. 29, 2026.
 - id: MED-S36
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: AILA Immigration Lawyer Search
   short: Immigration lawyer search
@@ -749,7 +713,6 @@
     page says the site is not a lawyer referral service.'
 - id: MED-S37
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: National Immigration Legal Services Directory
   short: Immigration legal services directory
@@ -771,7 +734,6 @@
     code to see a list of organizations. No search was run.'
 - id: MED-S38
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Equity Corps of Oregon
   short: Equity Corps of Oregon
@@ -794,7 +756,6 @@
     not mention Portland Immigration Court. No claim cites this source.
 - id: MED-K01
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: New Federal Rules and Upcoming Changes to the Oregon Health Plan (HR1 key changes)
   short: OHA key changes sheet
@@ -815,7 +776,6 @@
     2027. It names ONE.Oregon.gov as the place to apply. No claim cites this source.
 - id: MED-K02
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'Timeline: Key Dates for Federal Changes'
   short: ODHS partner timeline
@@ -833,7 +793,6 @@
   public_note: Counted. Says some dates may change as Oregon receives federal guidance.
 - id: MED-K03
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'Federal Changes to Oregon Health Plan (OHP): A Quick Reference Guide for Providers and Clinic Staff'
   short: OHA provider quick reference guide
@@ -853,7 +812,6 @@
     court ruling.
 - id: MED-K04
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Gig workers guide
   short: OHA gig workers guide
@@ -875,7 +833,6 @@
     papers that show income and hours. No claim cites this source.
 - id: MED-K05
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: People with disabilities guide
   short: OHA people with disabilities guide
@@ -896,7 +853,6 @@
     services and supports does not decide whether the rules apply. No claim cites this source.
 - id: MED-K06
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Houseless guide
   short: OHA houseless guide
@@ -916,7 +872,6 @@
     claim cites this source.
 - id: MED-K07
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: More frequent renewals fact sheet
   short: OHA renewals fact sheet
@@ -938,7 +893,6 @@
     disability, or OHP Bridge members. No claim cites this source.
 - id: MED-K08
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Healthier Oregon transition to Open Card
   short: OHA Open Card transition sheet
@@ -960,7 +914,6 @@
     after that date. No claim cites this source.
 - id: MED-K09
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Non-citizens moving to Healthier Oregon
   short: OHA non-citizen changes sheet
@@ -982,7 +935,6 @@
     this source.
 - id: MED-K10
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Sample notice, Spanish (ONE outreach notice)
   short: OHA sample outreach notice, Spanish
@@ -1002,7 +954,6 @@
     to OHP. Checked with machine assistance; not yet checked by a fluent Spanish reader.
 - id: MED-K11
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'HR1 info sheet: people with Medicare and OHP (dual eligible)'
   short: ODHS dual eligible info sheet
@@ -1023,7 +974,6 @@
     this source.
 - id: MED-K12
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'HR1 info sheet: people with disabilities and work'
   short: ODHS disabilities and work info sheet
@@ -1044,7 +994,6 @@
     services a person gets. No claim cites this source.
 - id: MED-K13
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: H.R. 1 Information for ODHS and OHA Partners
   short: ODHS HR1 partner updates page
@@ -1066,7 +1015,6 @@
     this source.
 - id: MED-S40
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: Docket, Commonwealth of Massachusetts v. Oz, No. 1:26-cv-12962 (D. Mass.)
   short: Court docket for the medically frail case
@@ -1088,7 +1036,6 @@
     own system (PACER).'
 - id: MED-S41
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: SMD# 26-006, Optional Hold Harmless Period for Community Engagement Implementation (State Medicaid Director
     letter)
@@ -1125,7 +1072,6 @@
     the primary source and no page links to the release.'
 - id: MED-S42
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: H.R. 1 Frequently Asked Questions (OHP)
   short: OHA H.R. 1 FAQ
@@ -1145,7 +1091,6 @@
     notices.
 - id: MED-S43
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'Policy Memorandum: Anticipated Impacts of H.R.1 and other federal changes on Oregon''s CCOs'
   short: OHA policy memo to CCOs (April 14, 2026)
@@ -1165,7 +1110,6 @@
     Jan. 1, 2027 (affecting over 100,000 members).
 - id: MED-S44
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: Medicaid Work Requirements (Oregon v. Oz, D. Or.) — Federal Litigation Tracker
   short: Oregon DOJ tracker, State of Oregon v. Oz
@@ -1185,7 +1129,6 @@
     requirements. Does not print the docket number or list all four plaintiff states (see MED-S45 and MED-S46).
 - id: MED-S45
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: Court Calendar, Week of Jan. 11–17, 2027 — State of Oregon et al. v. Oz et al., No. 6:26-cv-02435-AA (D.
     Or.)
@@ -1205,7 +1148,6 @@
     : Telephone : [6:26-cv-02435-AA] State of Oregon et al v. Oz et al (Oral Argument)''.'
 - id: MED-S46
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: WA challenges federal Medicaid barriers jeopardizing Washingtonians' health coverage
   short: WA Attorney General news release, Nov. 5, 2026
@@ -1225,7 +1167,6 @@
     Oregon, Minnesota, and New Mexico) and links the filed complaint.
 - id: MED-S47
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Notice of Proposed Rulemaking, OAR Chapter 410 Division 200 (Work or Activity Rules for Medicaid Expansion
     and 1115 waiver program population)
@@ -1248,7 +1189,6 @@
     Not yet adopted as final rules.
 - id: MED-S48
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: 'USCIS Policy Manual, Volume 8, Part G, Chapter 7: Consideration of Any Current or Past Application for,
     Approval or Certification to Receive, and Receipt of Means-Tested Public Benefits'
@@ -1272,7 +1212,6 @@
     and long-term institutionalization at government expense.'''
 - id: MED-S49
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: AG Brown sues to block new public charge rule by U.S. Department of Homeland Security
   short: WA Attorney General release, State of New York v. DHS (Sept. 14, 2026)
@@ -1293,7 +1232,6 @@
     other states), Governor Josh Shapiro of Pennsylvania, and the District of Columbia.
 - id: MED-S51
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: Docket, State of New York v. U.S. Department of Homeland Security, No. 1:26-cv-07978 (S.D.N.Y.)
   short: Court docket, State of New York v. DHS (S.D.N.Y.)
@@ -1316,7 +1254,6 @@
     amended complaint filed Nov. 13, 2026, ECF 62) and Make the Road New York v. DHS (No. 1:26-cv-08129).'
 - id: MED-S53
   desk: medicaid
-  guide: oregon
   jurisdiction: OR
   title: Oregon Health Authority to delay enforcement of new federal Medicaid work rules to keep people in Oregon
     insured
@@ -1338,7 +1275,6 @@
     1, 2027.
 - id: MED-S54
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: Docket and Complaint, Mahmoud v. Oz, No. 1:26-cv-00881 (D.R.I.)
   short: Court docket, Mahmoud v. Oz (D.R.I.)
@@ -1359,7 +1295,6 @@
     8, 2026. No court order has been entered through ECF 10.
 - id: MED-U01
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Community Engagement Requirement
   short: Utah Medicaid community engagement page
@@ -1379,7 +1314,6 @@
     every 6 months, and phone numbers. Says nothing about a court ruling.
 - id: MED-U02
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'H.R. 1 and Utah Medicaid: page for members (obbba.medicaid.utah.gov)'
   short: Utah Medicaid H.R. 1 page
@@ -1399,7 +1333,6 @@
     by Jan. 1, 2027. Lists a different general phone number than MED-U01.
 - id: MED-U03
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Meeting the community engagement requirement
   short: Utah Medicaid support page on meeting the rules
@@ -1419,7 +1352,6 @@
     linking to it.
 - id: MED-U04
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'Utah Adult Expansion Medicaid (AEM): What You Need to Know (Medical Help for Adults)'
   short: DWS page on Medicaid for adults
@@ -1439,7 +1371,6 @@
     and the 30-day verification form.
 - id: MED-U05
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'H.R. 1 community engagement requirement: exclusions and exceptions'
   short: Utah exclusions and exceptions table
@@ -1458,7 +1389,6 @@
     checked in the month a person applies or renews, and that 2 hardships must be requested.
 - id: MED-U06
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'Medicaid community engagement requirement: toolkit for H.R. 1'
   short: Utah community engagement toolkit for staff
@@ -1477,7 +1407,6 @@
     first. Members act when they get a personal letter from DWS.
 - id: MED-U07
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Community Engagement Requirement and Eligibility Review member letter (English)
   short: Utah member letter, July 2026
@@ -1497,7 +1426,6 @@
     Security or SSI among those who do not have to meet the rules.
 - id: MED-U08
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Utah Medicaid H.R. 1 glossary of terms
   short: Utah H.R. 1 glossary
@@ -1516,7 +1444,6 @@
     DHHS, fair hearing, retroactive coverage, and the community engagement requirement.
 - id: MED-U09
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'Quick guide: New Utah Medicaid rules under H.R. 1'
   short: Utah quick guide, June 2026
@@ -1535,7 +1462,6 @@
     and retroactive coverage from Jan. 1, 2027. Does not mention $580 or exclusions.'
 - id: MED-U10
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Utah Medicaid rules are changing! (flyer, English and Spanish)
   short: Utah flyer
@@ -1554,7 +1480,6 @@
     that differs from MED-U01.
 - id: MED-U11
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'Utah Medicaid and HR 1: frequently asked questions for partners'
   short: Utah partner FAQ, January 2026
@@ -1574,7 +1499,6 @@
     3 ways.
 - id: MED-U12
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'Utah Medicaid and HR 1: frequently asked questions for members'
   short: Utah member FAQ
@@ -1592,7 +1516,6 @@
   public_note: Older overview. Counted, and used only to show that Utah's documents carry different dates.
 - id: MED-U13
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'Eligibility reviews every 6 months: toolkit for H.R. 1'
   short: Utah 6-month review toolkit for staff
@@ -1611,7 +1534,6 @@
     Indian and Alaska Native members keep 12 months. Does not give reply deadlines.
 - id: MED-U14
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Apply for Medicaid
   short: Utah Medicaid how-to-apply page
@@ -1630,7 +1552,6 @@
     and Spanish. Marketplace phone number.'
 - id: MED-U15
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Utah medical application, form 61MED (English)
   short: Utah application form 61MED
@@ -1650,7 +1571,6 @@
     list different fax numbers.
 - id: MED-U15S
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Utah medical application, form 61MED (Spanish)
   short: Utah application form 61MED, Spanish
@@ -1670,7 +1590,6 @@
     assistance; not yet checked by a fluent Spanish reader.
 - id: MED-U16
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: How to Apply for Services
   short: DWS how-to-apply page
@@ -1689,7 +1608,6 @@
     within 10 days. Decision within 30 days; some medical decisions take longer.
 - id: MED-U17
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Hearings (Office of Administrative Hearings)
   short: Utah Medicaid hearings page
@@ -1708,7 +1626,6 @@
     the date of the notice.
 - id: MED-U18
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: File Public Assistance Appeal
   short: DWS fair hearing page
@@ -1727,7 +1644,6 @@
     Utah Legal Services.'
 - id: MED-U19
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Hearing Rights and Request for Hearing, form DWS-ESD 490
   short: DWS hearing request form 490
@@ -1746,7 +1662,6 @@
     which must be paid back if the decision supports the department. Says not to send the request through myCase.
 - id: MED-U19S
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Solicitud de audiencia imparcial, form 490 (Spanish)
   short: DWS hearing request form 490, Spanish
@@ -1766,7 +1681,6 @@
     assistance; not yet checked by a fluent Spanish reader.
 - id: MED-U20
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Public Assistance Appeal Guide
   short: DWS appeal guide
@@ -1785,7 +1699,6 @@
     to be a lawyer.
 - id: MED-U21
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: What if I lose coverage?
   short: Utah Medicaid support page on losing coverage
@@ -1804,7 +1717,6 @@
     Utah's list of free or low-cost care.
 - id: MED-U22
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: I need help. Who can help me?
   short: Utah Medicaid support page on free help
@@ -1823,7 +1735,6 @@
     Marketplace plans.
 - id: MED-U23
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Take Care Utah
   short: Take Care Utah
@@ -1842,7 +1753,6 @@
     statewide.
 - id: MED-U24
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'H.R. 1 Medicaid member supports: Stay informed. Stay covered. Stay healthy.'
   short: Utah Medicaid support site, home
@@ -1860,7 +1770,6 @@
   public_note: Counted. Who may be affected, important dates, and next steps.
 - id: MED-U25
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Medicaid Expansion
   short: Utah Medicaid expansion page
@@ -1879,7 +1788,6 @@
     members may move to Adult Expansion on July 1, 2027. Its text and its table give different income numbers.
 - id: MED-U26
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Targeted Adult Medicaid Program
   short: Utah Targeted Adult Medicaid page
@@ -1897,7 +1805,6 @@
   public_note: Who the program covers. Says changes take effect July 1, 2027, without saying the program ends.
 - id: MED-U27
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'H.R. 1 definition of a qualified immigrant: member letter (English)'
   short: Utah immigrant eligibility letter
@@ -1917,7 +1824,6 @@
     Its PDF footer prints March 2026, while Utah's letter key (MED-U29) and hub (MED-U02) list April 2026.
 - id: MED-U28
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Letter for members with unverified tribal status
   short: Utah letter on tribal status
@@ -1937,7 +1843,6 @@
     (MED-U40) lists May 2026.
 - id: MED-U29
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: H.R. 1 key for member letters
   short: Utah key to mailed letters
@@ -1957,7 +1862,6 @@
     page (MED-U40) lists the tribal letters as May 2026.'
 - id: MED-U30
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'CMS letter to Utah: conforming changes to the Utah Medicaid Reform 1115 Demonstration'
   short: Federal letter to Utah, Sept. 25, 2026
@@ -1977,7 +1881,6 @@
     a Utah-designed requirement.
 - id: MED-U31
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Language Services
   short: Utah Medicaid language services page
@@ -1995,7 +1898,6 @@
   public_note: Says free language assistance and free auxiliary aids are available. Gives no TTY number.
 - id: MED-U32
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: myCase
   short: DWS myCase online account
@@ -2017,7 +1919,6 @@
     still pointed here.
 - id: MED-U33
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'Office Search: Find a Workforce Services Location'
   short: DWS office finder
@@ -2036,7 +1937,6 @@
     office finder addresses; this is the one on DWS's own how-to-apply page.
 - id: MED-U34
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: HealthCare.gov
   short: Federal Health Insurance Marketplace
@@ -2057,7 +1957,6 @@
     and find local help, and gives the phone number 1-800-318-2596. No claim cites this source.
 - id: MED-U35
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 211 Utah
   short: 211 Utah
@@ -2079,7 +1978,6 @@
     No claim cites this source.
 - id: MED-U36
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Emergency Medicaid
   short: Utah Emergency Medicaid page
@@ -2102,7 +2000,6 @@
     No claim cites this source.
 - id: MED-U37
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Utah Legal Services
   short: Utah Legal Services
@@ -2122,7 +2019,6 @@
     Its Get Help page did not open on 2026-11-10.'
 - id: MED-U38
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Diagnoses for medically frail (code list)
   short: Utah list of medically frail diagnosis codes
@@ -2144,7 +2040,6 @@
     headings, the first two pages, and the last page. The code rows themselves were not read line by line.'
 - id: MED-U39
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: 'Utah Code Section 26B-3-142.1: Medicaid work requirements (enacted by 2026 H.B. 471, ch. 342)'
   short: Utah Code 26B-3-142.1 (2026 H.B. 471)
@@ -2169,7 +2064,6 @@
     the individual and must verify it using electronic data or a statement from a health care professional.
 - id: MED-U40
   desk: medicaid
-  guide: utah
   jurisdiction: UT
   title: Information for American Indians and Alaska Natives (AI/AN)
   short: Utah Medicaid AI/AN verification page
@@ -2190,7 +2084,6 @@
     2026 (while MED-U02 and MED-U29 list April 2026 and the letter PDF footer MED-U28 prints March 2026).
 - id: MED-WA01
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Changes coming to Apple Health
   short: HCA changes coming to Apple Health
@@ -2212,7 +2105,6 @@
     read notices or text messages from HCA.
 - id: MED-WA02
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: What's changing with Apple Health (Medicaid)?
   short: HCA what's changing with Apple Health
@@ -2231,7 +2123,6 @@
     the client booklets list at MED-WA09 is verified and is a different list.
 - id: MED-WA03
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: H.R. 1 impacts
   short: HCA H.R. 1 impacts page
@@ -2251,7 +2142,6 @@
     figure.
 - id: MED-WA04
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Impacts of H.R.1 on Apple Health eligibility - Summary
   short: HCA eligibility summary, Feb. 2026
@@ -2271,7 +2161,6 @@
     in Apple Health for Adults in November 2025; about 64 percent estimated verified or exempt from existing data.'
 - id: MED-WA05
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: H.R.1 work requirements and renewals fact sheet
   short: HCA work rules fact sheet, June 2026
@@ -2290,7 +2179,6 @@
     and 6-month coverage periods. HCA''s newer work requirements page lists 6 ways, adding working 80 hours a month.'
 - id: MED-WA06
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Apply for or renew coverage
   short: HCA apply or renew page
@@ -2309,7 +2197,6 @@
     (65 and older, blindness or disability, Medicare eligible) applies through DSHS and Washington Connection.
 - id: MED-WA07
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Contact Apple Health (Medicaid)
   short: HCA Apple Health contact page
@@ -2328,7 +2215,6 @@
     p.m. Pacific, TRS 711, PO Box 45531, Olympia WA 98504.'
 - id: MED-WA08
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: 'File an appeal: Apple Health (Medicaid)'
   short: HCA appeals page
@@ -2347,7 +2233,6 @@
     law judge issues an initial order; the Board of Appeals can review it.
 - id: MED-WA09
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Apple Health client booklets
   short: HCA client booklets page
@@ -2366,7 +2251,6 @@
     Punjabi, Russian, Somali, Spanish, Tigrigna, Ukrainian, Vietnamese, plus English.'
 - id: MED-WA10
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Supporting clients with changes to Apple Health
   short: HCA Community Connectors page
@@ -2385,7 +2269,6 @@
     and translation of printed materials, at no cost.
 - id: MED-WA11
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Filing an application
   short: HCA filing an application page
@@ -2405,7 +2288,6 @@
     facts it supports on Nov. 13, 2026.
 - id: MED-WA12
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Changes of circumstance effect on eligibility
   short: HCA changes of circumstance page
@@ -2428,7 +2310,6 @@
     at 1-877-501-2233, by mail to DSHS, or by fax to 1-888-338-7410. The read confirms claim WA-APP-08.'
 - id: MED-WA13
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Submit my verification
   short: HCA submit verification page
@@ -2451,7 +2332,6 @@
     or mailed. The read confirms claims WA-APP-09, WA-LTR-02, WA-WRD-05, and WA-LOG-03.'
 - id: MED-WA14
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Washington Attorney General's Federal Litigation Tracker
   short: WA Attorney General litigation tracker
@@ -2476,7 +2356,6 @@
     order requires continued Medicaid funding for certain noncitizens who get SSI.'
 - id: MED-WA15
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: 'WAC 182-505-0250, Washington apple health: MAGI-based adult medical'
   short: WAC 182-505-0250 (Apple Health adults)
@@ -2503,7 +2382,6 @@
     138 percent figure in claim WA-CHK-01 as written.'
 - id: MED-WA16
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: 'WAC 182-504-0035, Washington apple health: Renewals'
   short: WAC 182-504-0035 (renewals)
@@ -2527,7 +2405,6 @@
     a gap.
 - id: MED-WA17
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: 'WAC 182-504-0130, Washington apple health: Continued coverage pending an appeal'
   short: WAC 182-504-0130 (continued coverage)
@@ -2550,7 +2427,6 @@
     WA-DEN-04.'
 - id: MED-WA18
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: WAC 182-526-0200, Enrollee appeals of a managed care organization action
   short: WAC 182-526-0200 (health plan appeals)
@@ -2574,7 +2450,6 @@
     receipt of the notice.
 - id: MED-WA19
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: 'WAC 182-503-0080, Washington apple health: Application denials and withdrawals'
   short: WAC 182-503-0080 (denials)
@@ -2596,7 +2471,6 @@
     WAC.'
 - id: MED-WA20
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Medicaid in Washington State
   short: HCA Medicaid in Washington deck, Jan. 2026
@@ -2615,7 +2489,6 @@
     1, 2026 noncitizen eligibility changes and estimated people affected.
 - id: MED-WA21
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Medically Frail Exclusion from Community Engagement Requirements (memo to health care providers)
   short: HCA medically frail memo, Aug. 2026
@@ -2634,7 +2507,6 @@
     Starting Jan. 2028, HCA may ask for proof when state records cannot confirm it.
 - id: MED-WA22
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Apple Health (Medicaid) work requirements
   short: HCA work requirements page
@@ -2656,7 +2528,6 @@
     a sample client notice in English (MED-WA30) and 8 other languages.
 - id: MED-WA23
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Apple Health Expansion
   short: HCA Apple Health Expansion page
@@ -2683,7 +2554,6 @@
     confirms that enrollment is closed; it does not confirm claim WA-IMM-04 as written.'
 - id: MED-WA24
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Medicaid Community Engagement Requirement for Certain Individuals, Interim Final Rule with Comment Period
     (CMS-2454-IFC), fact sheet
@@ -2706,7 +2576,6 @@
     in the registry as shared source MED-S27 and stays the primary federal source. The read confirms claim WA-RULE-09.'
 - id: MED-WA25
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Complaint, Commonwealth of Massachusetts v. Oz, No. 1:26-cv-12962 (D. Mass.)
   short: Complaint, Massachusetts v. Oz
@@ -2725,7 +2594,6 @@
     as a plaintiff.
 - id: MED-WA26
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Apple Health Expansion enrollment cap
   short: HCA Apple Health Expansion cap notice
@@ -2747,7 +2615,6 @@
     which MED-WA23 alone did not state.
 - id: MED-WA27
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Washington state to delay enforcement of new Medicaid work requirements through June 30, 2027
   short: HCA announcement on delayed enforcement, Nov. 17, 2026
@@ -2768,7 +2635,6 @@
     verify. Six-month renewals and shorter past-bills coverage still start Jan. 1, 2027.
 - id: MED-WA28
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Order Granting Preliminary Injunction, Neighborhood House v. U.S. Department of Health and Human Services,
     No. 2:26-cv-03006-TSZ (W.D. Wash. Sept. 30, 2026), Doc. 28
@@ -2793,7 +2659,6 @@
     2026 (ECF 43 to 49).
 - id: MED-WA29
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: Washington Apple Health Administrative Hearing Rights and Deadlines (Form HCA 12-506)
   short: HCA Form 12-506 (hearing rights and deadlines)
@@ -2815,7 +2680,6 @@
     Also notes RCW 74.09.741(3) on automatic law changes.
 - id: MED-WA30
   desk: medicaid
-  guide: washington
   jurisdiction: WA
   title: 'Sample notice: Upcoming federal changes that affect Washington Apple Health for Adults Medicaid coverage'
   short: HCA sample work rules and renewals notice
@@ -2838,7 +2702,6 @@
     Chinese, Korean, Laotian, Russian, Somali, Spanish, and Vietnamese.'
 - id: MED-SSA-NAME
   desk: medicaid
-  guide: all
   jurisdiction: US
   title: Change your name on your Social Security record
   short: Social Security, change your name

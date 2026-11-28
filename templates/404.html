@@ -20,19 +20,16 @@
   <li><a href="{{ page_url('sources') }}">All primary sources and 4-tier honesty labels</a></li>
 </ul>
 
-<h2>2027 Medicaid work and activity rules</h2>
+{% for d in active_desks %}
+<h2>{{ d.full_title }}</h2>
 <ul>
-  <li><a href="{{ page_url('medicaid') }}">Medicaid desk overview</a></li>
-  <li><a href="{{ page_url('medicaid-oregon') }}">Oregon Health Plan (OHP)</a> and <a href="{{ page_url('medicaid-oregon-check') }}">1-minute check</a></li>
-  <li><a href="{{ page_url('medicaid-washington') }}">Washington Apple Health</a> and <a href="{{ page_url('medicaid-washington-check') }}">1-minute check</a></li>
-  <li><a href="{{ page_url('medicaid-utah') }}">Utah Medicaid</a> and <a href="{{ page_url('medicaid-utah-check') }}">1-minute check</a></li>
+  <li><a href="{{ page_url(d.hub) }}">{{ d.hub_label }}</a></li>
+  {% if d.get('tool') %}
+  <li><a href="{{ page_url(d.tool.page) }}">{{ d.tool.get('not_found_label') or d.tool.label }}</a></li>
+  {% endif %}
+  {% for st in d.states %}
+  <li><a href="{{ page_url(st.page) }}">{{ st.get('not_found_label') or (st.name ~ ' state guide') }}</a>{% if st.get('not_found_tool') %} and <a href="{{ page_url(st.not_found_tool.page) }}">{{ st.not_found_tool.label }}</a>{% endif %}</li>
+  {% endfor %}
 </ul>
-
-<h2>Legal name, ID, and vital records</h2>
-<ul>
-  <li><a href="{{ page_url('id-records') }}">ID &amp; vital records desk overview</a></li>
-  <li><a href="{{ page_url('id-records-path') }}">Step-by-step record-update path finder</a></li>
-  <li><a href="{{ page_url('id-records-oregon') }}">Oregon</a>, <a href="{{ page_url('id-records-washington') }}">Washington</a>, and <a href="{{ page_url('id-records-utah') }}">Utah</a> state guides</li>
-  <li><a href="{{ page_url('id-records-federal') }}">Federal IDs: passport, Social Security &amp; immigration</a></li>
-</ul>
+{% endfor %}
 {% endblock %}
