@@ -59,18 +59,30 @@ def test_csp_backs_the_never_sent_anywhere_promise(built_site: Path) -> None:
 
 def test_tool_notice_on_every_interactive_tool(built_site: Path) -> None:
     pages = yaml.safe_load((ROOT / "data" / "pages.yaml").read_text(encoding="utf-8"))
+    declared_tools = [p for p in pages if p.get("tool")]
+    assert declared_tools, "Expected at least one interactive tool in data/pages.yaml"
+    tool_script_re = re.compile(r'static/js/(?:' + "|".join(
+        sorted({re.escape(s) for p in declared_tools for s in (p.get("scripts") or [])})
+    ) + r')\.js')
+
     with_tools = 0
     for p in pages:
         raw = _built_file(built_site, p).read_text(encoding="utf-8")
-        if not re.search(r'static/js/(?:path|checker|start)\.js', raw):
+        has_tool_script = bool(tool_script_re.search(raw))
+        if p.get("tool"):
+            assert p.get("scripts"), f"{p['route']}: tool: true page must declare scripts in data/pages.yaml"
+            assert has_tool_script, f"{p['route']}: declared tool script did not render in compiled HTML"
+        elif not has_tool_script:
             continue
+        else:
+            raise AssertionError(f"{p['route']}: loads a tool script without declaring tool: true in data/pages.yaml")
         with_tools += 1
         main = raw.split("<main", 1)[1].split("</main>", 1)[0]
         notice = re.search(r'<p class="tool-notice[^"]*" role="note">(.*?)</p>', main, re.S)
         assert notice, f"{p['route']}: interactive tool page is missing macros.tool_notice()"
         text = re.sub(r"<[^>]+>", " ", notice.group(1))
         assert TOOL_NOTICE in re.sub(r"\s+", " ", text).strip(), f"{p['route']}: tool notice text changed"
-    assert with_tools == 5, f"expected /start/, the path finder, and 3 state checks, found {with_tools}"
+    assert with_tools == len(declared_tools), f"expected {len(declared_tools)} interactive tools, found {with_tools}"
 
 
 def test_about_nonlawyer_statement_without_workflow_disclosure(built_site: Path) -> None:

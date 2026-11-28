@@ -2,7 +2,6 @@
 {% import "macros.html" as m %}
 {% import "visuals.html" as v %}
 {% import "broadsheet.html" as bs %}
-{% block head %}<script src="{{ asset('js/start.js') }}" defer></script>{% endblock %}
 {% block main %}
 {% set start_lede %}{{ m.answer(page) }}{% endset %}
 {{ bs.page_head('Find the right guide in 2 questions', page=page, kicker='Start here', purpose=start_lede) }}
@@ -14,21 +13,21 @@
 
 {{ m.tool_notice('js-only') }}
 
-<form id="start-form" class="start-form js-only" data-root="{{ root_prefix(page) }}" novalidate autocomplete="off">
+<form id="start-form" class="start-form js-only" novalidate autocomplete="off">
   <div id="start-error" class="callout callout-watch" role="alert" tabindex="-1" hidden></div>
 
   <fieldset id="q-state">
     <legend>1. Which state or level do you need?</legend>
-    <label><input type="radio" name="state" value="oregon"> <span>Oregon</span></label>
-    <label><input type="radio" name="state" value="washington"> <span>Washington</span></label>
-    <label><input type="radio" name="state" value="utah"> <span>Utah</span></label>
-    <label><input type="radio" name="state" value="federal"> <span>Another U.S. state or federal agency only</span></label>
+    {% for rs in site.router_states %}
+    <label><input type="radio" name="state" value="{{ rs.slug }}"> <span>{{ rs.label }}</span></label>
+    {% endfor %}
   </fieldset>
 
   <fieldset id="q-topic">
     <legend>2. What are you trying to do?</legend>
-    <label><input type="radio" name="topic" value="medicaid"> <span>Understand or check 2027 Medicaid work and activity rules, exemptions, or applications</span></label>
-    <label><input type="radio" name="topic" value="id-records"> <span>Update a legal name (marriage, divorce, or court order), driver license or ID, birth certificate, Social Security card, or passport</span></label>
+    {% for d in active_desks %}
+    <label><input type="radio" name="topic" value="{{ d.slug }}"> <span>{{ d.router_question }}</span></label>
+    {% endfor %}
   </fieldset>
 
   <div class="btn-row">
@@ -36,6 +35,23 @@
     <button type="reset" class="btn-secondary">Start over</button>
   </div>
 </form>
+
+<template id="start-routes">
+{% for d in active_desks %}
+  {% set state_map = {} %}
+  {% for st in d.states %}{% set _ = state_map.update({st.slug: st}) %}{% endfor %}
+  {% for rs in site.router_states %}
+    {% if rs.slug in state_map and state_map[rs.slug].get('router') %}
+      {% set st = state_map[rs.slug] %}
+      {% set rt = st.router %}
+      <div data-route data-topic="{{ d.slug }}" data-state="{{ rs.slug }}" data-primary-href="{{ page_url(st.page) }}" data-primary-title="{{ rt.primary_title }}"{% if rt.get('tool_page') %} data-tool-href="{{ page_url(rt.tool_page) }}" data-tool-title="{{ rt.tool_title }}"{% endif %}>{{ rt.note }}</div>
+    {% elif d.get('router_fallback') %}
+      {% set fb = d.router_fallback %}
+      <div data-route data-topic="{{ d.slug }}" data-state="{{ rs.slug }}" data-primary-href="{{ page_url(fb.primary_page) }}" data-primary-title="{{ fb.primary_title }}"{% if fb.get('tool_page') %} data-tool-href="{{ page_url(fb.tool_page) }}" data-tool-title="{{ fb.tool_title }}"{% endif %}>{{ fb.note }}</div>
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+</template>
 
 <section id="start-result" class="start-result callout callout-do" aria-labelledby="start-result-h" hidden>
   <p class="callout-kicker"><span class="callout-icon">{{ m.icon('check') }}</span><span>Matching starting point</span></p>
@@ -52,23 +68,11 @@
   </div>
 
   <div id="guide-directory-groups">
+    {% for d in active_desks %}
     <div class="guide-dir-group" data-guide-group>
-      <h3>2027 Medicaid work and activity rules</h3>
+      <h3>{{ d.full_title }}</h3>
       <ul class="guide-dir-list">
-      {% for p in pages if p.get('desk') == 'medicaid' %}
-        {% set st = p.get('state', '') %}
-        <li data-guide-item data-search="{{ (p.title ~ ' ' ~ p.description ~ ' ' ~ st ~ ' ' ~ p.route)|lower }}">
-          <span class="guide-dir-head"><a href="{{ page_url(p.slug) }}">{% if st %}{{ st|capitalize }}: {% endif %}{{ p.title }}</a></span>
-          <span class="guide-dir-desc">{{ p.description }}</span>
-        </li>
-      {% endfor %}
-      </ul>
-    </div>
-
-    <div class="guide-dir-group" data-guide-group>
-      <h3>Legal name, ID, and vital records</h3>
-      <ul class="guide-dir-list">
-      {% for p in pages if p.get('desk') == 'id-records' %}
+      {% for p in pages if p.get('desk') == d.slug %}
         {% set st = p.get('state', '') %}
         <li data-guide-item data-search="{{ (p.title ~ ' ' ~ p.description ~ ' ' ~ st ~ ' ' ~ p.route)|lower }}">
           <span class="guide-dir-head"><a href="{{ page_url(p.slug) }}">{% if st and st|lower not in p.title|lower %}{{ st|capitalize }}: {% endif %}{{ p.title }}</a></span>
@@ -77,6 +81,7 @@
       {% endfor %}
       </ul>
     </div>
+    {% endfor %}
 
     <div class="guide-dir-group" data-guide-group>
       <h3>Sources, accessibility &amp; privacy</h3>

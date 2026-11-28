@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% import "visuals.html" as v %}
+{% block main %}
+{% set desk_cfg = desks_by_slug[page.desk] %}
+{% set desk_sources = sources_by_desk[page.desk] %}
+{% set other_desks = active_desks|rejectattr('slug', 'equalto', page.desk)|list %}
+<div class="intro-split">
+  <div class="intro-copy">
+    <p class="kicker">{{ desk_cfg.full_title }}</p>
+    <h1>{{ desk_cfg.sources_heading }} (<code>{{ desk_cfg.source_prefix }}*</code>)</h1>
+    {{ m.answer(page) }}
+  </div>
+  {{ v.page_art(page) }}
+</div>
+
+{% set toc_items = [] %}
+{% for g in desk_cfg.source_groups %}
+{% set _ = toc_items.append((g.id, g.toc)) %}
+{% endfor %}
+{{ m.onthispage(toc_items) }}
+
+<p>Need sources from another desk too? {% for od in other_desks %}<a href="{{ page_url(od.sources_page) }}">See {{ od.sources_short }} (<code>{{ od.source_prefix }}*</code>)</a>{% if not loop.last %}, {% else %} or {% endif %}{% endfor %}<a href="{{ page_url('sources#labels') }}">read what our 4 source honesty labels mean</a>.</p>
+
+{% for g in desk_cfg.source_groups %}
+<h2 id="{{ g.id }}">{{ g.title }}</h2>
+<ul class="source-list">
+{% for s in desk_sources if s.jurisdiction in g.jurisdictions and not s.get('docs_only') %}
+  <li class="source-item" id="{{ s.id|lower }}">
+    <h3><a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a>{% if s.get('format') == 'PDF' %} <span class="tag">PDF</span>{% endif %} {{ status_badge(s.status) }}</h3>
+    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · <span class="checked-date">Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time></span> · {{ read_note(s) }}.</p>
+    {% if s.get('public_note') %}<p class="source-meta">{{ s.public_note }}</p>{% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endfor %}
+{% endblock %}

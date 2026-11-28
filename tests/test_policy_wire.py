@@ -48,10 +48,14 @@ def _make_minimal_flate_pdf(text_line: str) -> bytes:
 def test_wire_profiles_and_dynamic_desk_extensibility(tmp_path: Path) -> None:
     wire = load_wire_module()
 
+    site_yaml = yaml.safe_load((ROOT / "data" / "site.yaml").read_text(encoding="utf-8"))
+    site_active = [d["slug"] for d in site_yaml["desks"] if d.get("status") == "active"]
+    site_upcoming = [d["slug"] for d in site_yaml["desks"] if d.get("status") == "upcoming"]
     active = wire.list_active_desks(include_disabled=False)
     all_desks = wire.list_active_desks(include_disabled=True)
-    assert active == ["medicaid", "id-records"]
-    assert "public-records" in all_desks
+    assert set(active) == set(site_active)
+    for slug in site_upcoming:
+        assert slug in all_desks
 
     custom_dir = tmp_path / "wire"
     custom_dir.mkdir()

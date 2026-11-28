@@ -8,54 +8,27 @@
   var resultBody = document.getElementById("start-result-body");
   var resultHeading = document.getElementById("start-result-h");
   var errorBox = document.getElementById("start-error");
-  var basePrefix = form.getAttribute("data-root") || "/";
+  var routesTpl = document.getElementById("start-routes");
 
-  var ROUTES = {
-    medicaid: {
-      oregon: {
-        primary: { title: "Open the Oregon Health Plan (OHP) 2027 guide", href: "medicaid/oregon/" },
-        tool: { title: "Take the 1-minute OHP check", href: "medicaid/oregon/check/" },
-        note: "Covers the Jan. 1, 2027 OHP work and activity rules, Oregon's hold harmless delay through June 30, 2027, the Dec. 31, 2026 past-bills cutoff, exemptions, and how to apply."
-      },
-      washington: {
-        primary: { title: "Open the Washington Apple Health 2027 guide", href: "medicaid/washington/" },
-        tool: { title: "Take the 1-minute Apple Health check", href: "medicaid/washington/check/" },
-        note: "Covers the Jan. 1, 2027 Apple Health for Adults work rules, HCA's delayed enforcement through June 30, 2027, 6-month renewals, exemptions, and how to apply."
-      },
-      utah: {
-        primary: { title: "Open the Utah Medicaid 2027 guide", href: "medicaid/utah/" },
-        tool: { title: "Take the 1-minute Utah Medicaid check", href: "medicaid/utah/check/" },
-        note: "Covers Utah Adult Expansion and Targeted Adult Medicaid 2027 community engagement rules, exclusions, Jan. 1, 2027 tribal proof deadline, and myCase / DWS steps."
-      },
-      federal: {
-        primary: { title: "Open the 2027 Medicaid desk overview", href: "medicaid/" },
-        tool: null,
-        note: "CivicDesk currently covers detailed state Medicaid rules for Oregon, Washington, and Utah, plus federal rules and court updates that affect all states."
-      }
-    },
-    "id-records": {
-      oregon: {
-        primary: { title: "Open the Oregon name, ID, and vital records guide", href: "id-records/oregon/" },
-        tool: { title: "Open the ID & records path finder", href: "id-records/path/" },
-        note: "Covers marriage, divorce, and circuit court name changes, confidential sex-change filings, Oregon birth certificates (form OHA 2673), and Oregon DMV cards."
-      },
-      washington: {
-        primary: { title: "Open the Washington name, ID, and vital records guide", href: "id-records/washington/" },
-        tool: { title: "Open the ID & records path finder", href: "id-records/path/" },
-        note: "Covers marriage, divorce, public district court and sealed superior court name changes, Washington birth certificates, and Department of Licensing cards."
-      },
-      utah: {
-        primary: { title: "Open the Utah name, ID, and vital records guide", href: "id-records/utah/" },
-        tool: { title: "Open the ID & records path finder", href: "id-records/path/" },
-        note: "Covers marriage, divorce, and Utah district court name and sex-designation orders, Vital Records form 902, and Driver License Division updates."
-      },
-      federal: {
-        primary: { title: "Open the Passports and Social Security guide", href: "id-records/federal/" },
-        tool: { title: "Open the ID & records path finder", href: "id-records/path/" },
-        note: "Covers Social Security replacement cards after marriage, divorce, or court orders, passport name changes, and 2025-2026 federal sex-marker rules."
-      }
-    }
-  };
+  var ROUTES = {};
+  if (routesTpl && routesTpl.content) {
+    routesTpl.content.querySelectorAll("[data-route]").forEach(function (el) {
+      var topic = el.getAttribute("data-topic");
+      var state = el.getAttribute("data-state");
+      if (!topic || !state) return;
+      if (!ROUTES[topic]) ROUTES[topic] = {};
+      var toolHref = el.getAttribute("data-tool-href");
+      var toolTitle = el.getAttribute("data-tool-title");
+      ROUTES[topic][state] = {
+        primary: {
+          title: el.getAttribute("data-primary-title") || "",
+          href: el.getAttribute("data-primary-href") || ""
+        },
+        tool: toolHref && toolTitle ? { title: toolTitle, href: toolHref } : null,
+        note: (el.textContent || "").trim()
+      };
+    });
+  }
 
   function getVal(name) {
     var checked = form.querySelector('input[name="' + name + '"]:checked');
@@ -138,14 +111,14 @@
     actions.className = "btn-row";
     var mainBtn = document.createElement("a");
     mainBtn.className = "btn";
-    mainBtn.href = basePrefix + match.primary.href;
+    mainBtn.href = match.primary.href;
     mainBtn.textContent = match.primary.title;
     actions.appendChild(mainBtn);
 
     if (match.tool) {
       var toolBtn = document.createElement("a");
       toolBtn.className = "btn-secondary";
-      toolBtn.href = basePrefix + match.tool.href;
+      toolBtn.href = match.tool.href;
       toolBtn.textContent = match.tool.title;
       actions.appendChild(toolBtn);
     }

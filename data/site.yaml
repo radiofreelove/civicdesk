@@ -10,42 +10,247 @@ quick_exit_url: "https://www.weather.gov/"
 corrections_email: "corrections@civicdesk.net"
 # Pre-filled body for every corrections mailto: link (scripts/build.py correction_mailto).
 corrections_mailto_body: "Please describe the page problem only. Do not include names, case numbers, health details, or other personal information. CivicDesk cannot answer questions about individual situations."
+dateline_places: "Oregon · Washington · Utah · Federal"
 
-# Desk registry: one entry per service desk. It drives the front-page desk tiles, the
-# "upcoming desks" brief, the site-level "Jump to a guide" menu, and the per-desk counts on
-# /sources/. Page fields name page slugs in data/pages.yaml. A new desk also needs a
-# body.desk-<slug> block and per-theme tokens in static/css/site.css (docs/DESIGN.md section 7).
+# Jurisdiction options for /start/ Question 1.
+router_states:
+  - {slug: oregon, label: "Oregon"}
+  - {slug: washington, label: "Washington"}
+  - {slug: utah, label: "Utah"}
+  - {slug: federal, label: "Another U.S. state or federal agency only"}
+
+# Desk registry: single source of truth for active and upcoming service desks.
+# Drives front-page desk tiles, upcoming-desk briefs, header taglines, guide switcher menus,
+# primary navigation, footer links, datelines, quick-exit scoping, /start/ routing, /sources/,
+# /about/, /404.html, and per-desk source registry pages.
+# A new active desk also needs a body.desk-<slug> block and per-theme tokens in static/css/site.css.
 desks:
   - slug: medicaid
     status: active
     name: "Health coverage"
+    full_title: "2027 Medicaid work and activity rules"
     kicker: "Medicaid"
+    tagline: "2027 Medicaid work and activity rules"
+    nav_label: "2027 Medicaid"
+    footer_label: "2027 Medicaid desk"
     blurb: "New work and activity rules start Jan. 1, 2027. Exemptions, deadlines, and a 1-minute check."
+    about_blurb: "Plain-language guides and 1-minute checks for the Oregon Health Plan (OHP), Washington Apple Health, and Utah Medicaid."
+    registry: "sources/medicaid.yaml"
     source_prefix: "MED-"
     source_label: "Medicaid sources (MED-*)"
     source_note: "OHP, Apple Health, Utah & federal"
+    sources_page: medicaid-sources
+    sources_heading: "Primary sources for 2027 Medicaid guides"
+    sources_short: "Medicaid sources"
     hub: medicaid
+    hub_label: "Medicaid desk overview"
     art: print-homes.webp
+    dateline_places: "Oregon · Washington · Utah"
+    quick_exit: false
+    switcher_label: "Medicaid states"
+    switcher_hub: {name: "Medicaid desk", page: medicaid, guide: "All states & federal overview"}
+    switcher_cross: {name: "2027 Medicaid desk", guide: "OHP, Apple Health, and Utah Medicaid"}
+    router_question: "Understand or check 2027 Medicaid work and activity rules, exemptions, or applications"
+    router_fallback:
+      primary_title: "Open the 2027 Medicaid desk overview"
+      primary_page: medicaid
+      note: "CivicDesk currently covers detailed state Medicaid rules for Oregon, Washington, and Utah, plus federal rules and court updates that affect all states."
     states:
-      - {name: Oregon, page: medicaid-oregon}
-      - {name: Washington, page: medicaid-washington}
-      - {name: Utah, page: medicaid-utah}
+      - slug: oregon
+        code: OR
+        checked_key: med_or
+        name: Oregon
+        page: medicaid-oregon
+        tagline: "Oregon Health Plan (OHP) 2027 guide"
+        switcher_guide: "Oregon Health Plan (OHP) 2027 rules"
+        site_footer_label: "Oregon Medicaid"
+        not_found_label: "Oregon Health Plan (OHP)"
+        not_found_tool: {page: medicaid-oregon-check, label: "1-minute check"}
+        reasons_label: "Exemptions"
+        router:
+          primary_title: "Open the Oregon Health Plan (OHP) 2027 guide"
+          tool_title: "Take the 1-minute OHP check"
+          tool_page: medicaid-oregon-check
+          note: "Covers the Jan. 1, 2027 OHP work and activity rules, Oregon's hold harmless delay through June 30, 2027, the Dec. 31, 2026 past-bills cutoff, exemptions, and how to apply."
+      - slug: washington
+        code: WA
+        checked_key: med_wa
+        name: Washington
+        page: medicaid-washington
+        tagline: "Washington Apple Health 2027 guide"
+        switcher_guide: "Washington Apple Health 2027 rules"
+        site_footer_label: "Washington Medicaid"
+        not_found_label: "Washington Apple Health"
+        not_found_tool: {page: medicaid-washington-check, label: "1-minute check"}
+        reasons_label: "Exemptions"
+        router:
+          primary_title: "Open the Washington Apple Health 2027 guide"
+          tool_title: "Take the 1-minute Apple Health check"
+          tool_page: medicaid-washington-check
+          note: "Covers the Jan. 1, 2027 Apple Health for Adults work rules, HCA's delayed enforcement through June 30, 2027, 6-month renewals, exemptions, and how to apply."
+      - slug: utah
+        code: UT
+        checked_key: med_ut
+        name: Utah
+        page: medicaid-utah
+        tagline: "Utah Medicaid 2027 guide"
+        switcher_guide: "Utah Medicaid 2027 rules"
+        site_footer_label: "Utah Medicaid"
+        not_found_label: "Utah Medicaid"
+        not_found_tool: {page: medicaid-utah-check, label: "1-minute check"}
+        reasons_label: "Exclusions & exceptions"
+        router:
+          primary_title: "Open the Utah Medicaid 2027 guide"
+          tool_title: "Take the 1-minute Utah Medicaid check"
+          tool_page: medicaid-utah-check
+          note: "Covers Utah Adult Expansion and Targeted Adult Medicaid 2027 community engagement rules, exclusions, Jan. 1, 2027 tribal proof deadline, and myCase / DWS steps."
+    nav:
+      hub:
+        - [index, "All desks"]
+        - [medicaid, "Medicaid overview"]
+        - [medicaid-oregon, "Oregon"]
+        - [medicaid-washington, "Washington"]
+        - [medicaid-utah, "Utah"]
+        - [medicaid-sources, "Sources"]
+        - [start#all-guides, "Find a guide"]
+      state:
+        - [index, "All desks"]
+        - ["medicaid-{state}", "{State} home"]
+        - ["medicaid-{state}-check", "1-minute check"]
+        - ["medicaid-{state}-rules", "Rules"]
+        - ["medicaid-{state}-reasons", "{reasons_label}"]
+        - ["medicaid-{state}-apply", "Apply"]
+        - ["medicaid-{state}-help", "Get help"]
+        - [start#all-guides, "Find a guide"]
+    footer:
+      state:
+        - ["medicaid-{state}-letter", "Got a letter"]
+        - ["medicaid-{state}-denied", "Turned down"]
+        - ["medicaid-{state}-bills", "Past medical bills"]
+        - ["medicaid-{state}-health", "Health conditions"]
+        - ["medicaid-{state}-immigration", "Immigration status"]
+        - ["medicaid-{state}-words", "Words on letters"]
+        - ["medicaid-{state}-log", "Hours log"]
+        - [medicaid-sources, "Medicaid sources"]
+    source_groups:
+      - {id: src-oregon, toc: "Oregon (OHP)", title: "Oregon Health Plan (OHP)", jurisdictions: [OR]}
+      - {id: src-washington, toc: "Washington (Apple Health)", title: "Washington Apple Health", jurisdictions: [WA]}
+      - {id: src-utah, toc: "Utah Medicaid", title: "Utah Medicaid", jurisdictions: [UT]}
+      - {id: src-all, toc: "Federal & court filings", title: "Federal rules, court orders, and cross-state sources", jurisdictions: [US, standards]}
+
   - slug: id-records
     status: active
     name: "Name, ID & records"
+    full_title: "Legal name, ID, and vital records"
     kicker: "Legal name and vital records"
+    tagline: "Legal name, ID, and vital records"
+    nav_label: "Name, ID & vital records"
+    footer_label: "Name, ID & vital records desk"
     blurb: "Update your name or sex designation after marriage, divorce, or a court order, in the order offices check."
+    about_blurb: "Step-by-step agency sequences for marriage, divorce, court name changes, and sex or gender designation updates across Oregon, Washington, Utah, Social Security, and U.S. passports."
+    registry: "sources/id_records.yaml"
     source_prefix: "ID-"
     source_label: "ID & vital sources (ID-*)"
     source_note: "Courts, vital records, DMVs & federal"
+    sources_page: id-records-sources
+    sources_heading: "Primary sources for legal name, ID, and vital records"
+    sources_short: "ID & vital records sources"
     hub: id-records
-    tool: {label: "Path finder", page: id-records-path}
+    hub_label: "ID & vital records desk overview"
+    tool: {label: "Path finder", page: id-records-path, footer_label: "ID path finder", not_found_label: "Step-by-step record-update path finder"}
     art: print-cards.webp
+    dateline_places: "Oregon · Washington · Utah · Federal"
+    quick_exit: true
+    switcher_label: "ID & records states"
+    switcher_hub: {name: "Find your path", page: id-records-path, guide: "Step-by-step record-update order"}
+    switcher_cross: {name: "ID & vital records desk", guide: "Marriage, divorce, court, and ID updates"}
+    router_question: "Update a legal name (marriage, divorce, or court order), driver license or ID, birth certificate, Social Security card, or passport"
     states:
-      - {name: Oregon, page: id-records-oregon}
-      - {name: Washington, page: id-records-washington}
-      - {name: Utah, page: id-records-utah}
-      - {name: Federal, page: id-records-federal}
+      - slug: oregon
+        code: OR
+        checked_key: id_or
+        name: Oregon
+        page: id-records-oregon
+        tagline: "Oregon name, ID, and vital records"
+        switcher_guide: "Oregon court, birth record, and DMV"
+        router:
+          primary_title: "Open the Oregon name, ID, and vital records guide"
+          tool_title: "Open the ID & records path finder"
+          tool_page: id-records-path
+          note: "Covers marriage, divorce, and circuit court name changes, confidential sex-change filings, Oregon birth certificates (form OHA 2673), and Oregon DMV cards."
+      - slug: washington
+        code: WA
+        checked_key: id_wa
+        name: Washington
+        page: id-records-washington
+        tagline: "Washington name, ID, and vital records"
+        switcher_guide: "Washington court, birth record, and DOL"
+        router:
+          primary_title: "Open the Washington name, ID, and vital records guide"
+          tool_title: "Open the ID & records path finder"
+          tool_page: id-records-path
+          note: "Covers marriage, divorce, public district court and sealed superior court name changes, Washington birth certificates, and Department of Licensing cards."
+      - slug: utah
+        code: UT
+        checked_key: id_ut
+        name: Utah
+        page: id-records-utah
+        tagline: "Utah name, ID, and vital records"
+        switcher_guide: "Utah court, Vital Records, and DLD"
+        router:
+          primary_title: "Open the Utah name, ID, and vital records guide"
+          tool_title: "Open the ID & records path finder"
+          tool_page: id-records-path
+          note: "Covers marriage, divorce, and Utah district court name and sex-designation orders, Vital Records form 902, and Driver License Division updates."
+      - slug: federal
+        code: US
+        checked_key: id_us
+        name: Federal
+        switcher_name: "Federal records"
+        page: id-records-federal
+        is_state_nav: false
+        switcher_guide: "Passports, Social Security & immigration"
+        not_found_label: "Federal IDs: passport, Social Security & immigration"
+        router:
+          primary_title: "Open the Passports and Social Security guide"
+          tool_title: "Open the ID & records path finder"
+          tool_page: id-records-path
+          note: "Covers Social Security replacement cards after marriage, divorce, or court orders, passport name changes, and 2025-2026 federal sex-marker rules."
+    nav:
+      hub:
+        - [index, "All desks"]
+        - [id-records, "Name & ID home"]
+        - [id-records-path, "Find your path"]
+        - [id-records-federal, "Federal"]
+        - [id-records-after, "After court"]
+        - [id-records-help, "Get help"]
+        - [start#all-guides, "Find a guide"]
+      state:
+        - [index, "All desks"]
+        - [id-records, "ID desk"]
+        - ["id-records-{state}", "{State}"]
+        - ["id-records-{state}-court", "Court order"]
+        - ["id-records-{state}-birth", "Birth certificate"]
+        - ["id-records-{state}-id", "License & ID"]
+        - [start#all-guides, "Find a guide"]
+    footer:
+      desk:
+        - [id-records-path, "ID path finder"]
+        - [id-records-oregon, "Oregon ID guide"]
+        - [id-records-washington, "Washington ID guide"]
+        - [id-records-utah, "Utah ID guide"]
+        - [id-records-federal, "Passports & Social Security"]
+        - [id-records-after, "Record-update checklist"]
+        - [id-records-compare, "Compare states"]
+        - [id-records-glossary, "Words to know"]
+        - [id-records-sources, "ID sources"]
+    source_groups:
+      - {id: src-or, toc: "Oregon", title: "Oregon", jurisdictions: [OR]}
+      - {id: src-wa, toc: "Washington", title: "Washington", jurisdictions: [WA]}
+      - {id: src-ut, toc: "Utah", title: "Utah", jurisdictions: [UT]}
+      - {id: src-us, toc: "Federal & national", title: "Federal and national", jurisdictions: [US]}
+      - {id: src-standards, toc: "Accessibility & hosting", title: "Accessibility and hosting standards", jurisdictions: [standards]}
+
   - slug: public-records
     status: upcoming
     name: "Public records"

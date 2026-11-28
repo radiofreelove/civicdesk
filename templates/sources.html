@@ -11,20 +11,20 @@
   {{ v.page_art(page) }}
 </div>
 
-{{ m.onthispage([
-  ('labels', '4 honesty labels'),
-  ('medicaid-registry', 'Medicaid sources (MED-*)'),
-  ('id-records-registry', 'ID & vital records sources (ID-*)')
-]) }}
+{% set toc_items = [('labels', '4 honesty labels')] %}
+{% for d in active_desks %}
+{% set _ = toc_items.append((d.slug ~ '-registry', d.source_label)) %}
+{% endfor %}
+{{ m.onthispage(toc_items) }}
 
-{#- Per-desk counts come from the site.yaml desk registry (public entries only; docs_only
-    research notes are not published and are not counted). -#}
+{#- Per-desk counts come dynamically from active desks in data/site.yaml (public entries only). -#}
+{% set public_sources = all_sources_list|rejectattr('docs_only', 'defined')|list %}
 {% set public_ids = [] %}
-{% for s in medicaid_sources + id_records_sources if not s.get('docs_only') %}{% set _ = public_ids.append(s.id) %}{% endfor %}
+{% for s in all_sources_list if not s.get('docs_only') %}{% set _ = public_ids.append(s.id) %}{% endfor %}
 {% set stats = [{'num': public_ids|length|string, 'label': 'Verified public sources', 'note': 'Statutes, rules, court dockets & forms', 'desk': 'site'}] %}
-{% for d in site.desks if d.status == 'active' %}
+{% for d in active_desks %}
 {% set count = namespace(n=0) %}
-{% for sid in public_ids if sid.startswith(d.source_prefix) %}{% set count.n = count.n + 1 %}{% endfor %}
+{% for s in sources_by_desk[d.slug] if not s.get('docs_only') %}{% set count.n = count.n + 1 %}{% endfor %}
 {% set _ = stats.append({'num': count.n|string, 'label': d.source_label, 'note': d.source_note, 'desk': d.slug}) %}
 {% endfor %}
 {% set _ = stats.append({'num': (facts|length)|string, 'label': 'Shared dated facts', 'note': 'Exported in facts.json', 'desk': 'site'}) %}
@@ -42,11 +42,12 @@
   {'term': 'Our reading', 'detail': lbl_our_reading}
 ]) }}
 
-<p>Browse desk-specific registries or machine-readable exports: <a href="{{ page_url('medicaid-sources') }}">Medicaid sources (<code>MED-*</code>)</a>, <a href="{{ page_url('id-records-sources') }}">ID &amp; vital records sources (<code>ID-*</code>)</a>, <a href="{{ root_prefix(page) }}sources.json"><code>sources.json</code></a>, <a href="{{ root_prefix(page) }}facts.json"><code>facts.json</code></a>, and <a href="{{ root_prefix(page) }}build-report.json"><code>build-report.json</code></a>.</p>
+<p>Browse desk-specific registries or machine-readable exports: {% for d in active_desks %}<a href="{{ page_url(d.sources_page) }}">{{ d.sources_short }} (<code>{{ d.source_prefix }}*</code>)</a>, {% endfor %}<a href="{{ root_prefix(page) }}sources.json"><code>sources.json</code></a>, <a href="{{ root_prefix(page) }}facts.json"><code>facts.json</code></a>, and <a href="{{ root_prefix(page) }}build-report.json"><code>build-report.json</code></a>.</p>
 
-<h2 id="medicaid-registry">2027 Medicaid work and activity rules (<code>MED-*</code>)</h2>
+{% for d in active_desks %}
+<h2 id="{{ d.slug }}-registry">{{ d.full_title }} (<code>{{ d.source_prefix }}*</code>)</h2>
 <ul class="source-list">
-{% for s in medicaid_sources if not s.get('docs_only') %}
+{% for s in sources_by_desk[d.slug] if not s.get('docs_only') %}
   <li class="source-item" id="{{ s.id|lower }}">
     <h3><a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a>{% if s.get('format') == 'PDF' %} <span class="tag">PDF</span>{% endif %} {{ status_badge(s.status) }}</h3>
     <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · <span class="checked-date">Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time></span> · {{ read_note(s) }}.</p>
@@ -54,15 +55,5 @@
   </li>
 {% endfor %}
 </ul>
-
-<h2 id="id-records-registry">Legal name, ID, and vital records (<code>ID-*</code>)</h2>
-<ul class="source-list">
-{% for s in id_records_sources if not s.get('docs_only') %}
-  <li class="source-item" id="{{ s.id|lower }}">
-    <h3><a href="{{ s.url }}" rel="noreferrer">{{ s.title }}</a> {{ status_badge(s.status) }}</h3>
-    <p class="source-meta"><code>{{ s.id }}</code> · {{ s.publisher }} · Date on it: {{ s.document_date }} · <span class="checked-date">Checked: <time datetime="{{ s.checked }}">{{ s.checked|human_date }}</time></span> · {{ read_note(s) }}.</p>
-    {% if s.get('public_note') %}<p class="source-meta">{{ s.public_note }}</p>{% endif %}
-  </li>
 {% endfor %}
-</ul>
 {% endblock %}
