@@ -241,7 +241,8 @@
     syncProgressTrack(n);
     if (n === 3) { updatePreviewRecap(); }
     if (moveFocus) {
-      var target = form.querySelector('[data-step="' + n + '"]');
+      var stepEl = form.querySelector('[data-step="' + n + '"]');
+      var target = (stepEl && stepEl.querySelector("h2")) || stepEl;
       if (target) {
         if (!target.hasAttribute("tabindex")) { target.setAttribute("tabindex", "-1"); }
         target.focus();
@@ -250,9 +251,23 @@
   }
 
   function showError(n, show) {
-    var error = document.getElementById("step-" + n + "-error");
+    var errorId = "step-" + n + "-error";
+    var error = document.getElementById(errorId);
     if (!error) { return; }
     error.hidden = !show;
+    var stepEl = form.querySelector('[data-step="' + n + '"]');
+    var fs = stepEl ? stepEl.querySelector("fieldset") : null;
+    if (fs) {
+      var ids = (fs.getAttribute("aria-describedby") || "").split(/\s+/).filter(function (id) {
+        return id && id !== errorId;
+      });
+      if (show) { ids.push(errorId); }
+      if (ids.length) {
+        fs.setAttribute("aria-describedby", ids.join(" "));
+      } else {
+        fs.removeAttribute("aria-describedby");
+      }
+    }
     if (show) {
       if (!error.hasAttribute("tabindex")) { error.setAttribute("tabindex", "-1"); }
       error.focus();

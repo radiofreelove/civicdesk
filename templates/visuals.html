@@ -178,7 +178,7 @@
 </section>
 {%- endmacro %}
 
-{% macro calendar_80hr_grid(state_label, weeks, proofs=None, note='', id='calendar-80hr', extra=false, show_donut=false) -%}
+{% macro calendar_80hr_grid(state_label, weeks, proofs=None, note='', id='calendar-80hr', extra=false, show_donut=false, heading_tag='h3') -%}
 <section class="viz-calendar"{% if id %} id="{{ id }}"{% endif %}{% if extra %} data-deeper{% endif %} aria-label="{{ state_label }} 4-week 80-hour monthly example">
   {% if show_donut %}
   <div class="viz-calendar-graphic">
@@ -188,7 +188,7 @@
     <div class="viz-calendar-graphic-copy">
       <div class="viz-calendar-head">
         <div>
-          <strong class="viz-calendar-title">Sample 4-week mix adding up to 80 hours</strong>
+          <{{ heading_tag }} class="viz-calendar-title">Sample 4-week mix adding up to 80 hours</{{ heading_tag }}>
           <p class="viz-calendar-sub">About 20 hours a week from one activity or a combination in {{ state_label }}.</p>
         </div>
         <span class="viz-calendar-total">80 hrs / mo</span>
@@ -201,7 +201,7 @@
   {% else %}
   <div class="viz-calendar-head">
     <div>
-      <strong class="viz-calendar-title">Sample 4-week mix adding up to 80 hours</strong>
+      <{{ heading_tag }} class="viz-calendar-title">Sample 4-week mix adding up to 80 hours</{{ heading_tag }}>
       <p class="viz-calendar-sub">About 20 hours a week from one activity or a combination in {{ state_label }}.</p>
     </div>
     <span class="viz-calendar-total">80 hrs / mo</span>
@@ -276,19 +276,19 @@
 </section>
 {%- endmacro %}
 
-{% macro yes_no_split_board(yes_title, yes_items, no_title, no_items, yes_kicker='Automatic or administrative', no_kicker='Action or court required', id='', note='') -%}
+{% macro yes_no_split_board(yes_title, yes_items, no_title, no_items, yes_kicker='Automatic or administrative', no_kicker='Action or court required', id='', note='', heading_tag='h3') -%}
 <section class="viz-split-wrap"{% if id %} id="{{ id }}"{% endif %} aria-label="{{ yes_title }} compared with {{ no_title }}">
   <div class="viz-split-board">
     <div class="viz-split-col viz-split-yes">
       <span class="viz-kicker">{{ yes_kicker }}</span>
-      <strong class="viz-split-title">{{ yes_title }}</strong>
+      <{{ heading_tag }} class="viz-split-title">{{ yes_title }}</{{ heading_tag }}>
       <ul class="viz-split-list">
       {% for item in yes_items %}<li>{{ item }}</li>{% endfor %}
       </ul>
     </div>
     <div class="viz-split-col viz-split-no">
       <span class="viz-kicker">{{ no_kicker }}</span>
-      <strong class="viz-split-title">{{ no_title }}</strong>
+      <{{ heading_tag }} class="viz-split-title">{{ no_title }}</{{ heading_tag }}>
       <ul class="viz-split-list">
       {% for item in no_items %}<li>{{ item }}</li>{% endfor %}
       </ul>

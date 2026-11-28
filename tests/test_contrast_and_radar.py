@@ -137,6 +137,21 @@ def test_broadsheet_palette_and_aaa_contrast() -> None:
             continue
         assert auto_dark.get(k, "").upper() == v.upper(), f"auto-dark mismatch on --{k}"
 
+    auto_dark_contrast_match = re.search(
+        r'prefers-color-scheme: dark\)\s*and\s*\(prefers-contrast: more\)\s*\{\s*html\[data-theme="auto"\]\s*\{(.*?)\}',
+        css,
+        re.S,
+    )
+    assert auto_dark_contrast_match, "Missing dark + prefers-contrast: more token block"
+    auto_dark_contrast = {**dark, **extract_tokens(auto_dark_contrast_match.group(1))}
+    for fg, bg in text_pairs:
+        r = contrast_ratio(auto_dark_contrast[fg], auto_dark_contrast[bg])
+        assert r >= 7.0, f"auto-dark-contrast: {fg} on {bg} = {r:.2f}:1 (< 7.0 AAA)"
+    for fg, bg in ui_pairs:
+        r = contrast_ratio(auto_dark_contrast[fg], auto_dark_contrast[bg])
+        assert r >= 3.0, f"auto-dark-contrast: {fg} on {bg} = {r:.2f}:1 (< 3.0)"
+
+    assert len(re.findall(r"@media print\b", css)) == 1, "Expected one consolidated @media print block in site.css"
     print_match = re.search(r"@media print\s*\{(.*)\Z", css, re.S)
     assert print_match, "Missing @media print block"
     print_tokens = extract_tokens(print_match.group(1))
@@ -144,6 +159,7 @@ def test_broadsheet_palette_and_aaa_contrast() -> None:
         assert print_tokens[k].upper() == "#FFFFFF"
     assert print_tokens["viz-border"].upper() == "#000000"
     assert print_tokens["viz-accent"].upper() == "#000000"
+    assert print_tokens["rule"].upper() == "#000000"
 
 
 def test_policy_radar_both_desks_offline() -> None:

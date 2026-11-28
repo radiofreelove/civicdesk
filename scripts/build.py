@@ -213,7 +213,7 @@ _ID_ATTR_RE = re.compile(r'\bid="([^"]+)"')
 _VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
 _OPTIONAL_END_TAGS = {"li", "p", "dt", "dd", "tr", "td", "th", "option", "thead", "tbody"}
 HEAD_P_CLASSES = {"kicker", "lede", "why-it-matters", "purpose", "checked"}
-HEAD_BLOCK_CLASSES = {"hero-split", "intro-split", "page-head", "fp-hero", "guide-switch", "brief-strip", "label-key"}
+HEAD_BLOCK_CLASSES = {"hero-split", "intro-split", "page-head", "fp-hero", "breadcrumb", "brief-strip", "label-key"}
 
 
 # ---------- Four-beat page fields (data/pages.yaml) ----------
@@ -1123,8 +1123,8 @@ def main(argv: list[str] | None = None) -> int:
                 {"slug": "medicaid-washington", "name": "Washington", "guide": "Washington Apple Health 2027 rules", "sep": False},
                 {"slug": "medicaid-utah", "name": "Utah", "guide": "Utah Medicaid 2027 rules", "sep": False},
                 {"slug": "medicaid", "name": "Medicaid desk", "guide": "All states & federal overview", "sep": True},
-                {"slug": "id-records", "name": "ID & Vital Records desk", "guide": "Marriage, divorce, court, and ID updates", "sep": False},
-                {"slug": "start", "name": "Start here", "guide": "2-question router & full guide finder", "sep": False},
+                {"slug": "id-records", "name": "ID & vital records desk", "guide": "Marriage, divorce, court, and ID updates", "sep": False},
+                {"slug": "start#all-guides", "name": "Find a guide", "guide": "2-question router & full guide finder", "sep": False},
             ]
         if desk == "id-records":
             return [
@@ -1134,7 +1134,7 @@ def main(argv: list[str] | None = None) -> int:
                 {"slug": "id-records-federal", "name": "Federal records", "guide": "Passports, Social Security & immigration", "sep": False},
                 {"slug": "id-records-path", "name": "Find your path", "guide": "Step-by-step record-update order", "sep": True},
                 {"slug": "medicaid", "name": "2027 Medicaid desk", "guide": "OHP, Apple Health, and Utah Medicaid", "sep": False},
-                {"slug": "start", "name": "Start here", "guide": "2-question router & full guide finder", "sep": False},
+                {"slug": "start#all-guides", "name": "Find a guide", "guide": "2-question router & full guide finder", "sep": False},
             ]
         return [
             {"slug": "start", "name": "Start here", "guide": "2-question router & full guide finder", "sep": False},
@@ -1162,6 +1162,7 @@ def main(argv: list[str] | None = None) -> int:
                     (f"medicaid-{st}-reasons", "Exclusions & exceptions" if st == "utah" else "Exemptions"),
                     (f"medicaid-{st}-apply", "Apply"),
                     (f"medicaid-{st}-help", "Get help"),
+                    ("start#all-guides", "Find a guide"),
                 ]
             return [
                 ("index", "All desks"),
@@ -1170,6 +1171,7 @@ def main(argv: list[str] | None = None) -> int:
                 ("medicaid-washington", "Washington"),
                 ("medicaid-utah", "Utah"),
                 ("medicaid-sources", "Sources"),
+                ("start#all-guides", "Find a guide"),
             ]
         if desk == "id-records":
             if st in {"oregon", "washington", "utah"}:
@@ -1180,6 +1182,7 @@ def main(argv: list[str] | None = None) -> int:
                     (f"id-records-{st}-court", "Court order"),
                     (f"id-records-{st}-birth", "Birth certificate"),
                     (f"id-records-{st}-id", "License & ID"),
+                    ("start#all-guides", "Find a guide"),
                 ]
             return [
                 ("index", "All desks"),
@@ -1188,6 +1191,7 @@ def main(argv: list[str] | None = None) -> int:
                 ("id-records-federal", "Federal"),
                 ("id-records-after", "After court"),
                 ("id-records-help", "Get help"),
+                ("start#all-guides", "Find a guide"),
             ]
         return [
             ("index", "Home"),
@@ -1197,6 +1201,37 @@ def main(argv: list[str] | None = None) -> int:
             ("sources", "Sources"),
         ]
 
+    pages_by_route = {p["route"]: p for p in pages}
+    desks_by_hub = {d["hub"]: d for d in site.get("desks", []) if isinstance(d, dict) and d.get("hub")}
+
+    def breadcrumbs(page: dict) -> list[dict]:
+        slug = page.get("slug", "")
+        route = str(page.get("route") or "/")
+        if slug == "404":
+            return []
+        parts = [seg for seg in route.strip("/").split("/") if seg]
+        if len(parts) < 2:
+            return []
+        crumbs: list[dict] = [{"label": "Home", "href": page_url("index")}]
+        for idx in range(1, len(parts)):
+            prefix = "/" + "/".join(parts[:idx]) + "/"
+            anc = pages_by_route.get(prefix)
+            if not anc:
+                continue
+            if anc["slug"] in desks_by_hub:
+                label = desks_by_hub[anc["slug"]]["name"]
+            elif idx == 2 and anc.get("state"):
+                label = str(anc["state"]).capitalize()
+            else:
+                label = str(anc["title"])
+            crumbs.append({"label": label, "href": page_url(anc["slug"])})
+        if len(parts) == 2 and page.get("state"):
+            current_label = str(page["state"]).capitalize()
+        else:
+            current_label = str(page.get("title") or parts[-1])
+        crumbs.append({"label": current_label, "href": None})
+        return crumbs
+
     def footer_items(page: dict) -> list[tuple[str, str]]:
         desk = page.get("desk", "")
         st = page.get("state", "")
@@ -1204,7 +1239,7 @@ def main(argv: list[str] | None = None) -> int:
             ("index", "CivicDesk home"),
             ("start", "Start here"),
             ("medicaid", "2027 Medicaid desk"),
-            ("id-records", "Name, ID & Vital Records desk"),
+            ("id-records", "Name, ID & vital records desk"),
         ]
         if desk == "medicaid" and st in {"oregon", "washington", "utah"}:
             state_links = [
@@ -1274,6 +1309,7 @@ def main(argv: list[str] | None = None) -> int:
         switcher_aria=switcher_aria,
         switcher_items=switcher_items,
         nav_items=nav_items,
+        breadcrumbs=breadcrumbs,
         footer_items=footer_items,
         repo_url=repo_url,
         issues_url=issues_url,
@@ -1354,15 +1390,16 @@ def main(argv: list[str] | None = None) -> int:
             errors.append(str(exc))
             continue
 
+        show_tabs = slug not in NO_TAB_PAGES
         html = apply_sources_layer(
             html,
             list(state["used"]),
             render_tabs=lambda n, _p=p: bs_macros.page_tabs(n, "Tool" if _p.get("tool") else "Guide"),
             render_section_link=bs_macros.section_sources,
-            render_panel=lambda groups, n: bs_macros.sources_panel(
-                [{**g, "sources": [sources[sid] for sid in g["sources"]]} for g in groups], n
+            render_panel=lambda groups, n, _t=show_tabs: bs_macros.sources_panel(
+                [{**g, "sources": [sources[sid] for sid in g["sources"]]} for g in groups], n, tabs=_t
             ),
-            tabs=slug not in NO_TAB_PAGES,
+            tabs=show_tabs,
         )
         body_badges = detect_body_badges(html)
         if body_badges and slug not in {"sources", "medicaid-sources", "id-records-sources", "about", "404"}:

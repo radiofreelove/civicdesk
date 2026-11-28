@@ -86,7 +86,7 @@ def test_all_pages_clean_load_and_reflow(site_server: str, browser_instance) -> 
         # Check touch target sizes (>= 44px height on standalone interactive controls, >= 24x24px everywhere)
         small = page.evaluate("""() => {
             const out = [];
-            document.querySelectorAll('button, summary, .site-nav a, .footer-links a, .btn, .btn-secondary, .exit-link, .safety-exit-link, .choice').forEach(el => {
+            document.querySelectorAll('button, summary, .site-nav a, .footer-links a, .breadcrumb a, .build-line a, .btn, .btn-secondary, .exit-link, .safety-exit-link, .choice').forEach(el => {
                 const r = el.getBoundingClientRect();
                 if (r.width === 0 && r.height === 0) return;
                 if (getComputedStyle(el).visibility === 'hidden') return;
@@ -826,6 +826,168 @@ def test_state_switcher_summary_and_menu_never_clip_or_overflow_and_editorial_ar
             assert item["complete"] and item["w"] > 0 and item["h"] > 0, f"{art_route}: broken editorial art {item}"
 
     ctx.close()
+
+
+def test_accessibility_navigation_and_broadsheet_polish(site_server: str, browser_instance) -> None:
+    ctx = browser_instance.new_context(viewport={"width": 1280, "height": 900})
+    page = ctx.new_page()
+
+    # 1. Dark Ink :focus-visible contrast (>= 7:1 on #EDBB00) on links and nested child spans
+    def _rgb_contrast(fg_css: str, bg_css: str) -> float:
+        def parse(s: str) -> tuple[int, int, int]:
+            nums = [int(x) for x in s.replace("rgba(", "").replace("rgb(", "").replace(")", "").split(",")[:3]]
+            return nums[0], nums[1], nums[2]
+
+        def lum(rgb: tuple[int, int, int]) -> float:
+            vals = [c / 255.0 for c in rgb]
+            lin = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in vals]
+            return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+
+        la, lb = lum(parse(fg_css)), lum(parse(bg_css))
+        return (max(la, lb) + 0.05) / (min(la, lb) + 0.05)
+
+    for route, target_sel, child_sel in (
+        ("/", ".desk-tile-link", ".desk-tile-go"),
+        ("/medicaid/oregon/", "#tab-sources", ".page-tab-count"),
+        ("/id-records/oregon/", ".site-nav a", None),
+    ):
+        goto_local(page, site_server + route)
+        page.evaluate("() => { document.documentElement.dataset.theme = 'dark'; }")
+        loc = page.locator(target_sel).first
+        if target_sel == "#tab-sources":
+            page.locator("#tab-guide").focus()
+            page.keyboard.press("Tab")
+            page.keyboard.press("Shift+Tab")
+            page.keyboard.press("ArrowRight")
+        else:
+            loc.focus()
+            page.keyboard.press("Tab")
+            page.keyboard.press("Shift+Tab")
+        styles = loc.evaluate(
+            """(el, cSel) => {
+                const cs = getComputedStyle(el);
+                const child = cSel ? el.querySelector(cSel) : null;
+                const ccs = child ? getComputedStyle(child) : null;
+                return {
+                    matchesFocusVisible: el.matches(':focus-visible'),
+                    fg: cs.color,
+                    bg: cs.backgroundColor,
+                    childFg: ccs ? ccs.color : null,
+                    childBg: ccs ? ccs.backgroundColor : null,
+                };
+            }""",
+            child_sel,
+        )
+        assert styles["matchesFocusVisible"], f"{route} {target_sel}: did not enter :focus-visible"
+        ratio = _rgb_contrast(styles["fg"], styles["bg"])
+        assert ratio >= 7.0, f"{route} {target_sel}: Dark Ink focus contrast {ratio:.2f}:1 ({styles})"
+        if styles["childFg"]:
+            eff_bg = styles["bg"] if styles["childBg"] in ("rgba(0, 0, 0, 0)", "transparent") else styles["childBg"]
+            child_ratio = _rgb_contrast(styles["childFg"], eff_bg)
+            assert child_ratio >= 7.0, f"{route} {target_sel} child {child_sel}: contrast {child_ratio:.2f}:1 ({styles})"
+
+    # 2. Reading settings in-dialog live region, #brief-toggle aria-pressed, and non-<nav> .exit-bar
+    goto_local(page, site_server + "/id-records/oregon/")
+    assert page.evaluate("() => document.querySelector('.exit-bar').tagName") == "DIV"
+    assert page.get_attribute(".exit-bar", "role") == "region"
+    assert page.get_attribute("#brief-toggle", "aria-pressed") == "false"
+    page.click("#brief-toggle")
+    assert page.get_attribute("#brief-toggle", "aria-pressed") == "true"
+    page.click("#brief-toggle")
+    assert page.get_attribute("#brief-toggle", "aria-pressed") == "false"
+
+    page.click("#settings-open")
+    page.check('#settings input[name="size"][value="l"]')
+    assert "Large" in page.inner_text("#dialog-announcer")
+    page.click("#settings-close")
+
+    # 3. Medicaid checker aria-describedby starts unset, toggles on validation error, focuses <h2> on step change
+    goto_local(page, site_server + "/medicaid/oregon/check/")
+    assert page.get_attribute('[data-step="1"] fieldset', "aria-describedby") is None
+    page.click('[data-step="1"] button[data-next]')
+    assert page.get_attribute('[data-step="1"] fieldset', "aria-describedby") == "step-1-error"
+    page.check('input[name="age"][value="19to64"]')
+    page.click('[data-step="1"] button[data-next]')
+    assert page.get_attribute('[data-step="1"] fieldset', "aria-describedby") is None
+    active_info = page.evaluate(
+        "() => ({ tag: document.activeElement.tagName, step: document.activeElement.closest('[data-step]')?.dataset.step })"
+    )
+    assert active_info == {"tag": "H2", "step": "2"}
+
+    # 4. Guide/Sources ARIA tabs: Space activation, ArrowDown ignored, tabindex="0", history Back, Back to guide
+    goto_local(page, site_server + "/medicaid/oregon/letter/")
+    assert page.get_attribute("#guide", "tabindex") == "0"
+    assert page.get_attribute(".page-sources", "tabindex") is None
+    page.focus("#tab-guide")
+    page.keyboard.press("ArrowDown")
+    assert page.get_attribute("#tab-guide", "aria-selected") == "true"
+    page.keyboard.press("ArrowRight")
+    page.keyboard.press("Space")
+    assert page.get_attribute("#tab-sources", "aria-selected") == "true"
+    assert page.get_attribute(".page-sources", "tabindex") == "0"
+    assert page.get_attribute("#guide", "tabindex") is None
+    page.click("[data-back-to-guide]")
+    assert page.get_attribute("#tab-guide", "aria-selected") == "true"
+
+    # Section-sources click pushes history state; browser Back returns cleanly to Guide tab
+    page.locator(".section-sources").first.click()
+    assert page.get_attribute("#tab-sources", "aria-selected") == "true"
+    assert "#src-group-" in page.url
+    page.go_back()
+    assert page.get_attribute("#tab-guide", "aria-selected") == "true"
+
+    # 5. Breadcrumbs on level-2+ pages, absent on / and /medicaid/, plus persistent Find a guide nav link
+    for crumb_route, expected_links in (
+        ("/medicaid/oregon/letter/", ["/", "/medicaid/", "/medicaid/oregon/"]),
+        ("/id-records/oregon/court/", ["/", "/id-records/", "/id-records/oregon/"]),
+    ):
+        goto_local(page, site_server + crumb_route)
+        hrefs = page.eval_on_selector_all("nav.breadcrumb a", "els => els.map(a => a.getAttribute('href'))")
+        assert hrefs == expected_links, f"{crumb_route}: unexpected breadcrumbs {hrefs}"
+        assert page.locator("nav.breadcrumb [aria-current='page']").count() == 1
+        assert page.locator('.site-nav a[href="/start/#all-guides"]').count() == 1
+
+    for no_crumb_route in ("/", "/medicaid/"):
+        goto_local(page, site_server + no_crumb_route)
+        assert page.locator("nav.breadcrumb").count() == 0
+
+    # 6. Desktop 1280px XL + Wide reflow: .how-grid single column, no inline-start borders, zero overflow
+    for route in ("/", "/medicaid/oregon/"):
+        goto_local(page, site_server + route)
+        page.evaluate(
+            "() => { document.documentElement.dataset.size = 'xl'; document.documentElement.dataset.spacing = 'wide'; }"
+        )
+        assert page.evaluate("() => document.documentElement.scrollWidth - window.innerWidth") <= 1
+        if route == "/":
+            how_cols = page.evaluate(
+                "() => getComputedStyle(document.querySelector('.how-grid')).gridTemplateColumns.split(' ').length"
+            )
+            assert how_cols == 1, f"Expected 1-column .how-grid under XL+Wide desktop, got {how_cols}"
+            assert page.evaluate("() => getComputedStyle(document.querySelector('.how-grid > li + li')).borderLeftWidth") == "0px"
+        else:
+            assert (
+                page.evaluate("() => getComputedStyle(document.querySelector('.viz-stat-card + .viz-stat-card')).borderLeftWidth")
+                == "0px"
+            )
+
+    # 7. /start/ guide filter is NOT wiped by pageshow while form answers reset
+    goto_local(page, site_server + "/start/")
+    page.fill("#guide-filter", "passport")
+    assert page.locator('#all-guides a[href="/id-records/federal/"]').is_visible()
+    page.evaluate("() => window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }))")
+    assert page.input_value("#guide-filter") == "passport"
+    assert page.locator('#all-guides a[href="/id-records/federal/"]').is_visible()
+
+    # 8. forced-colors: active and dark + prefers-contrast: more render cleanly with visible borders
+    page.emulate_media(forced_colors="active")
+    goto_local(page, site_server + "/")
+    assert page.evaluate("() => parseFloat(getComputedStyle(document.querySelector('.desk-tile')).borderTopWidth)") >= 2.0
+    page.emulate_media(forced_colors="none", color_scheme="dark", contrast="more")
+    goto_local(page, site_server + "/medicaid/oregon/rules/")
+    assert page.evaluate("() => document.documentElement.scrollWidth - window.innerWidth") <= 1
+
+    ctx.close()
+
 
 
 

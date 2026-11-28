@@ -41,20 +41,20 @@
   {% for d in desks %}
   <li>
     {% if d.soon %}
-    <div class="desk-tile desk-tile-soon">
+    <article class="desk-tile desk-tile-soon">
       <span class="desk-tile-art">{{ svg_icon('document', size=64) }}</span>
       <span class="desk-tile-kicker">{{ d.kicker }}</span>
-      <span class="desk-tile-name">{{ d.name }}</span>
-      <span>{{ d.blurb }}</span>
-    </div>
+      <h3 class="desk-tile-name">{{ d.name }}</h3>
+      <p class="desk-tile-blurb">{{ d.blurb }}</p>
+    </article>
     {% else %}
-    <a class="desk-tile desk-tile-{{ d.id }}" href="{{ d.href }}" aria-describedby="desk-{{ d.id }}-desc">
+    <article class="desk-tile desk-tile-{{ d.id }}">
       <span class="desk-tile-art"><img src="{{ d.art }}" alt="" width="{{ d.art_w }}" height="{{ d.art_h }}" decoding="async"></span>
       <span class="desk-tile-kicker">{{ d.kicker }}</span>
-      <span class="desk-tile-name">{{ d.name }}<span class="desk-tile-go">{{ svg_icon('arrow-right') }}</span></span>
-      <span id="desk-{{ d.id }}-desc">{{ d.blurb }}</span>
-      <span class="desk-tile-places">{{ d.places }}</span>
-    </a>
+      <h3 class="desk-tile-name"><a class="desk-tile-link" href="{{ d.href }}"><span class="desk-tile-title">{{ d.name }}</span><span class="desk-tile-go" aria-hidden="true">{{ svg_icon('arrow-right') }}</span></a></h3>
+      <p class="desk-tile-blurb">{{ d.blurb }}</p>
+      <p class="desk-tile-places">{{ d.places }}</p>
+    </article>
     {% endif %}
   </li>
   {% endfor %}
@@ -129,11 +129,12 @@
 {#- The one Sources panel per page, grouped by the section that used each source.
     groups: list of {id, title, sources: [source dicts]}. A source used in more than one section is
     listed in each, and only its first entry carries the #src-* anchor. -#}
-{% macro sources_panel(groups, n_sources) -%}
+{% macro sources_panel(groups, n_sources, tabs=True) -%}
 {% set seen = namespace(ids=[]) %}
 <section class="page-sources" aria-labelledby="page-sources-h">
   <h2 id="page-sources-h">Sources for this page</h2>
   <p>{{ n_sources }} {{ 'source' if n_sources == 1 else 'sources' }}, grouped by the part of the page that uses them. Each one shows its 4-tier honesty label, the date printed on it, and when we last checked it. <a href="{{ page_url('sources#labels') }}">See every source and what each label means</a>.</p>
+  {% if tabs %}<p class="sources-back js-only"><a href="#guide" data-back-to-guide>Back to guide</a></p>{% endif %}
   {% for g in groups %}
   <section class="page-sources-group" id="src-group-{{ g.id }}" aria-labelledby="src-group-{{ g.id }}-h" tabindex="-1">
     <h3 id="src-group-{{ g.id }}-h">{{ g.title }} <span class="page-sources-count">({{ g.sources|length }})</span></h3>
