@@ -49,7 +49,7 @@
   });
 
   /* ---------- Reading settings ---------- */
-  var DEFAULTS = { theme: "auto", size: "m", spacing: "normal", font: "system", brief: "off" };
+  var DEFAULTS = { theme: "auto", size: "m", spacing: "normal", font: "system", brief: "off", shiftexit: "on" };
 
   function current() {
     var out = {};
@@ -88,6 +88,8 @@
     if (font) font.checked = p.font === "hyper";
     var brief = dialog.querySelector('input[name="brief"]');
     if (brief) brief.checked = p.brief === "on";
+    var shiftexit = dialog.querySelector('input[name="shiftexit"]');
+    if (shiftexit) shiftexit.checked = p.shiftexit === "off";
     var remember = dialog.querySelector('input[name="remember"]');
     if (remember) remember.checked = remembering();
   }
@@ -204,6 +206,7 @@
       if (el.name === "spacing") p.spacing = el.checked ? "wide" : "normal";
       if (el.name === "font") p.font = el.checked ? "hyper" : "system";
       if (el.name === "brief") p.brief = el.checked ? "on" : "off";
+      if (el.name === "shiftexit") p.shiftexit = el.checked ? "off" : "on";
       if (el.name === "remember") {
         if (el.checked) {
           store("set", KEYS.remember, "on");
@@ -225,6 +228,11 @@
         announce(el.checked
           ? "Short version. Extra sections on this page are now hidden."
           : "Full version. All sections on this page are showing.");
+      }
+      if (el.name === "shiftexit") {
+        announce(el.checked
+          ? "Triple-Shift quick-exit shortcut turned off. The Leave quickly button stays active."
+          : "Triple-Shift quick-exit shortcut turned on.");
       }
     });
     var resetBtn = document.getElementById("reset-settings");
@@ -267,6 +275,12 @@
     function leave(event) {
       if (event) event.preventDefault();
       var targetUrl = (event && event.currentTarget && event.currentTarget.href) || defaultExitUrl;
+      store("remove", KEYS.checks);
+      checks = {};
+      checkBoxes.forEach(function (box) {
+        box.checked = false;
+        markStep(box);
+      });
       try {
         document.body.innerHTML = "";
         document.title = "Weather";
@@ -289,6 +303,10 @@
       return false;
     }
     document.addEventListener("keydown", function (event) {
+      if (current().shiftexit === "off") {
+        shiftPresses = [];
+        return;
+      }
       if (event.ctrlKey || event.altKey || event.metaKey) {
         shiftPresses = [];
         return;

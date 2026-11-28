@@ -246,7 +246,7 @@
 </ol>
 {%- endmacro %}
 
-{% macro passport_form_matrix(forms, caption='Which U.S. passport name-change form fits your situation?', note='', id='federal-anatomy') -%}
+{% macro passport_form_matrix(forms, caption='U.S. passport name-change forms by passport status', note='', id='federal-anatomy') -%}
 <section class="viz-matrix passport-form-matrix" id="{{ id }}" aria-labelledby="{{ id }}-h">
   <h2 id="{{ id }}-h">{{ caption }}</h2>
   <div class="table-wrap">
@@ -254,7 +254,7 @@
       <caption class="vh">{{ caption }}</caption>
       <thead>
         <tr>
-          <th scope="col">Your situation</th>
+          <th scope="col">Passport status</th>
           <th scope="col">Form</th>
           <th scope="col">Routine fee</th>
           <th scope="col">How to submit &amp; proof needed</th>
@@ -304,7 +304,7 @@
     <div class="mockup-sheet" role="group" aria-label="Sample {{ state_label }} notice sheet">
       <div class="mockup-sheet-bar">
         <span class="mockup-agency">{{ agency_line }}</span>
-        <span class="mockup-stamp">Sample notice</span>
+        <span class="mockup-stamp">Sample notice (not a real letter)</span>
       </div>
       <div class="mockup-sheet-body">
         <div class="mockup-pin-spot mockup-meta-row">

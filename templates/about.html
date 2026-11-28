@@ -23,7 +23,7 @@
 <ul>
   <li><strong>Plain-language translation:</strong> Translates statutes, administrative rules, court packets, and agency guidance into direct everyday steps, linking every fee, deadline, and rule to its dated primary source.</li>
   <li><strong>Not a government office or legal advice:</strong> CivicDesk is not run or endorsed by any court or government agency and does not give legal advice. Only the court or agency decides your case—always confirm current forms and fees on the linked official page.</li>
-  <li><strong>Maintained by nonlawyers:</strong> CivicDesk is maintained by nonlawyers, not attorneys or licensed legal paraprofessionals, and nothing on this site is legal advice.</li>
+  <li><strong>Maintained by nonlawyers:</strong> CivicDesk is maintained by nonlawyers, not attorneys or licensed legal paraprofessionals, and nothing on this site is legal advice. This site is not a substitute for advice from a licensed attorney, using it or contacting us creates no attorney-client relationship and no attorney-client evidentiary privilege, and general legal information is provided as-is without warranty of accuracy or completeness.</li>
   <li><strong>Private by design:</strong> Interactive checks run in your browser's local page memory only with zero cookies, zero analytics, and no accounts.</li>
 </ul>
 
@@ -43,11 +43,13 @@
   <li><strong>By email (no GitHub account needed):</strong> <a href="{{ correction_mailto(page) }}">Email {{ site.corrections_email }}</a>. Selecting this link opens your email app with this page path in the subject line and a short reminder to leave out personal details. We cannot answer questions about individual situations.</li>
   <li><strong>On GitHub (public):</strong> <a href="{{ issues_url }}" rel="noreferrer">Open a public issue on GitHub</a>. This requires a free GitHub account, and your GitHub username and message are visible to everyone.</li>
 </ul>
-<p><strong>Never include personal health or case details.</strong> Whether you send an email or open a GitHub issue, do not include your legal name, Social Security number, Medicaid ID, court or agency case number, immigration status, or private health or household details.</p>
+<p><strong>Never include personal health or case details.</strong> Whether you send an email or open a GitHub issue, do not include your legal name, Social Security number, Medicaid ID, court or agency case number, immigration status, or private health or household details. Emails and public GitHub issues are not confidential legal communications and carry no attorney-client privilege.</p>
 
 <h2 id="license">Licensing and reuse</h2>
 <ul>
   <li><strong>Writing and guides:</strong> Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noreferrer">Creative Commons Attribution 4.0 International (CC BY 4.0)<span class="vh"> (outside site)</span></a>. Credit <strong>CivicDesk (civicdesk.net)</strong>, link to the license, and note if changes were made.</li>
-  <li><strong>Code, templates, and scripts:</strong> Licensed under the MIT License in our <a href="{{ repo_url }}" rel="noreferrer">public repository</a>.</li>
+  <li><strong>Code, templates, and scripts:</strong> Licensed under the <a href="{{ repo_url }}/blob/main/LICENSE" rel="license noreferrer">MIT License</a> in our <a href="{{ repo_url }}" rel="noreferrer">public repository</a>.</li>
+  <li><strong>Self-hosted fonts (SIL OFL 1.1):</strong> <strong>Source Serif 4</strong> (Copyright 2014–2023 Adobe, with Reserved Font Name "Source") and <strong>Atkinson Hyperlegible Next</strong> (Copyright 2020–2024 The Atkinson Hyperlegible Next Project Authors / Braille Institute) are licensed under the <a href="https://scripts.sil.org/OFL" rel="license noreferrer">SIL Open Font License, Version 1.1<span class="vh"> (outside site)</span></a>. Full font license notices are bundled in <code>static/fonts/</code>.</li>
+  <li><strong>Government works and laws:</strong> U.S. federal government works and federal or state statutes, regulations, and court orders quoted or cited on this site are in the public domain and excluded from CivicDesk's copyright claim.</li>
 </ul>
 {% endblock %}

@@ -158,7 +158,7 @@
       </ul>
     </nav>
     {% set f_oldest = page.get('oldest_checked', page.checked) %}{% set f_newest = page.get('newest_checked', page.checked) %}
-    <p class="build-line">Sources checked {% if f_oldest == f_newest %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time>{% else %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time> to <time datetime="{{ f_newest }}">{{ f_newest|human_date }}</time>{% endif %}. Edition: <time datetime="{{ site_latest_checked.strftime('%Y-%m') }}">{{ site_latest_checked.strftime('%B %Y') }}</time>. Built from {% if build_commit_url %}<a href="{{ build_commit_url }}" rel="noreferrer"><code>{{ build_commit_short }}</code></a>{% else %}<code>{{ build_commit_short }}</code>{% endif %}. <a href="{{ root_prefix(page) }}build-report.json">Build report</a>. Writing: <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noreferrer">CC BY 4.0<span class="vh"> (outside site)</span></a>. Code: MIT. <a href="{{ page_url('about#license') }}">Reuse this guide</a>.</p>
+    <p class="build-line">Sources checked {% if f_oldest == f_newest %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time>{% else %}<time datetime="{{ f_oldest }}">{{ f_oldest|human_date }}</time> to <time datetime="{{ f_newest }}">{{ f_newest|human_date }}</time>{% endif %}. Edition: <time datetime="{{ site_latest_checked.strftime('%Y-%m') }}">{{ site_latest_checked.strftime('%B %Y') }}</time>. Built from {% if build_commit_url %}<a href="{{ build_commit_url }}" rel="noreferrer"><code>{{ build_commit_short }}</code></a>{% else %}<code>{{ build_commit_short }}</code>{% endif %}. <a href="{{ root_prefix(page) }}build-report.json">Build report</a>. Writing: <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noreferrer">CC BY 4.0<span class="vh"> (outside site)</span></a>. Code: <a href="{{ repo_url }}/blob/main/LICENSE" rel="license noreferrer">MIT<span class="vh"> (outside site)</span></a>. <a href="{{ page_url('about#license') }}">Reuse this guide</a>.</p>
   </div>
 </footer>
 
@@ -191,11 +191,12 @@
       <label><input type="checkbox" name="spacing" value="wide"> More space between letters, words, and lines</label>
       {% if fonts_available %}<label><input type="checkbox" name="font" value="hyper"> Use Atkinson Hyperlegible Next, a font designed so letters are easy to tell apart</label>{% endif %}
       <label><input type="checkbox" name="brief" value="on"> Short version: hide extra background sections</label>
+      <label><input type="checkbox" name="shiftexit" value="off"> Turn off the triple-Shift quick-exit shortcut (keeps the Leave quickly button active)</label>
     </fieldset>
 
     <div class="settings-reset">
       <button type="button" class="btn-secondary" id="reset-settings">Reset reading settings</button>
-      <p class="hint">Sets text size, colors, spacing, font, and short version back to standard. Keeps your saved checklist.</p>
+      <p class="hint">Sets text size, colors, spacing, font, short version, and quick-exit shortcut back to standard. Keeps your saved checklist.</p>
       <p class="hint" id="reset-status" role="status"></p>
     </div>
 

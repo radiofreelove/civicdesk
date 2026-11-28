@@ -185,7 +185,7 @@
 
   function buildNextStrip() {
     var wrap = el("div", null, "next-needs");
-    wrap.appendChild(el("h3", "What you may need next"));
+    wrap.appendChild(el("h3", "Related guides"));
     var ul = el("ul", null, "next-strip");
     var items = [
       { icon: "paper", href: "../apply/", title: "How to apply", note: "Online, on paper, in person, or by phone" },
@@ -331,7 +331,8 @@
     return title;
   }
 
-  function startOver() {
+  function startOver(moveFocus) {
+    if (moveFocus === undefined) { moveFocus = true; }
     form.reset();
     clearResult();
     result.hidden = true;
@@ -339,7 +340,7 @@
     progress.hidden = false;
     if (track) { track.hidden = false; }
     [1, 2, 3].forEach(function (n) { showError(n, false); });
-    showStep(1, true);
+    showStep(1, moveFocus);
   }
 
   function buildEmblem(iconName, labelText, toneClass) {
@@ -383,7 +384,7 @@
       result.appendChild(stepsOf(CHECK.meetTodo));
       result.appendChild(para([link(CHECK.meetLink.href, CHECK.meetLink.text)]));
     } else {
-      result.insertBefore(buildEmblem("clock", "Next-step plan", "result-emblem-watch"), title);
+      result.insertBefore(buildEmblem("clock", "Published options", "result-emblem-watch"), title);
       title.textContent = resultText("noneTitle", 0);
       result.appendChild(el("p", CHECK.mayApply.body));
       result.appendChild(el("h3", resultText("waysHeading", 0)));
@@ -417,7 +418,7 @@
     actions.appendChild(edit);
     var again = el("button", "Start over", "button-secondary");
     again.type = "button";
-    again.addEventListener("click", startOver);
+    again.addEventListener("click", function () { startOver(true); });
     actions.appendChild(again);
     var print = el("button", null, "button-secondary");
     print.type = "button";
@@ -456,11 +457,10 @@
     }
 
     steps = Array.prototype.slice.call(form.querySelectorAll("[data-step]"));
-    form.reset();
-    form.hidden = false;
-    progress.hidden = false;
-    if (track) { track.hidden = false; }
-    showStep(1, false);
+    startOver(false);
+    window.addEventListener("pageshow", function () {
+      startOver(false);
+    });
 
     wireNoneBoxes("reason");
     wireNoneBoxes("meet");

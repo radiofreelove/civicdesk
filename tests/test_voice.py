@@ -27,15 +27,21 @@ def test_tool_output_voice_is_clean(built_site: Path) -> None:
 
 def test_enforced_pattern_list_is_the_reviewed_set() -> None:
     assert sorted(cv.PATTERNS) == sorted([
-        "you-should", "we-recommend", "your-best", "personalized", "my-steps", "apply-to-you",
-        "your-steps", "my-results", "you-qualify", "fits-your-situation", "what-to-do-heading",
+        "you-should", "we-recommend", "we-advise", "your-best", "best-option",
+        "personalized", "my-steps", "apply-to-you", "your-steps", "my-results",
+        "you-qualify", "you-are-eligible", "you-do-not-need", "next-step-plan",
+        "fits-your-situation", "what-to-do-heading",
     ])
+    assert set(cv.GUIDE_PATTERNS).issubset(set(cv.PATTERNS))
 
 
 @pytest.mark.parametrize(("text", "name"), [
     ("You should file the packet first.", "you-should"),
     ("We recommend the court route.", "we-recommend"),
+    ("We advise calling the clerk first.", "we-advise"),
+    ("We suggest ordering seven copies.", "we-advise"),
     ("Your best option is the court packet.", "your-best"),
+    ("The best choice is superior court.", "best-option"),
     ("Personalized record-update order", "personalized"),
     ("Show my steps", "my-steps"),
     ("The new rules likely do not apply to you.", "apply-to-you"),
@@ -44,6 +50,11 @@ def test_enforced_pattern_list_is_the_reviewed_set() -> None:
     ("Print my results", "my-results"),
     ("You qualify for this exception.", "you-qualify"),
     ("You are likely exempt.", "you-qualify"),
+    ("You are eligible for Apple Health.", "you-are-eligible"),
+    ("You are likely ineligible.", "you-are-eligible"),
+    ("You do not need a court order for this path.", "you-do-not-need"),
+    ("You don't need to do anything.", "you-do-not-need"),
+    ("Next-step plan", "next-step-plan"),
     ("See only the steps that fit your situation.", "fits-your-situation"),
     ("What to do", "what-to-do-heading"),
     ("What you can do", "what-to-do-heading"),

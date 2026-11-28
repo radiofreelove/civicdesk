@@ -20,8 +20,8 @@
 
 <h2 id="collect">What we collect (and block)</h2>
 <ul>
-  <li><strong>Zero tracking or accounts:</strong> CivicDesk sets zero cookies, runs zero analytics or advertising scripts, loads zero third-party fonts or CDN assets, and accepts zero form submissions to any server.</li>
-  <li><strong>Interactive tools stay in page memory:</strong> Answers in the <a href="{{ page_url('start') }}">2-question router</a>, the <a href="{{ page_url('medicaid') }}">1-minute Medicaid checks</a>, and the <a href="{{ page_url('id-records-path') }}">ID &amp; records path finder</a> live only in your current browser tab and clear immediately when you reload or close the page.</li>
+  <li><strong>Zero tracking, health data, or accounts:</strong> CivicDesk sets zero cookies, runs zero analytics or advertising scripts, loads zero third-party fonts or CDN assets, accepts zero form submissions to any server, and never collects, accesses, or shares personal or consumer health data.</li>
+  <li><strong>Interactive tools stay in page memory:</strong> Answers in the <a href="{{ page_url('start') }}">2-question router</a>, the <a href="{{ page_url('medicaid') }}">1-minute Medicaid checks</a>, and the <a href="{{ page_url('id-records-path') }}">ID &amp; records path finder</a> live only in your current browser tab and clear immediately when you reload, press Back, or close the page.</li>
   <li><strong>Enforced by Content Security Policy:</strong> Every page serves <code>connect-src 'none'</code>, <code>form-action 'none'</code>, and <code>frame-ancestors 'none'</code> so scripts cannot transmit data off your device.</li>
   <li><strong>Static edge delivery:</strong> CivicDesk is hosted solely on Cloudflare Workers Static Assets with host analytics turned off; Cloudflare processes standard network request data (such as IP addresses) to deliver static files and mitigate network attacks. {{ src('ID-HOST-CLOUDFLARE-PRIVACY') }}</li>
 </ul>
@@ -31,15 +31,16 @@
 
 <h2 id="saved">What can be saved on this device</h2>
 <ul>
-  <li><strong>Reading settings</strong> (text size, color theme, spacing, font, and short version) save in your browser's local storage only when you change them.</li>
-  <li><strong>Step checklists</strong> save on your device only if you turn on "Remember my checklist on this device" inside Reading settings.</li>
+  <li><strong>Reading settings (<code>civicdesk:prefs</code>):</strong> Text size, color theme, spacing, font, short version (changed either inside Reading settings or with the on-page Short version button), and the triple-Shift shortcut option save in your browser's local storage only when changed from the standard default.</li>
+  <li><strong>Step checklists (<code>civicdesk:remember</code> and <code>civicdesk:checks</code>):</strong> Checkmarks stay in temporary page memory unless you turn on "Remember my checklist on this device" inside Reading settings, which saves your choice and checked items in local storage.</li>
   <li>On a shared computer, open <strong>Reading settings</strong> and select <strong>Forget everything saved on this device</strong> when you finish.</li>
 </ul>
 
 <h2 id="leave">Scoped "Leave quickly" control</h2>
 <ul>
   <li>Pages in <a href="{{ page_url('id-records') }}">Legal Name, ID &amp; Vital Records</a> and domestic-safety exemption callouts include a calm <strong>Leave quickly</strong> control (and a triple-<strong>Shift</strong> keyboard shortcut when not typing in a text box).</li>
-  <li>Using <strong>Leave quickly</strong> blanks the current screen and replaces the current tab entry with <code>weather.gov</code>.</li>
+  <li>Using <strong>Leave quickly</strong> clears any saved checklist marks on this device (<code>civicdesk:checks</code>), blanks the current screen, and replaces the current tab entry with <code>weather.gov</code> when JavaScript is on (or opens <code>weather.gov</code> directly when JavaScript is off).</li>
+  <li>If the triple-<strong>Shift</strong> shortcut conflicts with Sticky Keys or a screen reader, open <strong>Reading settings</strong> and turn off the triple-Shift shortcut—the <strong>Leave quickly</strong> button stays active.</li>
   <li><strong>Browser history limit:</strong> Replacing the current page does not erase earlier pages you visited in the same tab. For stronger privacy on a monitored device, open a Private or Incognito window before browsing and clear recent history when done.</li>
 </ul>
 {% endblock %}

@@ -77,6 +77,11 @@
     <summary><span id="other-pathways-title">Other published pathways</span></summary>
     <div id="other-pathways-body" class="other-pathways-body"></div>
   </details>
+  <div class="promise">
+    <p class="box-kicker"><span class="box-icon">{{ m.icon('shield') }}</span><span>Privacy and scope</span></p>
+    <p>Only the court or agency decides. This path finder is general legal information, not legal advice.</p>
+    <p>Nothing you picked was saved or sent.</p>
+  </div>
   <div class="btn-row">
     <button type="button" class="btn" data-print>{{ m.icon('print-sheet') }}<span>Print these steps</span></button>
     <a class="btn-secondary" href="#path-form">Change my answers</a>
@@ -194,7 +199,7 @@
       <h3>Court in Oregon</h3>
       <ul>
         <li data-who="adult" data-change="name"{{ basis('ID-OR-ORS-33', 'ID-OR-OJD-ADULT-PACKET') }}>File a name change petition at the circuit court in the county where you live. The fee is {{ fact('or_fee_petition') }}, or ask to waive it. Name-only cases are public unless sealed through Oregon's Address Confidentiality Program. {{ src('ID-OR-OJD-ADULT-PACKET') }} {{ src('ID-OR-ORS-33') }}</li>
-        <li data-who="adult" data-change="marker"{{ basis('ID-OR-2026-CH52', 'ID-OR-DMV-GENDER', 'ID-OR-OHA-GENDER') }}>You may not need court. Oregon's DMV and Oregon's birth certificate office do not require a court order. If another office asks for one, file for a legal sex change at any Oregon circuit court. These cases are confidential. {{ src('ID-OR-2026-CH52') }}</li>
+        <li data-who="adult" data-change="marker"{{ basis('ID-OR-2026-CH52', 'ID-OR-DMV-GENDER', 'ID-OR-OHA-GENDER') }}>Oregon's DMV and Oregon's birth certificate office do not require a court order for a sex-marker update, though another state's birth-certificate office or another agency may require one. Any Oregon circuit court can hear a confidential legal sex-change petition. {{ src('ID-OR-2026-CH52') }}</li>
         <li data-who="adult" data-change="both"{{ basis('ID-OR-ORS-33', 'ID-OR-2026-CH52') }}>File one petition for both at any Oregon circuit court. The fee is {{ fact('or_fee_petition') }}, or ask to waive it. Cases that include a sex change are confidential. {{ src('ID-OR-2026-CH52') }}</li>
         <li data-who="parent"{{ basis('ID-OR-ORS-33', 'ID-OR-2026-CH52', 'ID-OR-OJD-MINOR-PACKET') }}>As a parent or guardian, you file the minor forms. A name change goes to the county where your child lives. A sex change can go to any circuit court. For a name change, the other parent usually must get written notice. The filing fee is {{ fact('or_fee_petition') }}, or ask to waive it. {{ src('ID-OR-OJD-MINOR-PACKET') }} {{ src('ID-OR-OJD-FEES') }}</li>
         <li data-who="minor"{{ basis('ID-OR-ORS-33', 'ID-OR-OJD-MINOR-PACKET') }}>Under Oregon's forms, a parent, guardian, or legal representative files for someone under 18, unless you are emancipated. If your parents will not help, talk with a lawyer about your options. The court filing fee is {{ fact('or_fee_petition') }}, or ask to waive it. {{ src('ID-OR-OJD-MINOR-PACKET') }} {{ src('ID-OR-OJD-FEES') }}</li>
@@ -210,7 +215,7 @@
     <div class="step-body">
       <h3>Court in Washington</h3>
       <ul>
-        <li data-change="name both"{{ basis('ID-WA-RCW-4-24-130') }}>For a court name change, choose a public case at any district court, or a sealed case at any superior court when sealing applies (including domestic violence, stalking, harassment, or gender expression or identity). Every name change has a hearing. {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-WLH-NAME') }}</li>
+        <li data-change="name both"{{ basis('ID-WA-RCW-4-24-130') }}>Washington law provides two court venues for a name change: a public case in any district court, or a sealed case in any superior court when statutory sealing grounds apply (including domestic violence, stalking, harassment, or gender expression or identity). Every name change has a hearing. {{ src('ID-WA-RCW-4-24-130') }} {{ src('ID-WA-WLH-NAME') }}</li>
         <li data-change="marker both"{{ basis('ID-WA-DOL-GENDER', 'ID-WA-DOH-SEX') }}>No court is needed to change the gender marker on a Washington license or a Washington birth certificate. A court order that confirms your gender is optional and can help with other states or agencies. {{ src('ID-WA-WLH-GENDER-ORDER') }}</li>
         <li data-who="parent" data-change="name both"{{ basis('ID-WA-RCW-4-24-130') }}>A parent or guardian can file a child's name change, sealed in superior court when statutory sealing grounds apply. Parents get notice, and some courts ask for the child's consent at 13 or older. {{ src('ID-WA-WLH-NAME') }}</li>
         <li data-who="minor" data-change="name both"{{ basis('ID-WA-RCW-4-24-130') }}>Because you are under 18, a parent or guardian usually files a name change for you. Talk with a parent, guardian, or legal aid about your options. {{ src('ID-WA-WLH-NAME') }}</li>

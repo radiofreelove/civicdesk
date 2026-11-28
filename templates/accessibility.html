@@ -19,7 +19,7 @@
 
 <h2 id="standards">Built-in guardrails</h2>
 <ul>
-  <li><strong>7:1+ WCAG 2.2 AAA contrast:</strong> Every reading text pair across all four color themes meets at least a 7:1 contrast ratio, and interactive borders and graphical marks meet at least 3:1. {{ src('ID-STD-WCAG22') }}</li>
+  <li><strong>7:1+ WCAG 2.2 AAA contrast:</strong> Every reading text pair across all four color palettes (plus automatic Match my device mode) meets at least a 7:1 contrast ratio, and interactive borders and graphical marks meet at least 3:1. {{ src('ID-STD-WCAG22') }}</li>
   <li><strong>Plain-language cognitive clarity:</strong> Left-aligned sentence case headings, concrete everyday words, upright emphasis without italics, and short literal sentences, with lines kept to about 65 characters. {{ src('ID-STD-COGA') }}</li>
   <li><strong>200% &amp; 400% zoom reflow:</strong> Multi-column diagrams and tables collapse cleanly into a single vertical column on screens as narrow as 320 pixels, with no sideways scrolling.</li>
   <li><strong>44x44 px touch targets &amp; no-JavaScript support:</strong> Standalone interactive controls provide tap areas of at least 44 by 44 pixels, high-visibility focus rings, and full top-to-bottom readability when JavaScript is disabled.</li>
@@ -28,10 +28,11 @@
 <h2 id="controls">Reading settings on every page</h2>
 <ul>
   <li><strong>Text size:</strong> Standard, Large, or Extra large (150%).</li>
-  <li><strong>Color themes:</strong> Match device, Newsprint (standard), Plain white paper, Dark ink, or High contrast.</li>
+  <li><strong>Color themes:</strong> Match my device (automatic), Newsprint (standard), Plain white paper, Dark ink, or High contrast.</li>
   <li><strong>Wide spacing:</strong> Extra letter, word, and line spacing meeting WCAG 1.4.12.</li>
-  <li><strong>Bundled Atkinson Hyperlegible Next font:</strong> Designed by the Braille Institute so similar letters and numerals are easier to distinguish, served locally with zero external font requests.</li>
+  {% if fonts_available %}<li><strong>Self-hosted fonts, including Atkinson Hyperlegible Next:</strong> Pages default to self-hosted Source Serif 4 and let you switch to Atkinson Hyperlegible Next (designed by the Braille Institute so similar letters and numerals are easier to distinguish), with zero external font requests.</li>{% else %}<li><strong>Self-hosted reading font:</strong> Pages use self-hosted Source Serif 4 with zero external font requests.</li>{% endif %}
   <li><strong>Short version toggle:</strong> Folds away optional background sections on long guides while keeping every core step, fee, deadline, and print view complete.</li>
+  <li><strong>Quick-exit shortcut option:</strong> Turn off the triple-Shift keyboard shortcut if it conflicts with Sticky Keys or a screen reader; the Leave quickly button stays active.</li>
 </ul>
 
 <h2 id="feedback">Tell us if something gets in your way</h2>

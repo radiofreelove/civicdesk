@@ -62,7 +62,7 @@ window.CivicDeskCheck = (function () {
     },
     aian: {
       label: "You are American Indian or Alaska Native.",
-      how: "You also keep 12-month renewal periods instead of switching to 6-month renewals.",
+      how: "Under HCA's rules, American Indian and Alaska Native members keep 12-month renewal periods instead of moving to 6-month renewals.",
       kind: "exemption",
       basis: ["MED-WA22", "MED-WA05", "MED-WA15"]
     },

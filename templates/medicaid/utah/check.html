@@ -36,7 +36,7 @@
     {{ v.step_progress_track(['Age group', 'Exclusions & exceptions', 'Ways to meet']) }}
     <p class="progress" id="checker-progress" aria-live="polite" hidden>Step 1 of 3</p>
 
-    <form id="checker" class="checker checker-form" novalidate hidden>
+    <form id="checker" class="checker checker-form" novalidate autocomplete="off" hidden>
       <div class="step" data-step="1" tabindex="-1">
         <p class="error-message" id="step-1-error" role="alert" tabindex="-1" hidden>Please pick one answer to go on.</p>
         <fieldset aria-describedby="step-1-error">
