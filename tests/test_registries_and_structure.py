@@ -360,6 +360,9 @@ def test_workers_static_assets_config_and_headers(built_site: Path) -> None:
 
     headers_txt = (built_site / "_headers").read_text(encoding="utf-8")
     assert "Strict-Transport-Security: max-age=31536000; includeSubDomains" in headers_txt
+    assert "X-DNS-Prefetch-Control: off" in headers_txt
+    assert "Cross-Origin-Resource-Policy: same-origin" in headers_txt
+    assert "Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()" in headers_txt
     assert "interest-cohort" not in headers_txt
     assert "/static/*" in headers_txt
     assert "Cache-Control: public, max-age=31536000, immutable" in headers_txt
@@ -793,16 +796,26 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
                 f"{route}: <svg> must have aria-hidden=\"true\" or role=\"img\" with accessible label: {attrs!r}"
             )
 
-    # Every press print in static/img/art/ is a valid WebP, built cleanly, and used with exact dimensions
+    # Every press print in static/img/art/ is a valid WebP, built cleanly, has a 480w responsive variant, and is used with exact dimensions
     build_mod = _load_script("civicdesk_build_art", "scripts/build.py")
     art_dir = ROOT / "static" / "img" / "art"
     actual_art_dims = build_mod.discover_art_dims(art_dir)
     assert actual_art_dims, "Expected press prints in static/img/art/"
+    full_art_dims = {k: v for k, v in actual_art_dims.items() if not k.endswith("-480.webp")}
+    small_art_dims = {k: v for k, v in actual_art_dims.items() if k.endswith("-480.webp")}
+    assert full_art_dims, "Expected full-size press prints in static/img/art/"
     for fname, want_wh in actual_art_dims.items():
         assert re.fullmatch(r"print-[a-z0-9-]+\.webp", fname), f"Unexpected filename in static/img/art/: {fname}"
         assert want_wh[0] > 0 and want_wh[1] > 0, f"{fname}: invalid dimensions {want_wh}"
         built_art = built_site / "static" / "img" / "art" / fname
         assert built_art.is_file(), f"Missing built public/static/img/art/{fname}"
+    for fname, (full_w, full_h) in full_art_dims.items():
+        small_name = fname.removesuffix(".webp") + "-480.webp"
+        assert small_name in small_art_dims, f"Missing 480w responsive WebP variant for {fname}: {small_name}"
+        assert small_art_dims[small_name] == (full_w // 2, full_h // 2), (
+            f"{small_name}: expected half dimensions {(full_w // 2, full_h // 2)}, got {small_art_dims[small_name]}"
+        )
+    assert len(small_art_dims) == len(full_art_dims), "Orphan -480.webp variant without full press print"
 
     art_img_re = re.compile(r'<div class="editorial-art[^"]*">\s*<img\s+([^>]+)>', re.S)
     seen_art_files: set[str] = set()
@@ -814,15 +827,29 @@ def test_broadsheet_visual_system_invariants(built_site: Path) -> None:
             attrs_str = im.group(1)
             src_m = re.search(r'src="(/static/img/art/([a-z0-9-]+)\.webp)\?v=[0-9a-f]{8}"', attrs_str)
             assert src_m, f"{html_path}: editorial-art <img> missing fingerprinted /static/img/art/*.webp?v=hash: {attrs_str}"
-            rel_asset, stem = src_m.group(1), src_m.group(2) + ".webp"
+            rel_asset, base_stem = src_m.group(1), src_m.group(2)
+            stem = base_stem + ".webp"
             assert (built_site / rel_asset.lstrip("/")).is_file(), f"{html_path}: broken editorial art {rel_asset}"
             assert 'alt=""' in attrs_str, f"{html_path}: decorative editorial art must carry alt=\"\""
             assert 'loading="eager"' in attrs_str, f"{html_path}: page-head print must load eagerly (lazy is only for extra art)"
+            assert 'fetchpriority="high"' in attrs_str, f"{html_path}: above-the-fold print must carry fetchpriority=\"high\""
+            assert re.search(rf'srcset="/static/img/art/{re.escape(base_stem)}-480\.webp\?v=[0-9a-f]{{8}} 480w, /static/img/art/{re.escape(base_stem)}\.webp\?v=[0-9a-f]{{8}} 960w"', attrs_str), (
+                f"{html_path}: missing responsive 480w/960w srcset on editorial art: {attrs_str}"
+            )
+            assert 'sizes="' in attrs_str, f"{html_path}: missing sizes attribute on editorial art"
             w_m = re.search(r'width="(\d+)"', attrs_str)
             h_m = re.search(r'height="(\d+)"', attrs_str)
-            assert w_m and h_m and (int(w_m.group(1)), int(h_m.group(1))) == actual_art_dims[stem]
+            assert w_m and h_m and (int(w_m.group(1)), int(h_m.group(1))) == full_art_dims[stem]
             seen_art_files.add(stem)
-    assert seen_art_files == set(actual_art_dims), f"Unused editorial art files: {set(actual_art_dims) - seen_art_files}"
+    assert seen_art_files == set(full_art_dims), f"Unused editorial art files: {set(full_art_dims) - seen_art_files}"
+
+    front_html = (built_site / "index.html").read_text(encoding="utf-8")
+    tile_imgs = re.findall(r'<span class="desk-tile-art">\s*<img\s+([^>]+)>', front_html, re.S)
+    assert len(tile_imgs) >= 2
+    for tile_attrs in tile_imgs:
+        assert 'loading="lazy"' in tile_attrs, f"Front-page desk tile art should lazy-load: {tile_attrs}"
+        assert 'srcset="' in tile_attrs and "480w" in tile_attrs and "960w" in tile_attrs
+        assert 'sizes="' in tile_attrs
 
     # Core purposeful structural diagrams & editorial art render on routes where they belong
     expected_markers = {
@@ -1168,6 +1195,75 @@ def test_declarative_multidesk_validation_and_single_pass_checked_dates(built_si
     report = json.loads((built_site / "build-report.json").read_text(encoding="utf-8"))
     assert list(report["desk_source_counts"].keys()) == active_slugs
     assert sum(report["desk_source_counts"].values()) == report["total_source_count"]
+
+
+def test_perf_css_bundle_font_preload_and_concurrent_verify(built_site: Path, tmp_path: Path) -> None:
+    import hashlib
+    import threading
+
+    build_mod = _load_script("civicdesk_build_perf", "scripts/build.py")
+    verify_mod = _load_script("civicdesk_verify_perf", "scripts/verify_sources.py")
+
+    # 1. Single source of truth for freshness thresholds across build.py and verify_sources.py
+    assert build_mod.MAX_AGE_BY_KIND == verify_mod.MAX_AGE_BY_KIND
+    assert build_mod.max_age_for_source({"kind": "court_order"}) == verify_mod.max_age_for_source({"kind": "court_order"})
+
+    # 2. Compiled CSS bundles + minifies fonts.css + site.css with exact hashed font URLs matching HTML <link rel="preload">
+    compiled_css = (built_site / "static" / "css" / "site.css").read_text(encoding="utf-8")
+    raw_combined_len = (
+        len((ROOT / "static" / "css" / "fonts.css").read_text(encoding="utf-8"))
+        + len((ROOT / "static" / "css" / "site.css").read_text(encoding="utf-8"))
+    )
+    assert len(compiled_css) < raw_combined_len, "Compiled site.css should be smaller than unminified fonts.css + site.css"
+    assert '"Source Serif 4 Fallback"' in compiled_css
+    assert "/*" not in compiled_css, "CSS comments should be stripped from compiled bundle"
+
+    latin_hash = hashlib.sha256((ROOT / "static" / "fonts" / "SourceSerif4-Latin.woff2").read_bytes()).hexdigest()[:8]
+    expected_css_font_ref = f'../fonts/SourceSerif4-Latin.woff2?v={latin_hash}'
+    expected_preload_ref = f'href="/static/fonts/SourceSerif4-Latin.woff2?v={latin_hash}"'
+    assert expected_css_font_ref in compiled_css
+
+    for html_path in sorted(built_site.rglob("*.html")):
+        raw = html_path.read_text(encoding="utf-8")
+        stylesheets = re.findall(r'<link\s+rel="stylesheet"\s+href="([^"]+)"', raw)
+        assert len(stylesheets) == 1, f"{html_path}: expected 1 stylesheet request, got {stylesheets}"
+        assert stylesheets[0].startswith("/static/css/site.css?v=")
+        assert "css/fonts.css" not in raw, f"{html_path}: separate render-blocking fonts.css link must not appear"
+        assert expected_preload_ref in raw, f"{html_path}: font preload must match exact hashed URL {expected_preload_ref}"
+
+    # 3. Multi-host concurrent link checker deduplicates URLs and preserves deterministic output order
+    (tmp_path / "desk_a.yaml").write_text(
+        yaml.safe_dump(
+            [
+                {"id": "A-1", "url": "https://host-one.example.gov/bad", "checked": "2026-11-20"},
+                {"id": "A-2", "url": "https://host-two.example.gov/ok", "checked": "2026-11-20"},
+                {"id": "A-3", "url": "https://host-three.example.gov/bad", "checked": "2026-11-20"},
+                {"id": "A-4", "url": "https://host-one.example.gov/bad", "checked": "2026-11-20"},
+            ]
+        ),
+        encoding="utf-8",
+    )
+    lock = threading.Lock()
+    hit_counts: dict[str, int] = {}
+
+    def multi_host_fetcher(url: str, _timeout: int) -> int:
+        with lock:
+            hit_counts[url] = hit_counts.get(url, 0) + 1
+        return 404 if url.endswith("/bad") else 200
+
+    issues = verify_mod.check_links(
+        sources_dir=tmp_path,
+        max_retries=1,
+        pause_seconds=0.0,
+        max_workers=4,
+        fetcher=multi_host_fetcher,
+        sleeper=lambda _s: None,
+    )
+    assert hit_counts["https://host-one.example.gov/bad"] == 1
+    assert hit_counts["https://host-two.example.gov/ok"] == 1
+    assert hit_counts["https://host-three.example.gov/bad"] == 1
+    assert [i.split()[0] for i in issues] == ["A-1", "A-3", "A-4"]
+
 
 
 

@@ -11,8 +11,9 @@
     (folded into Short version, below the fold) is lazy. -#}
 {% macro editorial_art(filename, variant='banner', extra=false) -%}
 {% set dims = art_dims.get(filename, (960, 640)) %}
+{% set sset = art_srcset(filename) %}
 <div class="editorial-art editorial-art--{{ variant }}"{% if extra %} data-deeper{% endif %}>
-  <img src="{{ asset('img/art/' ~ filename) }}" alt="" width="{{ dims[0] }}" height="{{ dims[1] }}" loading="{{ 'lazy' if extra else 'eager' }}" decoding="async">
+  <img src="{{ asset('img/art/' ~ filename) }}"{% if sset %} srcset="{{ sset }}" sizes="(max-width: 45.99rem) calc(100vw - 2rem), {{ '520px' if variant == 'hero' else '460px' }}"{% endif %} alt="" width="{{ dims[0] }}" height="{{ dims[1] }}" loading="{{ 'lazy' if extra else 'eager' }}"{% if not extra %} fetchpriority="high"{% endif %} decoding="async">
 </div>
 {%- endmacro %}
 

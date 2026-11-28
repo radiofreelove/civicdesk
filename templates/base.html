@@ -22,10 +22,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{{ asset(site.brand.favicon_svg) }}" type="image/svg+xml">
 {% if site.brand.apple_touch_icon %}<link rel="apple-touch-icon" href="{{ asset(site.brand.apple_touch_icon) }}">
-{% endif %}{#- Preload the exact URL fonts.css requests (no ?v= query), or the browser fetches the font twice. -#}
-<link rel="preload" href="{{ asset('fonts/SourceSerif4-Latin.woff2').split('?')[0] }}" as="font" type="font/woff2" crossorigin>
+{% endif %}<link rel="preload" href="{{ asset('fonts/SourceSerif4-Latin.woff2') }}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ asset('css/site.css') }}">
-<link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
 <script src="{{ asset('js/prefs.js') }}"></script>
 <script src="{{ asset('js/site.js') }}" defer></script>
 {% for script_name in page.get('scripts', []) %}<script src="{{ asset('js/' ~ script_name ~ '.js') }}" defer></script>

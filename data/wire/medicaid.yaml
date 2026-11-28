@@ -15,6 +15,11 @@ editorial_brief: >-
   pregnancy, tribal, domestic safety), retroactive coverage cutoffs, hold-harmless timelines,
   Section 1115 waivers, and Medicaid public charge / noncitizen eligibility rules (8 CFR Part 212).
 
+statute_patterns:
+  - '435\.\d+'
+  - '212\.\d+'
+  - '26b-\d+-\d+(?:\.\d+)?'
+
 jurisdictions:
   US:
     name: "Federal"

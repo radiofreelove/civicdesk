@@ -20,6 +20,7 @@ not needed to build or test the site, which serves only the committed .webp file
 """
 from __future__ import annotations
 
+import argparse
 import math
 import sys
 import tempfile
@@ -28,21 +29,29 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Callable, Sequence
 
-import numpy as np
+try:
+    import numpy as np
+except ImportError:  # pragma: no cover - numpy is only needed when rendering prints from scratch
+    np = None  # type: ignore[assignment]
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / "static" / "img" / "art"
 SERIF_WOFF2 = ROOT / "static" / "fonts" / "SourceSerif4-Latin.woff2"
+RESPONSIVE_WIDTH = 480
 
 # Broadsheet press anchors (docs/DESIGN.md). Yellow is the site's focus color.
-PAPER = np.array([243, 242, 242], dtype=np.float32) / 255.0
-INKS = {
-    "y": np.array([237, 187, 0], dtype=np.float32) / 255.0,    # process yellow
-    "c": np.array([0, 136, 176], dtype=np.float32) / 255.0,    # process cyan
-    "m": np.array([214, 0, 108], dtype=np.float32) / 255.0,    # process magenta
-    "k": np.array([32, 30, 29], dtype=np.float32) / 255.0,     # press ink
-}
+PAPER = (np.array([243, 242, 242], dtype=np.float32) / 255.0) if np is not None else None
+INKS = (
+    {
+        "y": np.array([237, 187, 0], dtype=np.float32) / 255.0,    # process yellow
+        "c": np.array([0, 136, 176], dtype=np.float32) / 255.0,    # process cyan
+        "m": np.array([214, 0, 108], dtype=np.float32) / 255.0,    # process magenta
+        "k": np.array([32, 30, 29], dtype=np.float32) / 255.0,     # press ink
+    }
+    if np is not None
+    else {}
+)
 PLATES = ("y", "c", "m", "k")
 # Classic process screen angles keep the halftone rosette from turning into moire.
 SCREEN_ANGLE = {"c": 15.0, "m": 75.0, "y": 0.0, "k": 45.0}
@@ -1157,7 +1166,20 @@ PRINTS: dict[str, Print] = {p.name: p for p in [
 ]}
 
 
+def write_responsive_variant(full_path: Path, width: int = RESPONSIVE_WIDTH) -> Path:
+    """Write a responsive WebP variant (`print-<name>-480.webp`) beside a full-resolution print."""
+    target = full_path.with_name(f"{full_path.stem}-{width}.webp")
+    with Image.open(full_path) as im:
+        src_w, src_h = im.size
+        height = max(1, int(round(src_h * (width / src_w))))
+        resized = im.resize((width, height), Image.Resampling.LANCZOS)
+        resized.save(target, "WEBP", quality=72, method=6)
+    return target
+
+
 def render(name: str, out_dir: Path = OUT_DIR, preview: Path | None = None) -> Path:
+    if np is None:
+        raise RuntimeError("numpy is required to render press prints from scratch (pip install -r requirements-art.txt)")
     p = PRINTS[name]
     canvas = Canvas(p.size[0], p.size[1], p.seed)
     p.draw(canvas)
@@ -1165,6 +1187,7 @@ def render(name: str, out_dir: Path = OUT_DIR, preview: Path | None = None) -> P
     out_dir.mkdir(parents=True, exist_ok=True)
     target = out_dir / f"print-{name}.webp"
     img.save(target, "WEBP", quality=70, method=6)
+    write_responsive_variant(target)
     if preview is not None:
         preview.mkdir(parents=True, exist_ok=True)
         img.save(preview / f"print-{name}.png")
@@ -1172,23 +1195,40 @@ def render(name: str, out_dir: Path = OUT_DIR, preview: Path | None = None) -> P
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = list(sys.argv[1:] if argv is None else argv)
-    preview = None
-    if "--preview" in args:
-        i = args.index("--preview")
-        preview = Path(args[i + 1])
-        del args[i:i + 2]
-    if "--list" in args:
+    parser = argparse.ArgumentParser(description="Render CivicDesk editorial press prints into static/img/art/.")
+    parser.add_argument("names", nargs="*", help="Optional print names to render (default: all prints)")
+    parser.add_argument("--list", action="store_true", help="List print names, sizes, and subjects")
+    parser.add_argument("--preview", type=Path, default=None, help="Also write full-size PNG proofs to DIR")
+    parser.add_argument(
+        "--responsive-only",
+        action="store_true",
+        help=f"Regenerate {RESPONSIVE_WIDTH}w WebP variants from existing full-size prints",
+    )
+    args = parser.parse_args(argv)
+
+    if args.list:
         for p in PRINTS.values():
             print(f"print-{p.name}.webp  {p.size[0]}x{p.size[1]}  {p.subject}")
         return 0
-    names = args or list(PRINTS)
+
+    names = args.names or list(PRINTS)
     unknown = [n for n in names if n not in PRINTS]
     if unknown:
         print(f"Unknown print(s): {', '.join(unknown)}", file=sys.stderr)
         return 2
+
+    if args.responsive_only:
+        for n in names:
+            full_path = OUT_DIR / f"print-{n}.webp"
+            if not full_path.is_file():
+                print(f"Missing full-size print: {full_path}", file=sys.stderr)
+                return 2
+            small = write_responsive_variant(full_path)
+            print(f"Wrote {small.relative_to(ROOT)} ({small.stat().st_size // 1024} KB)")
+        return 0
+
     for n in names:
-        t = render(n, preview=preview)
+        t = render(n, preview=args.preview)
         print(f"Wrote {t.relative_to(ROOT)} ({t.stat().st_size // 1024} KB)")
     return 0
 

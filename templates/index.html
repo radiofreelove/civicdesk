@@ -16,7 +16,7 @@
 {% set tiles = [] %}
 {% for d in site.desks if d.status == 'active' %}
 {% set _ = tiles.append({'id': d.slug, 'href': page_url(d.hub), 'kicker': d.kicker, 'name': d.name, 'blurb': d.blurb,
-  'places': d.states|map(attribute='name')|join(' · '), 'art': asset('img/art/' ~ d.art),
+  'places': d.states|map(attribute='name')|join(' · '), 'art': asset('img/art/' ~ d.art), 'art_srcset': art_srcset(d.art),
   'art_w': art_dims[d.art][0], 'art_h': art_dims[d.art][1], 'soon': false}) %}
 {% endfor %}
 {{ bs.desk_tiles(tiles) }}

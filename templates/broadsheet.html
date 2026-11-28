@@ -49,7 +49,7 @@
     </article>
     {% else %}
     <article class="desk-tile desk-tile-{{ d.id }}">
-      <span class="desk-tile-art"><img src="{{ d.art }}" alt="" width="{{ d.art_w }}" height="{{ d.art_h }}" decoding="async"></span>
+      <span class="desk-tile-art"><img src="{{ d.art }}"{% if d.get('art_srcset') %} srcset="{{ d.art_srcset }}" sizes="(max-width: 45.99rem) calc(100vw - 2rem), 480px"{% endif %} alt="" width="{{ d.art_w }}" height="{{ d.art_h }}" loading="lazy" decoding="async"></span>
       <span class="desk-tile-kicker">{{ d.kicker }}</span>
       <h3 class="desk-tile-name"><a class="desk-tile-link" href="{{ d.href }}"><span class="desk-tile-title">{{ d.name }}</span><span class="desk-tile-go" aria-hidden="true">{{ svg_icon('arrow-right') }}</span></a></h3>
       <p class="desk-tile-blurb">{{ d.blurb }}</p>
