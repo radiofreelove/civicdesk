@@ -11,10 +11,23 @@ import re
 import sys
 import time
 import urllib.error
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from threading import Lock
 from typing import Any, Callable
+from urllib.parse import urlparse
 
 import yaml
+
+_SCRIPT_DIR = str(Path(__file__).resolve().parent)
+if _SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, _SCRIPT_DIR)
+
+from civicdesk_lib.freshness import (  # noqa: E402
+    DEFAULT_MAX_AGE_DAYS,
+    MAX_AGE_BY_KIND,
+    max_age_for_source,
+)
 
 try:
     from http_retry import (
@@ -37,53 +50,10 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCES_DIR = ROOT / "data" / "sources"
 FACTS_PATH = ROOT / "data" / "facts.yaml"
 
-DEFAULT_MAX_AGE_DAYS = 120
-MAX_AGE_BY_KIND: dict[str, int] = {
-    # Short window: forms, fee schedules, and active litigation dockets
-    "agency-form": 60,
-    "court-form": 60,
-    "state-form": 60,
-    "fee-schedule": 60,
-    "court": 60,
-    # Medium window: live agency and court web pages / letters
-    "agency-page": 90,
-    "court-page": 90,
-    "state-page": 90,
-    "federal-page": 90,
-    "federal-letter": 90,
-    # Standard window: explainers, guides, and external reference pages
-    "state-explainer": 120,
-    "guide": 120,
-    "legal-aid": 120,
-    "advocacy": 120,
-    "helper": 120,
-    "legislature": 120,
-    "platform": 120,
-    "secondary": 120,
-    # Longer window: codified statutes, session laws, rules, standards, and fixed datasets
-    "statute": 180,
-    "session-law": 180,
-    "state-rule": 180,
-    "federal-rule": 180,
-    "executive-order": 180,
-    "standard": 180,
-    "accessibility-standard": 180,
-    "data": 180,
-}
-
 
 def iter_source_files(sources_dir: Path | None = None) -> list[Path]:
     base = sources_dir or SOURCES_DIR
     return sorted(base.glob("*.yaml"))
-
-
-def max_age_for_source(source: dict[str, Any], override_days: int | None = None) -> int:
-    if override_days is not None:
-        return int(override_days)
-    if source.get("max_age_days") is not None:
-        return int(source["max_age_days"])
-    kind = str(source.get("kind") or "").strip().lower()
-    return MAX_AGE_BY_KIND.get(kind, DEFAULT_MAX_AGE_DAYS)
 
 
 def _default_fetch_response(url: str, timeout: int) -> tuple[int, dict[str, str], bytes]:
@@ -195,53 +165,107 @@ def check_review_by_dates(
     return expired
 
 
+def _probe_urls_by_host(
+    urls: list[str],
+    *,
+    timeout: int,
+    max_retries: int,
+    pause_seconds: float,
+    fetcher: Callable[[str, int], int | tuple[int, dict[str, str], bytes]],
+    sleeper: Callable[[float], None],
+    max_workers: int,
+) -> dict[str, tuple[str, int | str, dict[str, str]]]:
+    """Probe unique URLs once each, parallelizing across distinct hosts while serializing per host."""
+    outcomes: dict[str, tuple[str, int | str, dict[str, str]]] = {}
+    if not urls:
+        return outcomes
+    workers = max(1, min(int(max_workers), len(urls)))
+    if workers == 1:
+        for url in urls:
+            outcomes[url] = _probe_url(
+                url, timeout=timeout, max_retries=max_retries, fetcher=fetcher, sleeper=sleeper
+            )
+            if pause_seconds > 0:
+                sleeper(pause_seconds)
+        return outcomes
+
+    host_locks: dict[str, Lock] = {}
+    host_locks_guard = Lock()
+
+    def _run_one(url: str) -> tuple[str, tuple[str, int | str, dict[str, str]]]:
+        host = (urlparse(url).netloc or "").lower()
+        with host_locks_guard:
+            lock = host_locks.setdefault(host, Lock())
+        with lock:
+            res = _probe_url(
+                url, timeout=timeout, max_retries=max_retries, fetcher=fetcher, sleeper=sleeper
+            )
+            if pause_seconds > 0:
+                sleeper(pause_seconds)
+            return url, res
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        for url, res in pool.map(_run_one, urls):
+            outcomes[url] = res
+    return outcomes
+
+
 def check_links(
     timeout: int = 20,
     *,
     sources_dir: Path | None = None,
     max_retries: int = 2,
     pause_seconds: float = 0.25,
+    max_workers: int = 6,
     fetcher: Callable[[str, int], int | tuple[int, dict[str, str], bytes]] | None = None,
     sleeper: Callable[[float], None] = time.sleep,
 ) -> list[str]:
     issues: list[str] = []
-    outcomes: dict[str, tuple[str, int | str, dict[str, str]]] = {}
     fetch_fn = fetcher or _default_fetch_response
 
+    all_entries: list[dict[str, Any]] = []
+    unique_urls: list[str] = []
+    seen_urls: set[str] = set()
     for yaml_path in iter_source_files(sources_dir):
         entries = yaml.safe_load(yaml_path.read_text(encoding="utf-8")) or []
         for s in entries:
             if s.get("link_check") == "by hand":
                 continue
+            all_entries.append(s)
             url = str(s["url"])
-            if url not in outcomes:
-                outcomes[url] = _probe_url(
-                    url,
-                    timeout=timeout,
-                    max_retries=max_retries,
-                    fetcher=fetch_fn,
-                    sleeper=sleeper,
-                )
-                if pause_seconds > 0:
-                    sleeper(pause_seconds)
+            if url not in seen_urls:
+                seen_urls.add(url)
+                unique_urls.append(url)
 
-            kind, detail, fp_meta = outcomes[url]
-            if kind == "ok":
-                expected_fp = str(s.get("fingerprint") or "").strip()
-                live_fp = str(fp_meta.get("fingerprint") or "").strip()
-                if expected_fp and live_fp and expected_fp != live_fp:
-                    issues.append(
-                        f"{s['id']} ({url}): content fingerprint changed since checked {s.get('checked')} "
-                        f"(recorded {expected_fp}, live {live_fp})"
-                    )
-                continue
-            if kind == "http_error" and detail == 403 and s.get("bot_gated") is True:
-                print(f"note (bot-gated HTTP 403, check in browser): {s['id']} {url}")
-                continue
-            if kind == "http_error":
-                issues.append(f"{s['id']} ({url}): HTTP {detail}")
-            else:
-                issues.append(f"{s['id']} ({url}): {detail}")
+    outcomes = _probe_urls_by_host(
+        unique_urls,
+        timeout=timeout,
+        max_retries=max_retries,
+        pause_seconds=pause_seconds,
+        fetcher=fetch_fn,
+        sleeper=sleeper,
+        max_workers=max_workers,
+    )
+
+    for s in all_entries:
+        url = str(s["url"])
+        kind, detail, fp_meta = outcomes[url]
+        if kind == "ok":
+            expected_fp = str(s.get("fingerprint") or "").strip()
+            live_fp = str(fp_meta.get("fingerprint") or "").strip()
+            if expected_fp and live_fp and expected_fp != live_fp:
+                issues.append(
+                    f"{s['id']} ({url}): content fingerprint changed since checked {s.get('checked')} "
+                    f"(recorded {expected_fp}, live {live_fp})"
+                )
+            continue
+        if kind == "http_error" and detail == 403 and s.get("bot_gated") is True:
+            print(f"note (bot-gated HTTP 403, check in browser): {s['id']} {url}")
+            continue
+        if kind == "http_error":
+            issues.append(f"{s['id']} ({url}): HTTP {detail}")
+        else:
+            issues.append(f"{s['id']} ({url}): {detail}")
     return issues
 
 

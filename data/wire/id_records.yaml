@@ -17,6 +17,16 @@ editorial_brief: >-
   Security (Form SS-5 / NUMIDENT), USCIS identity records, and U.S. Passports (DS-11, DS-82,
   DS-5504, Orr v. Trump) across Oregon, Washington, Utah, and federal agencies.
 
+statute_patterns:
+  - '422\.\d+'
+  - '51\.\d+'
+  - '78a-\d+-\d+'
+  - '42-1-\d+'
+  - '53-3-\d+'
+  - '68-3-\d+(?:\.\d+)?'
+  - 'ds-11|ds-82|ds-5504|ss-5'
+  - 'orr\s+v\.?\s+trump'
+
 jurisdictions:
   US:
     name: "Federal"

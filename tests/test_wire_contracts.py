@@ -99,8 +99,20 @@ def test_wire_contract_checker_detects_healthy_and_broken_shapes() -> None:
         "GEMINI_API_KEY": "AIzaSySecretContractKey123456789",
     }
     ok_rows = contracts.run_live_contract_checks(fetcher=healthy_mock, env=env)
-    assert all(r["status"] == "ok" for r in ok_rows)
-    assert len(ok_rows) == 11
+    assert all(r["status"] == "ok" for r in ok_rows), f"Unexpected contract errors: {ok_rows}"
+    channels = {r["channel"] for r in ok_rows}
+    for required_channel in (
+        "Federal Register API v1",
+        "eCFR Versioner API v1",
+        "CourtListener RECAP Atom",
+        "Oregon OLIS OData API",
+        "CourtListener REST v4",
+        "LegiScan API",
+        "Tavily Search API",
+        "Gemini Models API",
+    ):
+        assert required_channel in channels, f"Missing expected contract channel {required_channel!r}"
+    assert len(ok_rows) >= 11
 
     # Schema drift (e.g., eCFR renames `content_versions` -> `versions`) must be flagged as `error`!
     def drifted_mock(url: str, **kwargs) -> bytes:
@@ -111,6 +123,109 @@ def test_wire_contract_checker_detects_healthy_and_broken_shapes() -> None:
     bad_rows = contracts.run_live_contract_checks(fetcher=drifted_mock, env={})
     ecfr_row = [r for r in bad_rows if r["channel"] == "eCFR Versioner API v1"][0]
     assert ecfr_row["status"] == "error"
+
+
+def test_wire_yaml_profiles_schema_url_hygiene_and_lazy_import(tmp_path: Path) -> None:
+    import datetime as dt
+    import subprocess
+
+    import yaml
+
+    spec = importlib.util.spec_from_file_location("policy_radar_schema", ROOT / "scripts" / "policy_radar.py")
+    assert spec and spec.loader
+    wire = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(wire)
+
+    # 1. Every wire YAML profile (active + upcoming) validates cleanly with percent-encoded https:// URLs and statute_re
+    profiles = wire.load_wire_profiles(ROOT / "data" / "wire", include_disabled=True)
+    assert len(profiles) >= 3
+    for slug, cfg in profiles.items():
+        assert cfg["statute_re"] is not None, f"{slug}: missing compiled statute_re"
+        for sr in cfg["state_registers"]:
+            assert sr["kind"] in wire.VALID_STATE_REGISTER_KINDS
+            assert sr["url"].startswith("https://")
+            assert "'" not in sr["url"] and " " not in sr["url"], f"{slug}: unencoded URL {sr['url']!r}"
+
+    # 2. Unknown state_registers kind and raw apostrophe URLs are rejected on load
+    bad_kind_dir = tmp_path / "bad_kind"
+    bad_kind_dir.mkdir()
+    (bad_kind_dir / "broken.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "desk": "broken",
+                "channels": {
+                    "state_registers": [
+                        {"kind": "typo_kind", "jurisdiction": "OR", "name": "Bad", "url": "https://example.gov/feed"}
+                    ]
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="unknown state_registers kind"):
+        wire.load_wire_profiles(bad_kind_dir, include_disabled=True)
+
+    bad_url_dir = tmp_path / "bad_url"
+    bad_url_dir.mkdir()
+    (bad_url_dir / "broken.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "desk": "broken",
+                "channels": {
+                    "state_registers": [
+                        {
+                            "kind": "wa_wsr",
+                            "jurisdiction": "WA",
+                            "name": "AG",
+                            "url": "https://lawfilesext.leg.wa.gov/law/wsr/agency/AttorneyGeneral'sOffice.htm",
+                        }
+                    ]
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="percent-encoded https://"):
+        wire.load_wire_profiles(bad_url_dir, include_disabled=True)
+
+    # 3. Direct poll_state_registers call with an unknown kind surfaces as an error status
+    fake_profiles = {
+        "custom": {
+            "desk": "custom",
+            "state_registers": (
+                {
+                    "kind": "unsupported_kind",
+                    "jurisdiction": "OR",
+                    "name": "Mystery Register",
+                    "url": "https://example.gov/feed",
+                    "match_re": None,
+                },
+            ),
+        }
+    }
+    items, _wsr, status = wire.poll_state_registers(
+        "custom",
+        dt.date(2026, 11, 1),
+        lambda _url: b"",
+        profiles=fake_profiles,
+    )
+    assert items == []
+    assert status.startswith("error (") and "Unknown state register kind" in status
+
+    # 4. Importing policy_radar performs zero disk I/O (profiles cache stays None until used)
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import sys; sys.path.insert(0, 'scripts'); import policy_radar; "
+            "from civicdesk_wire import profiles; assert profiles._DEFAULT_PROFILES_CACHE is None",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, f"Importing policy_radar triggered eager disk I/O: {proc.stderr}"
 
 
 @pytest.mark.skipif(

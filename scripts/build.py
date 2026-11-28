@@ -36,6 +36,8 @@ from civicdesk_lib.brand import (  # noqa: E402
     validate_svg_asset,
     verify_fonts,
 )
+from civicdesk_lib.css_bundle import build_compiled_css, minify_css, rewrite_font_urls  # noqa: E402
+from civicdesk_lib.freshness import DEFAULT_MAX_AGE_DAYS, MAX_AGE_BY_KIND, max_age_for_source  # noqa: E402
 from civicdesk_lib.html_utils import (  # noqa: E402
     BADGE_RE,
     CHECKED_OLDEST_TEXT_MARK,
@@ -622,15 +624,36 @@ def main(argv: list[str] | None = None) -> int:
         url = base_prefix.rstrip("/") + route
         return f"{url}{sep}{anchor}" if sep else url
 
-    def asset(rel: str) -> str:
+    def _hash_static_rel(rel: str) -> str:
+        digest = asset_hashes.get(rel)
+        if digest is not None:
+            return digest
         fpath = static_dir / rel
         if not fpath.is_file():
             raise BuildError(f"page {state['page']}: missing static asset '{rel}'")
-        digest = asset_hashes.get(rel)
-        if digest is None:
-            digest = hashlib.sha256(fpath.read_bytes()).hexdigest()[:8]
-            asset_hashes[rel] = digest
+        digest = hashlib.sha256(fpath.read_bytes()).hexdigest()[:8]
+        asset_hashes[rel] = digest
+        return digest
+
+    rewritten_fonts_css, compiled_site_css = build_compiled_css(static_dir, _hash_static_rel)
+    asset_hashes["css/site.css"] = hashlib.sha256(compiled_site_css.encode("utf-8")).hexdigest()[:8]
+    if rewritten_fonts_css:
+        asset_hashes["css/fonts.css"] = hashlib.sha256(rewritten_fonts_css.encode("utf-8")).hexdigest()[:8]
+
+    def asset(rel: str) -> str:
+        digest = _hash_static_rel(rel)
         return f"{base_prefix}static/{rel}?v={digest}"
+
+    def art_srcset(filename: str) -> str:
+        stem, dot, ext_part = filename.rpartition(".")
+        if not dot:
+            return ""
+        small = f"{stem}-480.{ext_part}"
+        if small not in art_dims or filename not in art_dims:
+            return ""
+        sw = art_dims[small][0]
+        fw = art_dims[filename][0]
+        return f"{asset('img/art/' + small)} {sw}w, {asset('img/art/' + filename)} {fw}w"
 
     def correction_mailto(page: dict) -> str:
         route = str(page.get("route") or "/")
@@ -822,6 +845,7 @@ def main(argv: list[str] | None = None) -> int:
         medicaid_languages=medicaid_languages,
         state_checked=state_checked,
         art_dims=art_dims,
+        art_srcset=art_srcset,
         read_depth_labels=READ_DEPTH_LABELS,
         read_by_labels=READ_BY_LABELS,
         read_note=read_note,
@@ -997,15 +1021,18 @@ def main(argv: list[str] | None = None) -> int:
         dirs_exist_ok=True,
         ignore=shutil.ignore_patterns(".gitkeep", "*.md"),
     )
+    (out_dir / "static" / "css" / "site.css").write_text(compiled_site_css, encoding="utf-8")
+    if rewritten_fonts_css:
+        (out_dir / "static" / "css" / "fonts.css").write_text(rewritten_fonts_css, encoding="utf-8")
     if SITE_ROOT.exists():
         shutil.copytree(SITE_ROOT, out_dir, dirs_exist_ok=True)
 
     today = dt.date.today()
-    max_age = int(site.get("max_source_age_days", 120))
     for sid, s in sources.items():
         age = (today - as_date(s["checked"])).days
-        if age > max_age:
-            warnings.append(f"source {sid} last checked {age} days ago (limit {max_age})")
+        limit = max_age_for_source(s)
+        if age > limit:
+            warnings.append(f"source {sid} last checked {age} days ago (limit {limit})")
 
     public_sources = [
         {k: v for k, v in s.items() if k != "internal_note"}

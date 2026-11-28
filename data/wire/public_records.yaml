@@ -14,6 +14,10 @@ editorial_brief: >-
   fee schedules, and ombuds/appeal rules in Oregon (ORS Chapter 192), Washington (Public Records
   Act, RCW Chapter 42.56), and Utah (GRAMA, Utah Code Title 63G, Chapter 2).
 
+statute_patterns:
+  - '63g-\d+-\d+'
+  - '5\s+u\.?s\.?c\.?\s*552'
+
 jurisdictions:
   US:
     name: "Federal"
@@ -72,7 +76,7 @@ channels:
     - kind: "wa_wsr"
       jurisdiction: "WA"
       name: "Washington State Register (Attorney General)"
-      url: "https://lawfilesext.leg.wa.gov/law/wsr/agency/AttorneyGeneral'sOffice.htm"
+      url: "https://lawfilesext.leg.wa.gov/law/wsr/agency/AttorneyGeneral%27sOffice.htm"
       match_pattern: '\b(44-14|public records|42\.56)\b'
     - kind: "or_olis_odata"
       jurisdiction: "OR"
