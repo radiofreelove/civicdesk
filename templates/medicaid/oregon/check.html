@@ -37,10 +37,10 @@
     <p class="progress" id="checker-progress" aria-live="polite" hidden>Step 1 of 3</p>
 
     <form id="checker" class="checker checker-form" novalidate autocomplete="off" hidden>
-      <div class="step" data-step="1" tabindex="-1">
+      <div class="step" data-step="1">
         <p class="error-message" id="step-1-error" role="alert" tabindex="-1" hidden>Please pick one answer to go on.</p>
-        <fieldset aria-describedby="step-1-error">
-          <legend><h2>How old are you?</h2></legend>
+        <fieldset>
+          <legend><h2 tabindex="-1">How old are you?</h2></legend>
           <label class="choice"><input type="radio" name="age" value="under19"> <span class="choice-icon">{{ m.icon('school-cap') }}</span><span>18 or younger</span></label>
           <label class="choice"><input type="radio" name="age" value="19to64"> <span class="choice-icon">{{ m.icon('id-card') }}</span><span>19 to 64</span></label>
           <label class="choice"><input type="radio" name="age" value="65plus"> <span class="choice-icon">{{ m.icon('medicaid-shield') }}</span><span>65 or older</span></label>
@@ -50,10 +50,10 @@
         </div>
       </div>
 
-      <div class="step" data-step="2" tabindex="-1" hidden>
+      <div class="step" data-step="2" hidden>
         <p class="error-message" id="step-2-error" role="alert" tabindex="-1" hidden>Please pick at least one answer, or pick "None of these fit me."</p>
-        <fieldset aria-describedby="step-2-hint step-2-error">
-          <legend><h2>Do any of these fit you?</h2></legend>
+        <fieldset aria-describedby="step-2-hint">
+          <legend><h2 tabindex="-1">Do any of these fit you?</h2></legend>
           <p class="hint" id="step-2-hint">Pick all that fit. These are reasons you may not have to meet the rules.</p>
 
           <div class="step-group" role="group" aria-labelledby="group-health">
@@ -89,7 +89,7 @@
             <label class="choice"><input type="checkbox" name="reason" value="county"> I live in a county with a federal disaster declaration or high unemployment.</label>
           </div>
 
-          <div class="step-group">
+          <div class="step-group" role="group" aria-labelledby="group-none">
             <h3 id="group-none">None of these</h3>
             <label class="choice"><input type="checkbox" name="reason" value="none" data-none> None of these fit me.</label>
           </div>
@@ -100,10 +100,10 @@
         </div>
       </div>
 
-      <div class="step" data-step="3" tabindex="-1" hidden>
+      <div class="step" data-step="3" hidden>
         <p class="error-message" id="step-3-error" role="alert" tabindex="-1" hidden>Please pick at least one answer, or pick "None of these fit me yet."</p>
-        <fieldset aria-describedby="step-3-hint step-3-error">
-          <legend><h2>Do any of these fit you?</h2></legend>
+        <fieldset aria-describedby="step-3-hint">
+          <legend><h2 tabindex="-1">Do any of these fit you?</h2></legend>
           <p class="hint" id="step-3-hint">Pick all that fit. Think about the month before you apply. These are ways to meet the rules.</p>
           <label class="choice"><input type="checkbox" name="meet" value="income"> <span class="choice-icon">{{ m.icon('fee-waiver') }}</span><span>My household brings in $580 or more a month.</span></label>
           <label class="choice"><input type="checkbox" name="meet" value="school"> <span class="choice-icon">{{ m.icon('school-cap') }}</span><span>I go to school at least half-time.</span></label>

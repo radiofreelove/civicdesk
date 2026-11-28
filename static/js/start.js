@@ -189,7 +189,6 @@
     };
     filterInput.addEventListener("input", runFilter);
     window.addEventListener("pageshow", function () {
-      filterInput.value = "";
       runFilter();
     });
   }

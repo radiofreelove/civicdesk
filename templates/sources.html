@@ -44,7 +44,7 @@
 
 <p>Browse desk-specific registries or machine-readable exports: <a href="{{ page_url('medicaid-sources') }}">Medicaid sources (<code>MED-*</code>)</a>, <a href="{{ page_url('id-records-sources') }}">ID &amp; vital records sources (<code>ID-*</code>)</a>, <a href="{{ root_prefix(page) }}sources.json"><code>sources.json</code></a>, <a href="{{ root_prefix(page) }}facts.json"><code>facts.json</code></a>, and <a href="{{ root_prefix(page) }}build-report.json"><code>build-report.json</code></a>.</p>
 
-<h2 id="medicaid-registry">2027 Medicaid Work &amp; Activity Rules (<code>MED-*</code>)</h2>
+<h2 id="medicaid-registry">2027 Medicaid work and activity rules (<code>MED-*</code>)</h2>
 <ul class="source-list">
 {% for s in medicaid_sources if not s.get('docs_only') %}
   <li class="source-item" id="{{ s.id|lower }}">
@@ -55,7 +55,7 @@
 {% endfor %}
 </ul>
 
-<h2 id="id-records-registry">Legal Name, ID &amp; Vital Records (<code>ID-*</code>)</h2>
+<h2 id="id-records-registry">Legal name, ID, and vital records (<code>ID-*</code>)</h2>
 <ul class="source-list">
 {% for s in id_records_sources if not s.get('docs_only') %}
   <li class="source-item" id="{{ s.id|lower }}">

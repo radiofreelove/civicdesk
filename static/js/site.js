@@ -23,8 +23,16 @@
   }
   function remembering() { return store("get", KEYS.remember) === "on"; }
 
+  var dialog = document.getElementById("settings");
+  var opener = document.getElementById("settings-open");
+  var closer = document.getElementById("settings-close");
+  var closerX = document.getElementById("settings-close-x");
+
   function announce(text) {
-    var el = document.getElementById("announcer");
+    var el = (dialog && dialog.open)
+      ? document.getElementById("dialog-announcer")
+      : document.getElementById("announcer");
+    if (!el) el = document.getElementById("announcer");
     if (!el) return;
     el.textContent = "";
     window.setTimeout(function () { el.textContent = text; }, 50);
@@ -72,14 +80,13 @@
     }
   }
 
-  var dialog = document.getElementById("settings");
-  var opener = document.getElementById("settings-open");
-  var closer = document.getElementById("settings-close");
-  var closerX = document.getElementById("settings-close-x");
-
+  var briefToggle = document.getElementById("brief-toggle");
   function syncForm() {
-    if (!dialog) return;
     var p = current();
+    if (briefToggle) {
+      briefToggle.setAttribute("aria-pressed", (p.brief === "on" || p.brief === "true") ? "true" : "false");
+    }
+    if (!dialog) return;
     dialog.querySelectorAll('input[name="size"]').forEach(function (el) { el.checked = el.value === p.size; });
     dialog.querySelectorAll('input[name="theme"]').forEach(function (el) { el.checked = el.value === p.theme; });
     var spacing = dialog.querySelector('input[name="spacing"]');
@@ -95,7 +102,6 @@
   }
 
   /* ---------- Short version toggle strip ---------- */
-  var briefToggle = document.getElementById("brief-toggle");
   function setBrief(on, message, persist) {
     var p = current();
     p.brief = on ? "on" : "off";
@@ -223,6 +229,17 @@
       }
       apply(p);
       savePrefs(p);
+      if (el.name === "size" || el.name === "theme") {
+        var lbl = el.closest ? el.closest("label") : null;
+        var choiceText = lbl ? lbl.textContent.trim() : el.value;
+        announce((el.name === "size" ? "Text size: " : "Colors: ") + choiceText + ".");
+      }
+      if (el.name === "spacing") {
+        announce(el.checked ? "Wide text spacing turned on." : "Standard text spacing restored.");
+      }
+      if (el.name === "font") {
+        announce(el.checked ? "Atkinson Hyperlegible Next font turned on." : "Standard reading font restored.");
+      }
       if (el.name === "brief") {
         syncForm();
         announce(el.checked
@@ -243,7 +260,6 @@
         syncForm();
         var status = document.getElementById("reset-status");
         if (status) status.textContent = "Reading settings are back to standard. Your checklist was not changed.";
-        announce("Reading settings are back to standard. Your checklist was not changed.");
       });
     }
     var forget = document.getElementById("forget-all");
@@ -330,24 +346,27 @@
   /* ---------- Copy buttons ---------- */
   document.querySelectorAll("button[data-copy]").forEach(function (btn) {
     var originalText = btn.textContent;
+    var originalAria = btn.getAttribute("aria-label");
     var copyTimer = null;
+    function flashButton(label, msg) {
+      btn.textContent = label;
+      if (originalAria !== null) btn.setAttribute("aria-label", label);
+      announce(msg);
+      if (copyTimer) window.clearTimeout(copyTimer);
+      copyTimer = window.setTimeout(function () {
+        btn.textContent = originalText;
+        if (originalAria !== null) btn.setAttribute("aria-label", originalAria);
+        copyTimer = null;
+      }, 2500);
+    }
     btn.addEventListener("click", function () {
       var text = btn.getAttribute("data-copy");
-      var done = function () {
-        btn.textContent = "Copied";
-        announce("Copied: " + text);
-        if (copyTimer) window.clearTimeout(copyTimer);
-        copyTimer = window.setTimeout(function () {
-          btn.textContent = originalText;
-          copyTimer = null;
-        }, 2500);
-      };
+      var done = function () { flashButton("Copied", "Copied: " + text); };
+      var fail = function () { flashButton("Copy failed — select text", "Copy did not work. Select the text instead."); };
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, function () {
-          announce("Copy did not work. Select the text instead.");
-        });
+        navigator.clipboard.writeText(text).then(done, fail);
       } else {
-        announce("Copy is not available in this browser. Select the text instead.");
+        fail();
       }
     });
   });
@@ -400,17 +419,22 @@
       switchers.forEach(clampSwitcherMenu);
     });
     switchers.forEach(function (switcher) {
+      var pointerInside = false;
+      switcher.addEventListener("pointerdown", function () { pointerInside = true; });
+      window.addEventListener("pointerup", function () { pointerInside = false; });
       switcher.addEventListener("toggle", function () {
         clampSwitcherMenu(switcher);
       });
       switcher.addEventListener("focusout", function (event) {
-        if (!switcher.open) return;
+        if (!switcher.open || pointerInside) return;
         var next = event.relatedTarget;
         if (next && !switcher.contains(next)) {
           switcher.open = false;
         } else if (!next) {
           window.setTimeout(function () {
-            if (switcher.open && document.activeElement && !switcher.contains(document.activeElement)) {
+            if (pointerInside) return;
+            var active = document.activeElement;
+            if (switcher.open && active && active !== document.body && !switcher.contains(active)) {
               switcher.open = false;
             }
           }, 0);
@@ -461,6 +485,7 @@
   var guidePanel = document.getElementById("guide");
   var sourcesPanel = document.querySelector(".page-sources");
   var tabs = null;
+  var lastSectionSourceLink = null;
   function selectTab(which, moveFocus) {
     if (!tabs) return;
     tabs.forEach(function (tab) {
@@ -471,10 +496,21 @@
     });
     guidePanel.hidden = which !== "guide";
     sourcesPanel.hidden = which !== "sources";
+    if (which === "guide") {
+      guidePanel.setAttribute("tabindex", "0");
+      sourcesPanel.removeAttribute("tabindex");
+    } else {
+      sourcesPanel.setAttribute("tabindex", "0");
+      guidePanel.removeAttribute("tabindex");
+    }
   }
-  function setHash(hash) {
-    if (window.history && typeof window.history.replaceState === "function") {
-      window.history.replaceState(null, "", hash || window.location.pathname + window.location.search);
+  function setHash(hash, push) {
+    if (!window.history) return;
+    var url = hash || (window.location.pathname + window.location.search);
+    if (push && typeof window.history.pushState === "function") {
+      window.history.pushState({ tabHash: hash || "" }, "", url);
+    } else if (typeof window.history.replaceState === "function") {
+      window.history.replaceState(null, "", url);
     }
   }
   function showSourceTarget(target) {
@@ -487,11 +523,15 @@
     if (!tabs) return;
     var id = window.location.hash.slice(1);
     try { id = decodeURIComponent(id); } catch (e) { /* use raw */ }
+    if (!id || id === "guide") {
+      selectTab("guide", false);
+      return;
+    }
     if (id === "sources" || id.slice(-8) === "/sources") {
       selectTab("sources", false);
       return;
     }
-    var target = id ? document.getElementById(id) : null;
+    var target = document.getElementById(id);
     if (!target) return;
     if (sourcesPanel.contains(target)) showSourceTarget(target);
     else if (guidePanel.contains(target) && target !== guidePanel) selectTab("guide", false);
@@ -516,20 +556,27 @@
         event.preventDefault();
         var which = tab.getAttribute("data-tab");
         selectTab(which, true);
-        setHash(which === "sources" ? "#sources" : "");
+        setHash(which === "sources" ? "#sources" : "", false);
       });
       tab.addEventListener("keydown", function (event) {
         var i = tabs.indexOf(tab);
+        if (event.key === " ") {
+          event.preventDefault();
+          var cur = tab.getAttribute("data-tab");
+          selectTab(cur, true);
+          setHash(cur === "sources" ? "#sources" : "", false);
+          return;
+        }
         var next = null;
-        if (event.key === "ArrowRight" || event.key === "ArrowDown") next = tabs[(i + 1) % tabs.length];
-        else if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = tabs[(i + tabs.length - 1) % tabs.length];
+        if (event.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+        else if (event.key === "ArrowLeft") next = tabs[(i + tabs.length - 1) % tabs.length];
         else if (event.key === "Home") next = tabs[0];
         else if (event.key === "End") next = tabs[tabs.length - 1];
         if (!next) return;
         event.preventDefault();
         var which = next.getAttribute("data-tab");
         selectTab(which, true);
-        setHash(which === "sources" ? "#sources" : "");
+        setHash(which === "sources" ? "#sources" : "", false);
       });
     });
     document.querySelectorAll(".section-sources").forEach(function (link) {
@@ -537,13 +584,28 @@
         var target = document.getElementById(link.getAttribute("href").slice(1));
         if (!target) return;
         event.preventDefault();
-        setHash(link.getAttribute("href"));
+        lastSectionSourceLink = link;
+        setHash(link.getAttribute("href"), true);
         showSourceTarget(target);
+      });
+    });
+    document.querySelectorAll("[data-back-to-guide]").forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        selectTab("guide", false);
+        setHash("", false);
+        if (lastSectionSourceLink && document.body.contains(lastSectionSourceLink)) {
+          lastSectionSourceLink.scrollIntoView();
+          lastSectionSourceLink.focus({ preventScroll: true });
+        } else {
+          guideTab.focus();
+        }
       });
     });
     selectTab("guide", false);
     syncTabToHash();
     window.addEventListener("hashchange", syncTabToHash);
+    window.addEventListener("popstate", syncTabToHash);
   }
 
   window.addEventListener("hashchange", openTarget);
