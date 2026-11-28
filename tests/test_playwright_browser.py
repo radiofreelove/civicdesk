@@ -898,7 +898,7 @@ def test_accessibility_navigation_and_broadsheet_polish(site_server: str, browse
 
     page.click("#settings-open")
     page.check('#settings input[name="size"][value="l"]')
-    assert "Large" in page.inner_text("#dialog-announcer")
+    page.wait_for_function("() => (document.getElementById('dialog-announcer').textContent || '').includes('Large')")
     page.click("#settings-close")
 
     # 3. Medicaid checker aria-describedby starts unset, toggles on validation error, focuses <h2> on step change
