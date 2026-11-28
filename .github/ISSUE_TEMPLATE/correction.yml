@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Issues here are public. Please describe the page problem only. Do not include names, case numbers, health details, immigration status, or other personal information. CivicDesk cannot answer questions about individual situations.
+        Issues here are public. Please describe the page problem only. Do not include names, case numbers, health details, immigration status, or other personal information. CivicDesk cannot answer questions about individual situations. Messages here do not create an attorney-client relationship and are not privileged.
   - type: input
     id: page
     attributes:

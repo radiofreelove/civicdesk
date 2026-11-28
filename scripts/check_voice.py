@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """CivicDesk voice check: tool output describes published rules and never advises one reader.
 
-Utah SCRP 4-802(d) and Washington GR 24 protect general legal information, not advice applied to
-one person's facts, so the interactive tools say what a state's rules list and what its agency
-asks. This check fails on second-person advisory phrasing in three places:
+Utah SCRP Rule 4-802(d) (formerly UCJA Rule 14-802; Utah Code § 78A-9-103), Washington GR 24(d),
+and Oregon ORS 9.160 (OSB Formal Ethics Op. 2005-137) protect general legal information, not
+advice applied to one person's facts, so the interactive tools say what a state's rules list and
+what its agency asks. This check fails on advisory phrasing in four places:
 
 1. The built <main> of the interactive tool pages (data/pages.yaml `tool: true`, plus /start/),
    including <template> result blocks and aria-label, alt, title, and placeholder text. The
    Sources panel is skipped because it quotes outside titles.
 2. String literals in the tool scripts (comments are skipped).
 3. Voice fields in data/pages.yaml: answer, why, analogy compare and boundary, and spec catch text.
+4. The built <main> of non-tool guide pages for core advice patterns (GUIDE_PATTERNS), skipping
+   the Sources panel.
 
 Bare sentence-initial verbs ("File", "Use", "Tell", "Skip"), "you must", and "you need to" are
 deliberately not enforced: in CivicDesk copy they describe what a rule requires.
@@ -33,7 +36,9 @@ ROOT = Path(__file__).resolve().parent.parent
 PATTERNS: dict[str, str] = {
     "you-should": r"\byou\s+should\b",
     "we-recommend": r"\bwe\s+recommend\b",
+    "we-advise": r"\bwe\s+(?:advise|suggest)\b",
     "your-best": r"\byour\s+best\b",
+    "best-option": r"\bbest\s+(?:option|choice|way)\b",
     "personalized": r"\bpersonali[sz]ed\b",
     "my-steps": r"\bmy\s+steps\b",
     # Covers "do not / likely do not / may apply to you"; the trailing \b lets
@@ -42,11 +47,29 @@ PATTERNS: dict[str, str] = {
     "your-steps": r"\byour\s+steps\b",
     "my-results": r"\bmy\s+results\b",
     "you-qualify": r"\byou\s+(?:likely\s+)?(?:qualify|are\s+(?:likely\s+)?exempt)\b",
+    "you-are-eligible": r"\byou\s+are\s+(?:not\s+|likely\s+)?(?:in)?eligible\b",
+    "you-do-not-need": r"\byou\s+(?:do\s+not|don['’]t)\s+need\b",
+    "next-step-plan": r"\bnext[- ]steps?\s+(?:plan|for\s+you)\b",
     "fits-your-situation": r"\bfits?\s+your\s+situation\b",
     # Whole-string match only, so headings like "What to do" fail while sentences pass.
     "what-to-do-heading": r"^what\s+(?:to|you\s+can)\s+do$",
 }
 COMPILED = {name: re.compile(rx, re.IGNORECASE) for name, rx in PATTERNS.items()}
+
+# Core advisory patterns enforced across non-tool guide pages as well as tools.
+GUIDE_PATTERNS: tuple[str, ...] = (
+    "you-should",
+    "we-recommend",
+    "we-advise",
+    "your-best",
+    "best-option",
+    "personalized",
+    "apply-to-you",
+    "you-qualify",
+    "you-are-eligible",
+    "next-step-plan",
+    "fits-your-situation",
+)
 
 TOOL_SCRIPTS = (
     "static/js/path.js",
@@ -76,11 +99,12 @@ def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def find_hits(text: str) -> list[str]:
+def find_hits(text: str, patterns: tuple[str, ...] | None = None) -> list[str]:
     norm = normalize(text)
     if not norm:
         return []
-    return [name for name, rx in COMPILED.items() if rx.search(norm)]
+    names = patterns if patterns is not None else tuple(COMPILED)
+    return [name for name in names if COMPILED[name].search(norm)]
 
 
 class _MainText(HTMLParser):
@@ -286,14 +310,20 @@ def scan(root: Path = ROOT, built: Path | None = None) -> list[str]:
     pages = yaml.safe_load((root / "data" / "pages.yaml").read_text(encoding="utf-8"))
     hits: list[str] = []
 
-    tool_pages = [p for p in pages if p.get("tool") or p["slug"] in EXTRA_TOOL_SLUGS]
-    for p in tool_pages:
+    tool_slugs = {p["slug"] for p in pages if p.get("tool") or p["slug"] in EXTRA_TOOL_SLUGS}
+    for p in pages:
         fpath = built_file(built, p)
         if not fpath.is_file():
             raise FileNotFoundError(f"{fpath} is missing; run python3 scripts/build.py first")
         rel = fpath.relative_to(built)
+        if p["slug"] in tool_slugs:
+            active_patterns = None
+        elif p["slug"] == "404":
+            continue
+        else:
+            active_patterns = GUIDE_PATTERNS
         for line, text in html_runs(fpath.read_text(encoding="utf-8")):
-            for name in find_hits(text):
+            for name in find_hits(text, active_patterns):
                 hits.append(f"{built.name}/{rel}:{line}: [{name}] {normalize(text)[:120]}")
 
     for rel in TOOL_SCRIPTS:

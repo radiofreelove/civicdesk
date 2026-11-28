@@ -44,3 +44,4 @@ To report a factual error, broken link, or outdated rule, email [corrections@civ
 
 - **Writing and guides:** [CC BY 4.0](./LICENSE-CONTENT.md)
 - **Code and scripts:** [MIT License](./LICENSE)
+- **Self-hosted fonts:** [SIL Open Font License 1.1](./LICENSE-CONTENT.md#self-hosted-fonts-sil-ofl-11) (`Source Serif 4` by Adobe and `Atkinson Hyperlegible Next` by Braille Institute; license texts in `static/fonts/`)

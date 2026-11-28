@@ -340,7 +340,7 @@
     summary.textContent =
       "These steps are for " + WORDS.change[answers.change] + " " + WORDS.who[answers.who] +
       ", when " + WORDS.live[answers.live] + ", " + WORDS.born[answers.born] + "." +
-      (answers.change === "marker" && noCourt ? " You do not need a court order for this path." : "") +
+      (answers.change === "marker" && noCourt ? " Oregon and Washington agencies do not require a court order for state ID or in-state birth-certificate sex-marker updates; a court order remains optional under state law." : "") +
       (groups.length ? " Other published pathways are listed below the steps." : "");
     results.hidden = false;
     heading.focus();

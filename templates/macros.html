@@ -49,13 +49,13 @@
   <p class="callout-kicker"><span class="callout-icon">{{ icon('shield') }}</span><span>Domestic safety and confidential mail</span></p>
   <h2 class="callout-title" id="{{ id }}-t">Need a safe mailing address or domestic-safety accommodation?</h2>
   <p>{{ contact_line }} {{ badge('our_reading') }}</p>
-  <p>On a shared or monitored device? Pressing <strong>Shift</strong> 3 times quickly or selecting the link below replaces this page with weather.gov (earlier pages remain in browser history).</p>
+  <p>On a shared or monitored device? Pressing <strong>Shift</strong> 3 times quickly or selecting the link below opens weather.gov (and replaces this page in tab history when JavaScript is on; earlier pages remain in browser history).</p>
   <p><a class="safety-exit-link" data-quick-exit href="{{ site.quick_exit_url }}" rel="noreferrer">Leave quickly<span class="vh"> and open weather.gov</span></a></p>
 </section>
 {%- endmacro %}
 
-{#- Pre-tool notice for the interactive tools (ID path finder and the 1-minute Medicaid checks).
-    tests/test_registries_and_structure.py requires it on every page that loads path.js or checker.js. -#}
+{#- Pre-tool notice for the interactive tools (2-question router, ID path finder, and 1-minute Medicaid checks).
+    tests/test_compliance.py requires it on every page that loads start.js, path.js, or checker.js. -#}
 {% macro tool_notice(cls='') -%}
 <p class="tool-notice{% if cls %} {{ cls }}{% endif %}" role="note"><span class="tool-notice-icon">{{ icon('shield') }}</span><span>No person sees your answers. Your answers stay in this browser and are never sent anywhere. Using this tool does not create a lawyer-client relationship.</span></p>
 {%- endmacro %}

@@ -555,7 +555,7 @@ html[data-spacing="wide"] .exit-bar {
 /* Scoped inline Leave quickly inside domestic-safety exemption callouts */
 .safety-exit-link, .safety-exit-link:visited {
   display: inline-flex; align-items: center; justify-content: center;
-  min-height: 44px; padding: 0.5rem 1rem; margin-top: 0.4rem;
+  min-height: 44px; min-width: 44px; padding: 0.5rem 1rem; margin-top: 0.4rem;
   background: var(--card-bg); color: var(--link);
   font-weight: 700; text-decoration: none; border-radius: 2px;
   border: 2px solid var(--border);
@@ -975,7 +975,7 @@ details.other-pathways[open] > summary { border-bottom: 1px solid var(--rule); }
 .other-group h3 { margin: 1rem 0 0.4rem; }
 .other-group > ul { margin-top: 0.25rem; }
 @media print {
-  details.other-pathways:not([open]), .tool-notice { display: none !important; }
+  details.other-pathways:not([open]) { display: none !important; }
 }
 
 html[data-brief="on"] .deeper,

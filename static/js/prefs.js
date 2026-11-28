@@ -23,7 +23,8 @@
     size: ["m", "l", "xl"],
     spacing: ["normal", "wide"],
     font: ["system", "hyper"],
-    brief: ["off", "on"]
+    brief: ["off", "on"],
+    shiftexit: ["on", "off"]
   };
   Object.keys(allowed).forEach(function (key) {
     if (allowed[key].indexOf(prefs[key]) !== -1) {

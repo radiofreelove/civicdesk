@@ -35,7 +35,7 @@
 <ol class="steps step-timeline">
 {% call m.step(page.slug, 1, 'after-copies', 'Get certified copies of your court order', timeline=true) %}
   <ul>
-    <li>Oregon: {{ fact('or_fee_certified_copy') }}; Washington superior court: {{ fact('wa_fee_cert_copy') }} (7+ recommended); Utah: {{ fact('ut_fee_cert_copy') }}. {{ src('ID-OR-OJD-FEES') }} {{ src('ID-WA-RCW-36-18-016') }} {{ src('ID-WA-WLH-NAME') }} {{ src('ID-UT-COURTS-FEES') }}</li>
+    <li>Oregon: {{ fact('or_fee_certified_copy') }}; Washington superior court: {{ fact('wa_fee_cert_copy') }} (WashingtonLawHelp suggests 7+ copies); Utah: {{ fact('ut_fee_cert_copy') }}. {{ src('ID-OR-OJD-FEES') }} {{ src('ID-WA-RCW-36-18-016') }} {{ src('ID-WA-WLH-NAME') }} {{ src('ID-UT-COURTS-FEES') }}</li>
   </ul>
 {% endcall %}
 {% call m.step(page.slug, 2, 'after-ssa', 'Social Security (name changes)', timeline=true) %}

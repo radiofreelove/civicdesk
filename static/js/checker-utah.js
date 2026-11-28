@@ -145,7 +145,7 @@ window.CivicDeskCheck = (function () {
     },
     reasonIntro: "Here is what you picked:",
     reasonTodo: [
-      ["The state checks records it already has first. If it can confirm your reason, you do not need to do anything."],
+      ["The state checks records it already has first. Under Utah's published process, if DWS confirms a reason from state records, it does not ask for extra forms."],
       ["If it cannot, you can report your reason online in myCase, on your application, or on form 742."],
       ["Utah's page names form 742 but does not link to it. Ask the Department of Workforce Services (DWS) for it at 1-866-435-7414."],
       [{ href: "../reasons/", text: "See every reason, and what proof tribal members send" }]

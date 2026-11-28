@@ -341,7 +341,8 @@ def test_broadened_id_records_path_finder(site_server: str, browser_instance) ->
     page.click('#path-form button[type="submit"]')
     marker_text = page.inner_text("#results-body")
     assert "Court in Washington" not in marker_text
-    assert "You do not need a court order for this path." in page.inner_text("#results-summary")
+    assert "do not require a court order for state ID or in-state birth-certificate sex-marker updates" in page.inner_text("#results-summary")
+    assert "This path finder is general legal information, not legal advice." in page.inner_text("#path-results")
     # Sort, not hide: each sorted step names its rule, and the court route the answers did not
     # select stays on the page in the closed Other published pathways drawer.
     basis_lines = page.locator("#results-body .basis-line").all_inner_texts()
@@ -369,6 +370,7 @@ def test_broadened_id_records_path_finder(site_server: str, browser_instance) ->
     assert page.evaluate("() => document.getElementById('other-pathways').open") is False
     page.emulate_media(media="print")
     assert page.evaluate("() => getComputedStyle(document.getElementById('other-pathways')).display") == "none"
+    assert page.evaluate("() => getComputedStyle(document.querySelector('.tool-notice')).display") != "none"
     page.emulate_media(media="screen")
     page.evaluate("() => window.dispatchEvent(new Event('afterprint'))")
     # A drawer the reader opened prints as shown.
@@ -439,6 +441,48 @@ def test_scoped_leave_quickly_and_reading_settings(site_server: str, browser_ins
     page.click(".safety-exit-link[data-quick-exit]")
     page.wait_for_url("https://www.weather.gov/**", timeout=5000)
 
+    # 3b. Leave quickly clears saved civicdesk:checks from localStorage while keeping reading prefs
+    goto_local(page, site_server + "/id-records/oregon/court/")
+    page.click("#settings-open")
+    page.check('#settings input[name="theme"][value="dark"]')
+    page.check('#settings input[name="remember"]')
+    page.click("#settings-close")
+    page.locator("input[data-check]").first.check()
+    assert page.evaluate("() => localStorage.getItem('civicdesk:checks')") is not None
+    page.click("#quick-exit")
+    page.wait_for_url("https://www.weather.gov/**", timeout=5000)
+    goto_local(page, site_server + "/id-records/oregon/court/")
+    assert page.evaluate("() => localStorage.getItem('civicdesk:checks')") is None
+    assert page.locator("input[data-check]").first.is_checked() is False
+    assert page.evaluate("() => document.documentElement.dataset.theme") == "dark"
+
+    # 3c. Optional Reading settings checkbox turns off triple-Shift while keeping Leave quickly button active
+    page.click("#settings-open")
+    page.check('#settings input[name="shiftexit"]')
+    page.click("#settings-close")
+    assert page.evaluate("() => document.documentElement.dataset.shiftexit") == "off"
+    goto_local(page, site_server + "/id-records/oregon/")
+    assert page.evaluate("() => document.documentElement.dataset.shiftexit") == "off"
+    page.locator("body").click(position={"x": 10, "y": 250})
+    for _ in range(3):
+        page.keyboard.press("Shift")
+    page.wait_for_timeout(150)
+    assert "weather.gov" not in page.url
+    # Button still exits
+    page.click("#quick-exit")
+    page.wait_for_url("https://www.weather.gov/**", timeout=5000)
+
+    # Resetting reading settings restores triple-Shift
+    goto_local(page, site_server + "/id-records/oregon/")
+    page.click("#settings-open")
+    page.click("#reset-settings")
+    page.click("#settings-close")
+    assert page.evaluate("() => document.documentElement.dataset.shiftexit") == "on"
+    page.locator("body").click(position={"x": 10, "y": 250})
+    for _ in range(3):
+        page.keyboard.press("Shift")
+    page.wait_for_url("https://www.weather.gov/**", timeout=5000)
+
     # 4. Reading settings modal, Dark ink theme, and Forget everything
     goto_local(page, site_server + "/")
     page.click("#settings-open")
@@ -453,6 +497,30 @@ def test_scoped_leave_quickly_and_reading_settings(site_server: str, browser_ins
     page.click("#settings-close")
     left = page.evaluate("() => Object.keys(localStorage).filter(k => k.startsWith('civicdesk:'))")
     assert left == []
+
+    # 5. Medicaid checker Back-navigation / pageshow bfcache privacy reset
+    goto_local(page, site_server + "/medicaid/oregon/check/")
+    assert page.get_attribute("#checker", "autocomplete") == "off"
+    page.check('input[name="age"][value="19to64"]')
+    page.click('[data-step="1"] button[data-next]')
+    page.check('input[name="reason"][value="pregnant"]')
+    page.click('[data-step="2"] button[data-next]')
+    page.check('input[name="meet"][value="none"]')
+    page.click('#checker button[type="submit"]')
+    assert page.is_visible("#checker-result")
+    # Navigate away and return via Back (and also dispatch a synthetic persisted pageshow event)
+    goto_local(page, site_server + "/medicaid/oregon/")
+    page.go_back(wait_until="load")
+    assert page.is_hidden("#checker-result")
+    assert page.is_visible("#checker")
+    assert page.locator('#checker input:checked').count() == 0
+    # Synthetic bfcache pageshow after filling results
+    page.check('input[name="age"][value="under19"]')
+    page.click('[data-step="1"] button[data-next]')
+    assert page.is_visible("#checker-result")
+    page.evaluate("() => window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }))")
+    assert page.is_hidden("#checker-result")
+    assert page.locator('#checker input:checked').count() == 0
 
     ctx.close()
 

@@ -62,7 +62,7 @@ def test_tool_notice_on_every_interactive_tool(built_site: Path) -> None:
     with_tools = 0
     for p in pages:
         raw = _built_file(built_site, p).read_text(encoding="utf-8")
-        if not re.search(r'static/js/(?:path|checker)\.js', raw):
+        if not re.search(r'static/js/(?:path|checker|start)\.js', raw):
             continue
         with_tools += 1
         main = raw.split("<main", 1)[1].split("</main>", 1)[0]
@@ -70,13 +70,17 @@ def test_tool_notice_on_every_interactive_tool(built_site: Path) -> None:
         assert notice, f"{p['route']}: interactive tool page is missing macros.tool_notice()"
         text = re.sub(r"<[^>]+>", " ", notice.group(1))
         assert TOOL_NOTICE in re.sub(r"\s+", " ", text).strip(), f"{p['route']}: tool notice text changed"
-    assert with_tools == 4, f"expected the path finder and 3 state checks, found {with_tools}"
+    assert with_tools == 5, f"expected /start/, the path finder, and 3 state checks, found {with_tools}"
 
 
 def test_about_nonlawyer_statement_without_workflow_disclosure(built_site: Path) -> None:
     about = (built_site / "about" / "index.html").read_text(encoding="utf-8")
     main = re.sub(r"\s+", " ", about.split("<main", 1)[1].split("</main>", 1)[0])
     assert NONLAWYER in main
+    assert "not a substitute for advice from a licensed attorney" in main
+    assert "no attorney-client evidentiary privilege" in main
+    assert "SIL Open Font License, Version 1.1" in main
+    assert "Source Serif 4" in main and "Atkinson Hyperlegible Next" in main
     # Scope boundary: the About page carries no AI or content-production workflow disclosure.
     assert not re.search(r"\b(?:AI|artificial intelligence|language model|LLM|Claude|Antigravity)\b", main)
 
