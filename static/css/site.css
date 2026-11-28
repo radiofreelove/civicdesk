@@ -927,13 +927,41 @@ details.deeper[open] > summary { border-bottom: 1px solid var(--rule); }
 .spec-row dt { font-weight: 700; color: var(--heading); }
 .spec-row dd { margin: 0.15rem 0 0; overflow-wrap: anywhere; }
 .analogy {
-  max-width: 65ch; margin: 1.25rem 0; padding: 0.9rem 1rem; background: var(--card-bg); color: var(--text);
-  border: 1px solid var(--rule); border-left: 4px solid var(--heading); border-radius: 2px;
+  max-width: 68ch;
+  margin: 1.5rem 0 1.75rem;
+  padding: 1.1rem 1.25rem 1rem;
+  background: var(--viz-paper);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--heading);
+  box-shadow: 3px 3px 0 var(--viz-shadow);
 }
-.analogy p { margin: 0 0 0.5rem; }
-.analogy p:last-child { margin-bottom: 0; }
-.analogy-kicker { font-weight: 700; color: var(--heading); }
-.analogy-inline { margin: 0.75rem 0; padding: 0.6rem 0.9rem; }
+body.desk-medicaid .analogy { border-top-color: var(--med-accent); }
+body.desk-id-records .analogy { border-top-color: var(--id-accent); }
+.analogy-kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--heading);
+}
+.analogy-compare {
+  margin: 0 0 0.75rem;
+  font-size: 1.04rem;
+  line-height: 1.62;
+}
+.analogy-boundary {
+  margin: 0;
+  padding-top: 0.65rem;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+.analogy-inline {
+  margin: 1rem 0 1.25rem;
+  padding: 0.85rem 1.05rem;
+}
 
 /* ---------- ID path finder: rule citations and the Other published pathways drawer ---------- */
 .basis-line { margin: 0 0 0.5rem; color: var(--text); font-size: 0.95em; }

@@ -153,40 +153,6 @@ jobs:
             cat radar-report.md >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Persist per-desk wire:state ledger issue
-        if: inputs.dry_run != true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DESK: ${{ matrix.desk }}
-          DESK_LABEL: "radar:${{ matrix.desk }}"
-        run: |
-          if [ ! -f wire-state-body.md ]; then
-            echo "No state body produced; skipping state ledger update."
-            exit 0
-          fi
-          all_failed="$(jq -r '.all_channels_failed // false' radar-results.json 2>/dev/null || echo 'false')"
-          if [ "$all_failed" = "true" ]; then
-            echo "All channels failed; preserving prior wire:state cursor."
-            exit 0
-          fi
-          gh label create "wire:state" \
-            --description "Automated Policy Wire JSON state, cursor, and fingerprint ledger" \
-            --color "57534E" 2>/dev/null || true
-          gh label create "$DESK_LABEL" \
-            --description "CivicDesk Policy Wire dispatches for the $DESK desk" \
-            --color "D6006C" 2>/dev/null || true
-          state_num="$(jq -r '.[0].number // empty' wire-state-issue.json)"
-          if [ -n "$state_num" ]; then
-            gh issue edit "$state_num" --body-file wire-state-body.md
-          else
-            created_url="$(gh issue create \
-              --title "CivicDesk Wire State ($DESK) — automated ledger" \
-              --label "wire:state" \
-              --label "$DESK_LABEL" \
-              --body-file wire-state-body.md)"
-            gh issue close "$created_url" --reason "completed" || true
-          fi
-
       - name: Open, update, or resolve wire:health issue on channel errors or empty streaks
         if: inputs.dry_run != true
         env:
@@ -208,26 +174,26 @@ jobs:
               --description "CivicDesk Policy Wire dispatches for the $DESK desk" \
               --color "D6006C" 2>/dev/null || true
             python3 - <<'PY'
-            import json
-            from pathlib import Path
+          import json
+          from pathlib import Path
 
-            res = json.loads(Path("radar-results.json").read_text(encoding="utf-8"))
-            lines = [
-                f"## CivicDesk Wire Health Alert — `{res['desk']}` ({res['desk_label']})",
-                "",
-                f"Sweep on `{res['today']}` flagged **{len(res.get('health_alerts', []))}** channel health issue(s):",
-                "",
-            ]
-            for alert in res.get("health_alerts", []):
-                lines.append(f"- {alert}")
-            lines.extend(["", "### Channel telemetry", "", "| Channel | Status |", "|---|---|"])
-            for st in res.get("statuses", []):
-                src = str(st["source"]).replace("|", "/")
-                val = str(st["status"]).replace("|", "/").replace("\n", " ")
-                lines.append(f"| `{src}` | {val} |")
-            lines.append("")
-            Path("wire-health-body.md").write_text("\n".join(lines), encoding="utf-8")
-            PY
+          res = json.loads(Path("radar-results.json").read_text(encoding="utf-8"))
+          lines = [
+              f"## CivicDesk Wire Health Alert — `{res['desk']}` ({res['desk_label']})",
+              "",
+              f"Sweep on `{res['today']}` flagged **{len(res.get('health_alerts', []))}** channel health issue(s):",
+              "",
+          ]
+          for alert in res.get("health_alerts", []):
+              lines.append(f"- {alert}")
+          lines.extend(["", "### Channel telemetry", "", "| Channel | Status |", "|---|---|"])
+          for st in res.get("statuses", []):
+              src = str(st["source"]).replace("|", "/")
+              val = str(st["status"]).replace("|", "/").replace("\n", " ")
+              lines.append(f"| `{src}` | {val} |")
+          lines.append("")
+          Path("wire-health-body.md").write_text("\n".join(lines), encoding="utf-8")
+          PY
             if [ -n "$existing_health" ]; then
               gh issue edit "$existing_health" --title "CivicDesk Wire Health ($DESK): $alert_count channel alert(s) ($today)"
               gh issue comment "$existing_health" --body-file wire-health-body.md
@@ -301,6 +267,40 @@ jobs:
                 --label "$DESK_LABEL" \
                 --body-file radar-report.md
             fi
+          fi
+
+      - name: Persist per-desk wire:state ledger issue
+        if: inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DESK: ${{ matrix.desk }}
+          DESK_LABEL: "radar:${{ matrix.desk }}"
+        run: |
+          if [ ! -f wire-state-body.md ]; then
+            echo "No state body produced; skipping state ledger update."
+            exit 0
+          fi
+          all_failed="$(jq -r '.all_channels_failed // false' radar-results.json 2>/dev/null || echo 'false')"
+          if [ "$all_failed" = "true" ]; then
+            echo "All channels failed; preserving prior wire:state cursor."
+            exit 0
+          fi
+          gh label create "wire:state" \
+            --description "Automated Policy Wire JSON state, cursor, and fingerprint ledger" \
+            --color "57534E" 2>/dev/null || true
+          gh label create "$DESK_LABEL" \
+            --description "CivicDesk Policy Wire dispatches for the $DESK desk" \
+            --color "D6006C" 2>/dev/null || true
+          state_num="$(jq -r '.[0].number // empty' wire-state-issue.json)"
+          if [ -n "$state_num" ]; then
+            gh issue edit "$state_num" --body-file wire-state-body.md
+          else
+            created_url="$(gh issue create \
+              --title "CivicDesk Wire State ($DESK) — automated ledger" \
+              --label "wire:state" \
+              --label "$DESK_LABEL" \
+              --body-file wire-state-body.md)"
+            gh issue close "$created_url" --reason "completed" || true
           fi
 
       - name: Fail job when every active wire channel failed

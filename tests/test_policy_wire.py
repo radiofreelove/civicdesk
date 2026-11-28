@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import ast
 import datetime as dt
 import email.message
 import importlib.util
 import io
 import json
+import re
+import shutil
+import subprocess
 import sys
 import urllib.error
 import zlib
@@ -981,13 +985,72 @@ def test_workflows_plumb_state_health_contracts_and_secrets() -> None:
         assert required_secret in step_env
         assert f"secrets.{required_secret}" in str(step_env[required_secret])
 
-    radar_runs = "\n".join(str(s.get("run") or "") for s in radar_wf["jobs"]["radar"]["steps"])
+    radar_steps = radar_wf["jobs"]["radar"]["steps"]
+    radar_runs = "\n".join(str(s.get("run") or "") for s in radar_steps)
     assert "wire:state" in radar_runs
     assert "wire:health" in radar_runs
     assert "RADAR_RC" in radar_runs
+
+    dispatch_idx = next(
+        i for i, s in enumerate(radar_steps) if "policy-radar issue" in str(s.get("name") or "")
+    )
+    state_idx = next(
+        i for i, s in enumerate(radar_steps) if "Persist per-desk wire:state" in str(s.get("name") or "")
+    )
+    assert state_idx > dispatch_idx, (
+        "Persist per-desk wire:state must run after policy-radar dispatch creation "
+        "so a crash in health/dispatch steps never marks unposted dispatches as reported"
+    )
 
     weekly_wf = yaml.safe_load((ROOT / ".github" / "workflows" / "weekly.yml").read_text(encoding="utf-8"))
     weekly_runs = "\n".join(str(s.get("run") or "") for s in weekly_wf["jobs"]["verify"]["steps"])
     assert "verify_sources.py" in weekly_runs
     assert "check_wire_contracts.py" in weekly_runs
     assert "workflows/radar.yml/enable" in weekly_runs
+
+
+def test_workflow_run_blocks_have_valid_bash_and_python_heredocs() -> None:
+    bash_bin = shutil.which("bash")
+    heredoc_start = re.compile(r"python3\s+-\s+<<(-?)(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\2")
+    for wf_path in sorted((ROOT / ".github" / "workflows").glob("*.yml")):
+        wf = yaml.safe_load(wf_path.read_text(encoding="utf-8"))
+        for job_name, job in (wf.get("jobs") or {}).items():
+            for idx, step in enumerate(job.get("steps") or [], start=1):
+                script = step.get("run")
+                if not script:
+                    continue
+                label = f"{wf_path.name}::{job_name}::step {idx} ({step.get('name', '<unnamed>')})"
+                if bash_bin:
+                    proc = subprocess.run(
+                        [bash_bin, "-n"],
+                        input=script,
+                        text=True,
+                        capture_output=True,
+                        check=False,
+                    )
+                    assert proc.returncode == 0, f"{label} failed bash -n:\n{proc.stderr}"
+
+                lines = script.splitlines()
+                i = 0
+                while i < len(lines):
+                    m = heredoc_start.search(lines[i])
+                    if not m:
+                        i += 1
+                        continue
+                    strip_tabs, tag = bool(m.group(1)), m.group(3)
+                    body: list[str] = []
+                    i += 1
+                    closed = False
+                    while i < len(lines):
+                        candidate = lines[i].lstrip("\t") if strip_tabs else lines[i]
+                        if candidate == tag:
+                            closed = True
+                            i += 1
+                            break
+                        body.append(lines[i].lstrip("\t") if strip_tabs else lines[i])
+                        i += 1
+                    assert closed, f"{label}: unterminated python3 heredoc <<{tag}"
+                    try:
+                        ast.parse("\n".join(body))
+                    except SyntaxError as exc:
+                        raise AssertionError(f"{label}: invalid Python inside <<{tag}: {exc}") from exc
